@@ -1,0 +1,25 @@
+{
+  "topic": "ECS-Entity-Management",
+  "last_updated": "2023-10-27",
+  "decisions": [
+    {
+      "decision": "Use simple integers for Entity IDs.",
+      "reasoning": "Generational IDs (using bit-shifting) are avoided for simplicity and to remain comprehensible for other agents. If memory needs to be freed later, we can reconsider using bits."
+    },
+    {
+      "decision": "Use Int16 for limiting max entities.",
+      "reasoning": "A maximum limit of 65,535 (using an Int32List backing stack but logic constrained to max Int16) was chosen to limit maximum active entities in the engine safely, avoiding GC pauses and using minimal memory."
+    },
+    {
+      "decision": "Use bit flag tracking for entity liveness.",
+      "reasoning": "A Uint32List is used to store bit flags (1 bit per entity) to quickly check whether an entity is active, preventing double frees and recycling issues without any object allocations."
+    }
+  ],
+  "avoided_paths": [
+    {
+      "path": "Using generative bit-shifting IDs",
+      "failure_reason": "Too complex and hard to comprehend for other agents. Intentionally using straight counters, but leaving open the option to compress to bits later if memory becomes an issue."
+    }
+  ],
+  "context": "Implemented Swarm (Entity Manager) class to maintain O(1) creation/destruction with zero per-frame allocations."
+}
