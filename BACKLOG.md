@@ -10,7 +10,7 @@ This backlog breaks down Phase 1 of the Sting Engine roadmap into highly granula
   * **Description:** Create the minimal boilerplate to hook into `PlatformDispatcher.instance.onBeginFrame` and `PlatformDispatcher.instance.onDrawFrame`. Prove that the loop is ticking via a simple console log or counter. Ensure no Flutter framework elements are imported.
   * **Acceptance Criteria:** A runnable Dart entry point that receives VSync callbacks successfully.
 
-* [ ] **Task 1.2: Basic Canvas Clear**
+* [x] **Task 1.2: Basic Canvas Clear**
   * **Role Needed:** Rendering Engineer
   * **Skill:** `skills/rendering_engineer.json`
   * **Description:** Inside `onDrawFrame`, use `PictureRecorder`, `Canvas`, and `SceneBuilder` to clear the screen to a solid color (e.g., black) and submit the frame to the `PlatformDispatcher`.

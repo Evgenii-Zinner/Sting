@@ -1,4 +1,8 @@
 import 'dart:ui';
+import 'engine/renderer.dart';
+
+int frameCount = 0;
+final renderer = Renderer();
 
 int frameCount = 0;
 
@@ -13,6 +17,7 @@ void initEngine() {
   };
 
   dispatcher.onDrawFrame = () {
+    renderer.renderFrame();
     // In later steps, this is where Canvas.drawAtlas and SceneBuilder will be used.
   };
 

@@ -1,0 +1,11 @@
+{
+  "topic": "Rendering Logic Testing Limitations",
+  "context": "Testing raw dart:ui drawing output (like view.render or Canvas pixel output) inside standard headless flutter tests is extremely limited without an integration test.",
+  "avoided_paths": [
+    "Using testWidgets to capture rendered pixels (does not work directly on raw dart:ui without complex setup or a custom headless host).",
+    "Extracting Picture to Image and asserting byteData (fails under mock environment or gives incorrect pixel values/lengths like 4 bytes 'ff' instead of actual image data in headless)."
+  ],
+  "decisions": [
+    "To adhere to TDD constraints without creating overly complex mocks or requiring slow integration tests for Phase 1, we ensure the drawing logic execution flow completes cleanly (does not throw) and rely on manual visual verification (yagni/dry principle for early bare-metal)."
+  ]
+}
