@@ -24,7 +24,7 @@ This backlog breaks down Phase 1 of the Sting Engine roadmap into highly granula
   * **Description:** Implement a `World` or `Registry` class capable of generating unique `int` IDs. Implement recycling for destroyed entity IDs.
   * **Acceptance Criteria:** `createEntity()` returns unique ints. `destroyEntity(id)` recycles the ID. 100% test coverage.
 
-* [ ] **Task 2.2: Sparse Set Data Structure (Ints)**
+* [x] **Task 2.2: Sparse Set Data Structure (Ints)**
   * **Role Needed:** ECS Core Engineer
   * **Skill:** `skills/ecs_core_engineer.json`
   * **Description:** Implement a generic (or explicitly typed for Phase 1) Sparse Set data structure in Dart using arrays/lists. It must map an Entity ID (int) to an index in a dense array.
