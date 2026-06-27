@@ -36,10 +36,5 @@ When an AI agent is invoked to contribute to the Sting engine, it must follow th
 
 If you are asked to implement something that violates these rules, push back or find an ECS-compliant solution.
 
-## 6. Naming Conventions & Existing Core Systems
-* **The "Sting" Theme:** The engine is named "Sting" because it bypasses Flutter's UI tree, injecting the game directly "under" the widgets via `dart:ui`. As a thematic reference, core components follow an insect/bug naming convention.
-* **`Swarm` (Entity Manager):** The entity management system is already implemented and is called `Swarm`. It uses simple `int` (Int16) IDs and a `Uint32List` for bit-flag liveness tracking to achieve O(1) performance with zero allocations. **Do not ask the user to implement entity management or question the rationale behind this.**
-* **`Caste` (Sparse Set):** The sparse set component storage is already implemented and is called `Caste`. It uses the Briggs & Torczon validation technique (eliminating sentinel values) and `Uint16List` for maximum memory efficiency. **Do not ask the user to implement sparse sets or question the rationale behind this.**
-
-## 7. Architecture FAQ
-For common architectural questions, implementation details (like the Briggs & Torczon technique), and rendering API explanations, consult the newly created FAQ document at `docs/ARCHITECTURE_FAQ.md`. Please review this file before asking the user basic architectural questions.
+## 6. Architecture FAQ
+For common architectural questions, naming conventions (like the "Sting" theme), existing core systems (`Swarm`, `Caste`), rendering APIs, and details about upcoming features in the backlog, strictly consult the FAQ document at `docs/ARCHITECTURE_FAQ.md`. Please review this file thoroughly before asking the user basic architectural or implementation questions.
