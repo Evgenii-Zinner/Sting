@@ -27,3 +27,13 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+# Ignore Flutter artifacts
+*.iml
+.idea/
+.vscode/
+android/
+ios/
+linux/
+macos/
+windows/
+web/
