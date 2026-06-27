@@ -1,0 +1,17 @@
+{
+  "role": "Rendering Engineer",
+  "description": "Responsible for translating ECS data into visual output using Dart's low-level UI bindings (dart:ui), bypassing Flutter entirely.",
+  "core_competencies": [
+    "dart:ui internals (Canvas, PictureRecorder, SceneBuilder)",
+    "Batch rendering techniques (Canvas.drawAtlas)",
+    "Coordinate system transformations",
+    "High-performance 2D graphics programming"
+  ],
+  "responsibilities": [
+    "Hook into PlatformDispatcher to sync with the device's display refresh (VSync)",
+    "Implement systems that read Position/Sprite components and issue draw calls",
+    "Maximize rendering performance using batching (drawAtlas) for thousands of sprites",
+    "Manage assets (images, shaders) loading and memory lifecycle outside of Flutter"
+  ],
+  "context": "Sting uses no Flutter Widgets. All rendering is done by issuing commands directly to Impeller/Skia via dart:ui. Aim to minimize draw calls."
+}
