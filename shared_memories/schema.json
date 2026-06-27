@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "description": "Standard format for AI shared memories in Sting.",
+  "format": {
+    "topic": "String (e.g., 'ECS-Storage', 'Rendering-Pipeline')",
+    "last_updated": "ISO8601 Date String",
+    "decisions": [
+      {
+        "decision": "String describing what was decided",
+        "reasoning": "String explaining why"
+      }
+    ],
+    "avoided_paths": [
+      {
+        "path": "String describing the attempted approach",
+        "failure_reason": "String explaining why it didn't work or was rejected"
+      }
+    ],
+    "context": "Any additional context, Dart specific quirks, or performance metrics."
+  }
+}

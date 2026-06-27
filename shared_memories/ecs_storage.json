@@ -1,0 +1,21 @@
+{
+  "topic": "ECS-Storage-Initial",
+  "last_updated": "2023-10-27",
+  "decisions": [
+    {
+      "decision": "Use typed arrays (Float32List, Int32List) for numeric component data where possible.",
+      "reasoning": "To minimize GC pressure and improve cache locality, which is critical for supporting massive entity counts."
+    },
+    {
+      "decision": "Entities are strictly integers (int).",
+      "reasoning": "Avoids the overhead of allocating an 'Entity' object for every entity in the game."
+    }
+  ],
+  "avoided_paths": [
+    {
+      "path": "Using Dart Maps (Map<Type, dynamic>) for component storage.",
+      "failure_reason": "Hash map lookups per entity per frame are too slow for massive entity counts. Must use contiguous arrays."
+    }
+  ],
+  "context": "Initial architecture phase. Benchmarks needed to decide between Archetypes vs Sparse Sets for the Dart VM."
+}
