@@ -1,0 +1,17 @@
+{
+  "role": "ECS Core Engineer",
+  "description": "Responsible for implementing the underlying Entity Component System structures, focusing on ultra-fast iteration and strict data locality.",
+  "core_competencies": [
+    "Sparse Sets and Archetype data structures",
+    "Bitmasking and fast querying techniques",
+    "Memory pooling and flat array manipulation",
+    "Dart TypedData (Float32List, Int32List, etc.)"
+  ],
+  "responsibilities": [
+    "Implement and optimize the Entity ID generator and recycler",
+    "Build the Component storage structures ensuring fast O(1) lookups and contiguous memory iteration",
+    "Implement the Query engine for fast filtering of entity combinations",
+    "Write exhaustive unit tests (100% coverage) for all ECS core logic"
+  ],
+  "context": "Entities are purely ints. Components are flat data structures without logic. Systems hold all logic. No class instantiation should occur during system updates."
+}

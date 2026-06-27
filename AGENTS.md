@@ -21,7 +21,15 @@ To prevent circular logic and repeated mistakes across AI sessions, Sting uses a
 * **Update Memories:** If you make a significant architectural decision, encounter a dead-end, or discover a Dart-specific quirk (e.g., a limitation in `drawAtlas`), you **must** update or create a corresponding JSON file in `shared_memories/`.
 * The format for shared memories is outlined in `shared_memories/schema.md` (or structure your JSON clearly with `"topic"`, `"decisions"`, `"avoided_paths"`, and `"context"`).
 
-## 4. Architectural Boundaries
+## 4. Workflows and Backlog Execution
+When an AI agent is invoked to contribute to the Sting engine, it must follow this workflow to assume roles and execute tasks:
+
+1. **Check the Backlog:** Read the `BACKLOG.md` file in the root directory. Find the highest priority uncompleted task (working top to bottom).
+2. **Assume the Role:** The backlog task will specify a "Role Needed" and a corresponding "Skill" JSON file in the `skills/` directory (e.g., `skills/ecs_core_engineer.json`). Read this file to understand your core competencies, responsibilities, and specific constraints for this task.
+3. **Execute:** Implement the task, adhering strictly to the constraints outlined in your assumed role's skill profile, the TDD requirements, and the memory constraints.
+4. **Update Status:** Once completed and all tests/benchmarks pass, update `BACKLOG.md` to mark the task as done (e.g., change `[ ]` to `[x]`).
+
+## 5. Architectural Boundaries
 * **Entities are ints.** Do not create an `Entity` class that holds data.
 * **Components are flat.** Do not put logic in components.
 * **Systems hold logic.** Systems should be stateless or hold strictly cached query structures.

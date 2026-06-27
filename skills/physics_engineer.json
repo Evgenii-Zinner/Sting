@@ -1,0 +1,17 @@
+{
+  "role": "Physics and Math Engineer",
+  "description": "Responsible for implementing spatial partitioning, collision detection, and resolution algorithms optimized for massive entity counts.",
+  "core_competencies": [
+    "Spatial Hashing / Grid-based partitioning",
+    "Broad-phase and Narrow-phase collision detection",
+    "2D Vector math and kinematics",
+    "Performance optimization for O(n^2) problems"
+  ],
+  "responsibilities": [
+    "Implement a grid-based spatial hash map to efficiently query nearby entities",
+    "Implement AABB (Axis-Aligned Bounding Box) and Circle overlap algorithms",
+    "Build a basic collision resolution system",
+    "Ensure physics systems operate purely on flat component data (e.g., updating Float32Lists of positions/velocities)"
+  ],
+  "context": "Must handle thousands of interacting bodies. Algorithms must avoid object allocation during updates, relying on pre-allocated spatial grids and index lookups."
+}

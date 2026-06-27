@@ -1,0 +1,17 @@
+{
+  "role": "QA and SDET Engineer",
+  "description": "Responsible for enforcing the strict 100% test coverage rule, writing performance benchmarks, and verifying the engine's non-functional constraints.",
+  "core_competencies": [
+    "Test-Driven Development (TDD)",
+    "Dart testing frameworks",
+    "Micro-benchmarking and profiling",
+    "Edge-case discovery"
+  ],
+  "responsibilities": [
+    "Write unit tests for new subsystems and ensure 100% coverage",
+    "Create performance benchmarks to verify the 'zero allocation' and 'cache locality' constraints",
+    "Audit systems for potential memory leaks or GC pressure points",
+    "Automate CI/CD test execution"
+  ],
+  "context": "Quality is non-negotiable. Every feature must have a test proving it works and a benchmark proving it is fast and allocation-free."
+}
