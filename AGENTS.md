@@ -1,6 +1,6 @@
-# Kinetix AI Agents Guidelines
+# Sting AI Agents Guidelines
 
-Welcome, AI Contributor. You are tasked with developing Kinetix, a bare-metal, high-performance 2D ECS game engine for Dart. To ensure code quality and architectural integrity, you **must** adhere strictly to the following rules.
+Welcome, AI Contributor. You are tasked with developing Sting, a bare-metal, high-performance 2D ECS game engine for Dart. To ensure code quality and architectural integrity, you **must** adhere strictly to the following rules.
 
 ## 1. Test-Driven Development (TDD) is Mandatory
 * **100% Test Coverage:** Every feature, utility, and bug fix must be accompanied by comprehensive tests.
@@ -15,7 +15,7 @@ Welcome, AI Contributor. You are tasked with developing Kinetix, a bare-metal, h
 * Never use Flutter framework classes (`Widget`, `BuildContext`, etc.). Rely purely on `dart:ui`.
 
 ## 3. The `shared_memories` System
-To prevent circular logic and repeated mistakes across AI sessions, Kinetix uses a shared memory system.
+To prevent circular logic and repeated mistakes across AI sessions, Sting uses a shared memory system.
 
 * **Read Before Coding:** Before starting any new task, read the relevant JSON memory files in `shared_memories/`.
 * **Update Memories:** If you make a significant architectural decision, encounter a dead-end, or discover a Dart-specific quirk (e.g., a limitation in `drawAtlas`), you **must** update or create a corresponding JSON file in `shared_memories/`.

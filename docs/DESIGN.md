@@ -1,7 +1,7 @@
-# Kinetix Engine Design Document
+# Sting Engine Design Document
 
 ## 1. Overview
-Kinetix is a bare-metal 2D game engine built in Dart. It bypasses the Flutter UI framework (Widgets, BuildContext, runApp) entirely to achieve maximum performance. The engine connects directly to the Dart UI bindings (`dart:ui`) to render via Impeller/Skia and uses a strict, data-oriented Entity Component System (ECS) to manage massive entity counts.
+Sting is a bare-metal 2D game engine built in Dart. It bypasses the Flutter UI framework (Widgets, BuildContext, runApp) entirely to achieve maximum performance. The engine connects directly to the Dart UI bindings (`dart:ui`) to render via Impeller/Skia and uses a strict, data-oriented Entity Component System (ECS) to manage massive entity counts.
 
 ## 2. Core Architecture
 
@@ -11,7 +11,7 @@ The engine operates outside the standard Flutter lifecycle. It hooks directly in
 * `PlatformDispatcher.instance.onDrawFrame`: Used to record drawing commands and submit the final scene to the GPU.
 
 ### 2.2 Data-Oriented ECS
-To support massive entity counts (e.g., tens of thousands of particles, bullets, or boids), Kinetix relies on memory efficiency and CPU cache locality.
+To support massive entity counts (e.g., tens of thousands of particles, bullets, or boids), Sting relies on memory efficiency and CPU cache locality.
 * **Entities**: Entities are strictly `int` IDs. No objects or classes represent entities.
 * **Components**: Components are flat data structures. To maximize performance in Dart, component data will heavily utilize typed data arrays (e.g., `Float32List`, `Float64List`, `Int32List`) where possible, or minimal data classes.
 * **Systems**: Systems contain the logic. They iterate over arrays of components using Queries and mutate data in bulk.

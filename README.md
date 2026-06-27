@@ -1,10 +1,10 @@
-# Kinetix
+# Sting
 
 A bare-metal, high-performance 2D game engine for Dart, designed for massive entity counts and uncompromising performance.
 
 ## Core Philosophy
 
-* **Zero Flutter Framework**: Kinetix does not use `runApp()`, `Widgets`, or `BuildContext`. It binds directly to `PlatformDispatcher.instance.onBeginFrame` and `dart:ui` to talk directly to the underlying graphics engine (Impeller/Skia).
+* **Zero Flutter Framework**: Sting does not use `runApp()`, `Widgets`, or `BuildContext`. It binds directly to `PlatformDispatcher.instance.onBeginFrame` and `dart:ui` to talk directly to the underlying graphics engine (Impeller/Skia).
 * **Strict ECS**: Data-oriented Entity Component System. Entities are purely `int` IDs. Components are flat data classes. Systems handle all logic.
 
 ## Tech Stack

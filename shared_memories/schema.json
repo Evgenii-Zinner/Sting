@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "description": "Standard format for AI shared memories in Kinetix.",
+  "description": "Standard format for AI shared memories in Sting.",
   "format": {
     "topic": "String (e.g., 'ECS-Storage', 'Rendering-Pipeline')",
     "last_updated": "ISO8601 Date String",
