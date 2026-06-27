@@ -1,6 +1,6 @@
 {
   "topic": "ECS-Storage-Initial",
-  "last_updated": "2023-10-27",
+  "last_updated": "2024-06-27",
   "decisions": [
     {
       "decision": "Use typed arrays (Float32List, Int32List) for numeric component data where possible.",
@@ -9,6 +9,18 @@
     {
       "decision": "Entities are strictly integers (int).",
       "reasoning": "Avoids the overhead of allocating an 'Entity' object for every entity in the game."
+    },
+    {
+      "decision": "Use Briggs & Torczon validation for Sparse Sets.",
+      "reasoning": "Eliminates the need to use sentinel values (like -1) or initialization loops for the sparse array, making `clear()` an O(1) operation by just resetting the `count`."
+    },
+    {
+      "decision": "Use Uint16List for both dense and sparse arrays in Sparse Sets.",
+      "reasoning": "Entity IDs and maximum capacities are bound by Int16 limits (65,535). Uint16List provides the tightest memory packing without complex bitwise logic overhead."
+    },
+    {
+      "decision": "Sparse Set structures are named 'Caste'.",
+      "reasoning": "Aligns with the insect/Sting theme, where a caste represents a specific group or type within a swarm (e.g., all entities with a certain component)."
     }
   ],
   "avoided_paths": [
@@ -17,5 +29,5 @@
       "failure_reason": "Hash map lookups per entity per frame are too slow for massive entity counts. Must use contiguous arrays."
     }
   ],
-  "context": "Initial architecture phase. Benchmarks needed to decide between Archetypes vs Sparse Sets for the Dart VM."
+  "context": "Initial architecture phase. Decided on Sparse Sets over Archetypes for Phase 1. Implementation utilizes flat Int16 bounds for maximum performance and minimum GC footprint."
 }
