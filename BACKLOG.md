@@ -18,7 +18,7 @@ This backlog breaks down Phase 1 of the Sting Engine roadmap into highly granula
 
 ## 2. Implement basic Entity ID generator and Component storage
 
-* [ ] **Task 2.1: Entity ID Management**
+* [x] **Task 2.1: Entity ID Management**
   * **Role Needed:** ECS Core Engineer
   * **Skill:** `skills/ecs_core_engineer.json`
   * **Description:** Implement a `World` or `Registry` class capable of generating unique `int` IDs. Implement recycling for destroyed entity IDs.
