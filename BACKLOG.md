@@ -4,7 +4,7 @@ This backlog breaks down Phase 1 of the Sting Engine roadmap into highly granula
 
 ## 1. Setup raw `dart:ui` window hook
 
-* [ ] **Task 1.1: Initialize PlatformDispatcher Hook**
+* [x] **Task 1.1: Initialize PlatformDispatcher Hook**
   * **Role Needed:** Rendering Engineer
   * **Skill:** `skills/rendering_engineer.json`
   * **Description:** Create the minimal boilerplate to hook into `PlatformDispatcher.instance.onBeginFrame` and `PlatformDispatcher.instance.onDrawFrame`. Prove that the loop is ticking via a simple console log or counter. Ensure no Flutter framework elements are imported.
