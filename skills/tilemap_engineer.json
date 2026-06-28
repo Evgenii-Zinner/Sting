@@ -1,0 +1,10 @@
+{
+  "role": "Tilemap Engineer",
+  "focus": "Implementing efficient map rendering",
+  "responsibilities": [
+    "Design a data-oriented Tilemap component utilizing flat arrays (e.g., Int32List) to store map layout.",
+    "Implement a Tilemap Render System that iterates over tile data and renders efficiently.",
+    "Ensure zero per-frame allocations during the rendering loop.",
+    "Maintain high test coverage (100%) and adhere to the project's strict architectural guidelines."
+  ]
+}
