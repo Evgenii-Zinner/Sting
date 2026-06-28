@@ -27,8 +27,14 @@ class AnimationSystem {
 
         animation.currentFrameIndex = newFrame;
 
-        // TODO: Update the Sprite's source rect (rectLeft, rectRight, etc.)
-        // Pending clarification on sprite layout configuration.
+        // Update the Sprite's source rect
+        double newLeft = animation.startX + (newFrame * animation.frameWidth);
+        double newTop = animation.startY;
+
+        sprite.rectLeft = newLeft;
+        sprite.rectTop = newTop;
+        sprite.rectRight = newLeft + animation.frameWidth;
+        sprite.rectBottom = newTop + animation.frameHeight;
       }
 
       animation.elapsedTime = elapsed;

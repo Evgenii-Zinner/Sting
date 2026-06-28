@@ -1,0 +1,1 @@
+{"role": "Camera Engineer", "responsibilities": ["Design and implement ECS-based camera systems", "Ensure camera transformations are efficient and zero-allocation"], "constraints": ["Must use primitive types for camera components", "Follow TDD practices"], "context": "Focuses heavily on managing the viewport and translating world coordinates to screen coordinates."}
