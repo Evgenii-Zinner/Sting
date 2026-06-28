@@ -4,8 +4,6 @@ import 'engine/renderer.dart';
 int frameCount = 0;
 final renderer = Renderer();
 
-int frameCount = 0;
-
 void initEngine() {
   final dispatcher = PlatformDispatcher.instance;
 
