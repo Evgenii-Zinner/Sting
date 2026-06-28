@@ -28,7 +28,7 @@ Phase 1 (Core ECS, Spatial Hash, Rendering) and Phase 2 (Game Loop, Input System
 
 ## 12. Scene Management and Spawning
 
-* [ ] **Task 12.1: Entity Prefabs/Spawning**
+* [x] **Task 12.1: Entity Prefabs/Spawning**
   * **Role Needed:** Scene Architect
   * **Skill:** `skills/scene_architect.json`
   * **Description:** Create a utility or factory pattern that allows creating standard entity "prefabs" (e.g., an enemy with Position, Velocity, BoundingBox, and Sprite) easily without violating ECS bounds.
