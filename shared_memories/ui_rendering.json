@@ -1,0 +1,13 @@
+{
+  "topic": "UI Rendering Component Constraints",
+  "context": "UI components like TextRender need to store Strings and dart:ui Paragraphs, which cannot be flatly packed into Float32List or ByteData like other ECS components.",
+  "avoided_paths": [
+    "Building Paragraphs every frame, which causes massive GC allocations and violates performance constraints.",
+    "Attempting to map strings into flat integer arrays, which adds excessive complexity."
+  ],
+  "decisions": [
+    "Allow standard Dart classes for UI components requiring object references.",
+    "Enforce caching of render objects (Paragraph, Offset) directly on the component.",
+    "Use a dirty flag to conditionally rebuild objects only when component properties (text, color, size, etc.) change, preserving zero allocations during static rendering frames."
+  ]
+}

@@ -20,13 +20,13 @@ Phase 1 through Phase 3 have been successfully completed.
 
 ## 14. Basic UI Rendering
 
-* [ ] **Task 14.1: TextRender Component**
+* [x] **Task 14.1: TextRender Component**
   * **Role Needed:** UI Rendering Engineer
   * **Skill:** `skills/ui_rendering_engineer.json`
   * **Description:** Create an ECS component (`TextRender`) to store basic text string references (like scores or labels) alongside position properties for screen-space rendering.
   * **Acceptance Criteria:** Component is efficiently structured. 100% test coverage. Zero allocations per frame.
 
-* [ ] **Task 14.2: Text Render System**
+* [x] **Task 14.2: Text Render System**
   * **Role Needed:** UI Rendering Engineer
   * **Skill:** `skills/ui_rendering_engineer.json`
   * **Description:** Implement a `TextRenderSystem` that uses `dart:ui.ParagraphBuilder` to draw `TextRender` components directly to the canvas, overriding world coordinates to stay static on screen.
