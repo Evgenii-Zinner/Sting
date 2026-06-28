@@ -1,0 +1,29 @@
+{
+  "topic": "Kinematics and Narrow-Phase Collision",
+  "last_updated": "2024-06-28",
+  "decisions": [
+    {
+      "decision": "Use `Velocity` extension type mapped to `Float32List`.",
+      "reasoning": "Mirrors the zero-allocation, tightly packed data structure of `Position`."
+    },
+    {
+      "decision": "Movement system queries `Position` and `Velocity` and mutates `Position` using `dx * dt`.",
+      "reasoning": "Simplest Eulerian integration that adheres to our zero-allocation logic over arrays without creating any new Vector objects."
+    },
+    {
+      "decision": "Narrow-phase collision functions (AABB, Circle) strictly accept float primitives (x, y, w, h, r).",
+      "reasoning": "Enforces YAGNI by not creating separate `Rect`, `Vector2`, or `Circle` classes. Intersection functions evaluate overlaps directly from unboxed values avoiding allocation overhead."
+    },
+    {
+      "decision": "Collision checks use `entityA >= entityB` early exit.",
+      "reasoning": "Prevents redundant broad-phase overlapping checks and self-collisions since the queries retrieve all entity pairs symmetrically."
+    }
+  ],
+  "avoided_paths": [
+    {
+      "path": "Returning lists of collision pairs from System updates.",
+      "failure_reason": "Generating output lists allocates memory. Using callbacks (`void Function(int entityA, int entityB)`) ensures the game developer can handle the intersection purely without allocating tracking collections."
+    }
+  ],
+  "context": "Phase 2 Kinematics and Narrow-phase collision implementation complete. Focuses heavily on bypassing garbage collection for rigid body intersections."
+}

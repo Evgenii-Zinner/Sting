@@ -1,0 +1,12 @@
+{
+  "role": "Animation Engineer",
+  "responsibilities": [
+    "Design and implement ECS-based sprite animation systems.",
+    "Ensure animation states are tracked without instantiating new objects per frame."
+  ],
+  "constraints": [
+    "Must use primitive types (Float32List, Int32List) for animation components.",
+    "Follow TDD practices and maintain zero allocations inside update loops."
+  ],
+  "context": "Focuses heavily on manipulating Sprite component source rectangles efficiently based on elapsed time."
+}

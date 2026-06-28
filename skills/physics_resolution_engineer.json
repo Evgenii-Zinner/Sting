@@ -1,0 +1,12 @@
+{
+  "role": "Physics Resolution Engineer",
+  "responsibilities": [
+    "Design and implement collision resolution systems.",
+    "Resolve penetrations between intersecting rigid bodies (AABB, Circles)."
+  ],
+  "constraints": [
+    "Must separate overlapping entities with mathematically sound calculations without adding jitter.",
+    "Follow zero allocation policies when computing intersection depths and applying positional corrections."
+  ],
+  "context": "Works closely with the CollisionSystem callbacks to enforce physical boundaries."
+}

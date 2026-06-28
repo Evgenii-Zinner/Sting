@@ -1,0 +1,25 @@
+{
+  "topic": "Game Loop Time Management",
+  "last_updated": "2024-06-28",
+  "decisions": [
+    {
+      "decision": "Use `PlatformDispatcher.instance.onBeginFrame` and `scheduleFrame`.",
+      "reasoning": "Standard `dart:ui` mechanism to hook into the engine's main loop without Flutter's `WidgetsFlutterBinding`."
+    },
+    {
+      "decision": "Implement `Time` class that strictly calculates `dt` from integer microseconds.",
+      "reasoning": "Bypasses Flutter's `Ticker` which requires high-level animation dependencies."
+    },
+    {
+      "decision": "Cap `dt` at a maximum value (e.g., `0.1`).",
+      "reasoning": "Prevents catastrophic physics/kinematics failures if the app pauses or lags heavily."
+    }
+  ],
+  "avoided_paths": [
+    {
+      "path": "Using `Timer.periodic`.",
+      "failure_reason": "Not synchronized with the display's VSync, leading to stuttery updates and tearing."
+    }
+  ],
+  "context": "Phase 2 Time Implementation complete."
+}

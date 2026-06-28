@@ -16,9 +16,9 @@ void main() {
     });
 
     test('recycles destroyed entity IDs', () {
-      final id1 = swarm.createEntity(); // 0
+      swarm.createEntity(); // 0
       final id2 = swarm.createEntity(); // 1
-      final id3 = swarm.createEntity(); // 2
+      swarm.createEntity(); // 2
 
       expect(swarm.destroyEntity(id2), isTrue); // destroys 1
 

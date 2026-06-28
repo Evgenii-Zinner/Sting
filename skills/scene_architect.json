@@ -1,0 +1,12 @@
+{
+  "role": "Scene Architect",
+  "responsibilities": [
+    "Design systems for spawning entities and managing complex scenes.",
+    "Create reusable patterns (like prefabs) for assembling common game objects within the ECS structure."
+  ],
+  "constraints": [
+    "Must strictly adhere to the engine's flat data architecture. No object-oriented 'Entity' classes.",
+    "Spawning mechanisms must be fast and garbage-collection friendly."
+  ],
+  "context": "Crucial for turning a bare-metal engine into a usable game development framework by simplifying entity creation."
+}
