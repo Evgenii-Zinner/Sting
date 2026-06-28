@@ -1,33 +1,29 @@
 {
-  "topic": "ECS-Storage-Initial",
-  "last_updated": "2024-06-27",
+  "topic": "ECS Storage and Data Structures",
+  "last_updated": "2024-06-28",
   "decisions": [
     {
-      "decision": "Use typed arrays (Float32List, Int32List) for numeric component data where possible.",
-      "reasoning": "To minimize GC pressure and improve cache locality, which is critical for supporting massive entity counts."
+      "decision": "Use `Uint16List` for Caste sparse sets.",
+      "reasoning": "Since Max Entities are capped at 65535, `Uint16List` offers the lowest memory footprint for integer storage in Dart without sacrificing alignment speed."
     },
     {
-      "decision": "Entities are strictly integers (int).",
-      "reasoning": "Avoids the overhead of allocating an 'Entity' object for every entity in the game."
+      "decision": "Use Briggs & Torczon validation.",
+      "reasoning": "Avoids clearing or pre-filling arrays with sentinels like `-1`. Allows O(1) clearing by simply resetting the length property."
     },
     {
-      "decision": "Use Briggs & Torczon validation for Sparse Sets.",
-      "reasoning": "Eliminates the need to use sentinel values (like -1) or initialization loops for the sparse array, making `clear()` an O(1) operation by just resetting the `count`."
+      "decision": "Component data storage is separated into `ComponentCaste<T>` wrapper.",
+      "reasoning": "This separates the complex structural ECS logic of Sparse/Dense sets (`Caste`) from the specific strongly typed memory arrays (like `Float32List`), ensuring modularity."
     },
     {
-      "decision": "Use Uint16List for both dense and sparse arrays in Sparse Sets.",
-      "reasoning": "Entity IDs and maximum capacities are bound by Int16 limits (65,535). Uint16List provides the tightest memory packing without complex bitwise logic overhead."
-    },
-    {
-      "decision": "Sparse Set structures are named 'Caste'.",
-      "reasoning": "Aligns with the insect/Sting theme, where a caste represents a specific group or type within a swarm (e.g., all entities with a certain component)."
+      "decision": "Components use Dart 3 extension types on ByteData/Float32List.",
+      "reasoning": "This guarantees zero-allocation while making the code feel like regular object-oriented property access (e.g. `position.x = 5;`)."
     }
   ],
   "avoided_paths": [
     {
-      "path": "Using Dart Maps (Map<Type, dynamic>) for component storage.",
-      "failure_reason": "Hash map lookups per entity per frame are too slow for massive entity counts. Must use contiguous arrays."
+      "path": "Using `Map<int, Component>`.",
+      "failure_reason": "Causes massive iteration slowdowns and object overhead. Fails to guarantee cache-locality."
     }
   ],
-  "context": "Initial architecture phase. Decided on Sparse Sets over Archetypes for Phase 1. Implementation utilizes flat Int16 bounds for maximum performance and minimum GC footprint."
+  "context": "Sting strictly separates logic (Systems) from data (Components) in flat arrays."
 }

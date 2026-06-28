@@ -39,7 +39,7 @@ Welcome to the Sting Engine Architecture FAQ. Please review these questions and 
 ## Component Data
 
 ### Q: How should I store component data?
-**A:** Components should be "flat". They should not contain logic. Where possible, use typed data arrays (`Float32List`, `Int32List`) aligned with the dense indices in the `Caste` to store component data. This provides excellent cache locality and avoids object allocation.
+**A:** Components should be "flat". They should not contain logic. Where possible, use typed data arrays (`Float32List`, `Int32List`) aligned with the dense indices in the `Caste` to store component data. This provides excellent cache locality and avoids object allocation. Dart 3 extension types over typed arrays (`ByteData`, `Float32List`) are heavily used for multi-field components (like `Sprite`).
 
 ## Testing
 
@@ -49,22 +49,9 @@ Welcome to the Sting Engine Architecture FAQ. Please review these questions and 
 * Do not spend time generating dummy images for exact pixel verification unless explicitly required.
 * Document any testing limitations related to rendering in the `shared_memories/rendering_limitations.json` file.
 
-## Upcoming Features (Phase 1 Backlog)
+## Phase 1 Completions
 
-### Component Storage Integration
-* **Expectation:** Integrate the Sparse Set (`Caste`) with actual component data arrays (e.g., `Position`).
-* **Constraint:** You must provide a mechanism to attach, retrieve, and remove component data mapped to an entity with **zero object allocations** during retrieval operations.
-
-### Query Engine
-* **Single Component (Iteration):** Must provide extremely fast linear iteration over dense component data (e.g., iterating through all active entities in a specific `Caste`).
-* **Multi-Component (Join):** Must implement a query system to find entities possessing multiple specific components (e.g., `Position` and `Velocity`). This must utilize the sparse sets to perform fast intersections.
-
-### Render System (`drawAtlas`)
-* **Flat Components:** `Position` (x, y) and `Sprite` (texture rect, color, transform) components must be designed as flat memory structures. Use Dart 3 records, extension types, or `Float32List`. Do not create heavy objects.
-* **Asset Loading:** Must implement a basic utility to load raw image assets into a `dart:ui.Image` bypassing Flutter's `AssetBundle`.
-* **Rendering System:** A System must query entities with `Position` and `Sprite` components, building the required `RSTransform` and `Rect` arrays to issue a single `Canvas.drawAtlas` call to render all sprites simultaneously.
-
-### Spatial Hashing (Bounds Checking)
-* **2D Grid Implementation:** A spatial hash grid must be implemented for broad-phase collision detection.
-* **Zero Allocation Constraint:** Entities must be inserted into cells based on their (x,y) position using flat arrays or pre-allocated lists. The Spatial Hash Update System must prove zero allocations per tick via benchmarking.
-* **Broad-phase Querying:** Must provide an API to query the spatial hash for potential collisions (entities occupying the same or adjacent cells) to feed into a narrow-phase collision system.
+* **ECS Architecture:** `Swarm` (Entity manager) and `Caste` (Component sparse set) operate without per-frame allocations, utilizing Briggs & Torczon validation and contiguous array layout.
+* **Query Engine:** Callbacks are used over returning iterables to process multi-component interactions (`Query1`, `Query2`) to prevent allocations.
+* **Rendering:** `SpriteRenderSystem` directly packages internal flat arrays via `.sublistView()` into `Canvas.drawRawAtlas`. No Flutter AssetBundle is needed, loading relies on dart:io raw images.
+* **Physics (Broad Phase):** `SpatialHashGrid` limits bounds checking iterations safely with a 1D internal index hash from 2D coordinates.

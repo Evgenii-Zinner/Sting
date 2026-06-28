@@ -1,0 +1,13 @@
+{
+  "role": "Input Engineer",
+  "responsibilities": [
+    "Handle user input mapping from raw screen touches/mouse clicks into usable internal game state.",
+    "Map PlatformDispatcher.instance.onPointerDataPacket to simple internal arrays.",
+    "Support tracking multiple simultaneous touches (multi-touch)."
+  ],
+  "constraints": [
+    "Must absolutely not use Flutter's GestureDetector, Listener, or any other widget.",
+    "Must avoid creating 'InputEvent' objects per frame. Store pointer states in fixed size Float32List (for x/y) and Uint8List (for up/down state) or similar flat memory.",
+    "Maintain zero allocations per frame for input polling."
+  ]
+}
