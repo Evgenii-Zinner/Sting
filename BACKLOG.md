@@ -22,13 +22,13 @@ Phase 1 (Core ECS, Spatial Hash, Rendering) has been successfully completed.
 
 ## 8. Kinematics System (Velocity)
 
-* [ ] **Task 8.1: Velocity Component**
+* [x] **Task 8.1: Velocity Component**
   * **Role Needed:** Physics and Math Engineer
   * **Skill:** `skills/physics_engineer.json`
   * **Description:** Create a `Velocity` component (dx, dy) using Dart 3 extension types on a `Float32List`, identical to the `Position` component structure.
   * **Acceptance Criteria:** `Velocity` component is flat, zero-allocation, and works with `ComponentCaste`. 100% test coverage.
 
-* [ ] **Task 8.2: Movement System**
+* [x] **Task 8.2: Movement System**
   * **Role Needed:** Physics and Math Engineer
   * **Skill:** `skills/physics_engineer.json`
   * **Description:** Create a System that queries `Query2<Position, Velocity>` and updates `Position` based on `Velocity * dt` every frame.
