@@ -38,13 +38,13 @@ This backlog breaks down Phase 1 of the Sting Engine roadmap into highly granula
 
 ## 3. Implement Query engine
 
-* [ ] **Task 3.1: Single Component Query Iteration**
+* [x] **Task 3.1: Single Component Query Iteration**
   * **Role Needed:** ECS Core Engineer
   * **Skill:** `skills/ecs_core_engineer.json`
   * **Description:** Implement a way to iterate over all entities that possess a specific component (e.g., all entities in the Position sparse set).
   * **Acceptance Criteria:** Fast linear iteration over dense component data. 100% test coverage.
 
-* [ ] **Task 3.2: Multi-Component Query Iteration (Join)**
+* [x] **Task 3.2: Multi-Component Query Iteration (Join)**
   * **Role Needed:** ECS Core Engineer
   * **Skill:** `skills/ecs_core_engineer.json`
   * **Description:** Implement a query system to find entities that have *both* Component A and Component B (e.g., Position and Velocity). Use the sparse sets to perform fast intersections.
