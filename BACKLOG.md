@@ -30,7 +30,7 @@ This backlog breaks down Phase 1 of the Sting Engine roadmap into highly granula
   * **Description:** Implement a generic (or explicitly typed for Phase 1) Sparse Set data structure in Dart using arrays/lists. It must map an Entity ID (int) to an index in a dense array.
   * **Acceptance Criteria:** Ability to add, remove, and check existence of an entity in the sparse set in O(1) time. 100% test coverage.
 
-* [ ] **Task 2.3: Component Storage Integration**
+* [x] **Task 2.3: Component Storage Integration**
   * **Role Needed:** ECS Core Engineer
   * **Skill:** `skills/ecs_core_engineer.json`
   * **Description:** Integrate the Sparse Set with component data arrays (e.g., storing `Position` data). Create mechanisms to attach a component to an entity.

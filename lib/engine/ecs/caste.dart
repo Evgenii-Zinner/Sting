@@ -46,15 +46,25 @@ class Caste {
     return _dense[index];
   }
 
-  /// Checks if the given entity is present in the set.
-  bool contains(int entity) {
+  /// Returns the dense array index of the given entity.
+  ///
+  /// Returns -1 if the entity is invalid or not in the set.
+  int indexOf(int entity) {
     if (entity < 0 || entity > Swarm.maxEntities) {
-      return false; // Out of bounds entities can't be in the set
+      return -1; // Out of bounds entities can't be in the set
     }
 
     // Briggs & Torczon validation
     final index = _sparse[entity];
-    return index < _length && _dense[index] == entity;
+    if (index < _length && _dense[index] == entity) {
+      return index;
+    }
+    return -1;
+  }
+
+  /// Checks if the given entity is present in the set.
+  bool contains(int entity) {
+    return indexOf(entity) != -1;
   }
 
   /// Adds an entity to the set.

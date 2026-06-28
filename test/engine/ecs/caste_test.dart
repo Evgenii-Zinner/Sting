@@ -47,6 +47,19 @@ void main() {
       expect(caste.contains(Swarm.maxEntities + 1), isFalse);
     });
 
+    test('indexOf returns correct index and -1 for missing/invalid entities', () {
+      final caste = Caste(10);
+      caste.add(5);
+      caste.add(15);
+
+      expect(caste.indexOf(5), 0);
+      expect(caste.indexOf(15), 1);
+
+      expect(caste.indexOf(10), -1); // missing
+      expect(caste.indexOf(-1), -1); // invalid
+      expect(caste.indexOf(Swarm.maxEntities + 1), -1); // invalid
+    });
+
     test('throws StateError when adding beyond capacity', () {
       final caste = Caste(2);
       caste.add(1);
