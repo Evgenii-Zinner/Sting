@@ -14,7 +14,7 @@ Phase 1 through Phase 5 have been successfully completed and reviewed by the AI 
   * **Description:** Implement a flat `Int32List`-based ring buffer for dispatching sound events without instantiating `SoundEvent` objects per frame.
   * **Acceptance Criteria:** Audio dispatcher handles multi-voice queuing strictly within primitive bounds. 100% test coverage.
 
-* [ ] **Task 17.2: Audio System Processing**
+* [x] **Task 17.2: Audio System Processing**
   * **Role Needed:** Audio Engineer
   * **Skill:** `skills/audio_engineer.json`
   * **Description:** Implement an `AudioSystem` that reads from the audio event queue and interacts with a low-level audio package or FFI bindings. Map pre-allocated playback handles to entities.
