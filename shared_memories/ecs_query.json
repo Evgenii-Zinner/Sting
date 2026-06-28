@@ -1,0 +1,21 @@
+{
+  "topic": "ECS-Query-Iteration",
+  "last_updated": "2024-06-27",
+  "decisions": [
+    {
+      "decision": "Use `Query` objects with `forEach(callback)` instead of returning `Iterable`.",
+      "reasoning": "Returning `Iterable` in Dart forces the creation of an `Iterator` object every time the loop is run. A callback-based approach avoids this allocation, which is necessary to maintain zero allocations per frame during massive entity updates."
+    },
+    {
+      "decision": "Query2 iterates over the smaller caste by default.",
+      "reasoning": "When checking for intersections between two Sparse Sets, iterating over the smaller dense array and querying the larger one's sparse array minimizes loop iterations."
+    }
+  ],
+  "avoided_paths": [
+    {
+      "path": "Using Dart `yield` and `Iterable` for query iteration.",
+      "failure_reason": "Causes significant GC pressure because an `Iterator` object is allocated every time a system iterates over components, violating the zero-allocation per frame rule."
+    }
+  ],
+  "context": "Implemented Single Component and Multi-Component Query engines for Phase 1. Designed explicitly to avoid GC pauses."
+}
