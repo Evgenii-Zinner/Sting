@@ -63,8 +63,13 @@ Welcome to the Sting Engine Architecture FAQ. Please review these questions and 
 * **Kinematics:** Eulerian integration via `MovementSystem` querying `Position` and `Velocity` components directly over arrays.
 * **Narrow-Phase Physics:** Accurate AABB and Circle intersections that accept primitive unboxed floats and heavily rely on `entityA >= entityB` early exits to eliminate duplicate checks.
 
-## Upcoming Phase 3 Details
-The current backlog encompasses Phase 3, which expands Sting into more robust game-ready features. The primary focus includes:
-* **Sprite Animations:** Managing sprite frame transitions over time with a zero-allocation flat array approach.
-* **Collision Resolution:** Adding systems that physically push apart overlapping shapes mathematically based on Phase 2's intersection callbacks.
-* **Scene Management / Spawning:** Creating prefab architectures to streamline the assembly of entities efficiently.
+## Phase 3 Completions
+
+* **Sprite Animations:** Managed via `SpriteAnimation` component and `AnimationSystem` updating Sprite source rects over time.
+* **Physics Resolution Integration:** Simple positional separation (`SimpleResolutionSystem`) provides callbacks that are hooked into the `CollisionSystem`. The resolution acts in immediate response to overlapping queries, removing the need for a massive unified "Physics System". Continuous Collision Detection (CCD) is intentionally omitted under the YAGNI principle for this iteration.
+* **Scene Management / Spawning:** Implemented zero-allocation `Prefab` factories for clean entity assembly.
+
+## Upcoming Phase 4 Details
+The current backlog encompasses Phase 4, which introduces advanced visual systems. The primary focus includes:
+* **Camera System:** Managing a Viewport component that transforms the drawing offset during rendering to simulate camera movement without allocating objects.
+* **Basic UI Rendering:** Directly drawing score/text using `dart:ui` Paragraph or Canvas elements mapped over entity arrays without Flutter widgets.
