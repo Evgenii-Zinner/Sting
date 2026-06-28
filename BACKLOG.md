@@ -1,91 +1,49 @@
-# Sting Engine Backlog (Phase 1)
+# Sting Engine Backlog (Phase 2)
 
-This backlog breaks down Phase 1 of the Sting Engine roadmap into highly granular tasks. AI Agents should select the highest priority task (from top to bottom), assume the required role, and execute the task adhering strictly to the `AGENTS.md` guidelines (TDD, zero allocations per frame).
+This backlog breaks down Phase 2 of the Sting Engine roadmap into highly granular tasks. AI Agents should select the highest priority task (from top to bottom), assume the required role, and execute the task adhering strictly to the `AGENTS.md` guidelines (TDD, zero allocations per frame).
 
-## 1. Setup raw `dart:ui` window hook
+Phase 1 (Core ECS, Spatial Hash, Rendering) has been successfully completed.
 
-* [x] **Task 1.1: Initialize PlatformDispatcher Hook**
-  * **Role Needed:** Rendering Engineer
-  * **Skill:** `skills/rendering_engineer.json`
-  * **Description:** Create the minimal boilerplate to hook into `PlatformDispatcher.instance.onBeginFrame` and `PlatformDispatcher.instance.onDrawFrame`. Prove that the loop is ticking via a simple console log or counter. Ensure no Flutter framework elements are imported.
-  * **Acceptance Criteria:** A runnable Dart entry point that receives VSync callbacks successfully.
+## 6. Game Loop and Time System
 
-* [x] **Task 1.2: Basic Canvas Clear**
-  * **Role Needed:** Rendering Engineer
-  * **Skill:** `skills/rendering_engineer.json`
-  * **Description:** Inside `onDrawFrame`, use `PictureRecorder`, `Canvas`, and `SceneBuilder` to clear the screen to a solid color (e.g., black) and submit the frame to the `PlatformDispatcher`.
-  * **Acceptance Criteria:** Running the app displays a solid black screen.
+* [ ] **Task 6.1: Delta Time Calculation**
+  * **Role Needed:** Game Loop Engineer
+  * **Skill:** `skills/game_loop_engineer.json`
+  * **Description:** Implement a robust `dt` (delta time) tracking mechanism within the `PlatformDispatcher.instance.onBeginFrame` and `onDrawFrame` hook.
+  * **Acceptance Criteria:** A `Time` object/system correctly calculates the duration between frames and provides a safe `dt` float (capped to avoid massive jumps on lag) to be passed into ECS Systems. 100% test coverage.
 
-## 2. Implement basic Entity ID generator and Component storage
+## 7. Input System (Raw pointer events)
 
-* [x] **Task 2.1: Entity ID Management**
-  * **Role Needed:** ECS Core Engineer
-  * **Skill:** `skills/ecs_core_engineer.json`
-  * **Description:** Implement a `World` or `Registry` class capable of generating unique `int` IDs. Implement recycling for destroyed entity IDs.
-  * **Acceptance Criteria:** `createEntity()` returns unique ints. `destroyEntity(id)` recycles the ID. 100% test coverage.
+* [ ] **Task 7.1: Pointer Data Packet Hook**
+  * **Role Needed:** Input Engineer
+  * **Skill:** `skills/input_engineer.json`
+  * **Description:** Hook into `PlatformDispatcher.instance.onPointerDataPacket`. Translate `PointerDataPacket` into an internal array of active touches/clicks without instantiating high-level Gesture objects.
+  * **Acceptance Criteria:** Can correctly track X/Y coordinates of current down/move/up events in flat arrays. 100% test coverage.
 
-* [x] **Task 2.2: Sparse Set Data Structure (Ints)**
-  * **Role Needed:** ECS Core Engineer
-  * **Skill:** `skills/ecs_core_engineer.json`
-  * **Description:** Implement a generic (or explicitly typed for Phase 1) Sparse Set data structure in Dart using arrays/lists. It must map an Entity ID (int) to an index in a dense array.
-  * **Acceptance Criteria:** Ability to add, remove, and check existence of an entity in the sparse set in O(1) time. 100% test coverage.
+## 8. Kinematics System (Velocity)
 
-* [x] **Task 2.3: Component Storage Integration**
-  * **Role Needed:** ECS Core Engineer
-  * **Skill:** `skills/ecs_core_engineer.json`
-  * **Description:** Integrate the Sparse Set with component data arrays (e.g., storing `Position` data). Create mechanisms to attach a component to an entity.
-  * **Acceptance Criteria:** Can attach, retrieve, and remove components from an entity. No object allocations during retrieval. 100% test coverage.
-
-## 3. Implement Query engine
-
-* [x] **Task 3.1: Single Component Query Iteration**
-  * **Role Needed:** ECS Core Engineer
-  * **Skill:** `skills/ecs_core_engineer.json`
-  * **Description:** Implement a way to iterate over all entities that possess a specific component (e.g., all entities in the Position sparse set).
-  * **Acceptance Criteria:** Fast linear iteration over dense component data. 100% test coverage.
-
-* [x] **Task 3.2: Multi-Component Query Iteration (Join)**
-  * **Role Needed:** ECS Core Engineer
-  * **Skill:** `skills/ecs_core_engineer.json`
-  * **Description:** Implement a query system to find entities that have *both* Component A and Component B (e.g., Position and Velocity). Use the sparse sets to perform fast intersections.
-  * **Acceptance Criteria:** Can correctly identify entities with multiple specific components and iterate their data simultaneously. 100% test coverage.
-
-## 4. Implement Render System (Sprite Component + `drawAtlas`)
-
-* [x] **Task 4.1: Position and Sprite Components**
-  * **Role Needed:** Systems Architect
-  * **Skill:** `skills/systems_architect.json`
-  * **Description:** Design the flat memory structures for `Position` (x, y) and `Sprite` (texture rect, color, transform) components using Dart 3 records, extension types, or `Float32List`.
-  * **Acceptance Criteria:** Memory layouts defined and tested.
-
-* [x] **Task 4.2: Asset Loader and Atlas Setup**
-  * **Role Needed:** Rendering Engineer
-  * **Skill:** `skills/rendering_engineer.json`
-  * **Description:** Implement a basic utility to load a raw image asset into a `dart:ui.Image` without Flutter's `AssetBundle`.
-  * **Acceptance Criteria:** Can load a PNG/JPG into memory as an Image object.
-
-* [x] **Task 4.3: drawAtlas Render System**
-  * **Role Needed:** Rendering Engineer
-  * **Skill:** `skills/rendering_engineer.json`
-  * **Description:** Implement a System that queries entities with `Position` and `Sprite` components. It should build the `RSTransform` and `Rect` arrays required by `Canvas.drawAtlas` and issue a single draw call for all sprites.
-  * **Acceptance Criteria:** Displays multiple sprites on screen via the ECS using a single `drawAtlas` call.
-
-## 5. Implement spatial hashing for basic bounds checking
-
-* [x] **Task 5.1: Spatial Hash Grid Implementation**
+* [ ] **Task 8.1: Velocity Component**
   * **Role Needed:** Physics and Math Engineer
   * **Skill:** `skills/physics_engineer.json`
-  * **Description:** Implement a 2D spatial hash grid. Entities can be inserted into cells based on their (x,y) position. Must use flat arrays/pre-allocated lists to avoid allocation during updates.
-  * **Acceptance Criteria:** Can insert, update, and query entities within a specific bounding box or radius. 100% test coverage.
+  * **Description:** Create a `Velocity` component (dx, dy) using Dart 3 extension types on a `Float32List`, identical to the `Position` component structure.
+  * **Acceptance Criteria:** `Velocity` component is flat, zero-allocation, and works with `ComponentCaste`. 100% test coverage.
 
-* [x] **Task 5.2: Spatial Hash Update System**
+* [ ] **Task 8.2: Movement System**
   * **Role Needed:** Physics and Math Engineer
   * **Skill:** `skills/physics_engineer.json`
-  * **Description:** Implement an ECS System that queries all entities with `Position` and updates their location in the Spatial Hash Grid every frame.
-  * **Acceptance Criteria:** Grid accurately reflects entity positions as they move. Benchmark to prove zero allocations per tick.
+  * **Description:** Create a System that queries `Query2<Position, Velocity>` and updates `Position` based on `Velocity * dt` every frame.
+  * **Acceptance Criteria:** Entities with Velocity move correctly over time. Zero allocations per tick. 100% test coverage.
 
-* [x] **Task 5.3: Broad-phase Collision Query**
+## 9. Narrow-Phase Collision
+
+* [ ] **Task 9.1: Bounding Boxes and Circle Colliders**
   * **Role Needed:** Physics and Math Engineer
   * **Skill:** `skills/physics_engineer.json`
-  * **Description:** Provide an API to query the spatial hash for "potential collisions" (entities occupying the same or adjacent cells).
-  * **Acceptance Criteria:** Accurately returns candidate pairs for narrow-phase collision. 100% test coverage.
+  * **Description:** Implement AABB-AABB and Circle-Circle intersection math functions. These should take raw floats (x, y, w, h or x, y, r), not objects.
+  * **Acceptance Criteria:** Math functions correctly return true/false for overlaps. 100% test coverage.
+
+* [ ] **Task 9.2: Collision System Hookup**
+  * **Role Needed:** Physics and Math Engineer
+  * **Skill:** `skills/physics_engineer.json`
+  * **Description:** Implement a System that uses the `SpatialHashGrid` broad-phase query from Phase 1, combined with the narrow-phase math from Task 9.1, to accurately detect actual entity overlaps.
+  * **Acceptance Criteria:** Can query the ECS and correctly identify which specific entities are overlapping on a pixel-perfect (or shape-perfect) level. Zero allocations per tick. 100% test coverage.

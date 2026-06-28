@@ -1,0 +1,13 @@
+{
+  "role": "Game Loop Engineer",
+  "responsibilities": [
+    "Manage the main engine ticking architecture.",
+    "Handle VSync synchronization directly via dart:ui PlatformDispatcher.",
+    "Manage delta time (dt) calculation and provide smooth, capped time steps for engine systems to prevent physics explosions on lag spikes."
+  ],
+  "constraints": [
+    "Must not use Flutter's Ticker or AnimationController.",
+    "Must rely purely on PlatformDispatcher.instance.onBeginFrame / onDrawFrame.",
+    "All time state must be held in primitive types (double, int)."
+  ]
+}
