@@ -6,13 +6,13 @@ Phase 1 through Phase 4 have been successfully completed.
 
 ## 15. Tilemap System
 
-* [ ] **Task 15.1: Tilemap Component**
+* [x] **Task 15.1: Tilemap Component**
   * **Role Needed:** Tilemap Engineer
   * **Skill:** `skills/tilemap_engineer.json`
   * **Description:** Create an ECS component (`Tilemap`) to manage tile layout and metadata. This should use a flat array structure, such as `Int32List`, to store tile types and maintain zero allocations per frame.
   * **Acceptance Criteria:** `Tilemap` component works with `ComponentCaste`. 100% test coverage. Zero allocations.
 
-* [ ] **Task 15.2: Tilemap Render System**
+* [x] **Task 15.2: Tilemap Render System**
   * **Role Needed:** Tilemap Engineer
   * **Skill:** `skills/tilemap_engineer.json`
   * **Description:** Implement a `TilemapRenderSystem` that iterates over the `Tilemap` component array and draws tiles to the canvas effectively using `dart:ui` without per-frame object instantiation.
