@@ -20,13 +20,13 @@ Phase 1 through Phase 4 have been successfully completed.
 
 ## 16. Particle System
 
-* [ ] **Task 16.1: Particle Emitter Component**
+* [x] **Task 16.1: Particle Emitter Component**
   * **Role Needed:** Particle Engineer
   * **Skill:** `skills/particle_engineer.json`
   * **Description:** Create an ECS component (`ParticleEmitter`) utilizing flat TypedData arrays (like `Float32List`, `Int32List`) to store state (positions, velocities, colors, lifespans) for massive amounts of particles efficiently.
   * **Acceptance Criteria:** Component works with `ComponentCaste` and uses flat arrays for particle state. 100% test coverage. Zero allocations per frame.
 
-* [ ] **Task 16.2: Particle System Update & Render**
+* [x] **Task 16.2: Particle System Update & Render**
   * **Role Needed:** Particle Engineer
   * **Skill:** `skills/particle_engineer.json`
   * **Description:** Implement a `ParticleSystem` to update particle physics/lifespans and render them rapidly (e.g., via batching). Avoid creating any per-particle objects during the update and render loops.
