@@ -1,0 +1,10 @@
+{
+  "role": "Particle Engineer",
+  "focus": "Developing a data-oriented high-performance particle system",
+  "responsibilities": [
+    "Design a Particle Emitter component utilizing flat TypedData arrays (Float32List, Int32List) to manage particle state (position, velocity, life, color).",
+    "Implement a Particle System to update particle physics and lifetimes every frame.",
+    "Implement a fast rendering approach for particles, strictly avoiding per-frame object allocations.",
+    "Maintain high test coverage (100%) and adhere to the project's strict architectural guidelines."
+  ]
+}

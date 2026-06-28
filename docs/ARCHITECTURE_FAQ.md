@@ -69,7 +69,12 @@ Welcome to the Sting Engine Architecture FAQ. Please review these questions and 
 * **Physics Resolution Integration:** Simple positional separation (`SimpleResolutionSystem`) provides callbacks that are hooked into the `CollisionSystem`. The resolution acts in immediate response to overlapping queries, removing the need for a massive unified "Physics System". Continuous Collision Detection (CCD) is intentionally omitted under the YAGNI principle for this iteration.
 * **Scene Management / Spawning:** Implemented zero-allocation `Prefab` factories for clean entity assembly.
 
-## Upcoming Phase 4 Details
-The current backlog encompasses Phase 4, which introduces advanced visual systems. The primary focus includes:
-* **Camera System:** Managing a Viewport component that transforms the drawing offset during rendering to simulate camera movement without allocating objects.
-* **Basic UI Rendering:** Directly drawing score/text using `dart:ui` Paragraph or Canvas elements mapped over entity arrays without Flutter widgets.
+## Phase 4 Completions
+
+* **Camera System:** Implemented a zero-allocation `Viewport` component using `Float32List` and a `CameraSystem` that properly transforms canvas rendering offsets to simulate a follow camera.
+* **Basic UI Rendering:** Added `TextRender` component and `TextRenderSystem` which directly draws to `Canvas` using `dart:ui.ParagraphBuilder` while caching layouts strictly on state change to avoid per-frame allocations.
+
+## Upcoming Phase 5 Details
+The current backlog encompasses Phase 5, which introduces advanced rendering and environment systems. The primary focus includes:
+* **Tilemap System:** Adding support for drawing efficient tilemaps to create game worlds without instantiating individual entities for every tile.
+* **Particle System:** Implementing a Data-Oriented particle emitter utilizing flat TypedData arrays to drive massive particle counts strictly avoiding per-frame allocations.

@@ -1,8 +1,38 @@
-# Sting Engine Backlog (Phase 4)
+# Sting Engine Backlog (Phase 5)
 
-This backlog breaks down Phase 4 of the Sting Engine roadmap into highly granular tasks. AI Agents should select the highest priority task (from top to bottom), assume the required role, and execute the task adhering strictly to the `AGENTS.md` guidelines (TDD, zero allocations per frame).
+This backlog breaks down Phase 5 of the Sting Engine roadmap into highly granular tasks. AI Agents should select the highest priority task (from top to bottom), assume the required role, and execute the task adhering strictly to the `AGENTS.md` guidelines (TDD, zero allocations per frame).
 
-Phase 1 through Phase 3 have been successfully completed.
+Phase 1 through Phase 4 have been successfully completed.
+
+## 15. Tilemap System
+
+* [ ] **Task 15.1: Tilemap Component**
+  * **Role Needed:** Tilemap Engineer
+  * **Skill:** `skills/tilemap_engineer.json`
+  * **Description:** Create an ECS component (`Tilemap`) to manage tile layout and metadata. This should use a flat array structure, such as `Int32List`, to store tile types and maintain zero allocations per frame.
+  * **Acceptance Criteria:** `Tilemap` component works with `ComponentCaste`. 100% test coverage. Zero allocations.
+
+* [ ] **Task 15.2: Tilemap Render System**
+  * **Role Needed:** Tilemap Engineer
+  * **Skill:** `skills/tilemap_engineer.json`
+  * **Description:** Implement a `TilemapRenderSystem` that iterates over the `Tilemap` component array and draws tiles to the canvas effectively using `dart:ui` without per-frame object instantiation.
+  * **Acceptance Criteria:** Tiles render correctly based on layout data. 100% test coverage. Zero allocations per frame.
+
+## 16. Particle System
+
+* [ ] **Task 16.1: Particle Emitter Component**
+  * **Role Needed:** Particle Engineer
+  * **Skill:** `skills/particle_engineer.json`
+  * **Description:** Create an ECS component (`ParticleEmitter`) utilizing flat TypedData arrays (like `Float32List`, `Int32List`) to store state (positions, velocities, colors, lifespans) for massive amounts of particles efficiently.
+  * **Acceptance Criteria:** Component works with `ComponentCaste` and uses flat arrays for particle state. 100% test coverage. Zero allocations per frame.
+
+* [ ] **Task 16.2: Particle System Update & Render**
+  * **Role Needed:** Particle Engineer
+  * **Skill:** `skills/particle_engineer.json`
+  * **Description:** Implement a `ParticleSystem` to update particle physics/lifespans and render them rapidly (e.g., via batching). Avoid creating any per-particle objects during the update and render loops.
+  * **Acceptance Criteria:** Particles update and render based on emitter configuration. 100% test coverage. Zero allocations per frame.
+
+## Completed Phase 4 Tasks
 
 ## 13. Camera System
 
