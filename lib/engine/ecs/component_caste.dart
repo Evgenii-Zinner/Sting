@@ -1,10 +1,19 @@
 import 'package:sting/engine/ecs/caste.dart';
 
+/// Interface for type-erased operations on Castes.
+abstract class AbstractCaste {
+  /// Removes the component for the specified entity.
+  bool remove(int entity);
+
+  /// Clears the component storage.
+  void clear();
+}
+
 /// A wrapper around [Caste] that stores component data of type [T].
 ///
 /// Ensures component data remains densely packed in memory alongside the entity IDs.
 /// Uses a `List<T?>` internally where `T` is the component type.
-class ComponentCaste<T> {
+class ComponentCaste<T> implements AbstractCaste {
   /// The underlying sparse set that tracks entity IDs and dense indices.
   final Caste _caste;
 
@@ -45,6 +54,7 @@ class ComponentCaste<T> {
   /// Removes the component for the specified entity.
   ///
   /// Returns `true` if removed, `false` if the entity was not in the set.
+  @override
   bool remove(int entity) {
     final indexToRemove = _caste.indexOf(entity);
     if (indexToRemove == -1) {
@@ -82,6 +92,7 @@ class ComponentCaste<T> {
   }
 
   /// Clears the component storage in O(1) time.
+  @override
   void clear() {
     _caste.clear();
     // We don't need to actually clear `_components` array since `get()`
