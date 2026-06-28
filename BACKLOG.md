@@ -58,13 +58,13 @@ This backlog breaks down Phase 1 of the Sting Engine roadmap into highly granula
   * **Description:** Design the flat memory structures for `Position` (x, y) and `Sprite` (texture rect, color, transform) components using Dart 3 records, extension types, or `Float32List`.
   * **Acceptance Criteria:** Memory layouts defined and tested.
 
-* [ ] **Task 4.2: Asset Loader and Atlas Setup**
+* [x] **Task 4.2: Asset Loader and Atlas Setup**
   * **Role Needed:** Rendering Engineer
   * **Skill:** `skills/rendering_engineer.json`
   * **Description:** Implement a basic utility to load a raw image asset into a `dart:ui.Image` without Flutter's `AssetBundle`.
   * **Acceptance Criteria:** Can load a PNG/JPG into memory as an Image object.
 
-* [ ] **Task 4.3: drawAtlas Render System**
+* [x] **Task 4.3: drawAtlas Render System**
   * **Role Needed:** Rendering Engineer
   * **Skill:** `skills/rendering_engineer.json`
   * **Description:** Implement a System that queries entities with `Position` and `Sprite` components. It should build the `RSTransform` and `Rect` arrays required by `Canvas.drawAtlas` and issue a single draw call for all sprites.

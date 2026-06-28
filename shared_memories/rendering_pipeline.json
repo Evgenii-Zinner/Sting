@@ -1,0 +1,21 @@
+{
+  "topic": "Rendering-Pipeline",
+  "last_updated": "2023-10-27T00:00:00Z",
+  "decisions": [
+    {
+      "decision": "Use `Canvas.drawRawAtlas` instead of `Canvas.drawAtlas`",
+      "reasoning": "`Canvas.drawRawAtlas` takes `Float32List` and `Int32List` directly, which allows us to reuse pre-allocated flat arrays from our system, ensuring zero object allocations per frame. `Canvas.drawAtlas` requires `List<RSTransform>` and `List<Rect>` which would mandate object allocations on every frame, violating the zero-allocation rule."
+    },
+    {
+      "decision": "Use `Float32List.sublistView` for passing data to `drawRawAtlas`",
+      "reasoning": "Since our pre-allocated arrays are sized for `maxEntities` (e.g. 65535), we must only pass the active portion to `drawRawAtlas` to avoid drawing garbage data. `sublistView` creates a view over the existing array without allocating a new list or copying data."
+    }
+  ],
+  "avoided_paths": [
+    {
+      "path": "Using `Canvas.drawAtlas`",
+      "failure_reason": "Creates an `RSTransform` and `Rect` object for every sprite every frame, causing massive GC pauses."
+    }
+  ],
+  "context": "Sting prioritizes zero allocations per frame. `drawRawAtlas` is crucial for this."
+}
