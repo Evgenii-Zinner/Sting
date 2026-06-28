@@ -36,13 +36,13 @@ Phase 1 (Core ECS, Spatial Hash, Rendering) has been successfully completed.
 
 ## 9. Narrow-Phase Collision
 
-* [ ] **Task 9.1: Bounding Boxes and Circle Colliders**
+* [x] **Task 9.1: Bounding Boxes and Circle Colliders**
   * **Role Needed:** Physics and Math Engineer
   * **Skill:** `skills/physics_engineer.json`
   * **Description:** Implement AABB-AABB and Circle-Circle intersection math functions. These should take raw floats (x, y, w, h or x, y, r), not objects.
   * **Acceptance Criteria:** Math functions correctly return true/false for overlaps. 100% test coverage.
 
-* [ ] **Task 9.2: Collision System Hookup**
+* [x] **Task 9.2: Collision System Hookup**
   * **Role Needed:** Physics and Math Engineer
   * **Skill:** `skills/physics_engineer.json`
   * **Description:** Implement a System that uses the `SpatialHashGrid` broad-phase query from Phase 1, combined with the narrow-phase math from Task 9.1, to accurately detect actual entity overlaps.
