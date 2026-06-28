@@ -55,3 +55,16 @@ Welcome to the Sting Engine Architecture FAQ. Please review these questions and 
 * **Query Engine:** Callbacks are used over returning iterables to process multi-component interactions (`Query1`, `Query2`) to prevent allocations.
 * **Rendering:** `SpriteRenderSystem` directly packages internal flat arrays via `.sublistView()` into `Canvas.drawRawAtlas`. No Flutter AssetBundle is needed, loading relies on dart:io raw images.
 * **Physics (Broad Phase):** `SpatialHashGrid` limits bounds checking iterations safely with a 1D internal index hash from 2D coordinates.
+
+## Phase 2 Completions
+
+* **Game Loop & Time:** Uses `PlatformDispatcher.instance.onBeginFrame` to calculate a capped `dt` safely without Flutter Tickers.
+* **Input System:** Uses `PlatformDispatcher.instance.onPointerDataPacket` mapped directly to `Float32List`/`Int32List` arrays for zero-allocation multi-touch tracking.
+* **Kinematics:** Eulerian integration via `MovementSystem` querying `Position` and `Velocity` components directly over arrays.
+* **Narrow-Phase Physics:** Accurate AABB and Circle intersections that accept primitive unboxed floats and heavily rely on `entityA >= entityB` early exits to eliminate duplicate checks.
+
+## Upcoming Phase 3 Details
+The current backlog encompasses Phase 3, which expands Sting into more robust game-ready features. The primary focus includes:
+* **Sprite Animations:** Managing sprite frame transitions over time with a zero-allocation flat array approach.
+* **Collision Resolution:** Adding systems that physically push apart overlapping shapes mathematically based on Phase 2's intersection callbacks.
+* **Scene Management / Spawning:** Creating prefab architectures to streamline the assembly of entities efficiently.

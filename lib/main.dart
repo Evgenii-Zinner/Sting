@@ -12,7 +12,6 @@ void initEngine() {
   dispatcher.onBeginFrame = (Duration timeStamp) {
     frameCount++;
     time.update(timeStamp.inMicroseconds);
-    print('Engine ticking... Frame: $frameCount, dt: ${time.dt}s');
     // Request next frame to keep loop going
     dispatcher.scheduleFrame();
   };

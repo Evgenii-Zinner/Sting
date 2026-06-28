@@ -1,8 +1,38 @@
-# Sting Engine Backlog (Phase 2)
+# Sting Engine Backlog (Phase 3)
 
-This backlog breaks down Phase 2 of the Sting Engine roadmap into highly granular tasks. AI Agents should select the highest priority task (from top to bottom), assume the required role, and execute the task adhering strictly to the `AGENTS.md` guidelines (TDD, zero allocations per frame).
+This backlog breaks down Phase 3 of the Sting Engine roadmap into highly granular tasks. AI Agents should select the highest priority task (from top to bottom), assume the required role, and execute the task adhering strictly to the `AGENTS.md` guidelines (TDD, zero allocations per frame).
 
-Phase 1 (Core ECS, Spatial Hash, Rendering) has been successfully completed.
+Phase 1 (Core ECS, Spatial Hash, Rendering) and Phase 2 (Game Loop, Input System, Kinematics, Narrow-Phase Collision) have been successfully completed.
+
+## 10. Sprite Animation System
+
+* [ ] **Task 10.1: SpriteAnimation Component**
+  * **Role Needed:** Animation Engineer
+  * **Skill:** `skills/animation_engineer.json`
+  * **Description:** Create an ECS component (`SpriteAnimation`) mapped to a `Float32List` that holds animation state (current frame index, frame duration, elapsed time).
+  * **Acceptance Criteria:** `SpriteAnimation` component works with `ComponentCaste`. 100% test coverage. Zero allocations.
+
+* [ ] **Task 10.2: Animation System**
+  * **Role Needed:** Animation Engineer
+  * **Skill:** `skills/animation_engineer.json`
+  * **Description:** Implement an `AnimationSystem` that queries `Query2<Sprite, SpriteAnimation>`. It updates the elapsed time by `dt` and transitions the `Sprite`'s source rect to the next frame when duration is met.
+  * **Acceptance Criteria:** Sprites update their visual frames over time based on `dt`. 100% test coverage. Zero allocations per frame.
+
+## 11. Physics Collision Resolution
+
+* [ ] **Task 11.1: Simple Resolution System**
+  * **Role Needed:** Physics Resolution Engineer
+  * **Skill:** `skills/physics_resolution_engineer.json`
+  * **Description:** Create a system that handles collision resolution (separating overlapping entities) based on callbacks from the `CollisionSystem`.
+  * **Acceptance Criteria:** Overlapping entities with rigid body properties are separated correctly without massive jitter. 100% test coverage. Zero allocations.
+
+## 12. Scene Management and Spawning
+
+* [ ] **Task 12.1: Entity Prefabs/Spawning**
+  * **Role Needed:** Scene Architect
+  * **Skill:** `skills/scene_architect.json`
+  * **Description:** Create a utility or factory pattern that allows creating standard entity "prefabs" (e.g., an enemy with Position, Velocity, BoundingBox, and Sprite) easily without violating ECS bounds.
+  * **Acceptance Criteria:** Prefabs can be instantiated cleanly. 100% test coverage. No per-frame GC pauses.
 
 ## 6. Game Loop and Time System
 

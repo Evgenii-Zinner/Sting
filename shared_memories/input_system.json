@@ -1,0 +1,25 @@
+{
+  "topic": "Input System",
+  "last_updated": "2024-06-28",
+  "decisions": [
+    {
+      "decision": "Bypass Flutter gestures, use `PlatformDispatcher.instance.onPointerDataPacket`.",
+      "reasoning": "Flutter's gesture recognizers instantiate high-level event objects. The raw pointer packet hook provides pure float/int array access with zero overhead."
+    },
+    {
+      "decision": "Pre-allocated typed arrays (Float32List, Int32List, Uint8List) track pointer state slots.",
+      "reasoning": "By using 16 pre-allocated slots, device IDs and states are tracked smoothly without map Lookups or object creation per event."
+    },
+    {
+      "decision": "Slots allocate on `add` or `down` events, and explicitly free on `up`, `cancel` or `remove`.",
+      "reasoning": "Ensures pointer slots do not leak if pointers are physically removed without a formal 'up' gesture."
+    }
+  ],
+  "avoided_paths": [
+    {
+      "path": "Using `GestureDetector` or `Listener` widgets.",
+      "failure_reason": "Violates engine constraint of zero Flutter framework classes."
+    }
+  ],
+  "context": "Phase 2 Input Implementation complete."
+}
