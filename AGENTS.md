@@ -35,3 +35,6 @@ When an AI agent is invoked to contribute to the Sting engine, it must follow th
 * **Systems hold logic.** Systems should be stateless or hold strictly cached query structures.
 
 If you are asked to implement something that violates these rules, push back or find an ECS-compliant solution.
+
+## 6. Architecture FAQ
+For common architectural questions, naming conventions (like the "Sting" theme), existing core systems (`Swarm`, `Caste`), rendering APIs, and details about upcoming features in the backlog, strictly consult the FAQ document at `docs/ARCHITECTURE_FAQ.md`. Please review this file thoroughly before asking the user basic architectural or implementation questions.
