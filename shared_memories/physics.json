@@ -1,0 +1,25 @@
+{
+  "topic": "Spatial-Hash-Grid",
+  "last_updated": "2024-06-28",
+  "decisions": [
+    {
+      "decision": "Use flat Int32List arrays to implement a linked list per cell.",
+      "reasoning": "Provides zero allocations per update. Avoids dynamic Lists and Object creation for grid cells, strictly conforming to the 65535 entity limit."
+    },
+    {
+      "decision": "Inverse cell size for float multiplication.",
+      "reasoning": "Multiplication is faster than division when computing the cell coordinates."
+    },
+    {
+      "decision": "Query AABB via callback.",
+      "reasoning": "Prevents allocation of new Lists or Iterators during collision checks."
+    }
+  ],
+  "avoided_paths": [
+    {
+      "path": "Using Map<int, List<int>> for sparse spatial grid storage.",
+      "failure_reason": "Causes significant GC pauses as the Lists are cleared, resized, and new Map entries are created every frame."
+    }
+  ],
+  "context": "Spatial Hash Grid built for Phase 1. Optimized for strict zero allocations per frame. Limits max entities to Int16 boundaries."
+}

@@ -72,19 +72,19 @@ This backlog breaks down Phase 1 of the Sting Engine roadmap into highly granula
 
 ## 5. Implement spatial hashing for basic bounds checking
 
-* [ ] **Task 5.1: Spatial Hash Grid Implementation**
+* [x] **Task 5.1: Spatial Hash Grid Implementation**
   * **Role Needed:** Physics and Math Engineer
   * **Skill:** `skills/physics_engineer.json`
   * **Description:** Implement a 2D spatial hash grid. Entities can be inserted into cells based on their (x,y) position. Must use flat arrays/pre-allocated lists to avoid allocation during updates.
   * **Acceptance Criteria:** Can insert, update, and query entities within a specific bounding box or radius. 100% test coverage.
 
-* [ ] **Task 5.2: Spatial Hash Update System**
+* [x] **Task 5.2: Spatial Hash Update System**
   * **Role Needed:** Physics and Math Engineer
   * **Skill:** `skills/physics_engineer.json`
   * **Description:** Implement an ECS System that queries all entities with `Position` and updates their location in the Spatial Hash Grid every frame.
   * **Acceptance Criteria:** Grid accurately reflects entity positions as they move. Benchmark to prove zero allocations per tick.
 
-* [ ] **Task 5.3: Broad-phase Collision Query**
+* [x] **Task 5.3: Broad-phase Collision Query**
   * **Role Needed:** Physics and Math Engineer
   * **Skill:** `skills/physics_engineer.json`
   * **Description:** Provide an API to query the spatial hash for "potential collisions" (entities occupying the same or adjacent cells).
