@@ -21,5 +21,12 @@ void main() {
 
     // Check that frame count increased
     expect(frameCount, 1);
+
+    // Call the actual hook we set again to verify dt
+    PlatformDispatcher.instance.onBeginFrame?.call(const Duration(microseconds: 16666));
+
+    // Check that time correctly calculated dt
+    expect(time.dt, closeTo(0.016666, 0.000001));
+    expect(frameCount, 2);
   });
 }

@@ -6,7 +6,7 @@ Phase 1 (Core ECS, Spatial Hash, Rendering) has been successfully completed.
 
 ## 6. Game Loop and Time System
 
-* [ ] **Task 6.1: Delta Time Calculation**
+* [x] **Task 6.1: Delta Time Calculation**
   * **Role Needed:** Game Loop Engineer
   * **Skill:** `skills/game_loop_engineer.json`
   * **Description:** Implement a robust `dt` (delta time) tracking mechanism within the `PlatformDispatcher.instance.onBeginFrame` and `onDrawFrame` hook.
