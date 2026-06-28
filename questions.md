@@ -1,14 +1,5 @@
-# SpriteAnimation Component Concerns
+# Open Questions
 
-As the Animation Engineer for Task 10.1, I have implemented `SpriteAnimation` strictly using a `Float32List` to adhere to zero-allocation and GC pause constraints, storing `currentFrameIndex`, `frameDuration`, `elapsedTime`, and `frameCount`.
+## Task 10.2: Animation System
 
-**Concerns for Task 10.2 (Animation System):**
-Since `SpriteAnimation` only tracks timing and frame counts, how will the `AnimationSystem` know the spatial dimensions of the frames in the spritesheet?
-Typically, an animation needs to know `frameWidth`, `frameHeight`, and starting coordinates. Storing these inside `SpriteAnimation` would increase its memory footprint.
-
-Options for Task 10.2:
-1. Update `SpriteAnimation` to include `frameWidth` and `frameHeight`.
-2. Rely on the `Sprite` component's existing `rect` coordinates to infer frame size, assuming the spritesheet frames are contiguous and uniform. (e.g., `newRectLeft = oldRectLeft + width`).
-3. Introduce a separate system or shared resource that maps entity ID or animation type to spatial frame data.
-
-These tradeoffs between memory consumption and flexibility should be carefully considered during Task 10.2 implementation.
+* **Sprite Rect Update**: The acceptance criteria for `AnimationSystem` specifies transitioning the `Sprite`'s source rect to the next frame. However, there is no frame width or layout configuration (horizontal strip vs grid) available in `Sprite` or `SpriteAnimation` components. How should the `AnimationSystem` compute the new `rectLeft` and `rectRight` for the next frame without making assumptions about the sprite layout?
