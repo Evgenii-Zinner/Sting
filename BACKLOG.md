@@ -42,7 +42,7 @@ Phase 1 through Phase 5 have been successfully completed and reviewed by the AI 
   * **Description:** Implement a chunk-based memory manager for streaming large sprite sheets and maps instead of loading them fully into memory upfront.
   * **Acceptance Criteria:** Can load and unload chunks into memory dynamically based on spatial requirements. 100% test coverage.
 
-* [ ] **Task 19.2: Isolate-Based Asset Streaming**
+* [x] **Task 19.2: Isolate-Based Asset Streaming**
   * **Role Needed:** Asset Streaming Engineer
   * **Skill:** `skills/asset_streaming_engineer.json`
   * **Description:** Implement asset streaming via background isolates, passing raw pixel buffers using `TransferableTypedData` into the main isolate. Use `decodeImageFromPixels` to construct images to avoid main thread blocking.
