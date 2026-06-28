@@ -8,7 +8,7 @@ Phase 1 through Phase 5 have been successfully completed and reviewed by the AI 
 
 ## 17. Audio System
 
-* [ ] **Task 17.1: Audio Event Queue**
+* [x] **Task 17.1: Audio Event Queue**
   * **Role Needed:** Audio Engineer
   * **Skill:** `skills/audio_engineer.json`
   * **Description:** Implement a flat `Int32List`-based ring buffer for dispatching sound events without instantiating `SoundEvent` objects per frame.
