@@ -74,7 +74,13 @@ Welcome to the Sting Engine Architecture FAQ. Please review these questions and 
 * **Camera System:** Implemented a zero-allocation `Viewport` component using `Float32List` and a `CameraSystem` that properly transforms canvas rendering offsets to simulate a follow camera.
 * **Basic UI Rendering:** Added `TextRender` component and `TextRenderSystem` which directly draws to `Canvas` using `dart:ui.ParagraphBuilder` while caching layouts strictly on state change to avoid per-frame allocations.
 
-## Upcoming Phase 5 Details
-The current backlog encompasses Phase 5, which introduces advanced rendering and environment systems. The primary focus includes:
-* **Tilemap System:** Adding support for drawing efficient tilemaps to create game worlds without instantiating individual entities for every tile.
-* **Particle System:** Implementing a Data-Oriented particle emitter utilizing flat TypedData arrays to drive massive particle counts strictly avoiding per-frame allocations.
+## Phase 5 Completions
+
+* **Tilemap System:** Added support for drawing efficient tilemaps using `Tilemap` component and `TilemapRenderSystem` using flat arrays (`Int32List`).
+* **Particle System:** Implemented a Data-Oriented particle emitter utilizing flat TypedData arrays to drive massive particle counts strictly avoiding per-frame allocations.
+
+## Upcoming Phase 6 Details
+The current backlog encompasses Phase 6, which introduces advanced audio, UI rendering, and asset streaming systems. The primary focus includes:
+* **Audio System:** Implementing an event-driven audio dispatcher built around flat queues (`Int32List`) without instantiating `SoundEvent` objects per frame, processing strictly within primitive bounds.
+* **Advanced UI Rendering Framework:** Extending UI beyond simple text to interactive elements using screen-space AABB collisions and layered rendering via cached `ParagraphBuilder` and `Path` objects.
+* **Asset Management and Streaming:** Building a chunk-based memory manager streaming asset data via background isolates and `TransferableTypedData` to construct images avoiding main thread blocking.
