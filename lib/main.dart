@@ -1,15 +1,18 @@
 import 'dart:ui';
 import 'engine/renderer.dart';
+import 'engine/time.dart';
 
 int frameCount = 0;
 final renderer = Renderer();
+final time = Time();
 
 void initEngine() {
   final dispatcher = PlatformDispatcher.instance;
 
   dispatcher.onBeginFrame = (Duration timeStamp) {
     frameCount++;
-    print('Engine ticking... Frame: $frameCount, Timestamp: $timeStamp');
+    time.update(timeStamp.inMicroseconds);
+    print('Engine ticking... Frame: $frameCount, dt: ${time.dt}s');
     // Request next frame to keep loop going
     dispatcher.scheduleFrame();
   };
