@@ -6,7 +6,7 @@ Phase 1 (Core ECS, Spatial Hash, Rendering) and Phase 2 (Game Loop, Input System
 
 ## 10. Sprite Animation System
 
-* [ ] **Task 10.1: SpriteAnimation Component**
+* [x] **Task 10.1: SpriteAnimation Component**
   * **Role Needed:** Animation Engineer
   * **Skill:** `skills/animation_engineer.json`
   * **Description:** Create an ECS component (`SpriteAnimation`) mapped to a `Float32List` that holds animation state (current frame index, frame duration, elapsed time).
