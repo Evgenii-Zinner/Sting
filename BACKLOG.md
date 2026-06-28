@@ -52,7 +52,7 @@ This backlog breaks down Phase 1 of the Sting Engine roadmap into highly granula
 
 ## 4. Implement Render System (Sprite Component + `drawAtlas`)
 
-* [ ] **Task 4.1: Position and Sprite Components**
+* [x] **Task 4.1: Position and Sprite Components**
   * **Role Needed:** Systems Architect
   * **Skill:** `skills/systems_architect.json`
   * **Description:** Design the flat memory structures for `Position` (x, y) and `Sprite` (texture rect, color, transform) components using Dart 3 records, extension types, or `Float32List`.
