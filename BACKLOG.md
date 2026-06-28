@@ -6,21 +6,47 @@ Phase 1 through Phase 5 have been successfully completed and reviewed by the AI 
 
 ## Upcoming Milestones (Phase 6)
 
-## 17. Audio System (Planned)
+## 17. Audio System
 
 * [ ] **Task 17.1: Audio Event Queue**
-  * **Role Needed:** Systems Architect / Audio Engineer
-  * **Skill:** `skills/systems_architect.json`
+  * **Role Needed:** Audio Engineer
+  * **Skill:** `skills/audio_engineer.json`
   * **Description:** Implement a flat `Int32List`-based ring buffer for dispatching sound events without instantiating `SoundEvent` objects per frame.
   * **Acceptance Criteria:** Audio dispatcher handles multi-voice queuing strictly within primitive bounds. 100% test coverage.
 
-## 18. UI Framework (Planned)
+* [ ] **Task 17.2: Audio System Processing**
+  * **Role Needed:** Audio Engineer
+  * **Skill:** `skills/audio_engineer.json`
+  * **Description:** Implement an `AudioSystem` that reads from the audio event queue and interacts with a low-level audio package or FFI bindings. Map pre-allocated playback handles to entities.
+  * **Acceptance Criteria:** The system can process queued audio events in bulk without heap allocations. 100% test coverage.
+
+## 18. UI Framework
 
 * [ ] **Task 18.1: UI Bounding Box System**
   * **Role Needed:** UI Rendering Engineer
   * **Skill:** `skills/ui_rendering_engineer.json`
-  * **Description:** Expand the UI subsystem with screen-space AABB tracking linked to pointer slots to detect button presses without Flutter gestures.
-  * **Acceptance Criteria:** Accurately routes pointer events to UI component intersections using the zero-allocation Spatial Hash Grid logic mapped to screen coordinates. 100% test coverage.
+  * **Description:** Expand the UI subsystem with screen-space AABB tracking (`UICaste`) linked to pointer slots to detect button presses without Flutter gestures.
+  * **Acceptance Criteria:** Accurately routes pointer events to UI component intersections using zero-allocation logic mapped to screen coordinates. 100% test coverage.
+
+* [ ] **Task 18.2: Complex UI Rendering**
+  * **Role Needed:** UI Rendering Engineer
+  * **Skill:** `skills/ui_rendering_engineer.json`
+  * **Description:** Extend UI rendering to support interactive elements (buttons, panels) using cached `ParagraphBuilder` and `Path` objects. Elements should only rebuild upon state changes (dirty-flagged).
+  * **Acceptance Criteria:** UI elements render correctly and only re-allocate when explicitly flagged as dirty. 100% test coverage.
+
+## 19. Asset Management and Streaming
+
+* [ ] **Task 19.1: Chunk-Based Asset Manager**
+  * **Role Needed:** Asset Streaming Engineer
+  * **Skill:** `skills/asset_streaming_engineer.json`
+  * **Description:** Implement a chunk-based memory manager for streaming large sprite sheets and maps instead of loading them fully into memory upfront.
+  * **Acceptance Criteria:** Can load and unload chunks into memory dynamically based on spatial requirements. 100% test coverage.
+
+* [ ] **Task 19.2: Isolate-Based Asset Streaming**
+  * **Role Needed:** Asset Streaming Engineer
+  * **Skill:** `skills/asset_streaming_engineer.json`
+  * **Description:** Implement asset streaming via background isolates, passing raw pixel buffers using `TransferableTypedData` into the main isolate. Use `decodeImageFromPixels` to construct images to avoid main thread blocking.
+  * **Acceptance Criteria:** Assets stream seamlessly without causing GC pauses or stuttering on the main thread. 100% test coverage.
 
 ## Completed Phase 5 Tasks
 
