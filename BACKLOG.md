@@ -6,13 +6,13 @@ Phase 1 through Phase 3 have been successfully completed.
 
 ## 13. Camera System
 
-* [ ] **Task 13.1: Viewport Component**
+* [x] **Task 13.1: Viewport Component**
   * **Role Needed:** Camera Engineer
   * **Skill:** `skills/camera_engineer.json`
   * **Description:** Create an ECS component (`Viewport`) mapped to a `Float32List` to store camera offsets (x, y) and zoom level.
   * **Acceptance Criteria:** `Viewport` component works with `ComponentCaste`. 100% test coverage. Zero allocations.
 
-* [ ] **Task 13.2: Camera System**
+* [x] **Task 13.2: Camera System**
   * **Role Needed:** Camera Engineer
   * **Skill:** `skills/camera_engineer.json`
   * **Description:** Implement a `CameraSystem` that updates the `Viewport` based on a target entity's `Position`. Ensure it integrates smoothly with `SpriteRenderSystem` to offset the rendered world.

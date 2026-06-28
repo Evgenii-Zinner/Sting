@@ -4,10 +4,13 @@ import '../ecs/query.dart';
 import '../ecs/component_caste.dart';
 import '../components/position.dart';
 import '../components/sprite.dart';
+import '../components/viewport.dart';
 
 class SpriteRenderSystem {
   final Image atlas;
   final Query2<Position, Sprite> query;
+  final ComponentCaste<Viewport>? viewportCaste;
+  int activeCameraEntity;
 
   // Pre-allocated arrays for drawAtlas to prevent per-frame allocations.
   // We need Float32List for RSTransform (4 floats each) and Rect (4 floats each)
@@ -21,6 +24,8 @@ class SpriteRenderSystem {
     required this.atlas,
     required ComponentCaste<Position> positionCaste,
     required ComponentCaste<Sprite> spriteCaste,
+    this.viewportCaste,
+    this.activeCameraEntity = -1,
     int maxEntities = 65535,
   }) : query = Query2<Position, Sprite>(positionCaste, spriteCaste),
        _transforms = Float32List(maxEntities * 4),
@@ -56,6 +61,17 @@ class SpriteRenderSystem {
 
     if (count == 0) return;
 
+    bool hasViewport = false;
+    if (activeCameraEntity != -1 && viewportCaste != null) {
+      final viewport = viewportCaste!.get(activeCameraEntity);
+      if (viewport != null) {
+        hasViewport = true;
+        canvas.save();
+        canvas.scale(viewport.zoom, viewport.zoom);
+        canvas.translate(-viewport.x, -viewport.y);
+      }
+    }
+
     // Use Canvas.drawRawAtlas to avoid object allocation.
     // drawRawAtlas uses flat Float32List and Int32List.
     // We must pass an empty Int32List for colors if we don't want tinting, but here we provide it.
@@ -71,5 +87,9 @@ class SpriteRenderSystem {
       null, // cullRect
       _paint,
     );
+
+    if (hasViewport) {
+      canvas.restore();
+    }
   }
 }
