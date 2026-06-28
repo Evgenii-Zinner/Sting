@@ -20,7 +20,7 @@ Phase 1 (Core ECS, Spatial Hash, Rendering) and Phase 2 (Game Loop, Input System
 
 ## 11. Physics Collision Resolution
 
-* [ ] **Task 11.1: Simple Resolution System**
+* [x] **Task 11.1: Simple Resolution System**
   * **Role Needed:** Physics Resolution Engineer
   * **Skill:** `skills/physics_resolution_engineer.json`
   * **Description:** Create a system that handles collision resolution (separating overlapping entities) based on callbacks from the `CollisionSystem`.
