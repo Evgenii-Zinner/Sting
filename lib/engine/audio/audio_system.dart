@@ -17,10 +17,21 @@ class AudioSystem {
   int get activeSoundCount => _activeCount;
 
   void update() {
-    _queue.process((int soundId, int entityId) {
+    _queue.process((
+      int soundId,
+      int entityId,
+      double volume,
+      double pitch,
+      bool loop,
+    ) {
       if (_activeCount < _activeSounds.length ~/ 2) {
         // Call low-level bindings
-        final handle = AudioBindings.play(soundId);
+        final handle = AudioBindings.play(
+          soundId,
+          volume: volume,
+          pitch: pitch,
+          loop: loop,
+        );
         if (handle > 0) {
           final index = _activeCount * 2;
           _activeSounds[index] = handle;

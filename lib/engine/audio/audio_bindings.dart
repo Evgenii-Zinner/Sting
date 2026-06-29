@@ -6,7 +6,12 @@ class AudioBindings {
   /// Plays a sound and returns a playback handle.
   ///
   /// Returns a positive integer handle on success, or 0 on failure.
-  static int play(int soundId) {
+  static int play(
+    int soundId, {
+    double volume = 1.0,
+    double pitch = 1.0,
+    bool loop = false,
+  }) {
     return _nextHandle++;
   }
 
