@@ -28,7 +28,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Assemble a player character using existing prefabs/components. Hook up input handling using the engine's raw pointer input system to move the player correctly.
   * **Acceptance Criteria:** Player entity moves smoothly according to input on screen. Zero per-frame allocations during movement. 100% test coverage.
 
-* [ ] **Task 22.4: Enemy Spawner System**
+* [x] **Task 22.4: Enemy Spawner System**
   * **Role Needed:** Gameplay Scripter
   * **Skill:** `skills/gameplay_scripter.json`
   * **Description:** Create a logic system to spawn enemy entities at intervals outside the viewport, tracking towards the player.

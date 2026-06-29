@@ -16,8 +16,11 @@ import 'package:sting/engine/systems/input_system.dart';
 import 'package:sting/engine/systems/movement_system.dart';
 import 'package:sting/engine/systems/camera_system.dart';
 
+import 'components/enemy_ai.dart';
 import 'prefabs/player_prefab.dart';
 import 'systems/player_input_system.dart';
+import 'systems/enemy_spawner_system.dart';
+import 'systems/chase_system.dart';
 
 class BulletHavenGame {
   final Scene scene;
@@ -31,6 +34,8 @@ class BulletHavenGame {
   late final PlayerInputSystem playerInputSystem;
   late final MovementSystem movementSystem;
   late final CameraSystem cameraSystem;
+  late final EnemySpawnerSystem enemySpawnerSystem;
+  late final ChaseSystem chaseSystem;
 
   int frameCount = 0;
   int playerEntityId = -1;
@@ -56,6 +61,7 @@ class BulletHavenGame {
     scene.registerCaste<SpriteAnimation>('SpriteAnimation', ComponentCaste<SpriteAnimation>(Swarm.maxEntities));
     scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
     scene.registerCaste<Viewport>('Viewport', ComponentCaste<Viewport>(1));
+    scene.registerCaste<EnemyAI>('EnemyAI', ComponentCaste<EnemyAI>(Swarm.maxEntities));
 
     // 2. Setup Global Game State Entity
     globalStateEntityId = scene.createEntity();
@@ -82,12 +88,16 @@ class BulletHavenGame {
       viewportCaste: scene.getCaste<Viewport>('Viewport'),
     );
 
+    enemySpawnerSystem = EnemySpawnerSystem(scene);
+    chaseSystem = ChaseSystem(scene);
+
     // 4. Create entities
     cameraEntityId = scene.createEntity();
     scene.getCaste<Viewport>('Viewport').add(cameraEntityId, Viewport.create());
 
     playerEntityId = spawnPlayer(scene, 0.0, 0.0);
     playerInputSystem.setPlayerEntity(playerEntityId);
+    enemySpawnerSystem.setTargetEntity(playerEntityId);
 
     // 5. Setup Platform Dispatcher
     final dispatcher = PlatformDispatcher.instance;
@@ -98,6 +108,7 @@ class BulletHavenGame {
       screenWidth = window.physicalSize.width / window.devicePixelRatio;
       screenHeight = window.physicalSize.height / window.devicePixelRatio;
       playerInputSystem.updateScreenSize(screenWidth, screenHeight);
+      enemySpawnerSystem.updateScreenSize(screenWidth, screenHeight);
     };
 
     // Trigger initial metrics check if available
@@ -106,6 +117,7 @@ class BulletHavenGame {
       screenWidth = window.physicalSize.width / window.devicePixelRatio;
       screenHeight = window.physicalSize.height / window.devicePixelRatio;
       playerInputSystem.updateScreenSize(screenWidth, screenHeight);
+      enemySpawnerSystem.updateScreenSize(screenWidth, screenHeight);
     }
 
     dispatcher.onBeginFrame = (Duration timeStamp) {
@@ -117,6 +129,8 @@ class BulletHavenGame {
         final dt = time.dt;
 
         playerInputSystem.update();
+        enemySpawnerSystem.update(dt);
+        chaseSystem.update();
         movementSystem.update(dt);
         cameraSystem.update(cameraEntityId, playerEntityId);
       }
