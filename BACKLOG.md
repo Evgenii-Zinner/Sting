@@ -18,7 +18,7 @@ Phase 1 through Phase 5 have been successfully completed and reviewed by the AI 
 
 ## 21. Game State Management
 
-* [ ] **Task 21.1: Game State Component & System**
+* [x] **Task 21.1: Game State Component & System**
   * **Role Needed:** Gameplay Logic Engineer
   * **Skill:** `skills/gameplay_engineer.json`
   * **Description:** Implement a global state component (e.g., via a singleton entity or state flag) and a system to manage high-level game states (Menu, Playing, Paused, GameOver). Ensure systems can pause updates based on state.
