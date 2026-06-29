@@ -8,6 +8,16 @@ import 'package:sting/engine/components/game_state.dart';
 import 'package:sting/engine/systems/game_state_system.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
+import 'package:sting/engine/components/sprite.dart';
+import 'package:sting/engine/components/sprite_animation.dart';
+import 'package:sting/engine/components/bounding_box.dart';
+import 'package:sting/engine/components/viewport.dart';
+import 'package:sting/engine/systems/input_system.dart';
+import 'package:sting/engine/systems/movement_system.dart';
+import 'package:sting/engine/systems/camera_system.dart';
+
+import 'prefabs/player_prefab.dart';
+import 'systems/player_input_system.dart';
 
 class BulletHavenGame {
   final Scene scene;
@@ -15,7 +25,20 @@ class BulletHavenGame {
   final Time time;
   late final GameStateSystem gameStateSystem;
   late final int globalStateEntityId;
+
+  // Subsystems
+  late final InputSystem inputSystem;
+  late final PlayerInputSystem playerInputSystem;
+  late final MovementSystem movementSystem;
+  late final CameraSystem cameraSystem;
+
   int frameCount = 0;
+  int playerEntityId = -1;
+  int cameraEntityId = -1;
+
+  // Track logic screen size for the player input center point
+  double screenWidth = 0.0;
+  double screenHeight = 0.0;
 
   BulletHavenGame()
       : scene = Scene(),
@@ -26,11 +49,13 @@ class BulletHavenGame {
 
   void _initEngine() {
     // 1. Register Castes
-    // Use Swarm.maxEntities for castes that might be common (like Position)
-    // Or smaller capacity depending on usage. For now, maxEntities for everything common.
     scene.registerCaste<GameState>('GameState', ComponentCaste<GameState>(1));
     scene.registerCaste<Position>('Position', ComponentCaste<Position>(Swarm.maxEntities));
     scene.registerCaste<Velocity>('Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
+    scene.registerCaste<Sprite>('Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
+    scene.registerCaste<SpriteAnimation>('SpriteAnimation', ComponentCaste<SpriteAnimation>(Swarm.maxEntities));
+    scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
+    scene.registerCaste<Viewport>('Viewport', ComponentCaste<Viewport>(1));
 
     // 2. Setup Global Game State Entity
     globalStateEntityId = scene.createEntity();
@@ -39,8 +64,49 @@ class BulletHavenGame {
     // Initial state is Menu
     gameStateSystem.changeState(GameState.stateMenu);
 
-    // 3. Setup Platform Dispatcher
+    // 3. Initialize Systems
+    inputSystem = InputSystem();
+
+    playerInputSystem = PlayerInputSystem(
+      inputSystem: inputSystem,
+      velocityCaste: scene.getCaste<Velocity>('Velocity'),
+    );
+
+    movementSystem = MovementSystem(
+      positionCaste: scene.getCaste<Position>('Position'),
+      velocityCaste: scene.getCaste<Velocity>('Velocity'),
+    );
+
+    cameraSystem = CameraSystem(
+      positionCaste: scene.getCaste<Position>('Position'),
+      viewportCaste: scene.getCaste<Viewport>('Viewport'),
+    );
+
+    // 4. Create entities
+    cameraEntityId = scene.createEntity();
+    scene.getCaste<Viewport>('Viewport').add(cameraEntityId, Viewport.create());
+
+    playerEntityId = spawnPlayer(scene, 0.0, 0.0);
+    playerInputSystem.setPlayerEntity(playerEntityId);
+
+    // 5. Setup Platform Dispatcher
     final dispatcher = PlatformDispatcher.instance;
+
+    // Handle metrics change to update logical screen size
+    dispatcher.onMetricsChanged = () {
+      final window = dispatcher.views.first;
+      screenWidth = window.physicalSize.width / window.devicePixelRatio;
+      screenHeight = window.physicalSize.height / window.devicePixelRatio;
+      playerInputSystem.updateScreenSize(screenWidth, screenHeight);
+    };
+
+    // Trigger initial metrics check if available
+    if (dispatcher.views.isNotEmpty) {
+      final window = dispatcher.views.first;
+      screenWidth = window.physicalSize.width / window.devicePixelRatio;
+      screenHeight = window.physicalSize.height / window.devicePixelRatio;
+      playerInputSystem.updateScreenSize(screenWidth, screenHeight);
+    }
 
     dispatcher.onBeginFrame = (Duration timeStamp) {
       frameCount++;
@@ -48,7 +114,11 @@ class BulletHavenGame {
 
       // Update Systems here (only if playing)
       if (gameStateSystem.shouldUpdateLogic()) {
-        // Run update logic
+        final dt = time.dt;
+
+        playerInputSystem.update();
+        movementSystem.update(dt);
+        cameraSystem.update(cameraEntityId, playerEntityId);
       }
 
       dispatcher.scheduleFrame();

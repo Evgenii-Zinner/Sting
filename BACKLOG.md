@@ -22,7 +22,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Set up the main entry point for the showcase game inside `showcase/`. Configure the initial global state (Menu, Playing) and initialize necessary ECS systems strictly using the public engine API.
   * **Acceptance Criteria:** Game launches into a functional Menu state and transitions into Playing state correctly. 100% test coverage.
 
-* [ ] **Task 22.3: Player Prefab & Movement**
+* [x] **Task 22.3: Player Prefab & Movement**
   * **Role Needed:** Gameplay Scripter
   * **Skill:** `skills/gameplay_scripter.json`
   * **Description:** Assemble a player character using existing prefabs/components. Hook up input handling using the engine's raw pointer input system to move the player correctly.
