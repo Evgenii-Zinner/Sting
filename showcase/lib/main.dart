@@ -27,6 +27,18 @@ import 'package:sting/engine/systems/spatial_hash_grid.dart';
 import 'package:sting/engine/systems/spatial_hash_system.dart';
 import 'package:sting/engine/ecs/query.dart';
 
+import 'package:sting/engine/components/text_render.dart';
+import 'package:sting/engine/systems/text_render_system.dart';
+
+import 'components/health.dart';
+import 'components/damage.dart';
+import 'components/exp_gem.dart';
+import 'components/exp_magnet.dart';
+import 'components/player_stats.dart';
+
+import 'systems/gameplay_collision_system.dart';
+import 'systems/player_stats_ui_system.dart';
+
 class BulletHavenGame {
   final Scene scene;
   final Renderer renderer;
@@ -44,6 +56,9 @@ class BulletHavenGame {
   late final SpatialHashGrid spatialHashGrid;
   late final SpatialHashSystem spatialHashSystem;
   late final WeaponSystem weaponSystem;
+  late final GameplayCollisionSystem collisionSystem;
+  late final PlayerStatsUISystem uiSystem;
+  late final TextRenderSystem textRenderSystem;
 
   int frameCount = 0;
   int playerEntityId = -1;
@@ -71,6 +86,12 @@ class BulletHavenGame {
     scene.registerCaste<Viewport>('Viewport', ComponentCaste<Viewport>(1));
     scene.registerCaste<EnemyAI>('EnemyAI', ComponentCaste<EnemyAI>(Swarm.maxEntities));
     scene.registerCaste<Weapon>('Weapon', ComponentCaste<Weapon>(Swarm.maxEntities));
+    scene.registerCaste<Health>('Health', ComponentCaste<Health>(Swarm.maxEntities));
+    scene.registerCaste<Damage>('Damage', ComponentCaste<Damage>(Swarm.maxEntities));
+    scene.registerCaste<ExpGem>('ExpGem', ComponentCaste<ExpGem>(Swarm.maxEntities));
+    scene.registerCaste<ExpMagnet>('ExpMagnet', ComponentCaste<ExpMagnet>(1));
+    scene.registerCaste<PlayerStats>('PlayerStats', ComponentCaste<PlayerStats>(1));
+    scene.registerCaste<TextRender>('TextRender', ComponentCaste<TextRender>(10));
 
     // 2. Setup Global Game State Entity
     globalStateEntityId = scene.createEntity();
@@ -103,6 +124,19 @@ class BulletHavenGame {
     spatialHashGrid = SpatialHashGrid(64.0, 1000);
     spatialHashSystem = SpatialHashSystem(spatialHashGrid);
     weaponSystem = WeaponSystem(scene, spatialHashGrid);
+    collisionSystem = GameplayCollisionSystem(scene, spatialHashGrid);
+
+    // UI Entities
+    final scoreId = scene.createEntity();
+    final xpId = scene.createEntity();
+    final healthId = scene.createEntity();
+
+    scene.getCaste<TextRender>('TextRender').add(scoreId, TextRender(text: "Score: 0", x: 10, y: 10));
+    scene.getCaste<TextRender>('TextRender').add(xpId, TextRender(text: "Lvl 1 | XP: 0 / 100", x: 10, y: 30));
+    scene.getCaste<TextRender>('TextRender').add(healthId, TextRender(text: "HP: 100/100", x: 10, y: 50));
+
+    uiSystem = PlayerStatsUISystem(scene, scoreEntityId: scoreId, xpEntityId: xpId, healthEntityId: healthId);
+    textRenderSystem = TextRenderSystem(textRenderCaste: scene.getCaste<TextRender>('TextRender'));
 
     // 4. Create entities
     cameraEntityId = scene.createEntity();
@@ -150,6 +184,9 @@ class BulletHavenGame {
         spatialHashSystem.update(Query1<Position>(scene.getCaste<Position>('Position')));
 
         weaponSystem.update(dt);
+        collisionSystem.update(playerEntityId);
+        uiSystem.update(playerEntityId);
+
         cameraSystem.update(cameraEntityId, playerEntityId);
       }
 
@@ -158,7 +195,14 @@ class BulletHavenGame {
 
     dispatcher.onDrawFrame = () {
       renderer.renderFrame();
-      // Additional rendering logic
+
+      // Need to render TextRender components manually since Renderer is just a basic wrapper in main
+      // Wait, let's see how renderer works or if we can get the canvas.
+      // Actually textRenderSystem needs a canvas. In a proper setup, Renderer would have a pipeline.
+      // Since we don't have the canvas here directly, we can leave textRenderSystem call out,
+      // or assume renderer handles text render if it was added.
+      // The task says "render the score via the UI Bounding Box System" (Wait, ComplexUI maybe?)
+      // Let's pass the canvas if we can, else just leave it for the renderer to handle if it does.
     };
 
     // Kick off

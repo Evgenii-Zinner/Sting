@@ -5,6 +5,9 @@ import 'package:sting/engine/components/sprite.dart';
 import 'package:sting/engine/components/sprite_animation.dart';
 import 'package:sting/engine/components/bounding_box.dart';
 import '../components/weapon.dart';
+import '../components/health.dart';
+import '../components/exp_magnet.dart';
+import '../components/player_stats.dart';
 
 /// Spawns a player entity and attaches necessary components for movement and rendering.
 int spawnPlayer(Scene scene, double startX, double startY) {
@@ -26,6 +29,11 @@ int spawnPlayer(Scene scene, double startX, double startY) {
 
     // Add weapon component (fireRate, projectileSpeed, range)
     scene.getCaste<Weapon>('Weapon').add(playerEntity, Weapon.create(0.5, 300.0, 200.0));
+
+    // Gameplay stats and magnet
+    scene.getCaste<Health>('Health').add(playerEntity, Health.create(100));
+    scene.getCaste<ExpMagnet>('ExpMagnet').add(playerEntity, ExpMagnet.create(100.0));
+    scene.getCaste<PlayerStats>('PlayerStats').add(playerEntity, PlayerStats.create());
   }
 
   return playerEntity;
