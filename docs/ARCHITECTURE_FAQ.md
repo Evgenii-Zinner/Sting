@@ -90,5 +90,5 @@ Welcome to the Sting Engine Architecture FAQ. Please review these questions and 
 * **Audio System Enhancements:** Upgraded the `Int32List` audio event queue to support additional playback parameters like volume, pitch, and loop using integer encoding.
 * **Game State Management:** Implemented high-level game states (Menu, Playing, Paused, GameOver) utilizing a global state component and system, ensuring smooth state transitions and selective logic pausing without GC allocations.
 
-## Upcoming Phase 8 Details (Prototype Assembly / Showcase)
-Phase 8 will focus on assembling a Bullet Haven game showcase using the fully mature engine APIs. The engine core is now considered feature-complete for MVP game development, and no internal modifications to the `engine/` source code are expected—only application-level logic built on top.
+## Phase 8 Details (Prototype Assembly / Showcase)
+Phase 8 is currently in progress. The focus is on assembling a Bullet Haven MVP game showcase using the fully mature engine APIs. The engine core is considered feature-complete for MVP game development, and no internal modifications to the core `lib/` source code are permitted—only application-level logic built on top (e.g., inside `showcase/`). If an engine feature is discovered to be missing, it must be flagged for an engine developer rather than modifying the core during scripting. All placeholder assets are procedurally generated to avoid manual art dependencies.

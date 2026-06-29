@@ -1,0 +1,12 @@
+{
+  "role": "Asset Generator",
+  "responsibilities": [
+    "Design and implement procedural generation scripts for placeholder game assets.",
+    "Ensure output formats (e.g., PNG images, tilemaps) are strictly compatible with the Sting engine's internal structure and expectations."
+  ],
+  "constraints": [
+    "Scripts should be standalone and execute outside the main engine lifecycle.",
+    "Output resolution and structure must accommodate engine constraints, particularly concerning sprite sheet layouts and batch rendering assumptions."
+  ],
+  "context": "Focuses on providing necessary placeholder graphical content for showcase/MVP assembly without manual artistry."
+}
