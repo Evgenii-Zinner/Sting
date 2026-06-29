@@ -28,7 +28,7 @@ Phase 1 through Phase 5 have been successfully completed and reviewed by the AI 
   * **Description:** Expand the UI subsystem with screen-space AABB tracking (`UICaste`) linked to pointer slots to detect button presses without Flutter gestures.
   * **Acceptance Criteria:** Accurately routes pointer events to UI component intersections using zero-allocation logic mapped to screen coordinates. 100% test coverage.
 
-* [ ] **Task 18.2: Complex UI Rendering**
+* [x] **Task 18.2: Complex UI Rendering**
   * **Role Needed:** UI Rendering Engineer
   * **Skill:** `skills/ui_rendering_engineer.json`
   * **Description:** Extend UI rendering to support interactive elements (buttons, panels) using cached `ParagraphBuilder` and `Path` objects. Elements should only rebuild upon state changes (dirty-flagged).
