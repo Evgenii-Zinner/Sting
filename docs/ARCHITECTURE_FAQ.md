@@ -79,8 +79,16 @@ Welcome to the Sting Engine Architecture FAQ. Please review these questions and 
 * **Tilemap System:** Added support for drawing efficient tilemaps using `Tilemap` component and `TilemapRenderSystem` using flat arrays (`Int32List`).
 * **Particle System:** Implemented a Data-Oriented particle emitter utilizing flat TypedData arrays to drive massive particle counts strictly avoiding per-frame allocations.
 
-## Upcoming Phase 6 Details
-The current backlog encompasses Phase 6, which introduces advanced audio, UI rendering, and asset streaming systems. The primary focus includes:
-* **Audio System:** Implementing an event-driven audio dispatcher built around flat queues (`Int32List`) without instantiating `SoundEvent` objects per frame, processing strictly within primitive bounds.
-* **Advanced UI Rendering Framework:** Extending UI beyond simple text to interactive elements using screen-space AABB collisions and layered rendering via cached `ParagraphBuilder` and `Path` objects.
-* **Asset Management and Streaming:** Building a chunk-based memory manager streaming asset data via background isolates and `TransferableTypedData` to construct images avoiding main thread blocking.
+## Phase 6 Completions
+
+* **Audio System:** Implemented an event-driven audio dispatcher built around flat queues (`Int32List`) without instantiating `SoundEvent` objects per frame. Note: Low-level audio is mocked using a static `AudioBindings` class due to the lack of an actual audio package.
+* **Advanced UI Rendering Framework:** Extended UI beyond simple text to interactive elements using screen-space AABB collisions via `UICaste` and layered rendering via cached `ParagraphBuilder` and `Path` objects.
+* **Asset Management and Streaming:** Built a chunk-based memory manager for streaming asset data via background isolates, using `TransferableTypedData` to pass raw pixels to the main thread for image construction (`decodeImageFromPixels`) to avoid blocking.
+
+## Upcoming Phase 7 Details
+Phase 7 will focus on High-Level Game State Management and prototype preparation. The primary focus includes:
+* **Audio Event Enhancements:** Upgrading the `Int32List` audio event queue to support volume, pitch, and loops via integer encoding.
+* **Game State Management:** Implementing state handling (e.g., Menus, Pause, Game Over) strictly within ECS constraints.
+* **Logic Systems:** Preparing generic logic systems to transition into the actual first game prototype.
+
+*Note: Following Phase 7, it is estimated that roughly 1-2 more phases will be needed to complete the first full game prototype.*
