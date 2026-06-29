@@ -10,7 +10,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
 
 ## 22. MVP: Bullet Haven Prototype
 
-* [ ] **Task 22.1: Asset Generation Script**
+* [x] **Task 22.1: Asset Generation Script**
   * **Role Needed:** Asset Generator
   * **Skill:** `skills/asset_generator.json`
   * **Description:** Create standalone scripts to procedurally generate placeholder graphic assets (sprite sheets for player, enemies, projectiles, and tilemaps).
