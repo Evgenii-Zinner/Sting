@@ -38,3 +38,6 @@ If you are asked to implement something that violates these rules, push back or 
 
 ## 6. Architecture FAQ
 For common architectural questions, naming conventions (like the "Sting" theme), existing core systems (`Swarm`, `Caste`), rendering APIs, and details about upcoming features in the backlog, strictly consult the FAQ document at `docs/ARCHITECTURE_FAQ.md`. Please review this file thoroughly before asking the user basic architectural or implementation questions.
+
+## 7. Engine Maturity
+As of Phase 8, the core engine (ECS, Batch Rendering, Physics, UI, Assets, Game State) is considered feature-complete for MVP game development. When building games or prototype layers on top of Sting, agents must purely utilize the engine's public APIs and architectural patterns (e.g., Components as Extension Types on Flat Arrays, Systems for Logic) without modifying the internal engine implementation.

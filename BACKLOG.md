@@ -2,11 +2,13 @@
 
 This backlog breaks down the Sting Engine roadmap into highly granular tasks. AI Agents should select the highest priority task (from top to bottom), assume the required role, and execute the task adhering strictly to the `AGENTS.md` guidelines (TDD, zero allocations per frame).
 
-Phase 1 through Phase 5 have been successfully completed and reviewed by the AI Architector. The engine is fully operational with DOD ECS, zero-allocation physics, spatial hashing, batch rendering, tilemaps, and particle systems.
+Phase 1 through Phase 7 have been successfully completed and reviewed by the AI Architector. The engine is fully operational with DOD ECS, zero-allocation physics, spatial hashing, batch rendering, tilemaps, particle systems, audio event queuing, and high-level game state management.
 
-## Upcoming Milestones (Phase 7)
+## Upcoming Milestones (Phase 8: Prototype Assembly / Showcase)
 
-*Note: Phase 7 will focus on Audio Enhancements, Game State Management, and preparing core logic systems. Following Phase 7, it is estimated that roughly 1-2 more phases (like Phase 8 for Prototype Assembly) will be needed to complete the first full game prototype.*
+*Note: The engine core is deemed mature and ready for game development. Phase 8 will focus on assembling a Bullet Haven game showcase using the engine's public APIs. No core engine changes are anticipated, only game-specific logic construction.*
+
+## Completed Phase 7 Tasks
 
 ## 20. Audio Enhancements
 

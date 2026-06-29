@@ -85,10 +85,10 @@ Welcome to the Sting Engine Architecture FAQ. Please review these questions and 
 * **Advanced UI Rendering Framework:** Extended UI beyond simple text to interactive elements using screen-space AABB collisions via `UICaste` and layered rendering via cached `ParagraphBuilder` and `Path` objects.
 * **Asset Management and Streaming:** Built a chunk-based memory manager for streaming asset data via background isolates, using `TransferableTypedData` to pass raw pixels to the main thread for image construction (`decodeImageFromPixels`) to avoid blocking.
 
-## Upcoming Phase 7 Details
-Phase 7 will focus on High-Level Game State Management and prototype preparation. The primary focus includes:
-* **Audio Event Enhancements:** Upgrading the `Int32List` audio event queue to support volume, pitch, and loops via integer encoding.
-* **Game State Management:** Implementing state handling (e.g., Menus, Pause, Game Over) strictly within ECS constraints.
-* **Logic Systems:** Preparing generic logic systems to transition into the actual first game prototype.
+## Phase 7 Completions
 
-*Note: Following Phase 7, it is estimated that roughly 1-2 more phases will be needed to complete the first full game prototype.*
+* **Audio System Enhancements:** Upgraded the `Int32List` audio event queue to support additional playback parameters like volume, pitch, and loop using integer encoding.
+* **Game State Management:** Implemented high-level game states (Menu, Playing, Paused, GameOver) utilizing a global state component and system, ensuring smooth state transitions and selective logic pausing without GC allocations.
+
+## Upcoming Phase 8 Details (Prototype Assembly / Showcase)
+Phase 8 will focus on assembling a Bullet Haven game showcase using the fully mature engine APIs. The engine core is now considered feature-complete for MVP game development, and no internal modifications to the `engine/` source code are expected—only application-level logic built on top.
