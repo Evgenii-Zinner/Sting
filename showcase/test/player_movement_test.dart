@@ -1,3 +1,6 @@
+import "../lib/components/health.dart";
+import "../lib/components/exp_magnet.dart";
+import "../lib/components/player_stats.dart";
 import 'dart:ui';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -27,6 +30,9 @@ void main() {
       scene.registerCaste<SpriteAnimation>('SpriteAnimation', ComponentCaste<SpriteAnimation>(Swarm.maxEntities));
       scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
     scene.registerCaste<Weapon>('Weapon', ComponentCaste<Weapon>(Swarm.maxEntities));
+      scene.registerCaste<Health>('Health', ComponentCaste<Health>(100));
+      scene.registerCaste<ExpMagnet>('ExpMagnet', ComponentCaste<ExpMagnet>(100));
+      scene.registerCaste<PlayerStats>('PlayerStats', ComponentCaste<PlayerStats>(100));
     });
 
     test('spawnPlayer creates entity with correct components', () {

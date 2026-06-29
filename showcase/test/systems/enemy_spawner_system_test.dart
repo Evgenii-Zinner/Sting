@@ -1,3 +1,5 @@
+import "../../lib/components/health.dart";
+import "../../lib/components/damage.dart";
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/ecs/scene.dart';
 import 'package:sting/engine/ecs/swarm.dart';
@@ -24,6 +26,8 @@ void main() {
       scene.registerCaste<Sprite>('Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
       scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
       scene.registerCaste<EnemyAI>('EnemyAI', ComponentCaste<EnemyAI>(Swarm.maxEntities));
+      scene.registerCaste<Health>("Health", ComponentCaste<Health>(100));
+      scene.registerCaste<Damage>("Damage", ComponentCaste<Damage>(100));
       scene.registerCaste<Viewport>('Viewport', ComponentCaste<Viewport>(1));
 
       viewportEntity = scene.createEntity();
