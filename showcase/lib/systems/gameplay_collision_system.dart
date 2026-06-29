@@ -76,7 +76,7 @@ class GameplayCollisionSystem {
               targetHealth.current -= dmgComp.amount;
 
               // Destroy projectile
-              _scene.destroyEntity(dmgEntity);
+              if (!toDestroy.contains(dmgEntity)) toDestroy.add(dmgEntity);
               projectileDestroyed = true;
 
               // Check if enemy died
