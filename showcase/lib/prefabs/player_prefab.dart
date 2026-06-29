@@ -4,6 +4,7 @@ import 'package:sting/engine/components/velocity.dart';
 import 'package:sting/engine/components/sprite.dart';
 import 'package:sting/engine/components/sprite_animation.dart';
 import 'package:sting/engine/components/bounding_box.dart';
+import '../components/weapon.dart';
 
 /// Spawns a player entity and attaches necessary components for movement and rendering.
 int spawnPlayer(Scene scene, double startX, double startY) {
@@ -22,6 +23,9 @@ int spawnPlayer(Scene scene, double startX, double startY) {
 
     // Hitbox smaller than visual size for better gameplay feel
     scene.getCaste<BoundingBox>('BoundingBox').add(playerEntity, BoundingBox.create(16.0, 24.0));
+
+    // Add weapon component (fireRate, projectileSpeed, range)
+    scene.getCaste<Weapon>('Weapon').add(playerEntity, Weapon.create(0.5, 300.0, 200.0));
   }
 
   return playerEntity;
