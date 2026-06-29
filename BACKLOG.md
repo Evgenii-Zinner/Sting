@@ -8,6 +8,44 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
 
 *Note: The engine core is deemed mature and ready for game development. Phase 8 will focus on assembling a Bullet Haven game showcase using the engine's public APIs. No core engine changes are anticipated, only game-specific logic construction.*
 
+## 22. MVP: Bullet Haven Prototype
+
+* [ ] **Task 22.1: Asset Generation Script**
+  * **Role Needed:** Asset Generator
+  * **Skill:** `skills/asset_generator.json`
+  * **Description:** Create standalone scripts to procedurally generate placeholder graphic assets (sprite sheets for player, enemies, projectiles, and tilemaps).
+  * **Acceptance Criteria:** Scripts can be executed to output necessary PNG files suitable for engine consumption.
+
+* [ ] **Task 22.2: MVP Game Setup & Game State**
+  * **Role Needed:** Gameplay Scripter
+  * **Skill:** `skills/gameplay_scripter.json`
+  * **Description:** Set up the main entry point for the showcase game inside `showcase/`. Configure the initial global state (Menu, Playing) and initialize necessary ECS systems strictly using the public engine API.
+  * **Acceptance Criteria:** Game launches into a functional Menu state and transitions into Playing state correctly. 100% test coverage.
+
+* [ ] **Task 22.3: Player Prefab & Movement**
+  * **Role Needed:** Gameplay Scripter
+  * **Skill:** `skills/gameplay_scripter.json`
+  * **Description:** Assemble a player character using existing prefabs/components. Hook up input handling using the engine's raw pointer input system to move the player correctly.
+  * **Acceptance Criteria:** Player entity moves smoothly according to input on screen. Zero per-frame allocations during movement. 100% test coverage.
+
+* [ ] **Task 22.4: Enemy Spawner System**
+  * **Role Needed:** Gameplay Scripter
+  * **Skill:** `skills/gameplay_scripter.json`
+  * **Description:** Create a logic system to spawn enemy entities at intervals outside the viewport, tracking towards the player.
+  * **Acceptance Criteria:** Enemies spawn correctly and move towards the player without causing GC spikes. 100% test coverage.
+
+* [ ] **Task 22.5: Auto-Firing Logic**
+  * **Role Needed:** Gameplay Scripter
+  * **Skill:** `skills/gameplay_scripter.json`
+  * **Description:** Implement auto-firing logic for the player. Find the nearest enemy and instantiate projectile prefabs aimed in their direction.
+  * **Acceptance Criteria:** Projectiles are fired correctly based on intervals and target proximity. Zero allocations during firing. 100% test coverage.
+
+* [ ] **Task 22.6: Damage & Score UI**
+  * **Role Needed:** Gameplay Scripter
+  * **Skill:** `skills/gameplay_scripter.json`
+  * **Description:** Hook up collision resolution to apply damage to enemies/player. Manage death states, update score, and render the score via the UI Bounding Box System.
+  * **Acceptance Criteria:** Health depletes correctly, scores update, and UI renders changes efficiently. 100% test coverage.
+
 ## Completed Phase 7 Tasks
 
 ## 20. Audio Enhancements
