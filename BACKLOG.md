@@ -16,7 +16,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Create standalone scripts to procedurally generate placeholder graphic assets (sprite sheets for player, enemies, projectiles, and tilemaps).
   * **Acceptance Criteria:** Scripts can be executed to output necessary PNG files suitable for engine consumption.
 
-* [ ] **Task 22.2: MVP Game Setup & Game State**
+* [x] **Task 22.2: MVP Game Setup & Game State**
   * **Role Needed:** Gameplay Scripter
   * **Skill:** `skills/gameplay_scripter.json`
   * **Description:** Set up the main entry point for the showcase game inside `showcase/`. Configure the initial global state (Menu, Playing) and initialize necessary ECS systems strictly using the public engine API.
