@@ -39,17 +39,19 @@ To support massive entity counts (e.g., tens of thousands of particles, bullets,
 * **Extension Types**: Use extension types on `int` or `Float32List` to provide a zero-cost abstraction layer for strictly typed IDs and data structs.
 * **Zero Allocation per Frame**: The core loop and system ticks strictly maintain zero heap allocations per frame to prevent GC pauses. Arrays are pre-allocated and pooled.
 
+## 3.4 Advanced Subsystems
+
+### 3.4.1 Data-Oriented Audio System
+* **Implementation**: An audio event dispatcher built around flat queues (`Int32List`). Instead of instantiating `SoundEvent` objects, audio requests (sound ID, volume, pitch, pan) are pushed into ring buffers and processed in bulk by the `AudioSystem`. Pre-allocated playback handles map to entities.
+
+### 3.4.2 UI Rendering Framework
+* **Implementation**: A specialized `UICaste` focusing on screen-space AABB collisions and layered rendering is used for interactive UI. Hit-testing bounding boxes for UI use flat `Float32List` arrays synchronized with input pointer slots. Complex UI rendering objects (`ParagraphBuilder`, `Path`) are strictly cached on components and dirty-flagged for rebuilding only upon state shifts.
+
+### 3.4.3 Asset Management and Streaming
+* **Implementation**: A chunk-based memory manager dynamically streams large sprite sheets and maps. Background isolates load and stream raw pixel buffers via `TransferableTypedData` into the main isolate, constructing images securely via `decodeImageFromPixels` avoiding main thread blocking.
+
+### 3.4.4 Game State Management
+* **Implementation**: A global state management system utilizes ECS concepts with a singleton entity / state flags to manage high-level game loops (Menu, Playing, Paused, GameOver). Logic systems selectively update based on the current state.
+
 ## 5. Future Architectural Enhancements (Planned Features)
-While Phases 1 through 5 implement core rendering, ECS, physics, tilemaps, and particle systems, the engine should scale organically. New systems must follow DOD and zero-allocation constraints:
-
-### 5.1 Data-Oriented Audio System
-* **Implementation Plan**: An audio event dispatcher built around flat queues (`Int32List`). Instead of instantiating `SoundEvent` objects, audio requests (sound ID, volume, pitch, pan) will be pushed into ring buffers and processed in bulk by an `AudioSystem` directly interacting with a low-level audio package or FFI bindings.
-* **Memory Strategy**: Limit concurrent audio voices. Pre-allocate playback handles and map them to entities.
-
-### 5.2 Advanced UI Rendering Framework
-* **Implementation Plan**: Beyond simple static text, interactive UI (buttons, menus, panels) will utilize a specialized `UICaste` focusing on screen-space AABB collisions and layered rendering.
-* **Memory Strategy**: Hit-testing bounding boxes for UI will use flat `Float32List` arrays synchronized with input pointer slots. Complex UI rendering objects (`ParagraphBuilder`, `Path`) will be strictly cached on components and dirty-flagged for rebuilding only upon state shifts.
-
-### 5.3 Asset Management and Streaming
-* **Implementation Plan**: Instead of fully loading enormous sprite sheets and maps into memory up front, implement a chunk-based memory manager.
-* **Memory Strategy**: Stream data via background isolates, passing raw pixel buffers via `TransferableTypedData` into the main isolate to construct images via `decodeImageFromPixels` securely avoiding main thread blocking or large native GC bursts.
+While Phases 1 through 7 have implemented all core foundational features required for game prototype assembly (Phase 8), future versions might introduce features like networking or specialized 2.5D rendering techniques, provided they can adhere to the zero-allocation constraints.
