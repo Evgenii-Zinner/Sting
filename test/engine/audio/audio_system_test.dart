@@ -8,7 +8,7 @@ void main() {
       final queue = AudioEventQueue(10);
       final system = AudioSystem(queue, maxActiveSounds: 10);
 
-      queue.enqueue(1, 100);
+      queue.enqueue(1, 100, volume: 0.5, pitch: 1.5, loop: true);
       queue.enqueue(2, 101);
 
       expect(queue.length, 2);

@@ -9,9 +9,8 @@ class AudioEventQueue {
   final int capacity;
 
   /// The size in ints of a single event in the queue.
-  /// Currently assuming 2 ints per event: sound ID and entity ID.
-  /// This will be expanded once exact data layout requirements are clarified.
-  static const int eventSize = 2;
+  /// 5 ints per event: sound ID, entity ID, volume (fixed-point), pitch (fixed-point), loop (0/1).
+  static const int eventSize = 5;
 
   final Int32List _data;
   int _head = 0;
@@ -27,7 +26,13 @@ class AudioEventQueue {
   /// Adds a new audio event to the queue.
   ///
   /// Returns `true` if the event was successfully added, or `false` if the queue is full.
-  bool enqueue(int soundId, int entityId) {
+  bool enqueue(
+    int soundId,
+    int entityId, {
+    double volume = 1.0,
+    double pitch = 1.0,
+    bool loop = false,
+  }) {
     if (_count >= capacity) {
       return false;
     }
@@ -35,6 +40,9 @@ class AudioEventQueue {
     final int index = _tail * eventSize;
     _data[index] = soundId;
     _data[index + 1] = entityId;
+    _data[index + 2] = (volume * 1000).toInt();
+    _data[index + 3] = (pitch * 1000).toInt();
+    _data[index + 4] = loop ? 1 : 0;
 
     _tail = (_tail + 1) % capacity;
     _count++;
@@ -46,7 +54,16 @@ class AudioEventQueue {
   ///
   /// The callback is invoked with the primitive data for each event.
   /// Clears the queue after processing.
-  void process(void Function(int soundId, int entityId) callback) {
+  void process(
+    void Function(
+      int soundId,
+      int entityId,
+      double volume,
+      double pitch,
+      bool loop,
+    )
+        callback,
+  ) {
     int current = _head;
     int remaining = _count;
 
@@ -54,8 +71,11 @@ class AudioEventQueue {
       final int index = current * eventSize;
       final int soundId = _data[index];
       final int entityId = _data[index + 1];
+      final double volume = _data[index + 2] / 1000.0;
+      final double pitch = _data[index + 3] / 1000.0;
+      final bool loop = _data[index + 4] == 1;
 
-      callback(soundId, entityId);
+      callback(soundId, entityId, volume, pitch, loop);
 
       current = (current + 1) % capacity;
       remaining--;
