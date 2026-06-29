@@ -22,7 +22,7 @@ Phase 1 through Phase 5 have been successfully completed and reviewed by the AI 
 
 ## 18. UI Framework
 
-* [ ] **Task 18.1: UI Bounding Box System**
+* [x] **Task 18.1: UI Bounding Box System**
   * **Role Needed:** UI Rendering Engineer
   * **Skill:** `skills/ui_rendering_engineer.json`
   * **Description:** Expand the UI subsystem with screen-space AABB tracking (`UICaste`) linked to pointer slots to detect button presses without Flutter gestures.
