@@ -34,7 +34,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Create a logic system to spawn enemy entities at intervals outside the viewport, tracking towards the player.
   * **Acceptance Criteria:** Enemies spawn correctly and move towards the player without causing GC spikes. 100% test coverage.
 
-* [ ] **Task 22.5: Auto-Firing Logic**
+* [x] **Task 22.5: Auto-Firing Logic**
   * **Role Needed:** Gameplay Scripter
   * **Skill:** `skills/gameplay_scripter.json`
   * **Description:** Implement auto-firing logic for the player. Find the nearest enemy and instantiate projectile prefabs aimed in their direction.

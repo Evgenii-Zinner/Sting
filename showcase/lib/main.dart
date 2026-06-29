@@ -21,6 +21,11 @@ import 'prefabs/player_prefab.dart';
 import 'systems/player_input_system.dart';
 import 'systems/enemy_spawner_system.dart';
 import 'systems/chase_system.dart';
+import 'components/weapon.dart';
+import 'systems/weapon_system.dart';
+import 'package:sting/engine/systems/spatial_hash_grid.dart';
+import 'package:sting/engine/systems/spatial_hash_system.dart';
+import 'package:sting/engine/ecs/query.dart';
 
 class BulletHavenGame {
   final Scene scene;
@@ -36,6 +41,9 @@ class BulletHavenGame {
   late final CameraSystem cameraSystem;
   late final EnemySpawnerSystem enemySpawnerSystem;
   late final ChaseSystem chaseSystem;
+  late final SpatialHashGrid spatialHashGrid;
+  late final SpatialHashSystem spatialHashSystem;
+  late final WeaponSystem weaponSystem;
 
   int frameCount = 0;
   int playerEntityId = -1;
@@ -62,6 +70,7 @@ class BulletHavenGame {
     scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
     scene.registerCaste<Viewport>('Viewport', ComponentCaste<Viewport>(1));
     scene.registerCaste<EnemyAI>('EnemyAI', ComponentCaste<EnemyAI>(Swarm.maxEntities));
+    scene.registerCaste<Weapon>('Weapon', ComponentCaste<Weapon>(Swarm.maxEntities));
 
     // 2. Setup Global Game State Entity
     globalStateEntityId = scene.createEntity();
@@ -90,6 +99,10 @@ class BulletHavenGame {
 
     enemySpawnerSystem = EnemySpawnerSystem(scene);
     chaseSystem = ChaseSystem(scene);
+
+    spatialHashGrid = SpatialHashGrid(64.0, 1000);
+    spatialHashSystem = SpatialHashSystem(spatialHashGrid);
+    weaponSystem = WeaponSystem(scene, spatialHashGrid);
 
     // 4. Create entities
     cameraEntityId = scene.createEntity();
@@ -132,6 +145,11 @@ class BulletHavenGame {
         enemySpawnerSystem.update(dt);
         chaseSystem.update();
         movementSystem.update(dt);
+
+        // Update spatial hash before weapon system queries it
+        spatialHashSystem.update(Query1<Position>(scene.getCaste<Position>('Position')));
+
+        weaponSystem.update(dt);
         cameraSystem.update(cameraEntityId, playerEntityId);
       }
 

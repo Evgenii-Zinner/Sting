@@ -10,6 +10,7 @@ import 'package:sting/engine/components/sprite.dart';
 import 'package:sting/engine/components/sprite_animation.dart';
 import 'package:sting/engine/components/bounding_box.dart';
 import 'package:sting/engine/systems/input_system.dart';
+import '../lib/components/weapon.dart';
 
 import '../lib/prefabs/player_prefab.dart';
 import '../lib/systems/player_input_system.dart';
@@ -25,6 +26,7 @@ void main() {
       scene.registerCaste<Sprite>('Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
       scene.registerCaste<SpriteAnimation>('SpriteAnimation', ComponentCaste<SpriteAnimation>(Swarm.maxEntities));
       scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
+    scene.registerCaste<Weapon>('Weapon', ComponentCaste<Weapon>(Swarm.maxEntities));
     });
 
     test('spawnPlayer creates entity with correct components', () {
