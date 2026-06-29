@@ -4,7 +4,27 @@ This backlog breaks down the Sting Engine roadmap into highly granular tasks. AI
 
 Phase 1 through Phase 5 have been successfully completed and reviewed by the AI Architector. The engine is fully operational with DOD ECS, zero-allocation physics, spatial hashing, batch rendering, tilemaps, and particle systems.
 
-## Upcoming Milestones (Phase 6)
+## Upcoming Milestones (Phase 7)
+
+*Note: Phase 7 will focus on Audio Enhancements, Game State Management, and preparing core logic systems. Following Phase 7, it is estimated that roughly 1-2 more phases (like Phase 8 for Prototype Assembly) will be needed to complete the first full game prototype.*
+
+## 20. Audio Enhancements
+
+* [ ] **Task 20.1: Extended Audio Event Queue**
+  * **Role Needed:** Audio Engineer
+  * **Skill:** `skills/audio_engineer.json`
+  * **Description:** Upgrade the `Int32List` audio event queue to support additional playback parameters like `volume`, `pitch`, and `loop` status using integer encoding (fixed-point math or bitpacking) to stay within primitive array bounds.
+  * **Acceptance Criteria:** Audio dispatcher handles enhanced parameters without heap allocations. 100% test coverage.
+
+## 21. Game State Management
+
+* [ ] **Task 21.1: Game State Component & System**
+  * **Role Needed:** Gameplay Logic Engineer
+  * **Skill:** `skills/gameplay_engineer.json`
+  * **Description:** Implement a global state component (e.g., via a singleton entity or state flag) and a system to manage high-level game states (Menu, Playing, Paused, GameOver). Ensure systems can pause updates based on state.
+  * **Acceptance Criteria:** The engine can smoothly transition between states and pause game logic without GC allocations. 100% test coverage.
+
+## Completed Phase 6 Tasks
 
 ## 17. Audio System
 
