@@ -96,7 +96,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
 
 ## 20. Cross-Platform & Web Support (Phase 9)
 
-* [ ] **Task 20.1: Base64 Asset Embedding**
+* [x] **Task 20.1: Base64 Asset Embedding**
   * **Role Needed:** Cross Platform Engineer
   * **Skill:** `skills/cross_platform_engineer.json`
   * **Description:** Create a tool in `tools/` that converts all showcase assets (PNGs, etc.) into Dart files containing base64 string constants. Modify `AssetLoader` to decode these strings via `base64Decode` and `instantiateImageCodec` if `dart:io` is unavailable (e.g., on Web), bypassing isolates and file system access.

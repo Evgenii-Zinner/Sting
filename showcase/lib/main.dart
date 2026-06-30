@@ -41,10 +41,13 @@ import 'components/player_stats.dart';
 
 import 'systems/gameplay_collision_system.dart';
 import 'systems/player_stats_ui_system.dart';
+import 'embedded_assets.dart';
+import 'package:sting/engine/assets/asset_loader.dart';
 
 class BulletHavenGame {
   final Scene scene;
   final Renderer renderer;
+  final Image atlas;
   final Time time;
   late final GameStateSystem gameStateSystem;
   late final int globalStateEntityId;
@@ -73,23 +76,11 @@ class BulletHavenGame {
   double screenWidth = 0.0;
   double screenHeight = 0.0;
 
-  BulletHavenGame()
+  BulletHavenGame(this.atlas)
       : scene = Scene(),
         renderer = Renderer(),
         time = Time() {
     _initEngine();
-  }
-
-  Image _createPlaceholderImage() {
-    final recorder = PictureRecorder();
-    final canvas = Canvas(recorder);
-    final paint = Paint()..color = const Color(0xFF00FF00);
-    canvas.drawRect(const Rect.fromLTWH(0, 0, 32, 32), paint);
-    final picture = recorder.endRecording();
-    // Using an arbitrary size for the synchronous rasterization
-    // dart:ui typically returns a future for toImage, but we can't await in constructor.
-    // However, picture.toImageSync() is available in newer Dart versions (Dart 3+ / Flutter 3.0+)
-    return picture.toImageSync(32, 32);
   }
 
   void _initEngine() {
@@ -163,7 +154,7 @@ class BulletHavenGame {
 
     // Initialize SpriteRenderSystem with a mock image for now.
     spriteRenderSystem = SpriteRenderSystem(
-      atlas: _createPlaceholderImage(),
+      atlas: atlas,
       positionCaste: scene.getCaste<Position>('Position'),
       spriteCaste: scene.getCaste<Sprite>('Sprite'),
       viewportCaste: scene.getCaste<Viewport>('Viewport'),
@@ -243,6 +234,7 @@ class BulletHavenGame {
   }
 }
 
-void main() {
-  BulletHavenGame();
+void main() async {
+  final atlas = await AssetLoader.loadEmbeddedImage(EmbeddedAssets.assets['tilemap.png']!);
+  BulletHavenGame(atlas);
 }
