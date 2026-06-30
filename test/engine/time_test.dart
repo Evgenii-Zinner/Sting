@@ -39,5 +39,23 @@ void main() {
 
       expect(time.dt, 0.0);
     });
+
+    test('accumulates time and consumes fixed steps', () {
+      final time = Time(fixedDeltaTime: 1 / 60.0);
+      time.update(1000000); // Initial frame
+
+      // Simulate a 16.6ms update (1 frame at 60Hz)
+      time.update(1000000 + (1000000 / 60).round());
+
+      expect(time.consumeFixedStep(), isTrue);
+      expect(time.consumeFixedStep(), isFalse); // Should only have 1 step
+
+      // Simulate a 33.3ms update (2 frames at 60Hz)
+      time.update(1000000 + (1000000 / 60).round() * 3);
+
+      expect(time.consumeFixedStep(), isTrue);
+      expect(time.consumeFixedStep(), isTrue);
+      expect(time.consumeFixedStep(), isFalse);
+    });
   });
 }

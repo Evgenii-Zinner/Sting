@@ -12,6 +12,12 @@ void initEngine() {
   dispatcher.onBeginFrame = (Duration timeStamp) {
     frameCount++;
     time.update(timeStamp.inMicroseconds);
+
+    // Fixed step loop logic processing.
+    while(time.consumeFixedStep()) {
+      // In later steps, ECS logic updates go here utilizing time.fixedDeltaTime.
+    }
+
     // Request next frame to keep loop going
     dispatcher.scheduleFrame();
   };
