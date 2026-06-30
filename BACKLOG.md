@@ -108,7 +108,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Refactor the `Time` system and engine loop to use a fixed timestep accumulator (e.g., 60 updates per second) to decouple logic updates from the variable `onBeginFrame` refresh rate, ensuring deterministic physics across 60Hz and 120Hz devices.
   * **Acceptance Criteria:** Physics and movement logic run deterministically regardless of the actual frame rate. 100% test coverage.
 
-* [ ] **Task 20.3: Virtual Resolution and Aspect Ratio Scaling**
+* [x] **Task 20.3: Virtual Resolution and Aspect Ratio Scaling**
   * **Role Needed:** Cross Platform Engineer
   * **Skill:** `skills/cross_platform_engineer.json`
   * **Description:** Implement a virtual resolution system in the rendering pipeline. The canvas must scale to fit the physical device dimensions while maintaining a fixed aspect ratio (via letterboxing/pillarboxing) so the game renders identically across all screens.
