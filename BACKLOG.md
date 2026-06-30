@@ -115,10 +115,10 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Acceptance Criteria:** Game renders consistently on different screen sizes and ratios. 100% test coverage.
 
 * [ ] **Task 20.4: E2E Visual Testing with Playwright**
-  * **Role Needed:** Cross Platform Engineer
-  * **Skill:** `skills/cross_platform_engineer.json`
-  * **Description:** Setup an E2E testing environment using Playwright (via a `package.json` and a test script in `test/e2e/`). The test should launch a local web server serving the compiled web build, load the canvas, and capture a visual snapshot to compare against a baseline.
-  * **Acceptance Criteria:** Playwright tests successfully run, capture canvas snapshots, and fail on visual regressions.
+  * **Role Needed:** QA Engineer
+  * **Skill:** `skills/qa_engineer.json`
+  * **Description:** Setup an E2E testing environment using Playwright (via a `package.json` and a test script in `test/e2e/`). The test should launch a local web server serving the compiled web build, load the canvas, and capture a visual snapshot to compare against a baseline. Tests must explicitly ensure visibility and proper rendering of the player, UI elements, ground tiles, and enemies.
+  * **Acceptance Criteria:** Playwright tests successfully run, capture canvas snapshots, verify rendering of player, UI, tiles, and enemies, and fail on visual regressions.
 
 ## 19. Asset Management and Streaming
 
