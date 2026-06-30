@@ -94,6 +94,32 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Extend UI rendering to support interactive elements (buttons, panels) using cached `ParagraphBuilder` and `Path` objects. Elements should only rebuild upon state changes (dirty-flagged).
   * **Acceptance Criteria:** UI elements render correctly and only re-allocate when explicitly flagged as dirty. 100% test coverage.
 
+## 20. Cross-Platform & Web Support (Phase 9)
+
+* [ ] **Task 20.1: Base64 Asset Embedding**
+  * **Role Needed:** Cross Platform Engineer
+  * **Skill:** `skills/cross_platform_engineer.json`
+  * **Description:** Create a tool in `tools/` that converts all showcase assets (PNGs, etc.) into Dart files containing base64 string constants. Modify `AssetLoader` to decode these strings via `base64Decode` and `instantiateImageCodec` if `dart:io` is unavailable (e.g., on Web), bypassing isolates and file system access.
+  * **Acceptance Criteria:** Assets load successfully on Flutter Web using embedded strings. 100% test coverage.
+
+* [ ] **Task 20.2: Fixed Timestep Game Loop**
+  * **Role Needed:** Cross Platform Engineer
+  * **Skill:** `skills/cross_platform_engineer.json`
+  * **Description:** Refactor the `Time` system and engine loop to use a fixed timestep accumulator (e.g., 60 updates per second) to decouple logic updates from the variable `onBeginFrame` refresh rate, ensuring deterministic physics across 60Hz and 120Hz devices.
+  * **Acceptance Criteria:** Physics and movement logic run deterministically regardless of the actual frame rate. 100% test coverage.
+
+* [ ] **Task 20.3: Virtual Resolution and Aspect Ratio Scaling**
+  * **Role Needed:** Cross Platform Engineer
+  * **Skill:** `skills/cross_platform_engineer.json`
+  * **Description:** Implement a virtual resolution system in the rendering pipeline. The canvas must scale to fit the physical device dimensions while maintaining a fixed aspect ratio (via letterboxing/pillarboxing) so the game renders identically across all screens.
+  * **Acceptance Criteria:** Game renders consistently on different screen sizes and ratios. 100% test coverage.
+
+* [ ] **Task 20.4: E2E Visual Testing with Playwright**
+  * **Role Needed:** QA Engineer
+  * **Skill:** `skills/qa_engineer.json`
+  * **Description:** Setup an E2E testing environment using Playwright (via a `package.json` and a test script in `test/e2e/`). The test should launch a local web server serving the compiled web build, load the canvas, and capture a visual snapshot to compare against a baseline. Tests must explicitly ensure visibility and proper rendering of the player, UI elements, ground tiles, and enemies.
+  * **Acceptance Criteria:** Playwright tests successfully run, capture canvas snapshots, verify rendering of player, UI, tiles, and enemies, and fail on visual regressions.
+
 ## 19. Asset Management and Streaming
 
 * [x] **Task 19.1: Chunk-Based Asset Manager**
