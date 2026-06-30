@@ -194,15 +194,11 @@ class BulletHavenGame {
     };
 
     dispatcher.onDrawFrame = () {
-      renderer.renderFrame();
-
-      // Need to render TextRender components manually since Renderer is just a basic wrapper in main
-      // Wait, let's see how renderer works or if we can get the canvas.
-      // Actually textRenderSystem needs a canvas. In a proper setup, Renderer would have a pipeline.
-      // Since we don't have the canvas here directly, we can leave textRenderSystem call out,
-      // or assume renderer handles text render if it was added.
-      // The task says "render the score via the UI Bounding Box System" (Wait, ComplexUI maybe?)
-      // Let's pass the canvas if we can, else just leave it for the renderer to handle if it does.
+      renderer.renderFrame(
+        onRender: (canvas, size) {
+          textRenderSystem.render(canvas);
+        },
+      );
     };
 
     // Kick off
