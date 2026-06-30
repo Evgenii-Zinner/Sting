@@ -3,6 +3,12 @@ class Time {
   double _dt = 0.0;
   double get dt => _dt;
 
+  /// The fixed delta time step in seconds (e.g. 1/60 for 60Hz).
+  final double fixedDeltaTime;
+
+  /// Accumulator for fixed timestep game loop.
+  double _accumulator = 0.0;
+
   /// The timestamp of the previous frame in microseconds.
   /// Initialized to -1 to indicate the first frame.
   int _lastTimeMicroseconds = -1;
@@ -11,9 +17,9 @@ class Time {
   /// This prevents huge time jumps on lag spikes (e.g. game paused in background).
   final double maxDt;
 
-  Time({this.maxDt = 0.1});
+  Time({this.maxDt = 0.1, this.fixedDeltaTime = 1 / 60.0});
 
-  /// Updates the delta time based on the new frame timestamp.
+  /// Updates the delta time based on the new frame timestamp and adds to the accumulator.
   /// The timestamp is typically from [Duration.inMicroseconds].
   void update(int currentMicroseconds) {
     if (_lastTimeMicroseconds == -1) {
@@ -33,8 +39,20 @@ class Time {
       if (_dt > maxDt) {
         _dt = maxDt;
       }
+
+      _accumulator += _dt;
     }
 
     _lastTimeMicroseconds = currentMicroseconds;
+  }
+
+  /// Consumes one fixed time step if enough time has accumulated.
+  /// Returns true if a step was consumed, false otherwise.
+  bool consumeFixedStep() {
+    if (_accumulator >= fixedDeltaTime) {
+      _accumulator -= fixedDeltaTime;
+      return true;
+    }
+    return false;
   }
 }

@@ -194,23 +194,25 @@ class BulletHavenGame {
       time.update(timeStamp.inMicroseconds);
 
       // Update Systems here (only if playing)
-      if (gameStateSystem.shouldUpdateLogic()) {
-        final dt = time.dt;
+      while (time.consumeFixedStep()) {
+        if (gameStateSystem.shouldUpdateLogic()) {
+          final dt = time.fixedDeltaTime;
 
-        mainUISystem.update();
-        playerInputSystem.update();
-        enemySpawnerSystem.update(dt);
-        chaseSystem.update();
-        movementSystem.update(dt);
+          mainUISystem.update();
+          playerInputSystem.update();
+          enemySpawnerSystem.update(dt);
+          chaseSystem.update();
+          movementSystem.update(dt);
 
-        // Update spatial hash before weapon system queries it
-        spatialHashSystem.update(Query1<Position>(scene.getCaste<Position>('Position')));
+          // Update spatial hash before weapon system queries it
+          spatialHashSystem.update(Query1<Position>(scene.getCaste<Position>('Position')));
 
-        weaponSystem.update(dt);
-        collisionSystem.update(playerEntityId);
-        uiSystem.update(playerEntityId);
+          weaponSystem.update(dt);
+          collisionSystem.update(playerEntityId);
+          uiSystem.update(playerEntityId);
 
-        cameraSystem.update(cameraEntityId, playerEntityId);
+          cameraSystem.update(cameraEntityId, playerEntityId);
+        }
       }
 
       dispatcher.scheduleFrame();

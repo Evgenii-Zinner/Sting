@@ -102,7 +102,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Create a tool in `tools/` that converts all showcase assets (PNGs, etc.) into Dart files containing base64 string constants. Modify `AssetLoader` to decode these strings via `base64Decode` and `instantiateImageCodec` if `dart:io` is unavailable (e.g., on Web), bypassing isolates and file system access.
   * **Acceptance Criteria:** Assets load successfully on Flutter Web using embedded strings. 100% test coverage.
 
-* [ ] **Task 20.2: Fixed Timestep Game Loop**
+* [x] **Task 20.2: Fixed Timestep Game Loop**
   * **Role Needed:** Cross Platform Engineer
   * **Skill:** `skills/cross_platform_engineer.json`
   * **Description:** Refactor the `Time` system and engine loop to use a fixed timestep accumulator (e.g., 60 updates per second) to decouple logic updates from the variable `onBeginFrame` refresh rate, ensuring deterministic physics across 60Hz and 120Hz devices.
