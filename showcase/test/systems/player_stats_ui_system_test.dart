@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/ecs/scene.dart';
-import 'package:sting/engine/components/text_render.dart';
+import 'package:sting/engine/components/complex_ui.dart';
 import 'package:sting/engine/ecs/component_caste.dart';
 
 import '../../lib/components/health.dart';
@@ -9,11 +9,11 @@ import '../../lib/systems/player_stats_ui_system.dart';
 
 void main() {
   group('PlayerStatsUISystem', () {
-    test('updates UI text components correctly based on player stats', () {
+    test('updates ComplexUI text components correctly based on player stats', () {
       final scene = Scene();
       scene.registerCaste<Health>('Health', ComponentCaste<Health>(10));
       scene.registerCaste<PlayerStats>('PlayerStats', ComponentCaste<PlayerStats>(10));
-      scene.registerCaste<TextRender>('TextRender', ComponentCaste<TextRender>(10));
+      scene.registerCaste<ComplexUI>('ComplexUI', ComponentCaste<ComplexUI>(10));
 
       final player = scene.createEntity();
       scene.getCaste<Health>('Health').add(player, Health.create(100));
@@ -27,10 +27,10 @@ void main() {
       final xpId = scene.createEntity();
       final healthId = scene.createEntity();
 
-      final textRenderCaste = scene.getCaste<TextRender>('TextRender');
-      textRenderCaste.add(scoreId, TextRender(text: ""));
-      textRenderCaste.add(xpId, TextRender(text: ""));
-      textRenderCaste.add(healthId, TextRender(text: ""));
+      final complexUICaste = scene.getCaste<ComplexUI>('ComplexUI');
+      complexUICaste.add(scoreId, ComplexUI(text: ""));
+      complexUICaste.add(xpId, ComplexUI(text: ""));
+      complexUICaste.add(healthId, ComplexUI(text: ""));
 
       final uiSystem = PlayerStatsUISystem(
         scene,
@@ -41,9 +41,9 @@ void main() {
 
       uiSystem.update(player);
 
-      expect(textRenderCaste.get(scoreId)!.text, 'Score: 500');
-      expect(textRenderCaste.get(xpId)!.text, 'Lvl 2 | XP: 50 / 200');
-      expect(textRenderCaste.get(healthId)!.text, 'HP: 100/100');
+      expect(complexUICaste.get(scoreId)!.text, 'Score: 500');
+      expect(complexUICaste.get(xpId)!.text, 'Lvl 2 | XP: 50 / 200');
+      expect(complexUICaste.get(healthId)!.text, 'HP: 100/100');
     });
   });
 }

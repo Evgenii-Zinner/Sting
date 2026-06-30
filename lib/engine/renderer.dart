@@ -5,7 +5,7 @@ class Renderer {
 
   Renderer({this.clearColor = const Color(0xFF000000)});
 
-  void renderFrame() {
+  void renderFrame({void Function(Canvas canvas, Size size)? onRender}) {
     final dispatcher = PlatformDispatcher.instance;
     if (dispatcher.views.isEmpty) return;
 
@@ -20,6 +20,10 @@ class Renderer {
 
     // Clear the screen
     canvas.drawColor(clearColor, BlendMode.src);
+
+    if (onRender != null) {
+      onRender(canvas, physicalSize);
+    }
 
     final picture = recorder.endRecording();
 

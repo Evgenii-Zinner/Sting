@@ -1,9 +1,9 @@
 import 'package:sting/engine/ecs/scene.dart';
-import 'package:sting/engine/components/text_render.dart';
+import 'package:sting/engine/components/complex_ui.dart';
 import '../components/player_stats.dart';
 import '../components/health.dart';
 
-/// A system that updates TextRender components on UI entities
+/// A system that updates ComplexUI components on UI entities
 /// based on the player's stats (Score, XP, Level, Health).
 class PlayerStatsUISystem {
   final Scene _scene;
@@ -23,27 +23,27 @@ class PlayerStatsUISystem {
   void update(int playerEntityId) {
     final statsCaste = _scene.getCaste<PlayerStats>('PlayerStats');
     final healthCaste = _scene.getCaste<Health>('Health');
-    final textRenderCaste = _scene.getCaste<TextRender>('TextRender');
+    final complexUICaste = _scene.getCaste<ComplexUI>('ComplexUI');
 
     final playerStats = statsCaste.get(playerEntityId);
     final playerHealth = healthCaste.get(playerEntityId);
 
     if (playerStats != null) {
-      final scoreText = textRenderCaste.get(_scoreEntityId);
-      if (scoreText != null) {
-        scoreText.text = 'Score: ${playerStats.score}';
+      final scoreUI = complexUICaste.get(_scoreEntityId);
+      if (scoreUI != null) {
+        scoreUI.text = 'Score: ${playerStats.score}';
       }
 
-      final xpText = textRenderCaste.get(_xpEntityId);
-      if (xpText != null) {
-        xpText.text = 'Lvl ${playerStats.level} | XP: ${playerStats.xp} / ${playerStats.level * 100}';
+      final xpUI = complexUICaste.get(_xpEntityId);
+      if (xpUI != null) {
+        xpUI.text = 'Lvl ${playerStats.level} | XP: ${playerStats.xp} / ${playerStats.level * 100}';
       }
     }
 
     if (playerHealth != null) {
-      final healthText = textRenderCaste.get(_healthEntityId);
-      if (healthText != null) {
-        healthText.text = 'HP: ${playerHealth.current}/${playerHealth.max}';
+      final healthUI = complexUICaste.get(_healthEntityId);
+      if (healthUI != null) {
+        healthUI.text = 'HP: ${playerHealth.current}/${playerHealth.max}';
       }
     }
   }
