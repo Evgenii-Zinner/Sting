@@ -27,8 +27,11 @@ import 'package:sting/engine/systems/spatial_hash_grid.dart';
 import 'package:sting/engine/systems/spatial_hash_system.dart';
 import 'package:sting/engine/ecs/query.dart';
 
-import 'package:sting/engine/components/text_render.dart';
-import 'package:sting/engine/systems/text_render_system.dart';
+import 'package:sting/engine/components/complex_ui.dart';
+import 'package:sting/engine/components/ui_bounding_box.dart';
+import 'package:sting/engine/systems/complex_ui_render_system.dart';
+import 'package:sting/engine/systems/ui_system.dart';
+import 'package:sting/engine/systems/sprite_render_system.dart';
 
 import 'components/health.dart';
 import 'components/damage.dart';
@@ -58,7 +61,9 @@ class BulletHavenGame {
   late final WeaponSystem weaponSystem;
   late final GameplayCollisionSystem collisionSystem;
   late final PlayerStatsUISystem uiSystem;
-  late final TextRenderSystem textRenderSystem;
+  late final ComplexUIRenderSystem complexUIRenderSystem;
+  late final UISystem mainUISystem;
+  SpriteRenderSystem? spriteRenderSystem;
 
   int frameCount = 0;
   int playerEntityId = -1;
@@ -73,6 +78,18 @@ class BulletHavenGame {
         renderer = Renderer(),
         time = Time() {
     _initEngine();
+  }
+
+  Image _createPlaceholderImage() {
+    final recorder = PictureRecorder();
+    final canvas = Canvas(recorder);
+    final paint = Paint()..color = const Color(0xFF00FF00);
+    canvas.drawRect(const Rect.fromLTWH(0, 0, 32, 32), paint);
+    final picture = recorder.endRecording();
+    // Using an arbitrary size for the synchronous rasterization
+    // dart:ui typically returns a future for toImage, but we can't await in constructor.
+    // However, picture.toImageSync() is available in newer Dart versions (Dart 3+ / Flutter 3.0+)
+    return picture.toImageSync(32, 32);
   }
 
   void _initEngine() {
@@ -91,14 +108,15 @@ class BulletHavenGame {
     scene.registerCaste<ExpGem>('ExpGem', ComponentCaste<ExpGem>(Swarm.maxEntities));
     scene.registerCaste<ExpMagnet>('ExpMagnet', ComponentCaste<ExpMagnet>(1));
     scene.registerCaste<PlayerStats>('PlayerStats', ComponentCaste<PlayerStats>(1));
-    scene.registerCaste<TextRender>('TextRender', ComponentCaste<TextRender>(10));
+    scene.registerCaste<ComplexUI>('ComplexUI', ComponentCaste<ComplexUI>(10));
+    scene.registerCaste<UIBoundingBox>('UIBoundingBox', ComponentCaste<UIBoundingBox>(10));
 
     // 2. Setup Global Game State Entity
     globalStateEntityId = scene.createEntity();
     gameStateSystem = GameStateSystem(scene.getCaste<GameState>('GameState'), globalStateEntityId);
 
-    // Initial state is Menu
-    gameStateSystem.changeState(GameState.stateMenu);
+    // Initial state is Menu, but for the showcase MVP we want it to run immediately
+    gameStateSystem.changeState(GameState.statePlaying);
 
     // 3. Initialize Systems
     inputSystem = InputSystem();
@@ -131,12 +149,25 @@ class BulletHavenGame {
     final xpId = scene.createEntity();
     final healthId = scene.createEntity();
 
-    scene.getCaste<TextRender>('TextRender').add(scoreId, TextRender(text: "Score: 0", x: 10, y: 10));
-    scene.getCaste<TextRender>('TextRender').add(xpId, TextRender(text: "Lvl 1 | XP: 0 / 100", x: 10, y: 30));
-    scene.getCaste<TextRender>('TextRender').add(healthId, TextRender(text: "HP: 100/100", x: 10, y: 50));
+    scene.getCaste<ComplexUI>('ComplexUI').add(scoreId, ComplexUI(text: "Score: 0", x: 10, y: 10, width: 150, height: 20));
+    scene.getCaste<ComplexUI>('ComplexUI').add(xpId, ComplexUI(text: "Lvl 1 | XP: 0 / 100", x: 10, y: 30, width: 200, height: 20));
+    scene.getCaste<ComplexUI>('ComplexUI').add(healthId, ComplexUI(text: "HP: 100/100", x: 10, y: 50, width: 150, height: 20));
+
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(scoreId, UIBoundingBox.fromBounds(x: 10, y: 10, width: 150, height: 20));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(xpId, UIBoundingBox.fromBounds(x: 10, y: 30, width: 200, height: 20));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(healthId, UIBoundingBox.fromBounds(x: 10, y: 50, width: 150, height: 20));
 
     uiSystem = PlayerStatsUISystem(scene, scoreEntityId: scoreId, xpEntityId: xpId, healthEntityId: healthId);
-    textRenderSystem = TextRenderSystem(textRenderCaste: scene.getCaste<TextRender>('TextRender'));
+    complexUIRenderSystem = ComplexUIRenderSystem(complexUICaste: scene.getCaste<ComplexUI>('ComplexUI'));
+    mainUISystem = UISystem(scene.getCaste<UIBoundingBox>('UIBoundingBox'), inputSystem);
+
+    // Initialize SpriteRenderSystem with a mock image for now.
+    spriteRenderSystem = SpriteRenderSystem(
+      atlas: _createPlaceholderImage(),
+      positionCaste: scene.getCaste<Position>('Position'),
+      spriteCaste: scene.getCaste<Sprite>('Sprite'),
+      viewportCaste: scene.getCaste<Viewport>('Viewport'),
+    );
 
     // 4. Create entities
     cameraEntityId = scene.createEntity();
@@ -175,6 +206,7 @@ class BulletHavenGame {
       if (gameStateSystem.shouldUpdateLogic()) {
         final dt = time.dt;
 
+        mainUISystem.update();
         playerInputSystem.update();
         enemySpawnerSystem.update(dt);
         chaseSystem.update();
@@ -196,7 +228,8 @@ class BulletHavenGame {
     dispatcher.onDrawFrame = () {
       renderer.renderFrame(
         onRender: (canvas, size) {
-          textRenderSystem.render(canvas);
+          spriteRenderSystem?.render(canvas);
+          complexUIRenderSystem.render(canvas);
         },
       );
     };

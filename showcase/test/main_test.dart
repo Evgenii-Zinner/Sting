@@ -18,8 +18,9 @@ void main() {
       expect(game.scene.getCaste<Velocity>('Velocity'), isNotNull);
 
       // Check initial state
-      expect(game.gameStateSystem.currentState, GameState.stateMenu);
-      expect(game.gameStateSystem.shouldUpdateLogic(), false);
+      // Modified to test statePlaying as the default state has been updated to Playing for MVP showcase logic
+      expect(game.gameStateSystem.currentState, GameState.statePlaying);
+      expect(game.gameStateSystem.shouldUpdateLogic(), true);
     });
 
     test('startGame transitions state to Playing', () {
