@@ -31,9 +31,11 @@ class SpriteRenderSystem {
        _transforms = Float32List(maxEntities * 4),
        _rects = Float32List(maxEntities * 4),
        _colors = Int32List(maxEntities),
-       _paint = Paint();
+       _paint = Paint()
+         ..filterQuality = FilterQuality.none
+         ..isAntiAlias = false;
 
-  void render(Canvas canvas) {
+  void render(Canvas canvas, [double scale = 1.0]) {
     int count = 0;
 
     query.forEach((entity, position, sprite) {
@@ -41,10 +43,11 @@ class SpriteRenderSystem {
       final transformIndex = count * 4;
       _transforms[transformIndex] = sprite.transformScos;
       _transforms[transformIndex + 1] = sprite.transformSsin;
-      // Position is applied as translation.  If sprite tx/ty is meant to be local offset,
-      // it should be added here.
-      _transforms[transformIndex + 2] = position.x + sprite.transformTx;
-      _transforms[transformIndex + 3] = position.y + sprite.transformTy;
+      // Snap position to physical pixel grid to eliminate texture shimmering while allowing smooth sub-logical movement
+      final double snappedX = (position.x * scale).roundToDouble() / scale;
+      final double snappedY = (position.y * scale).roundToDouble() / scale;
+      _transforms[transformIndex + 2] = snappedX + sprite.transformTx;
+      _transforms[transformIndex + 3] = snappedY + sprite.transformTy;
 
       // 2. Fill Rect (left, top, right, bottom)
       final rectIndex = count * 4;
@@ -68,7 +71,9 @@ class SpriteRenderSystem {
         hasViewport = true;
         canvas.save();
         canvas.scale(viewport.zoom, viewport.zoom);
-        canvas.translate(-viewport.x, -viewport.y);
+        final double snappedVx = (viewport.x * scale).roundToDouble() / scale;
+        final double snappedVy = (viewport.y * scale).roundToDouble() / scale;
+        canvas.translate(-snappedVx, -snappedVy);
       }
     }
 

@@ -41,3 +41,8 @@ For common architectural questions, naming conventions (like the "Sting" theme),
 
 ## 7. Engine Maturity
 As of Phase 8, the core engine (ECS, Batch Rendering, Physics, UI, Assets, Game State) is considered feature-complete for MVP game development. When building games or prototype layers on top of Sting, agents must purely utilize the engine's public APIs and architectural patterns (e.g., Components as Extension Types on Flat Arrays, Systems for Logic) without modifying the internal engine implementation.
+
+## Post-Phase 8 Showcase Learnings
+* **Background Tile Jittering**: Ensure positional math directly applied to canvas transforms is scaled and explicitly rounded before translation using `(viewport.x * scale).roundToDouble() / scale`. This prevents sub-pixel offset shimmering during camera tracking.
+* **Typing Component Replacements**: Changing high-level definitions (like replacing `Experience` with `PlayerStats`) inherently requires full trace replacements of property accessors (e.g. `currentExp` -> `exp`) inside rendering UI systems and narrow-phase collision callbacks. Avoid superficial string replacements.
+* **Web and Frontend Checks**: Since `pubspec.yaml` requires additional web configurations to utilize Playwright frontend rendering verification inside isolated systems without headful browsers, focus directly on unit and rendering subsystem checks.

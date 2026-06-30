@@ -10,7 +10,14 @@ import 'dart:typed_data';
 /// - Color : 1 x 4 bytes = 4 bytes (offset 32)
 extension type Sprite(ByteData data) {
   /// Creates a new Sprite component initialized to zero/transparent.
-  Sprite.create() : this(ByteData(36));
+  static Sprite create() {
+    final s = Sprite(ByteData(36));
+    s.transformScos = 1.0;
+    s.color = 0xFFFFFFFF;
+    s.rectRight = 32.0;
+    s.rectBottom = 32.0;
+    return s;
+  }
 
   // --- Rect ---
 

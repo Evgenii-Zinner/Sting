@@ -5,7 +5,6 @@ import 'package:sting/engine/systems/spatial_hash_grid.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
 import 'package:sting/engine/components/bounding_box.dart';
-import 'package:sting/engine/ecs/query.dart';
 
 import '../components/damage.dart';
 import '../components/health.dart';
@@ -13,7 +12,6 @@ import '../components/exp_gem.dart';
 import '../components/exp_magnet.dart';
 import '../components/player_stats.dart';
 import '../components/enemy_ai.dart';
-import '../components/weapon.dart'; // Just to differentiate projectile from enemy maybe. Actually we can use presence of EnemyAI vs Weapon vs ExpGem etc.
 
 /// A system that handles gameplay specific collisions and logic
 /// such as projectiles hitting enemies, enemies hitting player,

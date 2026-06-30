@@ -17,3 +17,8 @@ dev_dependencies:
   image: ^4.9.1
 
 flutter:
+  assets:
+    - showcase/assets/player.png
+    - showcase/assets/enemy.png
+    - showcase/assets/projectile.png
+    - showcase/assets/tilemap.png

@@ -9,15 +9,15 @@ void main() {
 
       expect(sprite.rectLeft, 0.0);
       expect(sprite.rectTop, 0.0);
-      expect(sprite.rectRight, 0.0);
-      expect(sprite.rectBottom, 0.0);
+      expect(sprite.rectRight, 32.0);
+      expect(sprite.rectBottom, 32.0);
 
-      expect(sprite.transformScos, 0.0);
+      expect(sprite.transformScos, 1.0);
       expect(sprite.transformSsin, 0.0);
       expect(sprite.transformTx, 0.0);
       expect(sprite.transformTy, 0.0);
 
-      expect(sprite.color, 0);
+      expect(sprite.color, 0xFFFFFFFF);
     });
 
     test('getters and setters update underlying memory for rect', () {

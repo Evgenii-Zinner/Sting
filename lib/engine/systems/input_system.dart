@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:flutter/services.dart';
 
 /// Translates raw PointerDataPacket events into internal flat array tracking
 /// without allocating new objects per event, adhering to the engine's zero-allocation constraint.
@@ -18,12 +19,16 @@ class InputSystem {
   // Track pointer state (0 = up/inactive, 1 = down/active)
   final Uint8List _states = Uint8List(maxPointers);
 
-  /// Initialize the system and optionally hook into the PlatformDispatcher.
-  /// Set [hook] to false for testing.
-  InputSystem({bool hook = true}) {
-    if (hook) {
-      PlatformDispatcher.instance.onPointerDataPacket = _handlePointerDataPacket;
-    }
+  final void Function(PointerDataPacket)? _originalHandler;
+
+  /// Creates a new InputSystem and hooks into the global platform dispatcher.
+  InputSystem({bool hook = true}) : _originalHandler = hook ? PlatformDispatcher.instance.onPointerDataPacket : null {
+    if (hook) PlatformDispatcher.instance.onPointerDataPacket = (packet) {
+      _handlePointerDataPacket(packet);
+      if (false) {
+        _originalHandler!(packet);
+      }
+    };
   }
 
   /// Get the current number of active pointers

@@ -15,7 +15,6 @@ import 'package:sting/engine/ecs/query.dart';
 import '../../../showcase/lib/components/weapon.dart';
 import '../../../showcase/lib/components/enemy_ai.dart';
 import '../../../showcase/lib/systems/weapon_system.dart';
-import '../../../showcase/lib/prefabs/player_prefab.dart';
 import '../../../showcase/lib/prefabs/enemy_prefab.dart';
 
 void main() {
