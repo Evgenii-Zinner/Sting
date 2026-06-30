@@ -40,7 +40,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Implement auto-firing logic for the player. Find the nearest enemy and instantiate projectile prefabs aimed in their direction.
   * **Acceptance Criteria:** Projectiles are fired correctly based on intervals and target proximity. Zero allocations during firing. 100% test coverage.
 
-* [ ] **Task 22.6: Damage & Score UI**
+* [x] **Task 22.6: Damage & Score UI**
   * **Role Needed:** Gameplay Scripter
   * **Skill:** `skills/gameplay_scripter.json`
   * **Description:** Hook up collision resolution to apply damage to enemies/player. Manage death states, update score, and render the score via the UI Bounding Box System.

@@ -12,6 +12,9 @@ class TilemapRenderSystem {
   final ComponentCaste<Viewport>? viewportCaste;
   int activeCameraEntity;
 
+  double atlasOffsetX;
+  double atlasOffsetY;
+
   // Pre-allocated arrays for drawAtlas to prevent per-frame allocations.
   // Using maximum capacities. In a real scenario we'd bound this by a reasonable max tiles.
   // 4 floats per transform, 4 floats per rect
@@ -30,21 +33,26 @@ class TilemapRenderSystem {
     required ComponentCaste<Tilemap> tilemapCaste,
     this.viewportCaste,
     this.activeCameraEntity = -1,
+    this.atlasOffsetX = 0.0,
+    this.atlasOffsetY = 0.0,
     int maxTiles = 65535, // Adjust this based on max expected visible tiles
   }) : query = Query2<Position, Tilemap>(positionCaste, tilemapCaste),
        _transforms = Float32List(maxTiles * 4),
        _rects = Float32List(maxTiles * 4),
-       _paint = Paint();
+       _paint = Paint()
+         ..filterQuality = FilterQuality.none
+         ..isAntiAlias = false;
 
-  void render(Canvas canvas) {
+  void render(Canvas canvas, [double scale = 1.0]) {
     int totalTilesDrawn = 0;
 
     query.forEach((entity, position, tilemap) {
       final atlasWidth = atlas.width;
       final tilesPerRow = atlasWidth ~/ tilemap.tileWidth;
 
-      final startX = position.x;
-      final startY = position.y;
+      // Snap start position to physical pixel grid
+      final double startX = (position.x * scale).roundToDouble() / scale;
+      final double startY = (position.y * scale).roundToDouble() / scale;
 
       outer:
       for (int row = 0; row < tilemap.rows; row++) {
@@ -72,8 +80,8 @@ class TilemapRenderSystem {
           final atlasCol = atlasIndex % tilesPerRow;
 
           final rectIndex = totalTilesDrawn * 4;
-          final rectLeft = (atlasCol * tilemap.tileWidth).toDouble();
-          final rectTop = (atlasRow * tilemap.tileHeight).toDouble();
+          final rectLeft = atlasOffsetX + (atlasCol * tilemap.tileWidth).toDouble();
+          final rectTop = atlasOffsetY + (atlasRow * tilemap.tileHeight).toDouble();
           _rects[rectIndex] = rectLeft;
           _rects[rectIndex + 1] = rectTop;
           _rects[rectIndex + 2] = rectLeft + tilemap.tileWidth;
@@ -93,7 +101,9 @@ class TilemapRenderSystem {
         hasViewport = true;
         canvas.save();
         canvas.scale(viewport.zoom, viewport.zoom);
-        canvas.translate(-viewport.x, -viewport.y);
+        final double snappedVx = (viewport.x * scale).roundToDouble() / scale;
+        final double snappedVy = (viewport.y * scale).roundToDouble() / scale;
+        canvas.translate(-snappedVx, -snappedVy);
       }
     }
 

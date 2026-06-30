@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:sting/engine/ecs/scene.dart';
-import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/viewport.dart';
 import '../prefabs/enemy_prefab.dart';
 

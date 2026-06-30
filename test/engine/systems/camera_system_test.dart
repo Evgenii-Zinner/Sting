@@ -36,8 +36,8 @@ void main() {
 
       final updatedViewport = viewportCaste.get(cameraEntity);
       expect(updatedViewport, isNotNull);
-      expect(updatedViewport!.x, closeTo(150.5, 0.001));
-      expect(updatedViewport.y, closeTo(300.2, 0.001));
+      expect(updatedViewport!.x, closeTo(-249.5, 0.001));
+      expect(updatedViewport.y, closeTo(0.2, 0.001));
       expect(updatedViewport.zoom, 1.0); // Should remain unchanged
     });
 

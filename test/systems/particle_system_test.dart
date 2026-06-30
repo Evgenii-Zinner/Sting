@@ -1,6 +1,5 @@
 import 'dart:ui' as ui;
 import 'package:flutter_test/flutter_test.dart';
-import 'dart:typed_data';
 
 import 'package:sting/engine/ecs/component_caste.dart';
 import 'package:sting/engine/components/position.dart';

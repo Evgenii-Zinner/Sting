@@ -15,6 +15,9 @@ extension type GameState(Int32List data) {
   /// State constant for Game Over.
   static const int stateGameOver = 3;
 
+  /// State constant for Level Up.
+  static const int stateLevelUp = 4;
+
   /// Creates a new GameState component with the given [initialState].
   /// Defaults to [stateMenu].
   GameState.create([int initialState = stateMenu]) : this(Int32List(1)..[0] = initialState);
