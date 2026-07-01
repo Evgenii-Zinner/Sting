@@ -18,7 +18,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'flutter build web --target=showcase/lib/main.dart && python3 -m http.server 8080 -d build/web',
+    command: 'flutter build web --target=showcase/lib/test_main.dart --release && npx http-server build/web -p 8080',
     url: 'http://localhost:8080',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
