@@ -114,7 +114,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Implement a virtual resolution system in the rendering pipeline. The canvas must scale to fit the physical device dimensions while maintaining a fixed aspect ratio (via letterboxing/pillarboxing) so the game renders identically across all screens.
   * **Acceptance Criteria:** Game renders consistently on different screen sizes and ratios. 100% test coverage.
 
-* [ ] **Task 20.4: E2E Visual Testing with Playwright**
+* [x] **Task 20.4: E2E Visual Testing with Playwright**
   * **Role Needed:** QA Engineer
   * **Skill:** `skills/qa_engineer.json`
   * **Description:** Setup an E2E testing environment using Playwright (via a `package.json` and a test script in `test/e2e/`). The test should launch a local web server serving the compiled web build, load the canvas, and capture a visual snapshot to compare against a baseline. Tests must explicitly ensure visibility and proper rendering of the player, UI elements, ground tiles, and enemies.

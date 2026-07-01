@@ -1,0 +1,29 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "A bare-metal, high-performance 2D game engine for Dart, designed for massive entity counts and uncompromising performance.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npx playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Evgenii-Zinner/Sting.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Evgenii-Zinner/Sting/issues"
+  },
+  "homepage": "https://github.com/Evgenii-Zinner/Sting#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.61.1"
+  }
+}
