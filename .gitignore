@@ -47,3 +47,6 @@ windows/
 web/
 .dart_tool/
 .idea/
+node_modules/
+playwright-report/
+test-results/
