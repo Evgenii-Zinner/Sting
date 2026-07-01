@@ -60,6 +60,7 @@ void main() async {
     while (game.time.consumeFixedStep()) {
       if (game.gameStateSystem.shouldUpdateLogic()) {
         final dt = game.time.fixedDeltaTime;
+        game.animationSystem.update(dt);
         game.mainUISystem.update();
         game.playerInputSystem.update();
         game.enemySpawnerSystem.update(dt);
@@ -78,6 +79,7 @@ void main() async {
   dispatcher.onDrawFrame = () {
     game.renderer.renderFrame(
       onRender: (canvas, size) {
+        game.tilemapRenderSystem.render(canvas);
         game.spriteRenderSystem?.render(canvas);
         game.complexUIRenderSystem.render(canvas);
       },
