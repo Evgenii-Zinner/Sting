@@ -32,6 +32,9 @@ import 'package:sting/engine/components/ui_bounding_box.dart';
 import 'package:sting/engine/systems/complex_ui_render_system.dart';
 import 'package:sting/engine/systems/ui_system.dart';
 import 'package:sting/engine/systems/sprite_render_system.dart';
+import 'package:sting/engine/systems/animation_system.dart';
+import 'package:sting/engine/components/tilemap.dart';
+import 'package:sting/engine/systems/tilemap_render_system.dart';
 
 import 'components/health.dart';
 import 'components/damage.dart';
@@ -67,6 +70,8 @@ class BulletHavenGame {
   late final ComplexUIRenderSystem complexUIRenderSystem;
   late final UISystem mainUISystem;
   SpriteRenderSystem? spriteRenderSystem;
+  late final AnimationSystem animationSystem;
+  late final TilemapRenderSystem tilemapRenderSystem;
 
   int frameCount = 0;
   int playerEntityId = -1;
@@ -101,6 +106,7 @@ class BulletHavenGame {
     scene.registerCaste<PlayerStats>('PlayerStats', ComponentCaste<PlayerStats>(1));
     scene.registerCaste<ComplexUI>('ComplexUI', ComponentCaste<ComplexUI>(10));
     scene.registerCaste<UIBoundingBox>('UIBoundingBox', ComponentCaste<UIBoundingBox>(10));
+    scene.registerCaste<Tilemap>('Tilemap', ComponentCaste<Tilemap>(1));
 
     // 2. Setup Global Game State Entity
     globalStateEntityId = scene.createEntity();
@@ -160,9 +166,34 @@ class BulletHavenGame {
       viewportCaste: scene.getCaste<Viewport>('Viewport'),
     );
 
+    animationSystem = AnimationSystem(
+      spriteCaste: scene.getCaste<Sprite>('Sprite'),
+      spriteAnimationCaste: scene.getCaste<SpriteAnimation>('SpriteAnimation'),
+    );
+
+    tilemapRenderSystem = TilemapRenderSystem(
+      atlas: atlas,
+      positionCaste: scene.getCaste<Position>('Position'),
+      tilemapCaste: scene.getCaste<Tilemap>('Tilemap'),
+      viewportCaste: scene.getCaste<Viewport>('Viewport'),
+    );
+
     // 4. Create entities
     cameraEntityId = scene.createEntity();
     scene.getCaste<Viewport>('Viewport').add(cameraEntityId, Viewport.create());
+
+    spriteRenderSystem?.activeCameraEntity = cameraEntityId;
+    tilemapRenderSystem.activeCameraEntity = cameraEntityId;
+
+    final tilemapEntity = scene.createEntity();
+    scene.getCaste<Position>('Position').add(tilemapEntity, Position.create(0.0, 0.0));
+    final tilemap = Tilemap.create(100, 100, 32, 32);
+    for (var col = 0; col < 100; col++) {
+      for (var row = 0; row < 100; row++) {
+        tilemap.setTile(col, row, 0);
+      }
+    }
+    scene.getCaste<Tilemap>('Tilemap').add(tilemapEntity, tilemap);
 
     playerEntityId = spawnPlayer(scene, 0.0, 0.0);
     playerInputSystem.setPlayerEntity(playerEntityId);
@@ -198,6 +229,7 @@ class BulletHavenGame {
         if (gameStateSystem.shouldUpdateLogic()) {
           final dt = time.fixedDeltaTime;
 
+          animationSystem.update(dt);
           mainUISystem.update();
           playerInputSystem.update();
           enemySpawnerSystem.update(dt);
@@ -221,6 +253,7 @@ class BulletHavenGame {
     dispatcher.onDrawFrame = () {
       renderer.renderFrame(
         onRender: (canvas, size) {
+          tilemapRenderSystem.render(canvas);
           spriteRenderSystem?.render(canvas);
           complexUIRenderSystem.render(canvas);
         },

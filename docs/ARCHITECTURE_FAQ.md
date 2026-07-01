@@ -92,3 +92,8 @@ Welcome to the Sting Engine Architecture FAQ. Please review these questions and 
 
 ## Phase 8 Details (Prototype Assembly / Showcase)
 Phase 8 is currently in progress. The focus is on assembling a Bullet Haven MVP game showcase using the fully mature engine APIs. The engine core is considered feature-complete for MVP game development, and no internal modifications to the core `lib/` source code are permitted—only application-level logic built on top (e.g., inside `showcase/`). If an engine feature is discovered to be missing, it must be flagged for an engine developer rather than modifying the core during scripting. All placeholder assets are procedurally generated to avoid manual art dependencies.
+
+## Prototype Assembly
+
+### Q: Why did the showcase render as a black screen with just UI initially?
+**A:** The `TilemapRenderSystem` and `AnimationSystem` were not properly wired into the `BulletHavenGame` systems list and update loops. Since no tilemap was rendered for the background, and `AnimationSystem` wasn't updating `Sprite` source rects (which default to 0x0 on creation), nothing but the screen-space UI bounding boxes appeared. Wiring the systems into the `dt` update loop and the `onRender` canvas callback resolves this.
