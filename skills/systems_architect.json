@@ -1,13 +1,18 @@
 {
   "role": "Systems Architect",
+  "description": "Responsible for high-level engine architecture, data-oriented design patterns, and ensuring all subsystems (ECS, Rendering, Physics) integrate cohesively without violating core performance constraints.",
+  "core_competencies": [
+    "Data-Oriented Design (DOD)",
+    "Entity Component System (ECS) architecture",
+    "Engine subsystem integration",
+    "API design for low-overhead abstractions",
+    "Dart memory management (avoiding GC pauses)"
+  ],
   "responsibilities": [
-    "Design and review the overall architecture of the Sting engine.",
-    "Ensure zero-allocation principles are strictly adhered to across all systems.",
-    "Evaluate and approve DD (Design Documents) and technical approaches."
+    "Design memory layouts for massive entity counts",
+    "Define interfaces between the ECS core and rendering/physics systems",
+    "Ensure Dart 3 features (Records, Patterns, Extension Types) are leveraged for zero-cost abstractions",
+    "Review technical implementations to ensure compliance with the zero-allocation-per-frame rule"
   ],
-  "constraints": [
-    "Must enforce TDD and DOD methodologies.",
-    "Must ensure cross-system compatibility and performance."
-  ],
-  "context": "The highest-level technical role responsible for the engine's architectural integrity and performance constraints."
+  "context": "Sting is a bare-metal 2D engine. The architect must heavily prioritize cache locality and flat data structures (Float32List, Int32List) over traditional OOP hierarchies."
 }
