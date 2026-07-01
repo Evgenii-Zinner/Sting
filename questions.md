@@ -1,0 +1,9 @@
+# E2E Testing for Showcase Game Questions/Blockers
+
+1.  **Non-deterministic Rendering:** The showcase game currently uses `showcase/lib/main.dart` which starts in the `Playing` state, has time-based components (like `time.update(timeStamp.inMicroseconds)`), dynamic spatial hashing, and enemy spawning algorithms that depend on time and potentially randomized inputs or slightly differing delta times based on Playwright's execution speed. This makes taking a pixel-perfect "visual regression" snapshot extremely flaky. To verify the rendering of the player, UI, tiles, and enemies, should we create a deterministic entry point (e.g., `showcase/lib/test_main.dart`) that manually ticks the engine with a fixed delta time and statically places enemies?
+
+2.  **Element Verification:** The task explicitly asks to "verify rendering of player, UI, tiles, and enemies". Because Sting uses `dart:ui` `drawAtlas` and `drawParagraph` directly onto a single `<flutter-view>` (which hosts an HTML `<canvas>` internally), Playwright cannot query the DOM for these elements. The only way to verify them is via `toHaveScreenshot` on the whole canvas. Is relying entirely on a snapshot comparison of the canvas the expected way to "verify rendering of player, UI, tiles, and enemies"? If so, what should the baseline image be, or should I just commit the first snapshot generated?
+
+3.  **Playwright Configuration:** The current `test/e2e/visual.spec.ts` only captures a baseline snapshot `canvas-baseline.png` for a generic engine render. To test the showcase specifically, we should probably update `playwright.config.ts`'s `webServer.command` to point to `showcase/lib/main.dart` or our deterministic entry point, right?
+
+Please advise on the best approach to ensure stable and meaningful E2E visual tests given the constraints of a purely canvas-rendered, non-deterministic game loop.
