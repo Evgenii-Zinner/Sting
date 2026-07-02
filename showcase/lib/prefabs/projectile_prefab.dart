@@ -12,7 +12,14 @@ int spawnProjectile(Scene scene, double startX, double startY, double dx, double
   if (projectileEntity != -1) {
     scene.getCaste<Position>('Position').add(projectileEntity, Position.create(startX, startY));
     scene.getCaste<Velocity>('Velocity').add(projectileEntity, Velocity.create(dx, dy));
-    scene.getCaste<Sprite>('Sprite').add(projectileEntity, Sprite.create());
+
+    final sprite = Sprite.create();
+    // Atlas projectile frame starts at y = 192, size is 16x16
+    sprite.rectLeft = 0.0;
+    sprite.rectTop = 192.0;
+    sprite.rectRight = 16.0;
+    sprite.rectBottom = 208.0;
+    scene.getCaste<Sprite>('Sprite').add(projectileEntity, sprite);
 
     // Projectiles generally have a smaller hitbox
     scene.getCaste<BoundingBox>('BoundingBox').add(projectileEntity, BoundingBox.create(8.0, 8.0));

@@ -60,7 +60,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Update `test_main.dart` to freeze RNG seeds entirely, disable random enemy spawners, and manually place key entities (player, enemies, gems) at exact coordinates so the simulation always resolves to an identical state. Expand `getGameState` JS interop to expose these elements.
   * **Acceptance Criteria:** Repeated runs of `test_main.dart` produce the exact same internal positions down to the float precision.
 
-* [ ] **Task 23.3: Playwright Visual Regression Tests**
+* [x] **Task 23.3: Playwright Visual Regression Tests**
   * **Role Needed:** E2E Test Engineer
   * **Skill:** `skills/e2e_test_engineer.json`
   * **Description:** Implement the actual Playwright tests inside `test/e2e/`. The tests should await the `<flutter-view>`, call the `getGameState()` JS function to assert logic is correct, and capture visual snapshots of the canvas to serve as visual contracts for future engine updates.

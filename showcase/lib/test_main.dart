@@ -58,7 +58,7 @@ void registerTestHooks(BulletHavenGame engine) {
 }
 
 void main() async {
-  final atlas = await AssetLoader.loadEmbeddedImage(EmbeddedAssets.assets['tilemap.png']!);
+  final atlas = await AssetLoader.loadEmbeddedImage(EmbeddedAssets.assets['atlas.png']!);
   final game = BulletHavenGame(atlas);
 
   registerTestHooks(game);

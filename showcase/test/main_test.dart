@@ -1,16 +1,42 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'dart:ui' as ui;
+import 'dart:typed_data';
 import 'package:sting/engine/components/game_state.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
 
 import '../lib/main.dart';
 
+class MockImage implements ui.Image {
+  @override
+  int get width => 100;
+  @override
+  int get height => 100;
+  @override
+  void dispose() {}
+  @override
+  Future<ByteData?> toByteData({ui.ImageByteFormat format = ui.ImageByteFormat.rawRgba}) async => null;
+  @override
+  ui.ColorSpace get colorSpace => ui.ColorSpace.sRGB;
+  @override
+  bool get debugDisposed => false;
+  @override
+  MockImage clone() => this;
+  @override
+  bool get isCloneOfBase => false;
+  @override
+  List<StackTrace>? debugGetOpenHandleStackTraces() => null;
+  @override
+  bool isCloneOf(ui.Image other) => false;
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('Bullet Haven Game MVP Setup Tests', () {
     test('Engine initializes correctly with castes registered', () {
-      final game = BulletHavenGame();
+      final mockImage = MockImage();
+      final game = BulletHavenGame(mockImage);
 
       // Check that castes exist
       expect(game.scene.getCaste<GameState>('GameState'), isNotNull);
@@ -24,7 +50,8 @@ void main() {
     });
 
     test('startGame transitions state to Playing', () {
-      final game = BulletHavenGame();
+      final mockImage = MockImage();
+      final game = BulletHavenGame(mockImage);
 
       game.startGame();
 

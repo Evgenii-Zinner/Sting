@@ -190,7 +190,8 @@ class BulletHavenGame {
     final tilemap = Tilemap.create(100, 100, 32, 32);
     for (var col = 0; col < 100; col++) {
       for (var row = 0; row < 100; row++) {
-        tilemap.setTile(col, row, 0);
+        // ID 1 represents the grass tile at (0,0) in our new combined atlas
+        tilemap.setTile(col, row, 1);
       }
     }
     scene.getCaste<Tilemap>('Tilemap').add(tilemapEntity, tilemap);
@@ -270,6 +271,7 @@ class BulletHavenGame {
 }
 
 void main() async {
-  final atlas = await AssetLoader.loadEmbeddedImage(EmbeddedAssets.assets['tilemap.png']!);
+  // Load the main sprite sheet (atlas.png which acts as a combined atlas)
+  final atlas = await AssetLoader.loadEmbeddedImage(EmbeddedAssets.assets['atlas.png']!);
   BulletHavenGame(atlas);
 }
