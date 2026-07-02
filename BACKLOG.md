@@ -54,7 +54,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Audit existing subsystems, especially components and rendering logic written during the on-the-fly MVP creation, to ensure they strictly adhere to our zero-allocation standards. Revert or formalize any temporary hacks into proper Engine APIs.
   * **Acceptance Criteria:** Engine code strictly complies with `AGENTS.md` rules.
 
-* [ ] **Task 23.2: E2E Deterministic Setup**
+* [x] **Task 23.2: E2E Deterministic Setup**
   * **Role Needed:** E2E Test Engineer
   * **Skill:** `skills/e2e_test_engineer.json`
   * **Description:** Update `test_main.dart` to freeze RNG seeds entirely, disable random enemy spawners, and manually place key entities (player, enemies, gems) at exact coordinates so the simulation always resolves to an identical state. Expand `getGameState` JS interop to expose these elements.
