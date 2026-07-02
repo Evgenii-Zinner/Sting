@@ -46,6 +46,26 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Hook up collision resolution to apply damage to enemies/player. Manage death states, update score, and render the score via the UI Bounding Box System.
   * **Acceptance Criteria:** Health depletes correctly, scores update, and UI renders changes efficiently. 100% test coverage.
 
+## 23. Engine Stabilization & Visual Regression (Phase 9)
+
+* [ ] **Task 23.1: Audit Engine Subsystems**
+  * **Role Needed:** AI Orchestrator / QA SDET Engineer
+  * **Skill:** `skills/qa_sdet_engineer.json`
+  * **Description:** Audit existing subsystems, especially components and rendering logic written during the on-the-fly MVP creation, to ensure they strictly adhere to our zero-allocation standards. Revert or formalize any temporary hacks into proper Engine APIs.
+  * **Acceptance Criteria:** Engine code strictly complies with `AGENTS.md` rules.
+
+* [ ] **Task 23.2: E2E Deterministic Setup**
+  * **Role Needed:** E2E Test Engineer
+  * **Skill:** `skills/e2e_test_engineer.json`
+  * **Description:** Update `test_main.dart` to freeze RNG seeds entirely, disable random enemy spawners, and manually place key entities (player, enemies, gems) at exact coordinates so the simulation always resolves to an identical state. Expand `getGameState` JS interop to expose these elements.
+  * **Acceptance Criteria:** Repeated runs of `test_main.dart` produce the exact same internal positions down to the float precision.
+
+* [ ] **Task 23.3: Playwright Visual Regression Tests**
+  * **Role Needed:** E2E Test Engineer
+  * **Skill:** `skills/e2e_test_engineer.json`
+  * **Description:** Implement the actual Playwright tests inside `test/e2e/`. The tests should await the `<flutter-view>`, call the `getGameState()` JS function to assert logic is correct, and capture visual snapshots of the canvas to serve as visual contracts for future engine updates.
+  * **Acceptance Criteria:** `npx playwright test` succeeds consistently on CI/CD with valid snapshot verifications.
+
 ## Completed Phase 7 Tasks
 
 ## 20. Audio Enhancements
