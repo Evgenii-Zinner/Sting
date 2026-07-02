@@ -20,9 +20,22 @@ class GameplayCollisionSystem {
   final Scene _scene;
   final SpatialHashGrid _grid;
 
+  // Pre-allocated collections to avoid per-frame GC allocations
+  // Calling .clear() keeps the underlying capacity without reallocating
+  final List<int> _toDestroy = [];
+
+  final List<double> _spawnGemX = [];
+  final List<double> _spawnGemY = [];
+  final List<int> _spawnGemVal = [];
+
   GameplayCollisionSystem(this._scene, this._grid);
 
   void update(int playerEntityId) {
+    _toDestroy.clear();
+    _spawnGemX.clear();
+    _spawnGemY.clear();
+    _spawnGemVal.clear();
+
     final positionCaste = _scene.getCaste<Position>('Position');
     final velocityCaste = _scene.getCaste<Velocity>('Velocity');
     final boundingBoxCaste = _scene.getCaste<BoundingBox>('BoundingBox');
@@ -33,10 +46,6 @@ class GameplayCollisionSystem {
     final expMagnetCaste = _scene.getCaste<ExpMagnet>('ExpMagnet');
     final playerStatsCaste = _scene.getCaste<PlayerStats>('PlayerStats');
     final enemyAICaste = _scene.getCaste<EnemyAI>('EnemyAI');
-
-    // To handle deletions safely while iterating, we collect them first
-    final List<int> toDestroy = [];
-    final List<Map<String, dynamic>> toSpawnGems = [];
 
     // 1. Process Projectiles
     // A projectile is an entity with Damage but NO EnemyAI (so it's not an enemy dealing damage via touch).
@@ -53,7 +62,7 @@ class GameplayCollisionSystem {
       final dmgComp = damageCaste.get(dmgEntity);
 
       if (dmgPos == null || dmgBox == null || dmgComp == null) continue;
-      if (toDestroy.contains(dmgEntity)) continue;
+      if (_toDestroy.contains(dmgEntity)) continue;
 
       bool projectileDestroyed = false;
 
@@ -74,14 +83,19 @@ class GameplayCollisionSystem {
               targetHealth.current -= dmgComp.amount;
 
               // Destroy projectile
-              if (!toDestroy.contains(dmgEntity)) toDestroy.add(dmgEntity);
+              if (!_toDestroy.contains(dmgEntity)) {
+                _toDestroy.add(dmgEntity);
+              }
               projectileDestroyed = true;
 
               // Check if enemy died
               if (targetHealth.current <= 0) {
-                if (!toDestroy.contains(foundEntity)) {
-                  toDestroy.add(foundEntity);
-                  toSpawnGems.add({'x': targetPos.x, 'y': targetPos.y, 'val': 10});
+                if (!_toDestroy.contains(foundEntity)) {
+                  _toDestroy.add(foundEntity);
+
+                  _spawnGemX.add(targetPos.x);
+                  _spawnGemY.add(targetPos.y);
+                  _spawnGemVal.add(10);
 
                   // Add score
                   final stats = playerStatsCaste.get(playerEntityId);
@@ -175,8 +189,8 @@ class GameplayCollisionSystem {
                          }
                       }
                       // Destroy gem
-                      if (!toDestroy.contains(foundEntity)) {
-                        toDestroy.add(foundEntity);
+                      if (!_toDestroy.contains(foundEntity)) {
+                         _toDestroy.add(foundEntity);
                       }
                    }
                 }
@@ -187,11 +201,11 @@ class GameplayCollisionSystem {
     }
 
     // Process queued spawns and destroys
-    for (var gem in toSpawnGems) {
-      _spawnExpGem(gem['x'] as double, gem['y'] as double, gem['val'] as int);
+    for (int i = 0; i < _spawnGemX.length; i++) {
+      _spawnExpGem(_spawnGemX[i], _spawnGemY[i], _spawnGemVal[i]);
     }
-    for (var entity in toDestroy) {
-      _scene.destroyEntity(entity);
+    for (int i = 0; i < _toDestroy.length; i++) {
+      _scene.destroyEntity(_toDestroy[i]);
     }
   }
 

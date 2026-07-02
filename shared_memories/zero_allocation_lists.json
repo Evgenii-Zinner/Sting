@@ -1,0 +1,11 @@
+{
+  "topic": "Zero Allocation Temporary Lists",
+  "decisions": [
+    "To achieve zero per-frame allocations for temporary collections (e.g., collecting entities to destroy or spawn parameters), define them as class-level Dart lists (like `final List<int> _toDestroy = [];`) and call `.clear()` at the start of the `update` loop."
+  ],
+  "avoided_paths": [
+    "Do not use fixed-size arrays (like `Int32List(100)`) unless strictly necessary, as they introduce hard limits that can silently break gameplay when exceeded (e.g., massive collision frames).",
+    "Do not instantiate `Map` objects or complex lists inside the frame loop. Flatten properties into parallel primitive arrays (e.g., `_spawnX`, `_spawnY`, `_spawnVal`)."
+  ],
+  "context": "A previous attempt to use `Int32List(100)` for collision deletion queues caused a critical bug where collisions exceeding the limit were silently dropped. Dart's `List.clear()` retains the internal capacity buffer, naturally achieving GC-free memory reuse without capping the bounds."
+}
