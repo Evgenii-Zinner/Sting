@@ -16,13 +16,20 @@ int spawnPlayer(Scene scene, double startX, double startY) {
   if (playerEntity != -1) {
     scene.getCaste<Position>('Position').add(playerEntity, Position.create(startX, startY));
     scene.getCaste<Velocity>('Velocity').add(playerEntity, Velocity.create(0.0, 0.0));
-    scene.getCaste<Sprite>('Sprite').add(playerEntity, Sprite.create());
+
+    final sprite = Sprite.create();
+    // Atlas player frames start at y = 128
+    sprite.rectLeft = 0.0;
+    sprite.rectTop = 128.0;
+    sprite.rectRight = 32.0;
+    sprite.rectBottom = 160.0;
+    scene.getCaste<Sprite>('Sprite').add(playerEntity, sprite);
 
     // Placeholder animation: 4 frames, 0.1s duration, frame size 32x32.
-    scene.getCaste<SpriteAnimation>('SpriteAnimation').add(
-      playerEntity,
-      SpriteAnimation.create(0.1, 4, frameWidth: 32.0, frameHeight: 32.0)
-    );
+    final anim = SpriteAnimation.create(0.1, 4, frameWidth: 32.0, frameHeight: 32.0);
+    // Because frames in atlas are laid out horizontally, no need to update rectTop dynamically here,
+    // but the system will animate rectLeft and rectRight
+    scene.getCaste<SpriteAnimation>('SpriteAnimation').add(playerEntity, anim);
 
     // Hitbox smaller than visual size for better gameplay feel
     scene.getCaste<BoundingBox>('BoundingBox').add(playerEntity, BoundingBox.create(16.0, 24.0));
