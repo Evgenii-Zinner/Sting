@@ -299,3 +299,17 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
 * [x] **Implement Query engine**
 * [x] **Implement Render System (Sprite Component + `drawAtlas`)**
 * [x] **Implement spatial hashing for basic bounds checking**
+
+## 24. Integration Testing Pivot (Phase 10)
+
+* [ ] **Task 24.1: Cleanup E2E Artifacts**
+  * **Role Needed:** QA Engineer
+  * **Skill:** `skills/qa_engineer.json`
+  * **Description:** Remove the problematic Playwright E2E environment. Delete `playwright.config.ts`, `package.json`, `package-lock.json`, the `test/e2e/` directory, `showcase/lib/test_main.dart`, and `docs/E2E_TESTING_GUIDE.md`. The focus is shifting to programmatic internal integration tests rather than visual snapshots.
+  * **Acceptance Criteria:** E2E files are successfully removed from the repository.
+
+* [ ] **Task 24.2: Robust Subsystem Integration Testing**
+  * **Role Needed:** QA SDET Engineer
+  * **Skill:** `skills/qa_sdet_engineer.json`
+  * **Description:** Write programmatic internal integration tests (e.g. using `flutter_test` and `MockCanvas`) to verify the ECS pipeline, physics updates, and rendering output directly. This avoids the flakiness of rendering against an opaque `<flutter-view>` canvas and guarantees correct internal states.
+  * **Acceptance Criteria:** A new suite of robust integration tests is implemented in `test/`, successfully covering core game logic and render pipeline callbacks. 100% pass rate.
