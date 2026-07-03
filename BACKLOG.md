@@ -347,3 +347,29 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Skill:** `skills/ui_rendering_engineer.json`
   * **Description:** Implement interactive UI components using `ComplexUI` and `UIBoundingBox` within the Star System showcase. The UI must allow the player to add new bodies (planets or asteroids) and tweak their initial velocities or masses to see how they affect the star system.
   * **Acceptance Criteria:** User can interact with UI elements on screen to dynamically spawn new entities with `Mass`, `Position`, and `Velocity`. UI interaction must correctly use the `UISystem` without Flutter widgets. Zero per-frame allocations during the render loop.
+
+## 27. Phase 13: Popular Engine Features & Quality of Life
+
+* [ ] **Task 27.1: Parallax Scrolling System**
+  * **Role Needed:** Rendering Engineer
+  * **Skill:** `skills/rendering_engineer.json`
+  * **Description:** Implement a zero-allocation parallax scrolling background system, enabling multiple layers with different scroll speeds relative to the main viewport.
+  * **Acceptance Criteria:** Parallax layers scroll seamlessly without per-frame memory allocation. 100% test coverage.
+
+* [ ] **Task 27.2: Built-in Joypad/Gamepad Component**
+  * **Role Needed:** Input Engineer
+  * **Skill:** `skills/input_engineer.json`
+  * **Description:** Add standard support for external gamepads/joypads using flat arrays for analog sticks and button states.
+  * **Acceptance Criteria:** Joypad inputs are mapped into the ECS correctly and efficiently without object instantiation per input event. 100% test coverage.
+
+* [ ] **Task 27.3: Control Schemes and Input Mapping**
+  * **Role Needed:** Input Engineer
+  * **Skill:** `skills/input_engineer.json`
+  * **Description:** Implement a robust Input Mapping abstraction layer to allow users to bind multiple physical inputs (keyboard, pointer, joypad) to abstract game actions.
+  * **Acceptance Criteria:** Input mappings resolve dynamically with zero allocations. 100% test coverage.
+
+* [ ] **Task 27.4: 2D Lighting and Material System**
+  * **Role Needed:** Rendering Engineer
+  * **Skill:** `skills/rendering_engineer.json`
+  * **Description:** Introduce an efficient 2D lighting and shading model that integrates cleanly with `Canvas.drawRawAtlas` and custom shaders.
+  * **Acceptance Criteria:** Light sources and basic materials can be applied to sprites without breaking the single-batch rendering optimizations. 100% test coverage.
