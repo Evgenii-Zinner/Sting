@@ -336,7 +336,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
 
 ## 26. Star System Showcase MVP (Phase 12)
 
-* [ ] **Task 26.1: Star System Simulation & Logic Setup**
+* [x] **Task 26.1: Star System Simulation & Logic Setup**
   * **Role Needed:** Gameplay Scripter
   * **Skill:** `skills/gameplay_scripter.json`
   * **Description:** Create a new showcase game in a dedicated directory (`showcase_starsystem/`) to demonstrate the new N-Body physics mechanics. Utilize `GravitySystem`, `MovementSystem`, `SpriteRenderSystem`, and `GameStateSystem`. Implement logic to spawn an initial central star and some orbiting planets.
