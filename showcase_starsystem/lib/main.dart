@@ -16,9 +16,15 @@ import 'package:sting/engine/systems/game_state_system.dart';
 import 'package:sting/engine/systems/gravity_system.dart';
 import 'package:sting/engine/systems/movement_system.dart';
 import 'package:sting/engine/systems/sprite_render_system.dart';
+import 'package:sting/engine/components/complex_ui.dart';
+import 'package:sting/engine/components/ui_bounding_box.dart';
+import 'package:sting/engine/systems/complex_ui_render_system.dart';
+import 'package:sting/engine/systems/input_system.dart';
+import 'package:sting/engine/systems/ui_system.dart';
 
 import 'embedded_assets.dart';
 import 'package:sting/engine/assets/asset_loader.dart';
+import 'dart:math' as math;
 
 class StarSystemGame {
   final Scene scene;
@@ -32,12 +38,25 @@ class StarSystemGame {
   late final MovementSystem movementSystem;
   late final GravitySystem gravitySystem;
   SpriteRenderSystem? spriteRenderSystem;
+  late final InputSystem inputSystem;
+  late final UISystem uiSystem;
+  late final ComplexUIRenderSystem complexUIRenderSystem;
 
   int frameCount = 0;
   int cameraEntityId = -1;
 
   double screenWidth = 0.0;
   double screenHeight = 0.0;
+
+  int spawnPlanetBtnId = -1;
+  int spawnAsteroidBtnId = -1;
+  int spawnCometBtnId = -1;
+
+  bool _wasPlanetBtnPressed = false;
+  bool _wasAsteroidBtnPressed = false;
+  bool _wasCometBtnPressed = false;
+
+  final math.Random _random = math.Random();
 
   StarSystemGame(this.atlas)
       : scene = Scene(),
@@ -54,6 +73,8 @@ class StarSystemGame {
     scene.registerCaste<Mass>('Mass', ComponentCaste<Mass>(Swarm.maxEntities));
     scene.registerCaste<Sprite>('Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
     scene.registerCaste<Viewport>('Viewport', ComponentCaste<Viewport>(1));
+    scene.registerCaste<ComplexUI>('ComplexUI', ComponentCaste<ComplexUI>(Swarm.maxEntities));
+    scene.registerCaste<UIBoundingBox>('UIBoundingBox', ComponentCaste<UIBoundingBox>(Swarm.maxEntities));
 
     // 2. Setup Global Game State Entity
     globalStateEntityId = scene.createEntity();
@@ -80,6 +101,15 @@ class StarSystemGame {
       viewportCaste: scene.getCaste<Viewport>('Viewport'),
     );
 
+    inputSystem = InputSystem();
+    uiSystem = UISystem(
+      scene.getCaste<UIBoundingBox>('UIBoundingBox'),
+      inputSystem,
+    );
+    complexUIRenderSystem = ComplexUIRenderSystem(
+      complexUICaste: scene.getCaste<ComplexUI>('ComplexUI'),
+    );
+
     // 4. Create Camera
     cameraEntityId = scene.createEntity();
     final viewport = Viewport.create();
@@ -91,6 +121,7 @@ class StarSystemGame {
     spriteRenderSystem?.activeCameraEntity = cameraEntityId;
 
     _spawnStarSystem();
+    _createUI();
 
     // 5. Setup Platform Dispatcher
     final dispatcher = PlatformDispatcher.instance;
@@ -113,6 +144,13 @@ class StarSystemGame {
       frameCount++;
       time.update(timeStamp.inMicroseconds);
 
+      // Ensure UI buttons have correct physical bounds before checking interaction
+      _updateUIBounds();
+
+      // UI Interaction
+      uiSystem.update();
+      _handleUIInteractions();
+
       while (time.consumeFixedStep()) {
         if (gameStateSystem.shouldUpdateLogic()) {
           final dt = time.fixedDeltaTime;
@@ -128,6 +166,7 @@ class StarSystemGame {
       renderer.renderFrame(
         onRender: (canvas, size) {
           spriteRenderSystem?.render(canvas);
+          complexUIRenderSystem.render(canvas);
         },
       );
     };
@@ -186,6 +225,105 @@ class StarSystemGame {
     planet2Sprite.transformTx = -8;
     planet2Sprite.transformTy = -8;
     scene.getCaste<Sprite>('Sprite').add(planet2Id, planet2Sprite);
+  }
+
+  void _createUI() {
+    // Planet Button
+    spawnPlanetBtnId = scene.createEntity();
+    scene.getCaste<ComplexUI>('ComplexUI').add(spawnPlanetBtnId, ComplexUI(
+      text: 'Spawn Planet', x: 10, y: 10, width: 200, height: 40,
+      backgroundColor: 0xFF444444, textColor: 0xFFFFFFFF, borderRadius: 4.0, fontSize: 16.0,
+    ));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(spawnPlanetBtnId, UIBoundingBox.fromBounds(x: 10, y: 10, width: 200, height: 40));
+
+    // Asteroid Button
+    spawnAsteroidBtnId = scene.createEntity();
+    scene.getCaste<ComplexUI>('ComplexUI').add(spawnAsteroidBtnId, ComplexUI(
+      text: 'Spawn Heavy Asteroid', x: 10, y: 60, width: 200, height: 40,
+      backgroundColor: 0xFF444444, textColor: 0xFFFFFFFF, borderRadius: 4.0, fontSize: 16.0,
+    ));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(spawnAsteroidBtnId, UIBoundingBox.fromBounds(x: 10, y: 60, width: 200, height: 40));
+
+    // Comet Button
+    spawnCometBtnId = scene.createEntity();
+    scene.getCaste<ComplexUI>('ComplexUI').add(spawnCometBtnId, ComplexUI(
+      text: 'Spawn Fast Comet', x: 10, y: 110, width: 200, height: 40,
+      backgroundColor: 0xFF444444, textColor: 0xFFFFFFFF, borderRadius: 4.0, fontSize: 16.0,
+    ));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(spawnCometBtnId, UIBoundingBox.fromBounds(x: 10, y: 110, width: 200, height: 40));
+  }
+
+  void _updateUIBounds() {
+    final dispatcher = PlatformDispatcher.instance;
+    if (dispatcher.views.isEmpty) return;
+
+    final view = dispatcher.views.first;
+    final physicalSize = view.physicalSize;
+    if (physicalSize.isEmpty) return;
+
+    final rect = renderer.calculateVirtualRect(physicalSize);
+    double scale = rect.width / (renderer.virtualWidth ?? 800);
+
+    void updateBox(int entityId, double vx, double vy, double vw, double vh) {
+      if (entityId == -1) return;
+      final box = scene.getCaste<UIBoundingBox>('UIBoundingBox').get(entityId);
+      if (box != null) {
+        box.x = rect.left + vx * scale;
+        box.y = rect.top + vy * scale;
+        box.width = vw * scale;
+        box.height = vh * scale;
+      }
+    }
+
+    updateBox(spawnPlanetBtnId, 10, 10, 200, 40);
+    updateBox(spawnAsteroidBtnId, 10, 60, 200, 40);
+    updateBox(spawnCometBtnId, 10, 110, 200, 40);
+  }
+
+  void _handleUIInteractions() {
+    void handleBtn(int entityId, bool wasPressed, void Function(bool) setPressed, void Function() onSpawn) {
+      if (entityId == -1) return;
+      final box = scene.getCaste<UIBoundingBox>('UIBoundingBox').get(entityId);
+      if (box != null) {
+        bool isPressed = box.pointerId != -1.0;
+        if (isPressed && !wasPressed) {
+          setPressed(true);
+          onSpawn();
+        } else if (!isPressed) {
+          setPressed(false);
+        }
+      }
+    }
+
+    handleBtn(spawnPlanetBtnId, _wasPlanetBtnPressed, (v) => _wasPlanetBtnPressed = v, () => _spawnEntity(10.0, 1.0, 96, 0, 112, 16));
+    handleBtn(spawnAsteroidBtnId, _wasAsteroidBtnPressed, (v) => _wasAsteroidBtnPressed = v, () => _spawnEntity(50.0, 0.8, 112, 0, 128, 16)); // Heavy, slower
+    handleBtn(spawnCometBtnId, _wasCometBtnPressed, (v) => _wasCometBtnPressed = v, () => _spawnEntity(2.0, 1.5, 128, 0, 144, 16)); // Light, faster
+  }
+
+  void _spawnEntity(double mass, double velocityMultiplier, int srcL, int srcT, int srcR, int srcB) {
+    int entityId = scene.createEntity();
+
+    double r = 100.0 + _random.nextDouble() * 300.0;
+    double angle = _random.nextDouble() * math.pi * 2;
+    double x = r * math.cos(angle);
+    double y = r * math.sin(angle);
+
+    double v = math.sqrt(50.0 * 10000 / r) * velocityMultiplier;
+    double dx = -y / r * v;
+    double dy = x / r * v;
+
+    scene.getCaste<Position>('Position').add(entityId, Position.create(x, y));
+    scene.getCaste<Velocity>('Velocity').add(entityId, Velocity.create(dx, dy));
+    scene.getCaste<Mass>('Mass').add(entityId, Mass.create(mass));
+
+    final sprite = Sprite.create();
+    sprite.rectLeft = srcL.toDouble();
+    sprite.rectTop = srcT.toDouble();
+    sprite.rectRight = srcR.toDouble();
+    sprite.rectBottom = srcB.toDouble();
+    sprite.transformTx = -(srcR - srcL) / 2.0;
+    sprite.transformTy = -(srcB - srcT) / 2.0;
+    scene.getCaste<Sprite>('Sprite').add(entityId, sprite);
   }
 
   void startGame() {

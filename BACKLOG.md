@@ -342,7 +342,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Create a new showcase game in a dedicated directory (`showcase_starsystem/`) to demonstrate the new N-Body physics mechanics. Utilize `GravitySystem`, `MovementSystem`, `SpriteRenderSystem`, and `GameStateSystem`. Implement logic to spawn an initial central star and some orbiting planets.
   * **Acceptance Criteria:** Showcase successfully initializes and simulates multiple orbiting celestial bodies using the new `Mass` component and `GravitySystem`. Must strictly use existing public APIs without modifying the core engine `lib/`. 100% test coverage for app-level systems. Zero per-frame allocations.
 
-* [ ] **Task 26.2: Interactive Configuration and Spawner UI**
+* [x] **Task 26.2: Interactive Configuration and Spawner UI**
   * **Role Needed:** UI Rendering Engineer
   * **Skill:** `skills/ui_rendering_engineer.json`
   * **Description:** Implement interactive UI components using `ComplexUI` and `UIBoundingBox` within the Star System showcase. The UI must allow the player to add new bodies (planets or asteroids) and tweak their initial velocities or masses to see how they affect the star system.
