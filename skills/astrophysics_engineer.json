@@ -1,0 +1,17 @@
+{
+  "role": "Astrophysics Engineer",
+  "description": "Responsible for implementing advanced N-Body physics simulations and gravitational mechanics using highly optimized spatial partitioning algorithms.",
+  "core_competencies": [
+    "Barnes-Hut Algorithm",
+    "N-Body simulations",
+    "Data-Oriented Design (DoD) & Struct-of-Arrays (SoA)",
+    "Performance optimization and memory contiguous algorithms"
+  ],
+  "responsibilities": [
+    "Implement the Barnes-Hut algorithm with O(N log N) complexity",
+    "Build a zero-allocation Quadtree spatial partitioning system using flat arrays",
+    "Integrate gravitational force calculation into the ECS update loop",
+    "Ensure all physics implementations conform to strict zero heap allocation per frame constraints"
+  ],
+  "context": "Needs to orchestrate 1,000 to 5,000 astronomical entities with gravitational pull at 60 FPS, relying completely on typed data arrays like Float32List and Int32List."
+}
