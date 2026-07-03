@@ -316,19 +316,19 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
 
 ## 25. Advanced N-Body Physics Engine (Phase 11)
 
-* [ ] **Task 25.1: Gravitational Components**
+* [x] **Task 25.1: Gravitational Components**
   * **Role Needed:** Astrophysics Engineer
   * **Skill:** `skills/astrophysics_engineer.json`
   * **Description:** Create necessary ECS components such as `Mass` to work alongside `Position` and `Velocity`. These components must be mapped to flat array structures (`Float32List`) maintaining zero-allocation constraints.
   * **Acceptance Criteria:** `Mass` component works with `ComponentCaste`. 100% test coverage. Zero allocations.
 
-* [ ] **Task 25.2: Zero-Allocation Barnes-Hut Quadtree**
+* [x] **Task 25.2: Zero-Allocation Barnes-Hut Quadtree**
   * **Role Needed:** Astrophysics Engineer
   * **Skill:** `skills/astrophysics_engineer.json`
   * **Description:** Implement a Quadtree spatial partitioning data structure using purely flat arrays (`Int32List`, `Float32List`) to store node bounds, centers of mass, total mass, and indices, without instantiating objects per node.
   * **Acceptance Criteria:** Quadtree accurately subdivides space and summarizes masses. Zero object instantiations per frame. 100% test coverage.
 
-* [ ] **Task 25.3: Gravity System Implementation**
+* [x] **Task 25.3: Gravity System Implementation**
   * **Role Needed:** Astrophysics Engineer
   * **Skill:** `skills/astrophysics_engineer.json`
   * **Description:** Create a System that builds the Quadtree every frame and applies the Barnes-Hut algorithm to calculate and apply gravitational forces to the `Velocity` of all interacting bodies.
