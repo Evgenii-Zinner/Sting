@@ -350,7 +350,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
 
 ## 27. Phase 13: Popular Engine Features & Quality of Life
 
-* [ ] **Task 27.1: Parallax Scrolling System**
+* [x] **Task 27.1: Parallax Scrolling System**
   * **Role Needed:** Rendering Engineer
   * **Skill:** `skills/rendering_engineer.json`
   * **Description:** Implement a zero-allocation parallax scrolling background system, enabling multiple layers with different scroll speeds relative to the main viewport.
