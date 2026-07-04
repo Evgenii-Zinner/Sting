@@ -356,20 +356,20 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Implement a zero-allocation parallax scrolling background system, enabling multiple layers with different scroll speeds relative to the main viewport.
   * **Acceptance Criteria:** Parallax layers scroll seamlessly without per-frame memory allocation. 100% test coverage.
 
-* [ ] **Task 27.2: Built-in Joypad/Gamepad Component**
+* [ ] **Task 27.2: Virtual Joypad UI Component**
+  * **Role Needed:** UI Rendering Engineer
+  * **Skill:** `skills/ui_rendering_engineer.json`
+  * **Description:** Implement a built-in virtual joypad system for touchscreens using `ComplexUI` and `UIBoundingBox`. It must translate raw multi-touch screen coordinates into normalized analog vectors.
+  * **Acceptance Criteria:** Virtual joypad correctly tracks thumb movement, normalizes vectors, and avoids object instantiations per touch event. 100% test coverage.
+
+* [ ] **Task 27.3: Auto-Detect Control Schemes & Input Mapping**
   * **Role Needed:** Input Engineer
   * **Skill:** `skills/input_engineer.json`
-  * **Description:** Add standard support for external gamepads/joypads using flat arrays for analog sticks and button states.
-  * **Acceptance Criteria:** Joypad inputs are mapped into the ECS correctly and efficiently without object instantiation per input event. 100% test coverage.
+  * **Description:** Implement an Input Mapping system that auto-detects available input sources (keyboard, mouse, physical gamepad, touch/virtual joypad) across all cross-platform targets and automatically applies the appropriate control scheme bindings without per-frame allocations.
+  * **Acceptance Criteria:** System dynamically adapts to available physical inputs and maps them to abstract game actions seamlessly. 100% test coverage.
 
-* [ ] **Task 27.3: Control Schemes and Input Mapping**
-  * **Role Needed:** Input Engineer
-  * **Skill:** `skills/input_engineer.json`
-  * **Description:** Implement a robust Input Mapping abstraction layer to allow users to bind multiple physical inputs (keyboard, pointer, joypad) to abstract game actions.
-  * **Acceptance Criteria:** Input mappings resolve dynamically with zero allocations. 100% test coverage.
-
-* [ ] **Task 27.4: 2D Lighting and Material System**
+* [ ] **Task 27.4: Ultra-Fast 2D Lighting (No Raytracing)**
   * **Role Needed:** Rendering Engineer
   * **Skill:** `skills/rendering_engineer.json`
-  * **Description:** Introduce an efficient 2D lighting and shading model that integrates cleanly with `Canvas.drawRawAtlas` and custom shaders.
-  * **Acceptance Criteria:** Light sources and basic materials can be applied to sprites without breaking the single-batch rendering optimizations. 100% test coverage.
+  * **Description:** Introduce a high-performance 2D lighting system avoiding expensive raytracing. Explore using 1D shadow mapping or fast polygonal shadow casting techniques (e.g. self-transparent shadow meshes) combined with `dart:ui` custom shaders, maintaining single-batch atlas rendering efficiency.
+  * **Acceptance Criteria:** Real-time 2D lights and shadows render extremely fast without per-frame GC allocations or standard raycasting performance hits. 100% test coverage.
