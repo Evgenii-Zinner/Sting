@@ -54,4 +54,8 @@ To support massive entity counts (e.g., tens of thousands of particles, bullets,
 * **Implementation**: A global state management system utilizes ECS concepts with a singleton entity / state flags to manage high-level game loops (Menu, Playing, Paused, GameOver). Logic systems selectively update based on the current state.
 
 ## 5. Future Architectural Enhancements (Planned Features)
-While Phases 1 through 7 have implemented all core foundational features required for game prototype assembly (Phase 8), future versions might introduce features like networking or specialized 2.5D rendering techniques, provided they can adhere to the zero-allocation constraints.
+While Phases 1 through 12 have implemented all core foundational features required for game prototypes and physics showcases, future phases (Phase 13+) are planned to introduce highly-requested features commonly found in popular engines (like Godot, Bevy, and Defold), provided they adhere strictly to our zero-allocation constraints:
+* **Parallax Scrolling System**: A layered background system implementing efficient multi-speed offset updates strictly via flat arrays and integrated cleanly into the `Renderer`.
+* **Auto-Detect Input Mapping & Control Schemes**: An abstraction layer mapping raw physical input (keys, pointers, touch, physical gamepads) to abstract game actions, automatically adapting to the target platform and available inputs without per-frame allocations.
+* **Virtual Joypad UI**: An integrated on-screen joystick solution mapped to `ComplexUI` bounds for multi-touch vector normalization, aimed specifically at mobile and touch-enabled devices.
+* **Ultra-Fast 2D Lighting (No Raytracing)**: High-performance 2D lighting pipelines completely avoiding standard raytracing techniques. Will explore performant alternatives like 1D shadow mapping or fast polygonal self-transparent shadow meshes via `dart:ui` custom shaders to maintain single-batch rendering efficiency.

@@ -347,3 +347,29 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Skill:** `skills/ui_rendering_engineer.json`
   * **Description:** Implement interactive UI components using `ComplexUI` and `UIBoundingBox` within the Star System showcase. The UI must allow the player to add new bodies (planets or asteroids) and tweak their initial velocities or masses to see how they affect the star system.
   * **Acceptance Criteria:** User can interact with UI elements on screen to dynamically spawn new entities with `Mass`, `Position`, and `Velocity`. UI interaction must correctly use the `UISystem` without Flutter widgets. Zero per-frame allocations during the render loop.
+
+## 27. Phase 13: Popular Engine Features & Quality of Life
+
+* [ ] **Task 27.1: Parallax Scrolling System**
+  * **Role Needed:** Rendering Engineer
+  * **Skill:** `skills/rendering_engineer.json`
+  * **Description:** Implement a zero-allocation parallax scrolling background system, enabling multiple layers with different scroll speeds relative to the main viewport.
+  * **Acceptance Criteria:** Parallax layers scroll seamlessly without per-frame memory allocation. 100% test coverage.
+
+* [ ] **Task 27.2: Virtual Joypad UI Component**
+  * **Role Needed:** UI Rendering Engineer
+  * **Skill:** `skills/ui_rendering_engineer.json`
+  * **Description:** Implement a built-in virtual joypad system for touchscreens using `ComplexUI` and `UIBoundingBox`. It must translate raw multi-touch screen coordinates into normalized analog vectors.
+  * **Acceptance Criteria:** Virtual joypad correctly tracks thumb movement, normalizes vectors, and avoids object instantiations per touch event. 100% test coverage.
+
+* [ ] **Task 27.3: Auto-Detect Control Schemes & Input Mapping**
+  * **Role Needed:** Input Engineer
+  * **Skill:** `skills/input_engineer.json`
+  * **Description:** Implement an Input Mapping system that auto-detects available input sources (keyboard, mouse, physical gamepad, touch/virtual joypad) across all cross-platform targets and automatically applies the appropriate control scheme bindings without per-frame allocations.
+  * **Acceptance Criteria:** System dynamically adapts to available physical inputs and maps them to abstract game actions seamlessly. 100% test coverage.
+
+* [ ] **Task 27.4: Ultra-Fast 2D Lighting (No Raytracing)**
+  * **Role Needed:** Rendering Engineer
+  * **Skill:** `skills/rendering_engineer.json`
+  * **Description:** Introduce a high-performance 2D lighting system avoiding expensive raytracing. Explore using 1D shadow mapping or fast polygonal shadow casting techniques (e.g. self-transparent shadow meshes) combined with `dart:ui` custom shaders, maintaining single-batch atlas rendering efficiency.
+  * **Acceptance Criteria:** Real-time 2D lights and shadows render extremely fast without per-frame GC allocations or standard raycasting performance hits. 100% test coverage.
