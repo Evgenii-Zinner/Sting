@@ -362,7 +362,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Implement a built-in virtual joypad system for touchscreens using `ComplexUI` and `UIBoundingBox`. It must translate raw multi-touch screen coordinates into normalized analog vectors.
   * **Acceptance Criteria:** Virtual joypad correctly tracks thumb movement, normalizes vectors, and avoids object instantiations per touch event. 100% test coverage.
 
-* [ ] **Task 27.3: Auto-Detect Control Schemes & Input Mapping**
+* [x] **Task 27.3: Auto-Detect Control Schemes & Input Mapping**
   * **Role Needed:** Input Engineer
   * **Skill:** `skills/input_engineer.json`
   * **Description:** Implement an Input Mapping system that auto-detects available input sources (keyboard, mouse, physical gamepad, touch/virtual joypad) across all cross-platform targets and automatically applies the appropriate control scheme bindings without per-frame allocations.
