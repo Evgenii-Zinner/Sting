@@ -373,3 +373,23 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Skill:** `skills/rendering_engineer.json`
   * **Description:** Introduce a high-performance 2D lighting system avoiding expensive raytracing. Explore using 1D shadow mapping or fast polygonal shadow casting techniques (e.g. self-transparent shadow meshes) combined with `dart:ui` custom shaders, maintaining single-batch atlas rendering efficiency.
   * **Acceptance Criteria:** Real-time 2D lights and shadows render extremely fast without per-frame GC allocations or standard raycasting performance hits. 100% test coverage.
+
+## 28. Phase 13 Showcase Integration
+
+* [ ] **Task 28.1: Bullet Haven Showcase Integration**
+  * **Role Needed:** Gameplay Scripter
+  * **Skill:** `skills/gameplay_scripter.json`
+  * **Description:** Integrate `ParallaxSystem`, `VirtualJoypadSystem`, and `InputMappingSystem` into the Bullet Haven showcase (`showcase/lib/main.dart`). Use existing components and engine public APIs to implement parallax background, touch virtual joypad controls, and input mapping correctly.
+  * **Acceptance Criteria:** The Bullet Haven showcase utilizes the newly implemented engine features correctly. 100% test coverage.
+
+* [ ] **Task 28.2: Star System Showcase Integration**
+  * **Role Needed:** Gameplay Scripter
+  * **Skill:** `skills/gameplay_scripter.json`
+  * **Description:** Integrate `ParallaxSystem`, `VirtualJoypadSystem`, and `InputMappingSystem` into the Star System showcase (`showcase_starsystem/lib/main.dart`). Use existing components and engine public APIs to implement parallax background, touch virtual joypad controls for camera, and input mapping appropriately.
+  * **Acceptance Criteria:** The Star System showcase utilizes the newly implemented engine features correctly. 100% test coverage.
+
+* [ ] **Task 28.3: Showcase Integration & System Tests**
+  * **Role Needed:** QA SDET Engineer
+  * **Skill:** `skills/qa_sdet_engineer.json`
+  * **Description:** Write programmatic internal integration and system tests for the `showcase` and `showcase_starsystem` targets. Ensure that the integrated `ParallaxSystem`, `VirtualJoypadSystem`, and `InputMappingSystem` operate correctly in tandem with the core game loop and ECS state without UI flakiness.
+  * **Acceptance Criteria:** Comprehensive integration and system tests are implemented for both showcases, verifying accurate rendering offsets, proper touch input vector mapping, and correct control scheme adaptation. 100% test coverage for integration points.
