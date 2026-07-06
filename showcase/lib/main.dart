@@ -35,6 +35,12 @@ import 'package:sting/engine/systems/sprite_render_system.dart';
 import 'package:sting/engine/systems/animation_system.dart';
 import 'package:sting/engine/components/tilemap.dart';
 import 'package:sting/engine/systems/tilemap_render_system.dart';
+import 'package:sting/engine/components/parallax.dart';
+import 'package:sting/engine/systems/parallax_system.dart';
+import 'package:sting/engine/components/virtual_joypad.dart';
+import 'package:sting/engine/systems/virtual_joypad_system.dart';
+import 'package:sting/engine/systems/input_mapping_system.dart';
+import 'package:flutter/services.dart';
 
 import 'components/health.dart';
 import 'components/damage.dart';
@@ -57,9 +63,12 @@ class BulletHavenGame {
 
   // Subsystems
   late final InputSystem inputSystem;
+  late final InputMappingSystem inputMappingSystem;
   late final PlayerInputSystem playerInputSystem;
   late final MovementSystem movementSystem;
   late final CameraSystem cameraSystem;
+  late final ParallaxSystem parallaxSystem;
+  late final VirtualJoypadSystem virtualJoypadSystem;
   late final EnemySpawnerSystem enemySpawnerSystem;
   late final ChaseSystem chaseSystem;
   late final SpatialHashGrid spatialHashGrid;
@@ -76,6 +85,7 @@ class BulletHavenGame {
   int frameCount = 0;
   int playerEntityId = -1;
   int cameraEntityId = -1;
+  int joypadEntityId = -1;
 
   // Track logic screen size for the player input center point
   double screenWidth = 0.0;
@@ -104,9 +114,11 @@ class BulletHavenGame {
     scene.registerCaste<ExpGem>('ExpGem', ComponentCaste<ExpGem>(Swarm.maxEntities));
     scene.registerCaste<ExpMagnet>('ExpMagnet', ComponentCaste<ExpMagnet>(1));
     scene.registerCaste<PlayerStats>('PlayerStats', ComponentCaste<PlayerStats>(1));
-    scene.registerCaste<ComplexUI>('ComplexUI', ComponentCaste<ComplexUI>(10));
-    scene.registerCaste<UIBoundingBox>('UIBoundingBox', ComponentCaste<UIBoundingBox>(10));
+    scene.registerCaste<ComplexUI>('ComplexUI', ComponentCaste<ComplexUI>(20));
+    scene.registerCaste<UIBoundingBox>('UIBoundingBox', ComponentCaste<UIBoundingBox>(20));
     scene.registerCaste<Tilemap>('Tilemap', ComponentCaste<Tilemap>(1));
+    scene.registerCaste<Parallax>('Parallax', ComponentCaste<Parallax>(Swarm.maxEntities));
+    scene.registerCaste<VirtualJoypad>('VirtualJoypad', ComponentCaste<VirtualJoypad>(10));
 
     // 2. Setup Global Game State Entity
     globalStateEntityId = scene.createEntity();
@@ -117,11 +129,17 @@ class BulletHavenGame {
 
     // 3. Initialize Systems
     inputSystem = InputSystem();
+    inputMappingSystem = InputMappingSystem(inputSystem);
 
-    playerInputSystem = PlayerInputSystem(
-      inputSystem: inputSystem,
-      velocityCaste: scene.getCaste<Velocity>('Velocity'),
-    );
+    // Bind keys
+    inputMappingSystem.bindKey(LogicalKeyboardKey.keyW.keyId, GameAction.moveUp);
+    inputMappingSystem.bindKey(LogicalKeyboardKey.keyS.keyId, GameAction.moveDown);
+    inputMappingSystem.bindKey(LogicalKeyboardKey.keyA.keyId, GameAction.moveLeft);
+    inputMappingSystem.bindKey(LogicalKeyboardKey.keyD.keyId, GameAction.moveRight);
+    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowUp.keyId, GameAction.moveUp);
+    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowDown.keyId, GameAction.moveDown);
+    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowLeft.keyId, GameAction.moveLeft);
+    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowRight.keyId, GameAction.moveRight);
 
     movementSystem = MovementSystem(
       positionCaste: scene.getCaste<Position>('Position'),
@@ -171,6 +189,19 @@ class BulletHavenGame {
       spriteAnimationCaste: scene.getCaste<SpriteAnimation>('SpriteAnimation'),
     );
 
+    parallaxSystem = ParallaxSystem(
+      positionCaste: scene.getCaste<Position>('Position'),
+      parallaxCaste: scene.getCaste<Parallax>('Parallax'),
+      viewportCaste: scene.getCaste<Viewport>('Viewport'),
+    );
+
+    virtualJoypadSystem = VirtualJoypadSystem(
+      scene.getCaste<VirtualJoypad>('VirtualJoypad'),
+      scene.getCaste<UIBoundingBox>('UIBoundingBox'),
+      scene.getCaste<ComplexUI>('ComplexUI'),
+      inputSystem,
+    );
+
     tilemapRenderSystem = TilemapRenderSystem(
       atlas: atlas,
       positionCaste: scene.getCaste<Position>('Position'),
@@ -184,9 +215,13 @@ class BulletHavenGame {
 
     spriteRenderSystem?.activeCameraEntity = cameraEntityId;
     tilemapRenderSystem.activeCameraEntity = cameraEntityId;
+    parallaxSystem.activeCameraEntity = cameraEntityId;
 
     final tilemapEntity = scene.createEntity();
     scene.getCaste<Position>('Position').add(tilemapEntity, Position.create(0.0, 0.0));
+    // Set tilemap to scroll slower for parallax effect
+    scene.getCaste<Parallax>('Parallax').add(tilemapEntity, Parallax.create(0.5, 0.5, 0.0, 0.0));
+
     final tilemap = Tilemap.create(100, 100, 32, 32);
     for (var col = 0; col < 100; col++) {
       for (var row = 0; row < 100; row++) {
@@ -197,33 +232,91 @@ class BulletHavenGame {
     scene.getCaste<Tilemap>('Tilemap').add(tilemapEntity, tilemap);
 
     playerEntityId = spawnPlayer(scene, 0.0, 0.0);
-    playerInputSystem.setPlayerEntity(playerEntityId);
     enemySpawnerSystem.setTargetEntity(playerEntityId);
+
+    // Setup Virtual Joypad UI
+    joypadEntityId = scene.createEntity();
+    final knobEntityId = scene.createEntity();
+
+    scene.getCaste<ComplexUI>('ComplexUI').add(joypadEntityId, ComplexUI(
+      x: 20, y: 400, width: 120, height: 120,
+      backgroundColor: 0x44FFFFFF, borderRadius: 60.0,
+    ));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(joypadEntityId, UIBoundingBox.fromBounds(x: 20, y: 400, width: 120, height: 120));
+    scene.getCaste<VirtualJoypad>('VirtualJoypad').add(joypadEntityId, VirtualJoypad.create(
+      maxRadius: 60.0, centerX: 80.0, centerY: 460.0, knobEntityId: knobEntityId.toDouble()
+    ));
+
+    scene.getCaste<ComplexUI>('ComplexUI').add(knobEntityId, ComplexUI(
+      x: 60, y: 440, width: 40, height: 40,
+      backgroundColor: 0x88FFFFFF, borderRadius: 20.0,
+    ));
+
+    playerInputSystem = PlayerInputSystem(
+      inputMappingSystem: inputMappingSystem,
+      velocityCaste: scene.getCaste<Velocity>('Velocity'),
+      joypadCaste: scene.getCaste<VirtualJoypad>('VirtualJoypad'),
+      joypadEntityId: joypadEntityId,
+    );
+    playerInputSystem.setPlayerEntity(playerEntityId);
 
     // 5. Setup Platform Dispatcher
     final dispatcher = PlatformDispatcher.instance;
 
+    void _updateBounds() {
+       if (dispatcher.views.isEmpty) return;
+       final window = dispatcher.views.first;
+       screenWidth = window.physicalSize.width / window.devicePixelRatio;
+       screenHeight = window.physicalSize.height / window.devicePixelRatio;
+       enemySpawnerSystem.updateScreenSize(screenWidth, screenHeight);
+
+       // Update virtual joypad position based on bottom left of screen
+       final rect = renderer.calculateVirtualRect(window.physicalSize);
+       double scale = rect.width / (renderer.virtualWidth ?? 800);
+
+       double jX = 20.0;
+       double jY = (renderer.virtualHeight ?? 600) - 140.0;
+       double jSize = 120.0;
+
+       final joypadBox = scene.getCaste<UIBoundingBox>('UIBoundingBox').get(joypadEntityId);
+       if (joypadBox != null) {
+          joypadBox.x = rect.left + jX * scale;
+          joypadBox.y = rect.top + jY * scale;
+          joypadBox.width = jSize * scale;
+          joypadBox.height = jSize * scale;
+       }
+       final joypadComp = scene.getCaste<VirtualJoypad>('VirtualJoypad').get(joypadEntityId);
+       if (joypadComp != null) {
+          joypadComp.centerX = rect.left + (jX + jSize/2) * scale;
+          joypadComp.centerY = rect.top + (jY + jSize/2) * scale;
+          joypadComp.maxRadius = (jSize/2) * scale;
+       }
+
+       final joypadUI = scene.getCaste<ComplexUI>('ComplexUI').get(joypadEntityId);
+       if (joypadUI != null) {
+          joypadUI.x = jX;
+          joypadUI.y = jY;
+          joypadUI.width = jSize;
+          joypadUI.height = jSize;
+       }
+    }
+
     // Handle metrics change to update logical screen size
     dispatcher.onMetricsChanged = () {
-      final window = dispatcher.views.first;
-      screenWidth = window.physicalSize.width / window.devicePixelRatio;
-      screenHeight = window.physicalSize.height / window.devicePixelRatio;
-      playerInputSystem.updateScreenSize(screenWidth, screenHeight);
-      enemySpawnerSystem.updateScreenSize(screenWidth, screenHeight);
+      _updateBounds();
     };
 
     // Trigger initial metrics check if available
     if (dispatcher.views.isNotEmpty) {
-      final window = dispatcher.views.first;
-      screenWidth = window.physicalSize.width / window.devicePixelRatio;
-      screenHeight = window.physicalSize.height / window.devicePixelRatio;
-      playerInputSystem.updateScreenSize(screenWidth, screenHeight);
-      enemySpawnerSystem.updateScreenSize(screenWidth, screenHeight);
+      _updateBounds();
     }
 
     dispatcher.onBeginFrame = (Duration timeStamp) {
       frameCount++;
       time.update(timeStamp.inMicroseconds);
+
+      // Ensure UI bounds match
+      _updateBounds();
 
       // Update Systems here (only if playing)
       while (time.consumeFixedStep()) {
@@ -232,6 +325,7 @@ class BulletHavenGame {
 
           animationSystem.update(dt);
           mainUISystem.update();
+          virtualJoypadSystem.update();
           playerInputSystem.update();
           enemySpawnerSystem.update(dt);
           chaseSystem.update();
@@ -245,6 +339,7 @@ class BulletHavenGame {
           uiSystem.update(playerEntityId);
 
           cameraSystem.update(cameraEntityId, playerEntityId);
+          parallaxSystem.update();
         }
       }
 

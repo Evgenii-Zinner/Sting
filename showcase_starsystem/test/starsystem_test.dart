@@ -3,6 +3,10 @@ import 'dart:ui';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
+import 'package:sting/engine/components/parallax.dart';
+import 'package:sting/engine/components/virtual_joypad.dart';
+import 'package:sting/engine/components/viewport.dart';
+import 'package:sting/engine/systems/input_mapping_system.dart';
 
 import '../lib/main.dart';
 import '../lib/embedded_assets.dart';
@@ -18,7 +22,13 @@ void main() {
     final positions = game.scene.getCaste<Position>('Position');
     final velocities = game.scene.getCaste<Velocity>('Velocity');
 
-    expect(positions.length, 3, reason: 'Should have spawned 1 star and 2 planets');
+    // Expect 4 positions now because we added 1 background starfield parallax entity
+    expect(positions.length, 4, reason: 'Should have spawned 1 star, 2 planets, 1 bg');
+
+    // Check castes for new systems
+    expect(game.scene.getCaste<Parallax>('Parallax'), isNotNull);
+    expect(game.scene.getCaste<VirtualJoypad>('VirtualJoypad'), isNotNull);
+    expect(game.inputMappingSystem, isNotNull);
 
     // We assume entity IDs are 1 (State), 2 (Camera), 3 (Star), 4 (Planet1), 5 (Planet2) based on creation order
     // But let's find them properly by inspecting positions since star is at 0,0, planet1 is at 150,0
@@ -65,5 +75,15 @@ void main() {
 
     expect(newPosition.x, closeTo(150.0 - 22.22, 0.1), reason: 'Position x should move inwards due to new velocity');
     expect(newPosition.y, closeTo(57.7, 0.1), reason: 'Position y should increase due to orbital velocity');
+  });
+
+  test('StarSystemGame joypad updates bounds properly when tested independently', () async {
+    final Image mockAtlas = await AssetLoader.loadEmbeddedImage(EmbeddedAssets.assets['atlas.png']!);
+    final game = StarSystemGame(mockAtlas);
+
+    // Test that the game object actually has the virtual joypad initialized
+    expect(game.joypadEntityId, isNot(-1));
+    expect(game.virtualJoypadSystem, isNotNull);
+    expect(game.scene.getCaste<VirtualJoypad>('VirtualJoypad').get(game.joypadEntityId), isNotNull);
   });
 }

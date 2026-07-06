@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:sting/engine/components/game_state.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
+import 'package:sting/engine/components/parallax.dart';
+import 'package:sting/engine/components/virtual_joypad.dart';
 
 import '../lib/main.dart';
 
@@ -42,6 +44,9 @@ void main() {
       expect(game.scene.getCaste<GameState>('GameState'), isNotNull);
       expect(game.scene.getCaste<Position>('Position'), isNotNull);
       expect(game.scene.getCaste<Velocity>('Velocity'), isNotNull);
+      expect(game.scene.getCaste<Parallax>('Parallax'), isNotNull);
+      expect(game.scene.getCaste<VirtualJoypad>('VirtualJoypad'), isNotNull);
+      expect(game.inputMappingSystem, isNotNull);
 
       // Check initial state
       // Modified to test statePlaying as the default state has been updated to Playing for MVP showcase logic

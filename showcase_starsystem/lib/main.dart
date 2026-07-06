@@ -20,7 +20,13 @@ import 'package:sting/engine/components/complex_ui.dart';
 import 'package:sting/engine/components/ui_bounding_box.dart';
 import 'package:sting/engine/systems/complex_ui_render_system.dart';
 import 'package:sting/engine/systems/input_system.dart';
+import 'package:sting/engine/systems/input_mapping_system.dart';
 import 'package:sting/engine/systems/ui_system.dart';
+import 'package:sting/engine/components/parallax.dart';
+import 'package:sting/engine/systems/parallax_system.dart';
+import 'package:sting/engine/components/virtual_joypad.dart';
+import 'package:sting/engine/systems/virtual_joypad_system.dart';
+import 'package:flutter/services.dart';
 
 import 'embedded_assets.dart';
 import 'package:sting/engine/assets/asset_loader.dart';
@@ -39,11 +45,15 @@ class StarSystemGame {
   late final GravitySystem gravitySystem;
   SpriteRenderSystem? spriteRenderSystem;
   late final InputSystem inputSystem;
+  late final InputMappingSystem inputMappingSystem;
   late final UISystem uiSystem;
   late final ComplexUIRenderSystem complexUIRenderSystem;
+  late final ParallaxSystem parallaxSystem;
+  late final VirtualJoypadSystem virtualJoypadSystem;
 
   int frameCount = 0;
   int cameraEntityId = -1;
+  int joypadEntityId = -1;
 
   double screenWidth = 0.0;
   double screenHeight = 0.0;
@@ -75,6 +85,8 @@ class StarSystemGame {
     scene.registerCaste<Viewport>('Viewport', ComponentCaste<Viewport>(1));
     scene.registerCaste<ComplexUI>('ComplexUI', ComponentCaste<ComplexUI>(Swarm.maxEntities));
     scene.registerCaste<UIBoundingBox>('UIBoundingBox', ComponentCaste<UIBoundingBox>(Swarm.maxEntities));
+    scene.registerCaste<Parallax>('Parallax', ComponentCaste<Parallax>(Swarm.maxEntities));
+    scene.registerCaste<VirtualJoypad>('VirtualJoypad', ComponentCaste<VirtualJoypad>(10));
 
     // 2. Setup Global Game State Entity
     globalStateEntityId = scene.createEntity();
@@ -102,6 +114,25 @@ class StarSystemGame {
     );
 
     inputSystem = InputSystem();
+    inputMappingSystem = InputMappingSystem(inputSystem);
+    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowUp.keyId, GameAction.moveUp);
+    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowDown.keyId, GameAction.moveDown);
+    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowLeft.keyId, GameAction.moveLeft);
+    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowRight.keyId, GameAction.moveRight);
+
+    parallaxSystem = ParallaxSystem(
+      positionCaste: scene.getCaste<Position>('Position'),
+      parallaxCaste: scene.getCaste<Parallax>('Parallax'),
+      viewportCaste: scene.getCaste<Viewport>('Viewport'),
+    );
+
+    virtualJoypadSystem = VirtualJoypadSystem(
+      scene.getCaste<VirtualJoypad>('VirtualJoypad'),
+      scene.getCaste<UIBoundingBox>('UIBoundingBox'),
+      scene.getCaste<ComplexUI>('ComplexUI'),
+      inputSystem,
+    );
+
     uiSystem = UISystem(
       scene.getCaste<UIBoundingBox>('UIBoundingBox'),
       inputSystem,
@@ -119,6 +150,15 @@ class StarSystemGame {
     scene.getCaste<Viewport>('Viewport').add(cameraEntityId, viewport);
 
     spriteRenderSystem?.activeCameraEntity = cameraEntityId;
+    parallaxSystem.activeCameraEntity = cameraEntityId;
+
+    // Spawn a parallax starfield background
+    final bgEntityId = scene.createEntity();
+    scene.getCaste<Position>('Position').add(bgEntityId, Position.create(0.0, 0.0));
+    final bgSprite = Sprite.create();
+    bgSprite.rectLeft = 0; bgSprite.rectTop = 0; bgSprite.rectRight = 64; bgSprite.rectBottom = 64;
+    scene.getCaste<Sprite>('Sprite').add(bgEntityId, bgSprite);
+    scene.getCaste<Parallax>('Parallax').add(bgEntityId, Parallax.create(0.2, 0.2, 0.0, 0.0)); // moves slowly
 
     _spawnStarSystem();
     _createUI();
@@ -149,13 +189,17 @@ class StarSystemGame {
 
       // UI Interaction
       uiSystem.update();
+      virtualJoypadSystem.update();
       _handleUIInteractions();
+
+      _updateCamera(time.fixedDeltaTime);
 
       while (time.consumeFixedStep()) {
         if (gameStateSystem.shouldUpdateLogic()) {
           final dt = time.fixedDeltaTime;
           gravitySystem.update(scene, dt);
           movementSystem.update(dt);
+          parallaxSystem.update();
         }
       }
 
@@ -251,6 +295,24 @@ class StarSystemGame {
       backgroundColor: 0xFF444444, textColor: 0xFFFFFFFF, borderRadius: 4.0, fontSize: 16.0,
     ));
     scene.getCaste<UIBoundingBox>('UIBoundingBox').add(spawnCometBtnId, UIBoundingBox.fromBounds(x: 10, y: 110, width: 200, height: 40));
+
+    // Virtual Joypad for camera control
+    joypadEntityId = scene.createEntity();
+    final knobEntityId = scene.createEntity();
+
+    scene.getCaste<ComplexUI>('ComplexUI').add(joypadEntityId, ComplexUI(
+      x: 20, y: 400, width: 120, height: 120,
+      backgroundColor: 0x44FFFFFF, borderRadius: 60.0,
+    ));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(joypadEntityId, UIBoundingBox.fromBounds(x: 20, y: 400, width: 120, height: 120));
+    scene.getCaste<VirtualJoypad>('VirtualJoypad').add(joypadEntityId, VirtualJoypad.create(
+      maxRadius: 60.0, centerX: 80.0, centerY: 460.0, knobEntityId: knobEntityId.toDouble()
+    ));
+
+    scene.getCaste<ComplexUI>('ComplexUI').add(knobEntityId, ComplexUI(
+      x: 60, y: 440, width: 40, height: 40,
+      backgroundColor: 0x88FFFFFF, borderRadius: 20.0,
+    ));
   }
 
   void _updateUIBounds() {
@@ -278,6 +340,62 @@ class StarSystemGame {
     updateBox(spawnPlanetBtnId, 10, 10, 200, 40);
     updateBox(spawnAsteroidBtnId, 10, 60, 200, 40);
     updateBox(spawnCometBtnId, 10, 110, 200, 40);
+
+    double jX = 20.0;
+    double jY = (renderer.virtualHeight ?? 600) - 140.0;
+    double jSize = 120.0;
+
+    updateBox(joypadEntityId, jX, jY, jSize, jSize);
+
+    final joypadComp = scene.getCaste<VirtualJoypad>('VirtualJoypad').get(joypadEntityId);
+    if (joypadComp != null) {
+       joypadComp.centerX = rect.left + (jX + jSize/2) * scale;
+       joypadComp.centerY = rect.top + (jY + jSize/2) * scale;
+       joypadComp.maxRadius = (jSize/2) * scale;
+    }
+
+    final joypadUI = scene.getCaste<ComplexUI>('ComplexUI').get(joypadEntityId);
+    if (joypadUI != null) {
+       joypadUI.x = jX;
+       joypadUI.y = jY;
+       joypadUI.width = jSize;
+       joypadUI.height = jSize;
+    }
+  }
+
+  void _updateCamera(double dt) {
+    if (cameraEntityId == -1) return;
+    final viewport = scene.getCaste<Viewport>('Viewport').get(cameraEntityId);
+    if (viewport == null) return;
+
+    double moveX = 0.0;
+    double moveY = 0.0;
+    final speed = 300.0;
+
+    // Keyboard
+    if (inputMappingSystem.isActionActive(GameAction.moveRight)) moveX += 1.0;
+    if (inputMappingSystem.isActionActive(GameAction.moveLeft)) moveX -= 1.0;
+    if (inputMappingSystem.isActionActive(GameAction.moveDown)) moveY += 1.0;
+    if (inputMappingSystem.isActionActive(GameAction.moveUp)) moveY -= 1.0;
+
+    // Joypad
+    final joypad = scene.getCaste<VirtualJoypad>('VirtualJoypad').get(joypadEntityId);
+    if (joypad != null) {
+      if (joypad.vectorX != 0.0 || joypad.vectorY != 0.0) {
+         moveX = joypad.vectorX;
+         moveY = joypad.vectorY;
+      }
+    }
+
+    if (moveX != 0.0 || moveY != 0.0) {
+      final length = math.sqrt(moveX * moveX + moveY * moveY);
+      if (length > 1.0) {
+         moveX /= length;
+         moveY /= length;
+      }
+      viewport.x += moveX * speed * dt;
+      viewport.y += moveY * speed * dt;
+    }
   }
 
   void _handleUIInteractions() {
