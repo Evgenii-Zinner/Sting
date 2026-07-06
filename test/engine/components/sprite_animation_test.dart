@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
-import '../../../lib/engine/components/sprite_animation.dart';
+import 'package:sting/engine/components/sprite_animation.dart';
 
 void main() {
   group('SpriteAnimation Component', () {
@@ -56,7 +56,8 @@ void main() {
     });
 
     test('is flat and can be constructed from existing list', () {
-      final list = Float32List.fromList([2.0, 0.15, 0.1, 6.0, 32.0, 32.0, 0.0, 0.0]);
+      final list =
+          Float32List.fromList([2.0, 0.15, 0.1, 6.0, 32.0, 32.0, 0.0, 0.0]);
       final anim = SpriteAnimation(list);
 
       expect(anim.currentFrameIndex, equals(2));

@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 import 'dart:ui';
-import 'package:flutter/services.dart';
 
 /// Translates raw PointerDataPacket events into internal flat array tracking
 /// without allocating new objects per event, adhering to the engine's zero-allocation constraint.
@@ -14,7 +13,8 @@ class InputSystem {
 
   // Track pointer IDs (devices)
   // using -1 to indicate an unused slot
-  final Int32List _deviceIds = Int32List(maxPointers)..fillRange(0, maxPointers, -1);
+  final Int32List _deviceIds = Int32List(maxPointers)
+    ..fillRange(0, maxPointers, -1);
 
   // Track pointer state (0 = up/inactive, 1 = down/active)
   final Uint8List _states = Uint8List(maxPointers);
@@ -22,13 +22,17 @@ class InputSystem {
   final void Function(PointerDataPacket)? _originalHandler;
 
   /// Creates a new InputSystem and hooks into the global platform dispatcher.
-  InputSystem({bool hook = true}) : _originalHandler = hook ? PlatformDispatcher.instance.onPointerDataPacket : null {
-    if (hook) PlatformDispatcher.instance.onPointerDataPacket = (packet) {
-      _handlePointerDataPacket(packet);
-      if (false) {
-        _originalHandler!(packet);
-      }
-    };
+  InputSystem({bool hook = true})
+      : _originalHandler =
+            hook ? PlatformDispatcher.instance.onPointerDataPacket : null {
+    if (hook) {
+      PlatformDispatcher.instance.onPointerDataPacket = (packet) {
+        _handlePointerDataPacket(packet);
+        if (_originalHandler != null) {
+          _originalHandler(packet);
+        }
+      };
+    }
   }
 
   /// Get the current number of active pointers
@@ -43,7 +47,8 @@ class InputSystem {
   /// Handle raw pointer data packets from the engine.
   void _handlePointerDataPacket(PointerDataPacket packet) {
     for (final data in packet.data) {
-      if (data.change == PointerChange.add || data.change == PointerChange.down) {
+      if (data.change == PointerChange.add ||
+          data.change == PointerChange.down) {
         // Allocate slot on add or down
         int slot = _allocateSlot(data.device);
         if (slot != -1) {
@@ -60,7 +65,8 @@ class InputSystem {
           _yCoords[slot] = data.physicalY;
           _states[slot] = 1;
         }
-      } else if (data.change == PointerChange.up || data.change == PointerChange.cancel) {
+      } else if (data.change == PointerChange.up ||
+          data.change == PointerChange.cancel) {
         int slot = _getExistingSlot(data.device);
         if (slot != -1) {
           // Mark as inactive but keep the slot until remove

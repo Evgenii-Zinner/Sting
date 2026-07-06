@@ -42,10 +42,10 @@ class Query2<T1, T2> {
         final entity = _caste1.elementAt(i);
         final component2 = _caste2.get(entity);
         if (component2 != null) {
-           final component1 = _caste1.getComponentAt(i);
-           if (component1 != null) {
-              action(entity, component1, component2);
-           }
+          final component1 = _caste1.getComponentAt(i);
+          if (component1 != null) {
+            action(entity, component1, component2);
+          }
         }
       }
     } else {
@@ -53,10 +53,10 @@ class Query2<T1, T2> {
         final entity = _caste2.elementAt(i);
         final component1 = _caste1.get(entity);
         if (component1 != null) {
-           final component2 = _caste2.getComponentAt(i);
-           if (component2 != null) {
-              action(entity, component1, component2);
-           }
+          final component2 = _caste2.getComponentAt(i);
+          if (component2 != null) {
+            action(entity, component1, component2);
+          }
         }
       }
     }

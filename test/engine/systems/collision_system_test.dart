@@ -61,7 +61,10 @@ void main() {
       positions.add(1, Position.create(10.0, 10.0));
       circles.add(1, CircleCollider.create(10.0));
 
-      positions.add(2, Position.create(20.0, 20.0)); // Center distance is ~14.1, radii sum is 20
+      positions.add(
+          2,
+          Position.create(
+              20.0, 20.0)); // Center distance is ~14.1, radii sum is 20
       circles.add(2, CircleCollider.create(10.0));
 
       positions.add(3, Position.create(100.0, 100.0));

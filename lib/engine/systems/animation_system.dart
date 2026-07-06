@@ -9,7 +9,8 @@ class AnimationSystem {
   AnimationSystem({
     required ComponentCaste<Sprite> spriteCaste,
     required ComponentCaste<SpriteAnimation> spriteAnimationCaste,
-  }) : query = Query2<Sprite, SpriteAnimation>(spriteCaste, spriteAnimationCaste);
+  }) : query =
+            Query2<Sprite, SpriteAnimation>(spriteCaste, spriteAnimationCaste);
 
   void update(double dt) {
     query.forEach((entity, sprite, animation) {
@@ -23,7 +24,8 @@ class AnimationSystem {
         int framesToAdvance = (elapsed / duration).floor();
         elapsed -= framesToAdvance * duration;
 
-        int newFrame = (animation.currentFrameIndex + framesToAdvance) % animation.frameCount;
+        int newFrame = (animation.currentFrameIndex + framesToAdvance) %
+            animation.frameCount;
 
         animation.currentFrameIndex = newFrame;
 

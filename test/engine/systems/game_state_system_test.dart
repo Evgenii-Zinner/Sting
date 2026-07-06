@@ -21,7 +21,8 @@ void main() {
 
     test('does not overwrite existing state on initialization', () {
       final existingCaste = ComponentCaste<GameState>(10);
-      existingCaste.add(globalEntityId, GameState.create(GameState.statePlaying));
+      existingCaste.add(
+          globalEntityId, GameState.create(GameState.statePlaying));
 
       final existingSystem = GameStateSystem(existingCaste, globalEntityId);
       expect(existingSystem.currentState, GameState.statePlaying);

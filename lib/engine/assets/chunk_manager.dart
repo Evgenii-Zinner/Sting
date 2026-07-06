@@ -57,15 +57,15 @@ class ChunkManager {
 
         // Check if already loaded
         for (int i = 0; i < maxActiveChunks; i++) {
-          if (_chunkStatus[i] == 1 && _activeChunks[i * 2] == cx && _activeChunks[i * 2 + 1] == cy) {
+          if (_chunkStatus[i] == 1 &&
+              _activeChunks[i * 2] == cx &&
+              _activeChunks[i * 2 + 1] == cy) {
             isLoaded = true;
             break;
           }
         }
 
         if (!isLoaded) {
-          // Find a free slot
-          bool loaded = false;
           for (int i = 0; i < maxActiveChunks; i++) {
             if (_chunkStatus[i] == 0) {
               _chunkStatus[i] = 1;
@@ -74,7 +74,6 @@ class ChunkManager {
               if (onChunkLoad != null) {
                 onChunkLoad!(cx, cy);
               }
-              loaded = true;
               break;
             }
           }

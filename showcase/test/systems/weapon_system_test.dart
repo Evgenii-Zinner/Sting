@@ -26,12 +26,18 @@ void main() {
 
     setUp(() {
       scene = Scene();
-      scene.registerCaste<Position>('Position', ComponentCaste<Position>(Swarm.maxEntities));
-      scene.registerCaste<Velocity>('Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
-      scene.registerCaste<Sprite>('Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
-      scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
-      scene.registerCaste<Weapon>('Weapon', ComponentCaste<Weapon>(Swarm.maxEntities));
-      scene.registerCaste<EnemyAI>('EnemyAI', ComponentCaste<EnemyAI>(Swarm.maxEntities));
+      scene.registerCaste<Position>(
+          'Position', ComponentCaste<Position>(Swarm.maxEntities));
+      scene.registerCaste<Velocity>(
+          'Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
+      scene.registerCaste<Sprite>(
+          'Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
+      scene.registerCaste<BoundingBox>(
+          'BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
+      scene.registerCaste<Weapon>(
+          'Weapon', ComponentCaste<Weapon>(Swarm.maxEntities));
+      scene.registerCaste<EnemyAI>(
+          'EnemyAI', ComponentCaste<EnemyAI>(Swarm.maxEntities));
       scene.registerCaste<Health>("Health", ComponentCaste<Health>(100));
       scene.registerCaste<Damage>("Damage", ComponentCaste<Damage>(100));
 
@@ -45,7 +51,9 @@ void main() {
       final weapon = Weapon.create(1.0, 100.0, 200.0);
       weapon.currentCooldown = 1.0;
       scene.getCaste<Weapon>('Weapon').add(entity, weapon);
-      scene.getCaste<Position>('Position').add(entity, Position.create(0.0, 0.0));
+      scene
+          .getCaste<Position>('Position')
+          .add(entity, Position.create(0.0, 0.0));
 
       weaponSystem.update(0.5);
 
@@ -57,7 +65,9 @@ void main() {
       final weapon = Weapon.create(1.0, 100.0, 200.0);
       weapon.currentCooldown = 0.5;
       scene.getCaste<Weapon>('Weapon').add(player, weapon);
-      scene.getCaste<Position>('Position').add(player, Position.create(0.0, 0.0));
+      scene
+          .getCaste<Position>('Position')
+          .add(player, Position.create(0.0, 0.0));
 
       // Enemy in range
       spawnEnemy(scene, 50.0, 0.0, player);
@@ -71,7 +81,8 @@ void main() {
       expect(weapon.currentCooldown, closeTo(0.4, 0.001));
 
       final entitiesAfter = scene.getCaste<Velocity>('Velocity').length;
-      expect(entitiesAfter, equals(entitiesBefore)); // No new entity (projectile)
+      expect(
+          entitiesAfter, equals(entitiesBefore)); // No new entity (projectile)
     });
 
     test('does not fire when no enemy in range', () {
@@ -79,7 +90,9 @@ void main() {
       final weapon = Weapon.create(1.0, 100.0, 200.0);
       weapon.currentCooldown = 0.0;
       scene.getCaste<Weapon>('Weapon').add(player, weapon);
-      scene.getCaste<Position>('Position').add(player, Position.create(0.0, 0.0));
+      scene
+          .getCaste<Position>('Position')
+          .add(player, Position.create(0.0, 0.0));
 
       // Enemy out of range (range is 200)
       spawnEnemy(scene, 300.0, 0.0, player);
@@ -101,11 +114,13 @@ void main() {
       final weapon = Weapon.create(1.0, 100.0, 200.0);
       weapon.currentCooldown = 0.0;
       scene.getCaste<Weapon>('Weapon').add(player, weapon);
-      scene.getCaste<Position>('Position').add(player, Position.create(0.0, 0.0));
+      scene
+          .getCaste<Position>('Position')
+          .add(player, Position.create(0.0, 0.0));
 
       // Enemies in range
       spawnEnemy(scene, 100.0, 0.0, player); // Distance 100
-      spawnEnemy(scene, 0.0, 50.0, player);  // Distance 50 (Closest)
+      spawnEnemy(scene, 0.0, 50.0, player); // Distance 50 (Closest)
       spawnEnemy(scene, -150.0, 0.0, player); // Distance 150
 
       hashSystem.update(Query1<Position>(scene.getCaste<Position>('Position')));

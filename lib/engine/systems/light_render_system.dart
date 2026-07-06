@@ -101,11 +101,7 @@ class LightRenderSystem {
       _ambientPaint.color = ambientColor;
       if (hasViewport) {
         final screenRect = Rect.fromLTWH(
-          offsetX,
-          offsetY,
-          size.width / zoom,
-          size.height / zoom
-        );
+            offsetX, offsetY, size.width / zoom, size.height / zoom);
         canvas.drawRect(screenRect, _ambientPaint);
       } else {
         canvas.drawRect(Offset.zero & size, _ambientPaint);
@@ -142,23 +138,24 @@ class LightRenderSystem {
       _potentialCasters.clear();
 
       if (spatialHashGrid != null) {
-        spatialHashGrid!.queryAABB(lx - radius, ly - radius, radius * 2, radius * 2, (targetEntity) {
-           if (targetEntity == entity) return true; // Don't shadow self
+        spatialHashGrid!.queryAABB(
+            lx - radius, ly - radius, radius * 2, radius * 2, (targetEntity) {
+          if (targetEntity == entity) return true; // Don't shadow self
 
-           final shadowCaster = _shadowCasterCaste.get(targetEntity);
-           if (shadowCaster == null || !shadowCaster.active) return true;
+          final shadowCaster = _shadowCasterCaste.get(targetEntity);
+          if (shadowCaster == null || !shadowCaster.active) return true;
 
-           final targetPos = _positionCaste.get(targetEntity);
-           final targetBounds = _boundingBoxCaste.get(targetEntity);
+          final targetPos = _positionCaste.get(targetEntity);
+          final targetBounds = _boundingBoxCaste.get(targetEntity);
 
-           if (targetPos != null && targetBounds != null) {
-              _potentialCasters.add(targetEntity);
-           }
-           return true;
+          if (targetPos != null && targetBounds != null) {
+            _potentialCasters.add(targetEntity);
+          }
+          return true;
         });
       } else {
         // Fallback O(N) if no spatial hash grid is provided
-        for(int j=0; j<_shadowCasterCaste.length; j++) {
+        for (int j = 0; j < _shadowCasterCaste.length; j++) {
           final shadowCaster = _shadowCasterCaste.getComponentAt(j);
           if (shadowCaster == null || !shadowCaster.active) continue;
 
@@ -192,10 +189,10 @@ class LightRenderSystem {
         final double top = targetPos.y - ly;
         final double bottom = top + targetBounds.height;
 
-        _rasterizeEdge(left, top, right, top);       // Top edge
-        _rasterizeEdge(right, top, right, bottom);    // Right edge
-        _rasterizeEdge(right, bottom, left, bottom);  // Bottom edge
-        _rasterizeEdge(left, bottom, left, top);      // Left edge
+        _rasterizeEdge(left, top, right, top); // Top edge
+        _rasterizeEdge(right, top, right, bottom); // Right edge
+        _rasterizeEdge(right, bottom, left, bottom); // Bottom edge
+        _rasterizeEdge(left, bottom, left, top); // Left edge
       }
 
       for (int i = 0; i < rayCount; i++) {

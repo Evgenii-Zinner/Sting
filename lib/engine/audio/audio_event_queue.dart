@@ -61,8 +61,7 @@ class AudioEventQueue {
       double volume,
       double pitch,
       bool loop,
-    )
-        callback,
+    ) callback,
   ) {
     int current = _head;
     int remaining = _count;

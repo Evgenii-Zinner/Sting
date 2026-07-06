@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/widgets.dart' show WidgetsFlutterBinding;
 import 'package:sting/engine/renderer.dart';
 import 'package:sting/engine/time.dart';
 import 'package:sting/engine/ecs/scene.dart';
@@ -101,28 +102,43 @@ class BulletHavenGame {
   void _initEngine() {
     // 1. Register Castes
     scene.registerCaste<GameState>('GameState', ComponentCaste<GameState>(1));
-    scene.registerCaste<Position>('Position', ComponentCaste<Position>(Swarm.maxEntities));
-    scene.registerCaste<Velocity>('Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
-    scene.registerCaste<Sprite>('Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
-    scene.registerCaste<SpriteAnimation>('SpriteAnimation', ComponentCaste<SpriteAnimation>(Swarm.maxEntities));
-    scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
+    scene.registerCaste<Position>(
+        'Position', ComponentCaste<Position>(Swarm.maxEntities));
+    scene.registerCaste<Velocity>(
+        'Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
+    scene.registerCaste<Sprite>(
+        'Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
+    scene.registerCaste<SpriteAnimation>(
+        'SpriteAnimation', ComponentCaste<SpriteAnimation>(Swarm.maxEntities));
+    scene.registerCaste<BoundingBox>(
+        'BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
     scene.registerCaste<Viewport>('Viewport', ComponentCaste<Viewport>(1));
-    scene.registerCaste<EnemyAI>('EnemyAI', ComponentCaste<EnemyAI>(Swarm.maxEntities));
-    scene.registerCaste<Weapon>('Weapon', ComponentCaste<Weapon>(Swarm.maxEntities));
-    scene.registerCaste<Health>('Health', ComponentCaste<Health>(Swarm.maxEntities));
-    scene.registerCaste<Damage>('Damage', ComponentCaste<Damage>(Swarm.maxEntities));
-    scene.registerCaste<ExpGem>('ExpGem', ComponentCaste<ExpGem>(Swarm.maxEntities));
+    scene.registerCaste<EnemyAI>(
+        'EnemyAI', ComponentCaste<EnemyAI>(Swarm.maxEntities));
+    scene.registerCaste<Weapon>(
+        'Weapon', ComponentCaste<Weapon>(Swarm.maxEntities));
+    scene.registerCaste<Health>(
+        'Health', ComponentCaste<Health>(Swarm.maxEntities));
+    scene.registerCaste<Damage>(
+        'Damage', ComponentCaste<Damage>(Swarm.maxEntities));
+    scene.registerCaste<ExpGem>(
+        'ExpGem', ComponentCaste<ExpGem>(Swarm.maxEntities));
     scene.registerCaste<ExpMagnet>('ExpMagnet', ComponentCaste<ExpMagnet>(1));
-    scene.registerCaste<PlayerStats>('PlayerStats', ComponentCaste<PlayerStats>(1));
+    scene.registerCaste<PlayerStats>(
+        'PlayerStats', ComponentCaste<PlayerStats>(1));
     scene.registerCaste<ComplexUI>('ComplexUI', ComponentCaste<ComplexUI>(20));
-    scene.registerCaste<UIBoundingBox>('UIBoundingBox', ComponentCaste<UIBoundingBox>(20));
+    scene.registerCaste<UIBoundingBox>(
+        'UIBoundingBox', ComponentCaste<UIBoundingBox>(20));
     scene.registerCaste<Tilemap>('Tilemap', ComponentCaste<Tilemap>(1));
-    scene.registerCaste<Parallax>('Parallax', ComponentCaste<Parallax>(Swarm.maxEntities));
-    scene.registerCaste<VirtualJoypad>('VirtualJoypad', ComponentCaste<VirtualJoypad>(10));
+    scene.registerCaste<Parallax>(
+        'Parallax', ComponentCaste<Parallax>(Swarm.maxEntities));
+    scene.registerCaste<VirtualJoypad>(
+        'VirtualJoypad', ComponentCaste<VirtualJoypad>(10));
 
     // 2. Setup Global Game State Entity
     globalStateEntityId = scene.createEntity();
-    gameStateSystem = GameStateSystem(scene.getCaste<GameState>('GameState'), globalStateEntityId);
+    gameStateSystem = GameStateSystem(
+        scene.getCaste<GameState>('GameState'), globalStateEntityId);
 
     // Initial state is Menu, but for the showcase MVP we want it to run immediately
     gameStateSystem.changeState(GameState.statePlaying);
@@ -132,14 +148,22 @@ class BulletHavenGame {
     inputMappingSystem = InputMappingSystem(inputSystem);
 
     // Bind keys
-    inputMappingSystem.bindKey(LogicalKeyboardKey.keyW.keyId, GameAction.moveUp);
-    inputMappingSystem.bindKey(LogicalKeyboardKey.keyS.keyId, GameAction.moveDown);
-    inputMappingSystem.bindKey(LogicalKeyboardKey.keyA.keyId, GameAction.moveLeft);
-    inputMappingSystem.bindKey(LogicalKeyboardKey.keyD.keyId, GameAction.moveRight);
-    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowUp.keyId, GameAction.moveUp);
-    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowDown.keyId, GameAction.moveDown);
-    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowLeft.keyId, GameAction.moveLeft);
-    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowRight.keyId, GameAction.moveRight);
+    inputMappingSystem.bindKey(
+        LogicalKeyboardKey.keyW.keyId, GameAction.moveUp);
+    inputMappingSystem.bindKey(
+        LogicalKeyboardKey.keyS.keyId, GameAction.moveDown);
+    inputMappingSystem.bindKey(
+        LogicalKeyboardKey.keyA.keyId, GameAction.moveLeft);
+    inputMappingSystem.bindKey(
+        LogicalKeyboardKey.keyD.keyId, GameAction.moveRight);
+    inputMappingSystem.bindKey(
+        LogicalKeyboardKey.arrowUp.keyId, GameAction.moveUp);
+    inputMappingSystem.bindKey(
+        LogicalKeyboardKey.arrowDown.keyId, GameAction.moveDown);
+    inputMappingSystem.bindKey(
+        LogicalKeyboardKey.arrowLeft.keyId, GameAction.moveLeft);
+    inputMappingSystem.bindKey(
+        LogicalKeyboardKey.arrowRight.keyId, GameAction.moveRight);
 
     movementSystem = MovementSystem(
       positionCaste: scene.getCaste<Position>('Position'),
@@ -164,17 +188,28 @@ class BulletHavenGame {
     final xpId = scene.createEntity();
     final healthId = scene.createEntity();
 
-    scene.getCaste<ComplexUI>('ComplexUI').add(scoreId, ComplexUI(text: "Score: 0", x: 10, y: 10, width: 150, height: 20));
-    scene.getCaste<ComplexUI>('ComplexUI').add(xpId, ComplexUI(text: "Lvl 1 | XP: 0 / 100", x: 10, y: 30, width: 200, height: 20));
-    scene.getCaste<ComplexUI>('ComplexUI').add(healthId, ComplexUI(text: "HP: 100/100", x: 10, y: 50, width: 150, height: 20));
+    scene.getCaste<ComplexUI>('ComplexUI').add(scoreId,
+        ComplexUI(text: "Score: 0", x: 10, y: 10, width: 150, height: 20));
+    scene.getCaste<ComplexUI>('ComplexUI').add(
+        xpId,
+        ComplexUI(
+            text: "Lvl 1 | XP: 0 / 100", x: 10, y: 30, width: 200, height: 20));
+    scene.getCaste<ComplexUI>('ComplexUI').add(healthId,
+        ComplexUI(text: "HP: 100/100", x: 10, y: 50, width: 150, height: 20));
 
-    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(scoreId, UIBoundingBox.fromBounds(x: 10, y: 10, width: 150, height: 20));
-    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(xpId, UIBoundingBox.fromBounds(x: 10, y: 30, width: 200, height: 20));
-    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(healthId, UIBoundingBox.fromBounds(x: 10, y: 50, width: 150, height: 20));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(scoreId,
+        UIBoundingBox.fromBounds(x: 10, y: 10, width: 150, height: 20));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(
+        xpId, UIBoundingBox.fromBounds(x: 10, y: 30, width: 200, height: 20));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(healthId,
+        UIBoundingBox.fromBounds(x: 10, y: 50, width: 150, height: 20));
 
-    uiSystem = PlayerStatsUISystem(scene, scoreEntityId: scoreId, xpEntityId: xpId, healthEntityId: healthId);
-    complexUIRenderSystem = ComplexUIRenderSystem(complexUICaste: scene.getCaste<ComplexUI>('ComplexUI'));
-    mainUISystem = UISystem(scene.getCaste<UIBoundingBox>('UIBoundingBox'), inputSystem);
+    uiSystem = PlayerStatsUISystem(scene,
+        scoreEntityId: scoreId, xpEntityId: xpId, healthEntityId: healthId);
+    complexUIRenderSystem = ComplexUIRenderSystem(
+        complexUICaste: scene.getCaste<ComplexUI>('ComplexUI'));
+    mainUISystem = UISystem(
+        scene.getCaste<UIBoundingBox>('UIBoundingBox'), inputSystem, renderer);
 
     // Initialize SpriteRenderSystem with a mock image for now.
     spriteRenderSystem = SpriteRenderSystem(
@@ -200,6 +235,7 @@ class BulletHavenGame {
       scene.getCaste<UIBoundingBox>('UIBoundingBox'),
       scene.getCaste<ComplexUI>('ComplexUI'),
       inputSystem,
+      renderer,
     );
 
     tilemapRenderSystem = TilemapRenderSystem(
@@ -218,9 +254,9 @@ class BulletHavenGame {
     parallaxSystem.activeCameraEntity = cameraEntityId;
 
     final tilemapEntity = scene.createEntity();
-    scene.getCaste<Position>('Position').add(tilemapEntity, Position.create(0.0, 0.0));
-    // Set tilemap to scroll slower for parallax effect
-    scene.getCaste<Parallax>('Parallax').add(tilemapEntity, Parallax.create(0.5, 0.5, 0.0, 0.0));
+    scene
+        .getCaste<Position>('Position')
+        .add(tilemapEntity, Position.create(0.0, 0.0));
 
     final tilemap = Tilemap.create(100, 100, 32, 32);
     for (var col = 0; col < 100; col++) {
@@ -238,19 +274,36 @@ class BulletHavenGame {
     joypadEntityId = scene.createEntity();
     final knobEntityId = scene.createEntity();
 
-    scene.getCaste<ComplexUI>('ComplexUI').add(joypadEntityId, ComplexUI(
-      x: 20, y: 400, width: 120, height: 120,
-      backgroundColor: 0x44FFFFFF, borderRadius: 60.0,
-    ));
-    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(joypadEntityId, UIBoundingBox.fromBounds(x: 20, y: 400, width: 120, height: 120));
-    scene.getCaste<VirtualJoypad>('VirtualJoypad').add(joypadEntityId, VirtualJoypad.create(
-      maxRadius: 60.0, centerX: 80.0, centerY: 460.0, knobEntityId: knobEntityId.toDouble()
-    ));
+    scene.getCaste<ComplexUI>('ComplexUI').add(
+        joypadEntityId,
+        ComplexUI(
+          x: 20,
+          y: 400,
+          width: 120,
+          height: 120,
+          backgroundColor: 0x44FFFFFF,
+          borderRadius: 60.0,
+        ));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(joypadEntityId,
+        UIBoundingBox.fromBounds(x: 20, y: 400, width: 120, height: 120));
+    scene.getCaste<VirtualJoypad>('VirtualJoypad').add(
+        joypadEntityId,
+        VirtualJoypad.create(
+            maxRadius: 60.0,
+            centerX: 80.0,
+            centerY: 460.0,
+            knobEntityId: knobEntityId.toDouble()));
 
-    scene.getCaste<ComplexUI>('ComplexUI').add(knobEntityId, ComplexUI(
-      x: 60, y: 440, width: 40, height: 40,
-      backgroundColor: 0x88FFFFFF, borderRadius: 20.0,
-    ));
+    scene.getCaste<ComplexUI>('ComplexUI').add(
+        knobEntityId,
+        ComplexUI(
+          x: 60,
+          y: 440,
+          width: 40,
+          height: 40,
+          backgroundColor: 0x88FFFFFF,
+          borderRadius: 20.0,
+        ));
 
     playerInputSystem = PlayerInputSystem(
       inputMappingSystem: inputMappingSystem,
@@ -263,52 +316,51 @@ class BulletHavenGame {
     // 5. Setup Platform Dispatcher
     final dispatcher = PlatformDispatcher.instance;
 
-    void _updateBounds() {
-       if (dispatcher.views.isEmpty) return;
-       final window = dispatcher.views.first;
-       screenWidth = window.physicalSize.width / window.devicePixelRatio;
-       screenHeight = window.physicalSize.height / window.devicePixelRatio;
-       enemySpawnerSystem.updateScreenSize(screenWidth, screenHeight);
+    void updateBounds() {
+      if (dispatcher.views.isEmpty) return;
+      final window = dispatcher.views.first;
+      screenWidth = window.physicalSize.width / window.devicePixelRatio;
+      screenHeight = window.physicalSize.height / window.devicePixelRatio;
+      enemySpawnerSystem.updateScreenSize(screenWidth, screenHeight);
 
-       // Update virtual joypad position based on bottom left of screen
-       final rect = renderer.calculateVirtualRect(window.physicalSize);
-       double scale = rect.width / (renderer.virtualWidth ?? 800);
+      double jX = 20.0;
+      double jY = (renderer.virtualHeight ?? 600) - 140.0;
+      double jSize = 120.0;
 
-       double jX = 20.0;
-       double jY = (renderer.virtualHeight ?? 600) - 140.0;
-       double jSize = 120.0;
+      final joypadBox =
+          scene.getCaste<UIBoundingBox>('UIBoundingBox').get(joypadEntityId);
+      if (joypadBox != null) {
+        joypadBox.x = jX;
+        joypadBox.y = jY;
+        joypadBox.width = jSize;
+        joypadBox.height = jSize;
+      }
+      final joypadComp =
+          scene.getCaste<VirtualJoypad>('VirtualJoypad').get(joypadEntityId);
+      if (joypadComp != null) {
+        joypadComp.centerX = jX + jSize / 2;
+        joypadComp.centerY = jY + jSize / 2;
+        joypadComp.maxRadius = jSize / 2;
+      }
 
-       final joypadBox = scene.getCaste<UIBoundingBox>('UIBoundingBox').get(joypadEntityId);
-       if (joypadBox != null) {
-          joypadBox.x = rect.left + jX * scale;
-          joypadBox.y = rect.top + jY * scale;
-          joypadBox.width = jSize * scale;
-          joypadBox.height = jSize * scale;
-       }
-       final joypadComp = scene.getCaste<VirtualJoypad>('VirtualJoypad').get(joypadEntityId);
-       if (joypadComp != null) {
-          joypadComp.centerX = rect.left + (jX + jSize/2) * scale;
-          joypadComp.centerY = rect.top + (jY + jSize/2) * scale;
-          joypadComp.maxRadius = (jSize/2) * scale;
-       }
-
-       final joypadUI = scene.getCaste<ComplexUI>('ComplexUI').get(joypadEntityId);
-       if (joypadUI != null) {
-          joypadUI.x = jX;
-          joypadUI.y = jY;
-          joypadUI.width = jSize;
-          joypadUI.height = jSize;
-       }
+      final joypadUI =
+          scene.getCaste<ComplexUI>('ComplexUI').get(joypadEntityId);
+      if (joypadUI != null) {
+        joypadUI.x = jX;
+        joypadUI.y = jY;
+        joypadUI.width = jSize;
+        joypadUI.height = jSize;
+      }
     }
 
     // Handle metrics change to update logical screen size
     dispatcher.onMetricsChanged = () {
-      _updateBounds();
+      updateBounds();
     };
 
     // Trigger initial metrics check if available
     if (dispatcher.views.isNotEmpty) {
-      _updateBounds();
+      updateBounds();
     }
 
     dispatcher.onBeginFrame = (Duration timeStamp) {
@@ -316,7 +368,7 @@ class BulletHavenGame {
       time.update(timeStamp.inMicroseconds);
 
       // Ensure UI bounds match
-      _updateBounds();
+      updateBounds();
 
       // Update Systems here (only if playing)
       while (time.consumeFixedStep()) {
@@ -332,7 +384,8 @@ class BulletHavenGame {
           movementSystem.update(dt);
 
           // Update spatial hash before weapon system queries it
-          spatialHashSystem.update(Query1<Position>(scene.getCaste<Position>('Position')));
+          spatialHashSystem
+              .update(Query1<Position>(scene.getCaste<Position>('Position')));
 
           weaponSystem.update(dt);
           collisionSystem.update(playerEntityId);
@@ -342,8 +395,6 @@ class BulletHavenGame {
           parallaxSystem.update();
         }
       }
-
-      dispatcher.scheduleFrame();
     };
 
     dispatcher.onDrawFrame = () {
@@ -354,6 +405,7 @@ class BulletHavenGame {
           complexUIRenderSystem.render(canvas);
         },
       );
+      dispatcher.scheduleFrame();
     };
 
     // Kick off
@@ -366,7 +418,9 @@ class BulletHavenGame {
 }
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   // Load the main sprite sheet (atlas.png which acts as a combined atlas)
-  final atlas = await AssetLoader.loadEmbeddedImage(EmbeddedAssets.assets['atlas.png']!);
+  final atlas =
+      await AssetLoader.loadEmbeddedImage(EmbeddedAssets.assets['atlas.png']!);
   BulletHavenGame(atlas);
 }

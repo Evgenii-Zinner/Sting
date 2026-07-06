@@ -39,7 +39,8 @@ class WeaponSystem {
         final searchY = position.y - range;
         final searchSize = range * 2;
 
-        _grid.queryAABB(searchX, searchY, searchSize, searchSize, (foundEntity) {
+        _grid.queryAABB(searchX, searchY, searchSize, searchSize,
+            (foundEntity) {
           // Check if the entity is an enemy and not ourselves
           if (foundEntity != entity && enemyAICaste.get(foundEntity) != null) {
             final enemyPos = positionCaste.get(foundEntity);
@@ -70,7 +71,8 @@ class WeaponSystem {
             final ny = dy / dist;
             final speed = weapon.projectileSpeed;
 
-            spawnProjectile(_scene, position.x, position.y, nx * speed, ny * speed);
+            spawnProjectile(
+                _scene, position.x, position.y, nx * speed, ny * speed);
             weapon.currentCooldown = weapon.fireRate;
           }
         }

@@ -13,7 +13,8 @@ class BarnesHutTree {
   final Float32List _nodeMass; // mass (1 float per node)
   final Float32List _nodeCM; // cmX, cmY (2 floats per node)
   final Int32List _nodeChildren; // NW, NE, SW, SE (4 ints per node)
-  final Int32List _nodeEntity; // entity id (1 int per node, -1 if none/internal)
+  final Int32List
+      _nodeEntity; // entity id (1 int per node, -1 if none/internal)
 
   BarnesHutTree({this.maxNodes = 40000, this.maxDepth = 32})
       : _nodeBounds = Float32List(maxNodes * 4),
@@ -68,7 +69,8 @@ class BarnesHutTree {
     _insertAt(0, entity, x, y, mass, 0);
   }
 
-  void _insertAt(int nodeIdx, int entity, double x, double y, double mass, int depth) {
+  void _insertAt(
+      int nodeIdx, int entity, double x, double y, double mass, int depth) {
     // If empty leaf
     if (_nodeMass[nodeIdx] == 0.0) {
       _nodeEntity[nodeIdx] = entity;
@@ -94,7 +96,8 @@ class BarnesHutTree {
       int existingEntity = _nodeEntity[nodeIdx];
 
       // We don't store individual positions in nodes, but we know the leaf's CM is the entity's position!
-      double ex = currentCMX; // using before update would be better, but we already updated it
+      double ex =
+          currentCMX; // using before update would be better, but we already updated it
       // Actually, since we updated CM, the new CM is a blend.
       // Wait, we need the *original* position of the existing entity to move it.
       // Since it was a leaf, its previous CM was EXACTLY the existing entity's position.
@@ -110,13 +113,14 @@ class BarnesHutTree {
       if (depth + 1 < maxDepth) {
         // Prevent infinite recursion for perfectly identical positions
         if ((ex - x).abs() < 1e-6 && (ey - y).abs() < 1e-6) {
-           // Jitter one slightly to avoid stack overflow.
-           ex += 0.001;
+          // Jitter one slightly to avoid stack overflow.
+          ex += 0.001;
         }
 
         int qExisting = _getQuadrant(nodeIdx, ex, ey);
         int childIdxExisting = _getOrCreateChild(nodeIdx, qExisting);
-        _insertAt(childIdxExisting, existingEntity, ex, ey, currentMass, depth + 1);
+        _insertAt(
+            childIdxExisting, existingEntity, ex, ey, currentMass, depth + 1);
       }
     }
 
@@ -144,9 +148,9 @@ class BarnesHutTree {
     bool isSouth = y >= midY;
 
     if (!isSouth && !isEast) return 0; // NW
-    if (!isSouth && isEast) return 1;  // NE
-    if (isSouth && !isEast) return 2;  // SW
-    return 3;                          // SE
+    if (!isSouth && isEast) return 1; // NE
+    if (isSouth && !isEast) return 2; // SW
+    return 3; // SE
   }
 
   int _getOrCreateChild(int nodeIdx, int quadrant) {
@@ -175,12 +179,14 @@ class BarnesHutTree {
   /// [theta] is the Barnes-Hut threshold (typically 0.5).
   /// [g] is the gravitational constant.
   /// [outForce] is a Float32List of length 2 where the result is accumulated (adds to existing value).
-  void accumulateForce(int entity, double x, double y, double theta, double g, Float32List outForce) {
+  void accumulateForce(int entity, double x, double y, double theta, double g,
+      Float32List outForce) {
     if (_nodeCount == 0) return;
     _accumulateForceRecursive(0, entity, x, y, theta, g, outForce);
   }
 
-  void _accumulateForceRecursive(int nodeIdx, int entity, double x, double y, double theta, double g, Float32List outForce) {
+  void _accumulateForceRecursive(int nodeIdx, int entity, double x, double y,
+      double theta, double g, Float32List outForce) {
     double mass = _nodeMass[nodeIdx];
     if (mass == 0.0) return;
 

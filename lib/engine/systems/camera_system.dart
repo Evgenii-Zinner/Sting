@@ -28,7 +28,9 @@ class CameraSystem {
       return;
     }
 
-    cameraViewport.x = targetPosition.x - (screenWidth / 2.0) / cameraViewport.zoom;
-    cameraViewport.y = targetPosition.y - (screenHeight / 2.0) / cameraViewport.zoom;
+    cameraViewport.x =
+        targetPosition.x - (screenWidth / 2.0) / cameraViewport.zoom;
+    cameraViewport.y =
+        targetPosition.y - (screenHeight / 2.0) / cameraViewport.zoom;
   }
 }

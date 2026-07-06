@@ -1,16 +1,9 @@
 import 'dart:typed_data';
 import 'dart:ui';
-import 'package:flutter/services.dart';
 
 import 'input_system.dart';
 
-enum InputSource {
-  unknown,
-  touch,
-  mouse,
-  keyboard,
-  gamepad
-}
+enum InputSource { unknown, touch, mouse, keyboard, gamepad }
 
 /// Abstract representation of Game Actions
 class GameAction {
@@ -34,12 +27,13 @@ class InputMappingSystem {
 
   // Keyboard mapping: logicalKeyId -> actionId
   static const int maxKeyBindings = 32;
-  final Int64List _keyBindingKeys = Int64List(maxKeyBindings)..fillRange(0, maxKeyBindings, 0);
-  final Int32List _keyBindingActions = Int32List(maxKeyBindings)..fillRange(0, maxKeyBindings, -1);
+  final List<int> _keyBindingKeys = List<int>.filled(maxKeyBindings, 0);
+  final Int32List _keyBindingActions = Int32List(maxKeyBindings)
+    ..fillRange(0, maxKeyBindings, -1);
   int _keyBindingCount = 0;
 
   // Track active keys
-  final Int64List _activeKeys = Int64List(16)..fillRange(0, 16, 0);
+  final List<int> _activeKeys = List<int>.filled(16, 0);
 
   InputSource _activeSource = InputSource.unknown;
 
@@ -47,24 +41,27 @@ class InputMappingSystem {
   final void Function(PointerDataPacket)? _originalPointerHandler;
 
   InputMappingSystem(this._pointerSystem, {bool hook = true})
-      : _originalKeyHandler = hook ? PlatformDispatcher.instance.onKeyData : null,
-        _originalPointerHandler = hook ? PlatformDispatcher.instance.onPointerDataPacket : null {
+      : _originalKeyHandler =
+            hook ? PlatformDispatcher.instance.onKeyData : null,
+        _originalPointerHandler =
+            hook ? PlatformDispatcher.instance.onPointerDataPacket : null {
     if (hook) {
       PlatformDispatcher.instance.onKeyData = (data) {
-        _handleKeyData(data);
+        final handled = _handleKeyData(data);
         if (_originalKeyHandler != null) {
-          return _originalKeyHandler!(data);
+          return _originalKeyHandler(data) || handled;
         }
-        return false;
+        return handled;
       };
 
       PlatformDispatcher.instance.onPointerDataPacket = (packet) {
-        // Forward to the underlying InputSystem
-        _pointerSystem.handlePacket(packet);
         _handlePointerDataPacket(packet);
 
         if (_originalPointerHandler != null) {
-          _originalPointerHandler!(packet);
+          _originalPointerHandler(packet);
+        } else {
+          // Forward to the underlying InputSystem only if it wasn't already hooked
+          _pointerSystem.handlePacket(packet);
         }
       };
     }
@@ -78,8 +75,16 @@ class InputMappingSystem {
     }
   }
 
-  void _handleKeyData(KeyData data) {
+  bool _handleKeyData(KeyData data) {
     _activeSource = InputSource.keyboard;
+
+    bool isBound = false;
+    for (int i = 0; i < _keyBindingCount; i++) {
+      if (_keyBindingKeys[i] == data.logical) {
+        isBound = true;
+        break;
+      }
+    }
 
     if (data.type == KeyEventType.down) {
       _setKeyDown(data.logical);
@@ -88,11 +93,14 @@ class InputMappingSystem {
       _setKeyUp(data.logical);
       _updateMappedAction(data.logical, 0.0);
     }
+
+    return isBound;
   }
 
   void _handlePointerDataPacket(PointerDataPacket packet) {
     for (final data in packet.data) {
-      if (data.change == PointerChange.down || data.change == PointerChange.move) {
+      if (data.change == PointerChange.down ||
+          data.change == PointerChange.move) {
         if (data.kind == PointerDeviceKind.mouse) {
           _activeSource = InputSource.mouse;
         } else if (data.kind == PointerDeviceKind.touch) {
@@ -103,8 +111,8 @@ class InputMappingSystem {
   }
 
   // For testing
-  void handleKeyData(KeyData data) {
-    _handleKeyData(data);
+  bool handleKeyData(KeyData data) {
+    return _handleKeyData(data);
   }
 
   void handlePointerDataPacket(PointerDataPacket packet) {
@@ -139,16 +147,17 @@ class InputMappingSystem {
             // Check if any other key bound to this action is still active
             bool stillActive = false;
             for (int j = 0; j < _keyBindingCount; j++) {
-              if (_keyBindingActions[j] == actionId && _isKeyActive(_keyBindingKeys[j])) {
+              if (_keyBindingActions[j] == actionId &&
+                  _isKeyActive(_keyBindingKeys[j])) {
                 stillActive = true;
                 break;
               }
             }
             if (!stillActive) {
-               _actionStates[actionId] = value;
+              _actionStates[actionId] = value;
             }
           } else {
-             _actionStates[actionId] = value;
+            _actionStates[actionId] = value;
           }
         }
       }
@@ -156,19 +165,19 @@ class InputMappingSystem {
   }
 
   bool _isKeyActive(int logicalKey) {
-     for (int i = 0; i < _activeKeys.length; i++) {
-        if (_activeKeys[i] == logicalKey) {
-           return true;
-        }
-     }
-     return false;
+    for (int i = 0; i < _activeKeys.length; i++) {
+      if (_activeKeys[i] == logicalKey) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /// Explicitly set an action state, e.g. for Virtual Joypad vector X/Y mapping
   void setActionState(int actionId, double value) {
-     if (actionId >= 0 && actionId < GameAction.maxActions) {
-         _actionStates[actionId] = value;
-     }
+    if (actionId >= 0 && actionId < GameAction.maxActions) {
+      _actionStates[actionId] = value;
+    }
   }
 
   double getActionValue(int actionId) {

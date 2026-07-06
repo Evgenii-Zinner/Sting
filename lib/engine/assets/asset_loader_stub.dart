@@ -15,6 +15,7 @@ class AssetLoader {
   }
 
   static Future<Image> loadEmbeddedImage(String base64String) {
-    throw UnsupportedError('loadEmbeddedImage is not supported on this platform');
+    throw UnsupportedError(
+        'loadEmbeddedImage is not supported on this platform');
   }
 }

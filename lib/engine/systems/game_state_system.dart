@@ -15,7 +15,8 @@ class GameStateSystem {
   GameStateSystem(this._gameStateCaste, this._globalStateEntityId) {
     if (_gameStateCaste.get(_globalStateEntityId) == null) {
       // Ensure the global state entity has the component.
-      _gameStateCaste.add(_globalStateEntityId, GameState.create(GameState.stateMenu));
+      _gameStateCaste.add(
+          _globalStateEntityId, GameState.create(GameState.stateMenu));
     }
   }
 

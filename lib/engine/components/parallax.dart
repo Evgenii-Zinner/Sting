@@ -10,12 +10,13 @@ import 'dart:typed_data';
 /// - Index 3: basePositionY (The original Y position in the world)
 extension type Parallax(Float32List data) {
   /// Creates a new Parallax component.
-  Parallax.create(double scrollFactorX, double scrollFactorY, double basePositionX, double basePositionY)
-    : this(Float32List(4)
-        ..[0] = scrollFactorX
-        ..[1] = scrollFactorY
-        ..[2] = basePositionX
-        ..[3] = basePositionY);
+  Parallax.create(double scrollFactorX, double scrollFactorY,
+      double basePositionX, double basePositionY)
+      : this(Float32List(4)
+          ..[0] = scrollFactorX
+          ..[1] = scrollFactorY
+          ..[2] = basePositionX
+          ..[3] = basePositionY);
 
   /// Gets the X scroll factor.
   double get scrollFactorX => data[0];

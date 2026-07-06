@@ -12,8 +12,12 @@ int spawnEnemy(Scene scene, double startX, double startY, int targetId) {
   final enemyEntity = scene.createEntity();
 
   if (enemyEntity != -1) {
-    scene.getCaste<Position>('Position').add(enemyEntity, Position.create(startX, startY));
-    scene.getCaste<Velocity>('Velocity').add(enemyEntity, Velocity.create(0.0, 0.0));
+    scene
+        .getCaste<Position>('Position')
+        .add(enemyEntity, Position.create(startX, startY));
+    scene
+        .getCaste<Velocity>('Velocity')
+        .add(enemyEntity, Velocity.create(0.0, 0.0));
 
     final sprite = Sprite.create();
     // Atlas enemy frames start at y = 160
@@ -23,8 +27,12 @@ int spawnEnemy(Scene scene, double startX, double startY, int targetId) {
     sprite.rectBottom = 192.0;
     scene.getCaste<Sprite>('Sprite').add(enemyEntity, sprite);
 
-    scene.getCaste<BoundingBox>('BoundingBox').add(enemyEntity, BoundingBox.create(24.0, 24.0));
-    scene.getCaste<EnemyAI>('EnemyAI').add(enemyEntity, EnemyAI.create(targetId));
+    scene
+        .getCaste<BoundingBox>('BoundingBox')
+        .add(enemyEntity, BoundingBox.create(24.0, 24.0));
+    scene
+        .getCaste<EnemyAI>('EnemyAI')
+        .add(enemyEntity, EnemyAI.create(targetId));
 
     // Add gameplay stats
     scene.getCaste<Health>('Health').add(enemyEntity, Health.create(30));

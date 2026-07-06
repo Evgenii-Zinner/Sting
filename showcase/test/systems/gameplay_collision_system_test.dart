@@ -32,33 +32,56 @@ void main() {
 
       scene.registerCaste<Position>('Position', ComponentCaste<Position>(100));
       scene.registerCaste<Velocity>('Velocity', ComponentCaste<Velocity>(100));
-      scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(100));
+      scene.registerCaste<BoundingBox>(
+          'BoundingBox', ComponentCaste<BoundingBox>(100));
       scene.registerCaste<Health>('Health', ComponentCaste<Health>(100));
       scene.registerCaste<Damage>('Damage', ComponentCaste<Damage>(100));
       scene.registerCaste<ExpGem>('ExpGem', ComponentCaste<ExpGem>(100));
-      scene.registerCaste<ExpMagnet>('ExpMagnet', ComponentCaste<ExpMagnet>(100));
-      scene.registerCaste<PlayerStats>('PlayerStats', ComponentCaste<PlayerStats>(100));
+      scene.registerCaste<ExpMagnet>(
+          'ExpMagnet', ComponentCaste<ExpMagnet>(100));
+      scene.registerCaste<PlayerStats>(
+          'PlayerStats', ComponentCaste<PlayerStats>(100));
       scene.registerCaste<EnemyAI>('EnemyAI', ComponentCaste<EnemyAI>(100));
 
       playerEntity = scene.createEntity();
-      scene.getCaste<Position>('Position').add(playerEntity, Position.create(100.0, 100.0));
-      scene.getCaste<BoundingBox>('BoundingBox').add(playerEntity, BoundingBox.create(20.0, 20.0));
+      scene
+          .getCaste<Position>('Position')
+          .add(playerEntity, Position.create(100.0, 100.0));
+      scene
+          .getCaste<BoundingBox>('BoundingBox')
+          .add(playerEntity, BoundingBox.create(20.0, 20.0));
       scene.getCaste<Health>('Health').add(playerEntity, Health.create(100));
-      scene.getCaste<ExpMagnet>('ExpMagnet').add(playerEntity, ExpMagnet.create(50.0));
-      scene.getCaste<PlayerStats>('PlayerStats').add(playerEntity, PlayerStats.create());
+      scene
+          .getCaste<ExpMagnet>('ExpMagnet')
+          .add(playerEntity, ExpMagnet.create(50.0));
+      scene
+          .getCaste<PlayerStats>('PlayerStats')
+          .add(playerEntity, PlayerStats.create());
     });
 
     test('Projectile deals damage to enemy and spawns gem on kill', () {
       final enemy = scene.createEntity();
-      scene.getCaste<Position>('Position').add(enemy, Position.create(200.0, 200.0));
-      scene.getCaste<BoundingBox>('BoundingBox').add(enemy, BoundingBox.create(20.0, 20.0));
+      scene
+          .getCaste<Position>('Position')
+          .add(enemy, Position.create(200.0, 200.0));
+      scene
+          .getCaste<BoundingBox>('BoundingBox')
+          .add(enemy, BoundingBox.create(20.0, 20.0));
       scene.getCaste<Health>('Health').add(enemy, Health.create(10));
-      scene.getCaste<EnemyAI>('EnemyAI').add(enemy, EnemyAI.create(playerEntity));
+      scene
+          .getCaste<EnemyAI>('EnemyAI')
+          .add(enemy, EnemyAI.create(playerEntity));
 
       final projectile = scene.createEntity();
-      scene.getCaste<Position>('Position').add(projectile, Position.create(205.0, 205.0)); // Overlapping
-      scene.getCaste<BoundingBox>('BoundingBox').add(projectile, BoundingBox.create(5.0, 5.0));
-      scene.getCaste<Damage>('Damage').add(projectile, Damage.create(15)); // Enough to kill
+      scene
+          .getCaste<Position>('Position')
+          .add(projectile, Position.create(205.0, 205.0)); // Overlapping
+      scene
+          .getCaste<BoundingBox>('BoundingBox')
+          .add(projectile, BoundingBox.create(5.0, 5.0));
+      scene
+          .getCaste<Damage>('Damage')
+          .add(projectile, Damage.create(15)); // Enough to kill
 
       gridSystem.update(Query1<Position>(scene.getCaste<Position>('Position')));
       system.update(playerEntity);
@@ -79,16 +102,23 @@ void main() {
       expect(gemFound, isTrue);
 
       // Score should increase
-      final stats = scene.getCaste<PlayerStats>('PlayerStats').get(playerEntity);
+      final stats =
+          scene.getCaste<PlayerStats>('PlayerStats').get(playerEntity);
       expect(stats!.score, 100);
     });
 
     test('Enemy deals damage to player', () {
       final enemy = scene.createEntity();
-      scene.getCaste<Position>('Position').add(enemy, Position.create(105.0, 105.0)); // Overlapping player
-      scene.getCaste<BoundingBox>('BoundingBox').add(enemy, BoundingBox.create(20.0, 20.0));
+      scene
+          .getCaste<Position>('Position')
+          .add(enemy, Position.create(105.0, 105.0)); // Overlapping player
+      scene
+          .getCaste<BoundingBox>('BoundingBox')
+          .add(enemy, BoundingBox.create(20.0, 20.0));
       scene.getCaste<Damage>('Damage').add(enemy, Damage.create(15));
-      scene.getCaste<EnemyAI>('EnemyAI').add(enemy, EnemyAI.create(playerEntity));
+      scene
+          .getCaste<EnemyAI>('EnemyAI')
+          .add(enemy, EnemyAI.create(playerEntity));
 
       gridSystem.update(Query1<Position>(scene.getCaste<Position>('Position')));
       system.update(playerEntity);
@@ -101,9 +131,13 @@ void main() {
       final gem = scene.createEntity();
       // Initially outside player box but inside magnet radius (100+10+50 = 160)
       // Magnet radius is 50. Player center is 110,110. Radius 50 means 60 to 160.
-      scene.getCaste<Position>('Position').add(gem, Position.create(140.0, 110.0));
+      scene
+          .getCaste<Position>('Position')
+          .add(gem, Position.create(140.0, 110.0));
       scene.getCaste<Velocity>('Velocity').add(gem, Velocity.create(0.0, 0.0));
-      scene.getCaste<BoundingBox>('BoundingBox').add(gem, BoundingBox.create(10.0, 10.0));
+      scene
+          .getCaste<BoundingBox>('BoundingBox')
+          .add(gem, BoundingBox.create(10.0, 10.0));
       scene.getCaste<ExpGem>('ExpGem').add(gem, ExpGem.create(25));
 
       gridSystem.update(Query1<Position>(scene.getCaste<Position>('Position')));
@@ -122,7 +156,8 @@ void main() {
       // Gem collected
       expect(scene.getCaste<Position>('Position').get(gem), isNull);
 
-      final stats = scene.getCaste<PlayerStats>('PlayerStats').get(playerEntity);
+      final stats =
+          scene.getCaste<PlayerStats>('PlayerStats').get(playerEntity);
       expect(stats!.xp, 25);
     });
   });

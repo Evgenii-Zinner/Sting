@@ -5,7 +5,10 @@ import 'dart:typed_data';
 extension type Viewport(Float32List data) {
   /// Creates a new Viewport component with the given [x], [y], and [zoom].
   Viewport.create([double x = 0.0, double y = 0.0, double zoom = 1.0])
-      : this(Float32List(3)..[0] = x..[1] = y..[2] = zoom);
+      : this(Float32List(3)
+          ..[0] = x
+          ..[1] = y
+          ..[2] = zoom);
 
   /// Gets the x coordinate of the camera.
   double get x => data[0];

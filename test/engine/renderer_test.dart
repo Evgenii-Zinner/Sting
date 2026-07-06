@@ -11,13 +11,16 @@ void main() {
       expect(() => renderer.renderFrame(), returnsNormally);
     });
 
-    test('calculateVirtualRect correctly computes rect without virtual size', () {
+    test('calculateVirtualRect correctly computes rect without virtual size',
+        () {
       final renderer = Renderer();
       final rect = renderer.calculateVirtualRect(const Size(800, 600));
       expect(rect, const Rect.fromLTWH(0, 0, 800, 600));
     });
 
-    test('calculateVirtualRect correctly computes rect with letterboxing (wider physical screen)', () {
+    test(
+        'calculateVirtualRect correctly computes rect with letterboxing (wider physical screen)',
+        () {
       // Virtual resolution: 400x300 (aspect ratio 4:3)
       // Physical resolution: 1000x300 (aspect ratio 10:3, wider)
       // Expected scale: 1.0 (constrained by height)
@@ -27,7 +30,9 @@ void main() {
       expect(rect, const Rect.fromLTWH(300, 0, 400, 300));
     });
 
-    test('calculateVirtualRect correctly computes rect with pillarboxing (taller physical screen)', () {
+    test(
+        'calculateVirtualRect correctly computes rect with pillarboxing (taller physical screen)',
+        () {
       // Virtual resolution: 400x300 (aspect ratio 4:3)
       // Physical resolution: 400x600 (aspect ratio 4:6, taller)
       // Expected scale: 1.0 (constrained by width)

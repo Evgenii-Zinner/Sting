@@ -31,8 +31,10 @@ void main() {
     test('enqueues and processes events with custom params', () {
       final queue = AudioEventQueue(10);
 
-      expect(queue.enqueue(1, 100, volume: 0.5, pitch: 1.2, loop: true), isTrue);
-      expect(queue.enqueue(2, 101, volume: 2.0, pitch: 0.8, loop: false), isTrue);
+      expect(
+          queue.enqueue(1, 100, volume: 0.5, pitch: 1.2, loop: true), isTrue);
+      expect(
+          queue.enqueue(2, 101, volume: 2.0, pitch: 0.8, loop: false), isTrue);
       expect(queue.length, equals(2));
 
       final results = <List<dynamic>>[];

@@ -18,7 +18,8 @@ class GravitySystem {
   // Reusable force array
   final Float32List _forceBuffer = Float32List(2);
 
-  GravitySystem(this._gameStateSystem, {this.theta = 0.5, this.g = 1.0, int maxNodes = 40000})
+  GravitySystem(this._gameStateSystem,
+      {this.theta = 0.5, this.g = 1.0, int maxNodes = 40000})
       : _tree = BarnesHutTree(maxNodes: maxNodes);
 
   /// Updates all entities with Position, Velocity, and Mass.
@@ -86,8 +87,6 @@ class GravitySystem {
       if (pos == null) continue;
       final vel = velocities.get(entity);
       if (vel == null) continue;
-
-      final mass = masses.getComponentAt(i)!;
 
       _forceBuffer[0] = 0.0;
       _forceBuffer[1] = 0.0;

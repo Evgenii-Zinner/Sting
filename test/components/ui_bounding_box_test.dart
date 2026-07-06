@@ -4,7 +4,8 @@ import 'package:sting/engine/components/ui_bounding_box.dart';
 void main() {
   group('UIBoundingBox', () {
     test('initializes correctly', () {
-      final box = UIBoundingBox.fromBounds(x: 10, y: 20, width: 100, height: 50);
+      final box =
+          UIBoundingBox.fromBounds(x: 10, y: 20, width: 100, height: 50);
 
       expect(box.x, 10);
       expect(box.y, 20);

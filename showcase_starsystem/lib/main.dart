@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/widgets.dart' show WidgetsFlutterBinding;
 import 'package:sting/engine/ecs/scene.dart';
 import 'package:sting/engine/ecs/swarm.dart';
 import 'package:sting/engine/ecs/component_caste.dart';
@@ -78,19 +79,27 @@ class StarSystemGame {
   void _initEngine() {
     // 1. Register Castes
     scene.registerCaste<GameState>('GameState', ComponentCaste<GameState>(1));
-    scene.registerCaste<Position>('Position', ComponentCaste<Position>(Swarm.maxEntities));
-    scene.registerCaste<Velocity>('Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
+    scene.registerCaste<Position>(
+        'Position', ComponentCaste<Position>(Swarm.maxEntities));
+    scene.registerCaste<Velocity>(
+        'Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
     scene.registerCaste<Mass>('Mass', ComponentCaste<Mass>(Swarm.maxEntities));
-    scene.registerCaste<Sprite>('Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
+    scene.registerCaste<Sprite>(
+        'Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
     scene.registerCaste<Viewport>('Viewport', ComponentCaste<Viewport>(1));
-    scene.registerCaste<ComplexUI>('ComplexUI', ComponentCaste<ComplexUI>(Swarm.maxEntities));
-    scene.registerCaste<UIBoundingBox>('UIBoundingBox', ComponentCaste<UIBoundingBox>(Swarm.maxEntities));
-    scene.registerCaste<Parallax>('Parallax', ComponentCaste<Parallax>(Swarm.maxEntities));
-    scene.registerCaste<VirtualJoypad>('VirtualJoypad', ComponentCaste<VirtualJoypad>(10));
+    scene.registerCaste<ComplexUI>(
+        'ComplexUI', ComponentCaste<ComplexUI>(Swarm.maxEntities));
+    scene.registerCaste<UIBoundingBox>(
+        'UIBoundingBox', ComponentCaste<UIBoundingBox>(Swarm.maxEntities));
+    scene.registerCaste<Parallax>(
+        'Parallax', ComponentCaste<Parallax>(Swarm.maxEntities));
+    scene.registerCaste<VirtualJoypad>(
+        'VirtualJoypad', ComponentCaste<VirtualJoypad>(10));
 
     // 2. Setup Global Game State Entity
     globalStateEntityId = scene.createEntity();
-    gameStateSystem = GameStateSystem(scene.getCaste<GameState>('GameState'), globalStateEntityId);
+    gameStateSystem = GameStateSystem(
+        scene.getCaste<GameState>('GameState'), globalStateEntityId);
     gameStateSystem.changeState(GameState.statePlaying);
 
     // 3. Initialize Systems
@@ -115,10 +124,14 @@ class StarSystemGame {
 
     inputSystem = InputSystem();
     inputMappingSystem = InputMappingSystem(inputSystem);
-    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowUp.keyId, GameAction.moveUp);
-    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowDown.keyId, GameAction.moveDown);
-    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowLeft.keyId, GameAction.moveLeft);
-    inputMappingSystem.bindKey(LogicalKeyboardKey.arrowRight.keyId, GameAction.moveRight);
+    inputMappingSystem.bindKey(
+        LogicalKeyboardKey.arrowUp.keyId, GameAction.moveUp);
+    inputMappingSystem.bindKey(
+        LogicalKeyboardKey.arrowDown.keyId, GameAction.moveDown);
+    inputMappingSystem.bindKey(
+        LogicalKeyboardKey.arrowLeft.keyId, GameAction.moveLeft);
+    inputMappingSystem.bindKey(
+        LogicalKeyboardKey.arrowRight.keyId, GameAction.moveRight);
 
     parallaxSystem = ParallaxSystem(
       positionCaste: scene.getCaste<Position>('Position'),
@@ -131,11 +144,13 @@ class StarSystemGame {
       scene.getCaste<UIBoundingBox>('UIBoundingBox'),
       scene.getCaste<ComplexUI>('ComplexUI'),
       inputSystem,
+      renderer,
     );
 
     uiSystem = UISystem(
       scene.getCaste<UIBoundingBox>('UIBoundingBox'),
       inputSystem,
+      renderer,
     );
     complexUIRenderSystem = ComplexUIRenderSystem(
       complexUICaste: scene.getCaste<ComplexUI>('ComplexUI'),
@@ -145,7 +160,8 @@ class StarSystemGame {
     cameraEntityId = scene.createEntity();
     final viewport = Viewport.create();
     // Center camera slightly if we want, or rely on objects
-    viewport.x = -400; // Assuming objects around 0,0, this centers 0,0 on an 800x600 screen
+    viewport.x =
+        -400; // Assuming objects around 0,0, this centers 0,0 on an 800x600 screen
     viewport.y = -300;
     scene.getCaste<Viewport>('Viewport').add(cameraEntityId, viewport);
 
@@ -154,11 +170,18 @@ class StarSystemGame {
 
     // Spawn a parallax starfield background
     final bgEntityId = scene.createEntity();
-    scene.getCaste<Position>('Position').add(bgEntityId, Position.create(0.0, 0.0));
+    scene
+        .getCaste<Position>('Position')
+        .add(bgEntityId, Position.create(0.0, 0.0));
     final bgSprite = Sprite.create();
-    bgSprite.rectLeft = 0; bgSprite.rectTop = 0; bgSprite.rectRight = 64; bgSprite.rectBottom = 64;
+    bgSprite.rectLeft = 0;
+    bgSprite.rectTop = 0;
+    bgSprite.rectRight = 64;
+    bgSprite.rectBottom = 64;
     scene.getCaste<Sprite>('Sprite').add(bgEntityId, bgSprite);
-    scene.getCaste<Parallax>('Parallax').add(bgEntityId, Parallax.create(0.2, 0.2, 0.0, 0.0)); // moves slowly
+    scene
+        .getCaste<Parallax>('Parallax')
+        .add(bgEntityId, Parallax.create(0.2, 0.2, 0.0, 0.0)); // moves slowly
 
     _spawnStarSystem();
     _createUI();
@@ -202,8 +225,6 @@ class StarSystemGame {
           parallaxSystem.update();
         }
       }
-
-      dispatcher.scheduleFrame();
     };
 
     dispatcher.onDrawFrame = () {
@@ -213,6 +234,7 @@ class StarSystemGame {
           complexUIRenderSystem.render(canvas);
         },
       );
+      dispatcher.scheduleFrame();
     };
 
     // Kick off
@@ -241,8 +263,12 @@ class StarSystemGame {
     // G = 50.0, M = 10000, r = 150
     // v = sqrt(50 * 10000 / 150) = sqrt(3333.3) ≈ 57.7
     int planet1Id = scene.createEntity();
-    scene.getCaste<Position>('Position').add(planet1Id, Position.create(150, 0));
-    scene.getCaste<Velocity>('Velocity').add(planet1Id, Velocity.create(0, 57.7)); // Orbiting velocity
+    scene
+        .getCaste<Position>('Position')
+        .add(planet1Id, Position.create(150, 0));
+    scene
+        .getCaste<Velocity>('Velocity')
+        .add(planet1Id, Velocity.create(0, 57.7)); // Orbiting velocity
     scene.getCaste<Mass>('Mass').add(planet1Id, Mass.create(10)); // Small mass
 
     final planet1Sprite = Sprite.create();
@@ -257,8 +283,12 @@ class StarSystemGame {
     // 3. Planet 2 (Outer orbit)
     // r = 300, v = sqrt(50 * 10000 / 300) = sqrt(1666.6) ≈ 40.8
     int planet2Id = scene.createEntity();
-    scene.getCaste<Position>('Position').add(planet2Id, Position.create(0, -300));
-    scene.getCaste<Velocity>('Velocity').add(planet2Id, Velocity.create(40.8, 0));
+    scene
+        .getCaste<Position>('Position')
+        .add(planet2Id, Position.create(0, -300));
+    scene
+        .getCaste<Velocity>('Velocity')
+        .add(planet2Id, Velocity.create(40.8, 0));
     scene.getCaste<Mass>('Mass').add(planet2Id, Mass.create(5));
 
     final planet2Sprite = Sprite.create();
@@ -274,45 +304,92 @@ class StarSystemGame {
   void _createUI() {
     // Planet Button
     spawnPlanetBtnId = scene.createEntity();
-    scene.getCaste<ComplexUI>('ComplexUI').add(spawnPlanetBtnId, ComplexUI(
-      text: 'Spawn Planet', x: 10, y: 10, width: 200, height: 40,
-      backgroundColor: 0xFF444444, textColor: 0xFFFFFFFF, borderRadius: 4.0, fontSize: 16.0,
-    ));
-    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(spawnPlanetBtnId, UIBoundingBox.fromBounds(x: 10, y: 10, width: 200, height: 40));
+    scene.getCaste<ComplexUI>('ComplexUI').add(
+        spawnPlanetBtnId,
+        ComplexUI(
+          text: 'Spawn Planet',
+          x: 10,
+          y: 10,
+          width: 200,
+          height: 40,
+          backgroundColor: 0xFF444444,
+          textColor: 0xFFFFFFFF,
+          borderRadius: 4.0,
+          fontSize: 16.0,
+        ));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(spawnPlanetBtnId,
+        UIBoundingBox.fromBounds(x: 10, y: 10, width: 200, height: 40));
 
     // Asteroid Button
     spawnAsteroidBtnId = scene.createEntity();
-    scene.getCaste<ComplexUI>('ComplexUI').add(spawnAsteroidBtnId, ComplexUI(
-      text: 'Spawn Heavy Asteroid', x: 10, y: 60, width: 200, height: 40,
-      backgroundColor: 0xFF444444, textColor: 0xFFFFFFFF, borderRadius: 4.0, fontSize: 16.0,
-    ));
-    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(spawnAsteroidBtnId, UIBoundingBox.fromBounds(x: 10, y: 60, width: 200, height: 40));
+    scene.getCaste<ComplexUI>('ComplexUI').add(
+        spawnAsteroidBtnId,
+        ComplexUI(
+          text: 'Spawn Heavy Asteroid',
+          x: 10,
+          y: 60,
+          width: 200,
+          height: 40,
+          backgroundColor: 0xFF444444,
+          textColor: 0xFFFFFFFF,
+          borderRadius: 4.0,
+          fontSize: 16.0,
+        ));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(spawnAsteroidBtnId,
+        UIBoundingBox.fromBounds(x: 10, y: 60, width: 200, height: 40));
 
     // Comet Button
     spawnCometBtnId = scene.createEntity();
-    scene.getCaste<ComplexUI>('ComplexUI').add(spawnCometBtnId, ComplexUI(
-      text: 'Spawn Fast Comet', x: 10, y: 110, width: 200, height: 40,
-      backgroundColor: 0xFF444444, textColor: 0xFFFFFFFF, borderRadius: 4.0, fontSize: 16.0,
-    ));
-    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(spawnCometBtnId, UIBoundingBox.fromBounds(x: 10, y: 110, width: 200, height: 40));
+    scene.getCaste<ComplexUI>('ComplexUI').add(
+        spawnCometBtnId,
+        ComplexUI(
+          text: 'Spawn Fast Comet',
+          x: 10,
+          y: 110,
+          width: 200,
+          height: 40,
+          backgroundColor: 0xFF444444,
+          textColor: 0xFFFFFFFF,
+          borderRadius: 4.0,
+          fontSize: 16.0,
+        ));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(spawnCometBtnId,
+        UIBoundingBox.fromBounds(x: 10, y: 110, width: 200, height: 40));
 
     // Virtual Joypad for camera control
     joypadEntityId = scene.createEntity();
     final knobEntityId = scene.createEntity();
 
-    scene.getCaste<ComplexUI>('ComplexUI').add(joypadEntityId, ComplexUI(
-      x: 20, y: 400, width: 120, height: 120,
-      backgroundColor: 0x44FFFFFF, borderRadius: 60.0,
-    ));
-    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(joypadEntityId, UIBoundingBox.fromBounds(x: 20, y: 400, width: 120, height: 120));
-    scene.getCaste<VirtualJoypad>('VirtualJoypad').add(joypadEntityId, VirtualJoypad.create(
-      maxRadius: 60.0, centerX: 80.0, centerY: 460.0, knobEntityId: knobEntityId.toDouble()
-    ));
+    scene.getCaste<ComplexUI>('ComplexUI').add(
+        joypadEntityId,
+        ComplexUI(
+          x: 20,
+          y: 400,
+          width: 120,
+          height: 120,
+          backgroundColor: 0x44FFFFFF,
+          borderRadius: 60.0,
+        ));
+    scene.getCaste<UIBoundingBox>('UIBoundingBox').add(joypadEntityId,
+        UIBoundingBox.fromBounds(x: 20, y: 400, width: 120, height: 120));
+    scene.getCaste<VirtualJoypad>('VirtualJoypad').add(
+        joypadEntityId,
+        VirtualJoypad.create(
+            maxRadius: 60.0,
+            centerX: 80.0,
+            centerY: 460.0,
+            knobEntityId: knobEntityId.toDouble()));
 
-    scene.getCaste<ComplexUI>('ComplexUI').add(knobEntityId, ComplexUI(
-      x: 60, y: 440, width: 40, height: 40,
-      backgroundColor: 0x88FFFFFF, borderRadius: 20.0,
-    ));
+    scene.getCaste<ComplexUI>('ComplexUI').add(
+        knobEntityId,
+        ComplexUI(
+          x: 60,
+          y: 440,
+          width: 40,
+          height: 40,
+          backgroundColor: 0x88FFFFFF,
+          borderRadius: 20.0,
+        ));
   }
 
   void _updateUIBounds() {
@@ -323,17 +400,14 @@ class StarSystemGame {
     final physicalSize = view.physicalSize;
     if (physicalSize.isEmpty) return;
 
-    final rect = renderer.calculateVirtualRect(physicalSize);
-    double scale = rect.width / (renderer.virtualWidth ?? 800);
-
     void updateBox(int entityId, double vx, double vy, double vw, double vh) {
       if (entityId == -1) return;
       final box = scene.getCaste<UIBoundingBox>('UIBoundingBox').get(entityId);
       if (box != null) {
-        box.x = rect.left + vx * scale;
-        box.y = rect.top + vy * scale;
-        box.width = vw * scale;
-        box.height = vh * scale;
+        box.x = vx;
+        box.y = vy;
+        box.width = vw;
+        box.height = vh;
       }
     }
 
@@ -347,19 +421,20 @@ class StarSystemGame {
 
     updateBox(joypadEntityId, jX, jY, jSize, jSize);
 
-    final joypadComp = scene.getCaste<VirtualJoypad>('VirtualJoypad').get(joypadEntityId);
+    final joypadComp =
+        scene.getCaste<VirtualJoypad>('VirtualJoypad').get(joypadEntityId);
     if (joypadComp != null) {
-       joypadComp.centerX = rect.left + (jX + jSize/2) * scale;
-       joypadComp.centerY = rect.top + (jY + jSize/2) * scale;
-       joypadComp.maxRadius = (jSize/2) * scale;
+      joypadComp.centerX = jX + jSize / 2;
+      joypadComp.centerY = jY + jSize / 2;
+      joypadComp.maxRadius = jSize / 2;
     }
 
     final joypadUI = scene.getCaste<ComplexUI>('ComplexUI').get(joypadEntityId);
     if (joypadUI != null) {
-       joypadUI.x = jX;
-       joypadUI.y = jY;
-       joypadUI.width = jSize;
-       joypadUI.height = jSize;
+      joypadUI.x = jX;
+      joypadUI.y = jY;
+      joypadUI.width = jSize;
+      joypadUI.height = jSize;
     }
   }
 
@@ -379,19 +454,20 @@ class StarSystemGame {
     if (inputMappingSystem.isActionActive(GameAction.moveUp)) moveY -= 1.0;
 
     // Joypad
-    final joypad = scene.getCaste<VirtualJoypad>('VirtualJoypad').get(joypadEntityId);
+    final joypad =
+        scene.getCaste<VirtualJoypad>('VirtualJoypad').get(joypadEntityId);
     if (joypad != null) {
       if (joypad.vectorX != 0.0 || joypad.vectorY != 0.0) {
-         moveX = joypad.vectorX;
-         moveY = joypad.vectorY;
+        moveX = joypad.vectorX;
+        moveY = joypad.vectorY;
       }
     }
 
     if (moveX != 0.0 || moveY != 0.0) {
       final length = math.sqrt(moveX * moveX + moveY * moveY);
       if (length > 1.0) {
-         moveX /= length;
-         moveY /= length;
+        moveX /= length;
+        moveY /= length;
       }
       viewport.x += moveX * speed * dt;
       viewport.y += moveY * speed * dt;
@@ -399,7 +475,8 @@ class StarSystemGame {
   }
 
   void _handleUIInteractions() {
-    void handleBtn(int entityId, bool wasPressed, void Function(bool) setPressed, void Function() onSpawn) {
+    void handleBtn(int entityId, bool wasPressed,
+        void Function(bool) setPressed, void Function() onSpawn) {
       if (entityId == -1) return;
       final box = scene.getCaste<UIBoundingBox>('UIBoundingBox').get(entityId);
       if (box != null) {
@@ -413,12 +490,25 @@ class StarSystemGame {
       }
     }
 
-    handleBtn(spawnPlanetBtnId, _wasPlanetBtnPressed, (v) => _wasPlanetBtnPressed = v, () => _spawnEntity(10.0, 1.0, 96, 0, 112, 16));
-    handleBtn(spawnAsteroidBtnId, _wasAsteroidBtnPressed, (v) => _wasAsteroidBtnPressed = v, () => _spawnEntity(50.0, 0.8, 112, 0, 128, 16)); // Heavy, slower
-    handleBtn(spawnCometBtnId, _wasCometBtnPressed, (v) => _wasCometBtnPressed = v, () => _spawnEntity(2.0, 1.5, 128, 0, 144, 16)); // Light, faster
+    handleBtn(
+        spawnPlanetBtnId,
+        _wasPlanetBtnPressed,
+        (v) => _wasPlanetBtnPressed = v,
+        () => _spawnEntity(10.0, 1.0, 96, 0, 112, 16));
+    handleBtn(
+        spawnAsteroidBtnId,
+        _wasAsteroidBtnPressed,
+        (v) => _wasAsteroidBtnPressed = v,
+        () => _spawnEntity(50.0, 0.8, 112, 0, 128, 16)); // Heavy, slower
+    handleBtn(
+        spawnCometBtnId,
+        _wasCometBtnPressed,
+        (v) => _wasCometBtnPressed = v,
+        () => _spawnEntity(2.0, 1.5, 128, 0, 144, 16)); // Light, faster
   }
 
-  void _spawnEntity(double mass, double velocityMultiplier, int srcL, int srcT, int srcR, int srcB) {
+  void _spawnEntity(double mass, double velocityMultiplier, int srcL, int srcT,
+      int srcR, int srcB) {
     int entityId = scene.createEntity();
 
     double r = 100.0 + _random.nextDouble() * 300.0;
@@ -447,9 +537,11 @@ class StarSystemGame {
   void startGame() {
     gameStateSystem.changeState(GameState.statePlaying);
   }
-}
 
-void main() async {
-  final atlas = await AssetLoader.loadEmbeddedImage(EmbeddedAssets.assets['atlas.png']!);
-  StarSystemGame(atlas);
+  void main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final atlas = await AssetLoader.loadEmbeddedImage(
+        EmbeddedAssets.assets['atlas.png']!);
+    StarSystemGame(atlas);
+  }
 }

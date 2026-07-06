@@ -83,5 +83,57 @@ void main() {
       expect(mappingSystem.getActionValue(GameAction.moveRight), 0.75);
       expect(mappingSystem.isActionActive(GameAction.moveRight), isTrue);
     });
+
+    test(
+        'handleKeyData handles repeat events and returns handled status correctly',
+        () {
+      mappingSystem.bindKey(100, GameAction.moveRight); // D key
+
+      final downEvent = const KeyData(
+        type: KeyEventType.down,
+        physical: 1,
+        logical: 100,
+        character: '',
+        synthesized: false,
+        timeStamp: Duration.zero,
+      );
+      expect(mappingSystem.handleKeyData(downEvent), isTrue);
+      expect(mappingSystem.getActionValue(GameAction.moveRight), 1.0);
+
+      final repeatEvent = const KeyData(
+        type: KeyEventType.repeat,
+        physical: 1,
+        logical: 100,
+        character: '',
+        synthesized: false,
+        timeStamp: Duration.zero,
+      );
+      expect(mappingSystem.handleKeyData(repeatEvent), isTrue);
+      expect(mappingSystem.getActionValue(GameAction.moveRight), 1.0);
+
+      // Verify that repeat events on an inactive/bound key do NOT activate it
+      mappingSystem.bindKey(200, GameAction.moveLeft);
+      final repeatInactiveEvent = const KeyData(
+        type: KeyEventType.repeat,
+        physical: 1,
+        logical: 200,
+        character: '',
+        synthesized: false,
+        timeStamp: Duration.zero,
+      );
+      expect(mappingSystem.handleKeyData(repeatInactiveEvent), isTrue);
+      expect(mappingSystem.getActionValue(GameAction.moveLeft),
+          0.0); // Remains inactive
+
+      final unboundEvent = const KeyData(
+        type: KeyEventType.down,
+        physical: 1,
+        logical: 999,
+        character: '',
+        synthesized: false,
+        timeStamp: Duration.zero,
+      );
+      expect(mappingSystem.handleKeyData(unboundEvent), isFalse);
+    });
   });
 }

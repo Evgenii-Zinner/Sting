@@ -81,11 +81,11 @@ class PlayerInputSystem {
         inputDx /= length;
         inputDy /= length;
       } else if (joypadCaste != null && joypadEntityId != -1) {
-         // Allow analog partial speed for joypad
-         // Length is between 0 and 1
+        // Allow analog partial speed for joypad
+        // Length is between 0 and 1
       } else {
-         inputDx /= length;
-         inputDy /= length;
+        inputDx /= length;
+        inputDy /= length;
       }
 
       velocity.dx = inputDx * speed;

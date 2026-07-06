@@ -17,11 +17,10 @@ void main() {
       manager.updatePosition(15.0, 15.0, 10.0, 1);
 
       expect(loadedChunks.length, 9);
-      expect(loadedChunks, containsAll([
-        '0,0', '1,0', '2,0',
-        '0,1', '1,1', '2,1',
-        '0,2', '1,2', '2,2'
-      ]));
+      expect(
+          loadedChunks,
+          containsAll(
+              ['0,0', '1,0', '2,0', '0,1', '1,1', '2,1', '0,2', '1,2', '2,2']));
     });
 
     test('Unloads chunks that fall out of radius and loads new ones', () {
@@ -53,7 +52,8 @@ void main() {
     test('Respects maxActiveChunks limit', () {
       final loadedChunks = <String>[];
       final manager = ChunkManager(
-        maxActiveChunks: 4, // Intentionally too small for radius 1 (which needs 9)
+        maxActiveChunks:
+            4, // Intentionally too small for radius 1 (which needs 9)
         onChunkLoad: (x, y) => loadedChunks.add('$x,$y'),
       );
 

@@ -29,7 +29,8 @@ class SpatialHashGrid {
   SpatialHashGrid(this.cellSize, this.numCells)
       : _invCellSize = 1.0 / cellSize,
         _cellStart = Int32List(numCells)..fillRange(0, numCells, -1),
-        _entityNext = Int32List(Swarm.maxEntities)..fillRange(0, Swarm.maxEntities, -1);
+        _entityNext = Int32List(Swarm.maxEntities)
+          ..fillRange(0, Swarm.maxEntities, -1);
 
   /// Computes the 1D hash cell index for the given 2D cell coordinates.
   int _hash(int cellX, int cellY) {
@@ -45,7 +46,8 @@ class SpatialHashGrid {
   /// Inserts an entity into the grid based on its position (x, y).
   void insert(int entity, double x, double y) {
     if (entity < 0 || entity >= Swarm.maxEntities) {
-      throw RangeError.value(entity, 'entity', 'Must be between 0 and ${Swarm.maxEntities - 1}');
+      throw RangeError.value(
+          entity, 'entity', 'Must be between 0 and ${Swarm.maxEntities - 1}');
     }
 
     final int cellX = (x * _invCellSize).floor();
@@ -71,7 +73,8 @@ class SpatialHashGrid {
   ///
   /// Calls [callback] for each entity found in the overlapping cells.
   /// Returns early if [callback] returns false, otherwise continues.
-  void queryAABB(double x, double y, double width, double height, bool Function(int entity) callback) {
+  void queryAABB(double x, double y, double width, double height,
+      bool Function(int entity) callback) {
     final int minCellX = (x * _invCellSize).floor();
     final int minCellY = (y * _invCellSize).floor();
     final int maxCellX = ((x + width) * _invCellSize).floor();

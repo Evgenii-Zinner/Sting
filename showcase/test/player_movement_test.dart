@@ -1,7 +1,6 @@
 import "../lib/components/health.dart";
 import "../lib/components/exp_magnet.dart";
 import "../lib/components/player_stats.dart";
-import 'dart:ui';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:sting/engine/ecs/scene.dart';
@@ -26,16 +25,25 @@ void main() {
 
     setUp(() {
       scene = Scene();
-      scene.registerCaste<Position>('Position', ComponentCaste<Position>(Swarm.maxEntities));
-      scene.registerCaste<Velocity>('Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
-      scene.registerCaste<Sprite>('Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
-      scene.registerCaste<SpriteAnimation>('SpriteAnimation', ComponentCaste<SpriteAnimation>(Swarm.maxEntities));
-      scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
-    scene.registerCaste<Weapon>('Weapon', ComponentCaste<Weapon>(Swarm.maxEntities));
+      scene.registerCaste<Position>(
+          'Position', ComponentCaste<Position>(Swarm.maxEntities));
+      scene.registerCaste<Velocity>(
+          'Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
+      scene.registerCaste<Sprite>(
+          'Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
+      scene.registerCaste<SpriteAnimation>('SpriteAnimation',
+          ComponentCaste<SpriteAnimation>(Swarm.maxEntities));
+      scene.registerCaste<BoundingBox>(
+          'BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
+      scene.registerCaste<Weapon>(
+          'Weapon', ComponentCaste<Weapon>(Swarm.maxEntities));
       scene.registerCaste<Health>('Health', ComponentCaste<Health>(100));
-      scene.registerCaste<ExpMagnet>('ExpMagnet', ComponentCaste<ExpMagnet>(100));
-      scene.registerCaste<PlayerStats>('PlayerStats', ComponentCaste<PlayerStats>(100));
-      scene.registerCaste<VirtualJoypad>('VirtualJoypad', ComponentCaste<VirtualJoypad>(1));
+      scene.registerCaste<ExpMagnet>(
+          'ExpMagnet', ComponentCaste<ExpMagnet>(100));
+      scene.registerCaste<PlayerStats>(
+          'PlayerStats', ComponentCaste<PlayerStats>(100));
+      scene.registerCaste<VirtualJoypad>(
+          'VirtualJoypad', ComponentCaste<VirtualJoypad>(1));
     });
 
     test('spawnPlayer creates entity with correct components', () {
@@ -56,7 +64,8 @@ void main() {
       final sprite = scene.getCaste<Sprite>('Sprite').get(playerId);
       expect(sprite, isNotNull);
 
-      final anim = scene.getCaste<SpriteAnimation>('SpriteAnimation').get(playerId);
+      final anim =
+          scene.getCaste<SpriteAnimation>('SpriteAnimation').get(playerId);
       expect(anim, isNotNull);
       expect(anim!.frameCount, 4);
 
@@ -66,13 +75,15 @@ void main() {
       expect(box.height, 24.0);
     });
 
-    test('PlayerInputSystem updates velocity based on virtual joystick input', () {
+    test('PlayerInputSystem updates velocity based on virtual joystick input',
+        () {
       // 1. Setup InputSystem manually (don't hook platform dispatcher for testing)
       final inputSystem = InputSystem(hook: false);
       final inputMappingSystem = InputMappingSystem(inputSystem, hook: false);
 
       final joypadId = scene.createEntity();
-      final joypad = VirtualJoypad.create(maxRadius: 50.0, centerX: 400.0, centerY: 300.0, knobEntityId: 0.0);
+      final joypad = VirtualJoypad.create(
+          maxRadius: 50.0, centerX: 400.0, centerY: 300.0, knobEntityId: 0.0);
       scene.getCaste<VirtualJoypad>('VirtualJoypad').add(joypadId, joypad);
 
       // 2. Setup PlayerInputSystem

@@ -31,7 +31,8 @@ void main() {
       expect(textRender.cachedParagraph, isNotNull);
     });
 
-    test('reuses cached paragraph on subsequent passes without allocations', () {
+    test('reuses cached paragraph on subsequent passes without allocations',
+        () {
       final textRender = TextRender(text: 'Score: 100', x: 10.0, y: 20.0);
       textRenderCaste.add(0, textRender);
 
@@ -62,7 +63,8 @@ void main() {
       textRenderSystem.render(canvas);
 
       expect(textRender.isDirty, isFalse);
-      expect(identical(textRender.cachedParagraph, firstParagraph), isFalse); // New object
+      expect(identical(textRender.cachedParagraph, firstParagraph),
+          isFalse); // New object
     });
 
     test('rebuilds paragraph when color changes', () {
@@ -79,7 +81,8 @@ void main() {
       textRenderSystem.render(canvas);
 
       expect(textRender.isDirty, isFalse);
-      expect(identical(textRender.cachedParagraph, firstParagraph), isFalse); // New object
+      expect(identical(textRender.cachedParagraph, firstParagraph),
+          isFalse); // New object
     });
 
     test('does not rebuild paragraph when only position changes', () {

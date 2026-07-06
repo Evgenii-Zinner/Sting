@@ -182,5 +182,34 @@ void main() {
         PlatformDispatcher.instance.onPointerDataPacket = oldHook;
       }
     });
+
+    test('Forwards pointer packets to the original dispatcher handler', () {
+      bool originalCalled = false;
+      final mockOriginalHandler = (PointerDataPacket packet) {
+        originalCalled = true;
+      };
+
+      final oldHook = PlatformDispatcher.instance.onPointerDataPacket;
+      PlatformDispatcher.instance.onPointerDataPacket = mockOriginalHandler;
+
+      try {
+        final hookedSystem = InputSystem(hook: true);
+
+        final testPacket = PointerDataPacket(data: [
+          PointerData(
+              change: PointerChange.down,
+              device: 1,
+              physicalX: 5.0,
+              physicalY: 5.0)
+        ]);
+
+        PlatformDispatcher.instance.onPointerDataPacket?.call(testPacket);
+
+        expect(originalCalled, isTrue);
+        hookedSystem.dispose();
+      } finally {
+        PlatformDispatcher.instance.onPointerDataPacket = oldHook;
+      }
+    });
   });
 }

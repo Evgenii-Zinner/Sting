@@ -31,7 +31,8 @@ class CollisionSystem {
   void checkAABBAABB(CollisionCallback onCollision) {
     if (_boundingBoxCaste == null) return;
 
-    final query = Query2<Position, BoundingBox>(_positionCaste, _boundingBoxCaste);
+    final query =
+        Query2<Position, BoundingBox>(_positionCaste, _boundingBoxCaste);
 
     query.forEach((entityA, posA, boxA) {
       _grid.queryAABB(posA.x, posA.y, boxA.width, boxA.height, (entityB) {
@@ -42,10 +43,17 @@ class CollisionSystem {
         if (boxB != null) {
           final posB = _positionCaste.get(entityB);
 
-          if (posB != null && intersectAABBAABB(
-            posA.x, posA.y, boxA.width, boxA.height,
-            posB.x, posB.y, boxB.width, boxB.height,
-          )) {
+          if (posB != null &&
+              intersectAABBAABB(
+                posA.x,
+                posA.y,
+                boxA.width,
+                boxA.height,
+                posB.x,
+                posB.y,
+                boxB.width,
+                boxB.height,
+              )) {
             onCollision(entityA, entityB);
           }
         }
@@ -59,14 +67,17 @@ class CollisionSystem {
   void checkCircleCircle(CollisionCallback onCollision) {
     if (_circleColliderCaste == null) return;
 
-    final query = Query2<Position, CircleCollider>(_positionCaste, _circleColliderCaste);
+    final query =
+        Query2<Position, CircleCollider>(_positionCaste, _circleColliderCaste);
 
     query.forEach((entityA, posA, circleA) {
       // Query grid using a bounding box encompassing the circle
       final diameterA = circleA.radius * 2;
       _grid.queryAABB(
-        posA.x - circleA.radius, posA.y - circleA.radius,
-        diameterA, diameterA,
+        posA.x - circleA.radius,
+        posA.y - circleA.radius,
+        diameterA,
+        diameterA,
         (entityB) {
           // Prevent self-collision and duplicate pairs (e.g., A-B and B-A)
           if (entityA >= entityB) return true;
@@ -75,10 +86,15 @@ class CollisionSystem {
           if (circleB != null) {
             final posB = _positionCaste.get(entityB);
 
-            if (posB != null && intersectCircleCircle(
-              posA.x, posA.y, circleA.radius,
-              posB.x, posB.y, circleB.radius,
-            )) {
+            if (posB != null &&
+                intersectCircleCircle(
+                  posA.x,
+                  posA.y,
+                  circleA.radius,
+                  posB.x,
+                  posB.y,
+                  circleB.radius,
+                )) {
               onCollision(entityA, entityB);
             }
           }
@@ -93,7 +109,8 @@ class CollisionSystem {
   void checkAABBCircle(CollisionCallback onCollision) {
     if (_boundingBoxCaste == null || _circleColliderCaste == null) return;
 
-    final query = Query2<Position, BoundingBox>(_positionCaste, _boundingBoxCaste);
+    final query =
+        Query2<Position, BoundingBox>(_positionCaste, _boundingBoxCaste);
 
     query.forEach((entityA, posA, boxA) {
       // Query grid using the bounding box of entityA
@@ -106,10 +123,16 @@ class CollisionSystem {
         if (circleB != null) {
           final posB = _positionCaste.get(entityB);
 
-          if (posB != null && intersectAABBCircle(
-            posA.x, posA.y, boxA.width, boxA.height,
-            posB.x, posB.y, circleB.radius,
-          )) {
+          if (posB != null &&
+              intersectAABBCircle(
+                posA.x,
+                posA.y,
+                boxA.width,
+                boxA.height,
+                posB.x,
+                posB.y,
+                circleB.radius,
+              )) {
             onCollision(entityA, entityB);
           }
         }

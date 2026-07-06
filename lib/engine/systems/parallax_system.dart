@@ -36,8 +36,10 @@ class ParallaxSystem {
       // If scrollFactor = 0.0 (static background, glued to screen), Position = BasePosition + CameraPosition.
       // The canvas translation will subtract CameraPosition, keeping it at BasePosition on the screen.
 
-      position.x = parallax.basePositionX + (viewport.x * (1.0 - parallax.scrollFactorX));
-      position.y = parallax.basePositionY + (viewport.y * (1.0 - parallax.scrollFactorY));
+      position.x = parallax.basePositionX +
+          (viewport.x * (1.0 - parallax.scrollFactorX));
+      position.y = parallax.basePositionY +
+          (viewport.y * (1.0 - parallax.scrollFactorY));
     });
   }
 }

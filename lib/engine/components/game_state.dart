@@ -20,7 +20,8 @@ extension type GameState(Int32List data) {
 
   /// Creates a new GameState component with the given [initialState].
   /// Defaults to [stateMenu].
-  GameState.create([int initialState = stateMenu]) : this(Int32List(1)..[0] = initialState);
+  GameState.create([int initialState = stateMenu])
+      : this(Int32List(1)..[0] = initialState);
 
   /// Gets the current state.
   int get state => data[0];

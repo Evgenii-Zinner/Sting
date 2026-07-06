@@ -36,12 +36,12 @@ class TilemapRenderSystem {
     this.atlasOffsetX = 0.0,
     this.atlasOffsetY = 0.0,
     int maxTiles = 65535, // Adjust this based on max expected visible tiles
-  }) : query = Query2<Position, Tilemap>(positionCaste, tilemapCaste),
-       _transforms = Float32List(maxTiles * 4),
-       _rects = Float32List(maxTiles * 4),
-       _paint = Paint()
-         ..filterQuality = FilterQuality.none
-         ..isAntiAlias = false;
+  })  : query = Query2<Position, Tilemap>(positionCaste, tilemapCaste),
+        _transforms = Float32List(maxTiles * 4),
+        _rects = Float32List(maxTiles * 4),
+        _paint = Paint()
+          ..filterQuality = FilterQuality.none
+          ..isAntiAlias = false;
 
   void render(Canvas canvas, [double scale = 1.0]) {
     int totalTilesDrawn = 0;
@@ -70,8 +70,10 @@ class TilemapRenderSystem {
           final transformIndex = totalTilesDrawn * 4;
           _transforms[transformIndex] = 1.0; // scos
           _transforms[transformIndex + 1] = 0.0; // ssin
-          _transforms[transformIndex + 2] = startX + (col * tilemap.tileWidth); // tx
-          _transforms[transformIndex + 3] = startY + (row * tilemap.tileHeight); // ty
+          _transforms[transformIndex + 2] =
+              startX + (col * tilemap.tileWidth); // tx
+          _transforms[transformIndex + 3] =
+              startY + (row * tilemap.tileHeight); // ty
 
           // Calculate source rect
           // Assuming tileId 1 is the first tile at (0,0) in atlas
@@ -80,8 +82,10 @@ class TilemapRenderSystem {
           final atlasCol = atlasIndex % tilesPerRow;
 
           final rectIndex = totalTilesDrawn * 4;
-          final rectLeft = atlasOffsetX + (atlasCol * tilemap.tileWidth).toDouble();
-          final rectTop = atlasOffsetY + (atlasRow * tilemap.tileHeight).toDouble();
+          final rectLeft =
+              atlasOffsetX + (atlasCol * tilemap.tileWidth).toDouble();
+          final rectTop =
+              atlasOffsetY + (atlasRow * tilemap.tileHeight).toDouble();
           _rects[rectIndex] = rectLeft;
           _rects[rectIndex + 1] = rectTop;
           _rects[rectIndex + 2] = rectLeft + tilemap.tileWidth;

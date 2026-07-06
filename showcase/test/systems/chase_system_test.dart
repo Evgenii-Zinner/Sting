@@ -19,9 +19,12 @@ void main() {
 
     setUp(() {
       scene = Scene();
-      scene.registerCaste<Position>('Position', ComponentCaste<Position>(Swarm.maxEntities));
-      scene.registerCaste<Velocity>('Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
-      scene.registerCaste<EnemyAI>('EnemyAI', ComponentCaste<EnemyAI>(Swarm.maxEntities));
+      scene.registerCaste<Position>(
+          'Position', ComponentCaste<Position>(Swarm.maxEntities));
+      scene.registerCaste<Velocity>(
+          'Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
+      scene.registerCaste<EnemyAI>(
+          'EnemyAI', ComponentCaste<EnemyAI>(Swarm.maxEntities));
       scene.registerCaste<Health>("Health", ComponentCaste<Health>(100));
       scene.registerCaste<Damage>("Damage", ComponentCaste<Damage>(100));
 
@@ -29,13 +32,21 @@ void main() {
 
       // Create target (player)
       playerEntity = scene.createEntity();
-      scene.getCaste<Position>('Position').add(playerEntity, Position.create(100.0, 100.0));
+      scene
+          .getCaste<Position>('Position')
+          .add(playerEntity, Position.create(100.0, 100.0));
 
       // Create chaser (enemy)
       enemyEntity = scene.createEntity();
-      scene.getCaste<Position>('Position').add(enemyEntity, Position.create(0.0, 100.0));
-      scene.getCaste<Velocity>('Velocity').add(enemyEntity, Velocity.create(0.0, 0.0));
-      scene.getCaste<EnemyAI>('EnemyAI').add(enemyEntity, EnemyAI.create(playerEntity));
+      scene
+          .getCaste<Position>('Position')
+          .add(enemyEntity, Position.create(0.0, 100.0));
+      scene
+          .getCaste<Velocity>('Velocity')
+          .add(enemyEntity, Velocity.create(0.0, 0.0));
+      scene
+          .getCaste<EnemyAI>('EnemyAI')
+          .add(enemyEntity, EnemyAI.create(playerEntity));
     });
 
     test('updates velocity to move towards target', () {

@@ -78,7 +78,8 @@ void main() {
       expect(caste.get(2), isNull);
     });
 
-    test('getComponentAt and elementAt throws RangeError for invalid index', () {
+    test('getComponentAt and elementAt throws RangeError for invalid index',
+        () {
       final caste = ComponentCaste<String>(10);
       caste.add(5, 'Player');
 

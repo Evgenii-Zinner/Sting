@@ -26,8 +26,11 @@ class ParticleSystem {
 
   /// Creates a ParticleSystem capable of rendering up to [maxTotalParticles]
   /// concurrently without allocating new memory buffers.
-  ParticleSystem(this.positions, this.emitters, this.particleImage, this.particleSourceRect, {int maxTotalParticles = 65535})
-      : _transformBuffer = Float32List(maxTotalParticles * 4), // scos, ssin, tx, ty
+  ParticleSystem(this.positions, this.emitters, this.particleImage,
+      this.particleSourceRect,
+      {int maxTotalParticles = 65535})
+      : _transformBuffer =
+            Float32List(maxTotalParticles * 4), // scos, ssin, tx, ty
         _rectBuffer = Float32List(maxTotalParticles * 4), // l, t, r, b
         _colorBuffer = Int32List(maxTotalParticles);
 
@@ -49,13 +52,13 @@ class ParticleSystem {
         if (life <= 0) {
           active--;
           if (p < active) {
-             emitter.setParticleX(p, emitter.getParticleX(active));
-             emitter.setParticleY(p, emitter.getParticleY(active));
-             emitter.setParticleDx(p, emitter.getParticleDx(active));
-             emitter.setParticleDy(p, emitter.getParticleDy(active));
-             emitter.setParticleLife(p, emitter.getParticleLife(active));
-             emitter.setParticleMaxLife(p, emitter.getParticleMaxLife(active));
-             emitter.setParticleColor(p, emitter.getParticleColor(active));
+            emitter.setParticleX(p, emitter.getParticleX(active));
+            emitter.setParticleY(p, emitter.getParticleY(active));
+            emitter.setParticleDx(p, emitter.getParticleDx(active));
+            emitter.setParticleDy(p, emitter.getParticleDy(active));
+            emitter.setParticleLife(p, emitter.getParticleLife(active));
+            emitter.setParticleMaxLife(p, emitter.getParticleMaxLife(active));
+            emitter.setParticleColor(p, emitter.getParticleColor(active));
           }
           p--;
           continue;
@@ -117,7 +120,7 @@ class ParticleSystem {
 
       for (int p = 0; p < active; p++) {
         if (totalParticlesToDraw >= _colorBuffer.length) {
-            break;
+          break;
         }
 
         final idx = totalParticlesToDraw * 4;
@@ -142,19 +145,21 @@ class ParticleSystem {
     }
 
     if (totalParticlesToDraw > 0) {
-        final transformView = Float32List.sublistView(_transformBuffer, 0, totalParticlesToDraw * 4);
-        final rectView = Float32List.sublistView(_rectBuffer, 0, totalParticlesToDraw * 4);
-        final colorView = Int32List.sublistView(_colorBuffer, 0, totalParticlesToDraw);
+      final transformView = Float32List.sublistView(
+          _transformBuffer, 0, totalParticlesToDraw * 4);
+      final rectView =
+          Float32List.sublistView(_rectBuffer, 0, totalParticlesToDraw * 4);
+      final colorView =
+          Int32List.sublistView(_colorBuffer, 0, totalParticlesToDraw);
 
-        canvas.drawRawAtlas(
-           particleImage!,
-           transformView,
-           rectView,
-           colorView,
-           BlendMode.srcOver, // or modualte/screen based on particle config
-           null,
-           paint
-        );
+      canvas.drawRawAtlas(
+          particleImage!,
+          transformView,
+          rectView,
+          colorView,
+          BlendMode.srcOver, // or modualte/screen based on particle config
+          null,
+          paint);
     }
   }
 }

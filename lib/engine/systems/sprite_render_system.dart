@@ -27,13 +27,13 @@ class SpriteRenderSystem {
     this.viewportCaste,
     this.activeCameraEntity = -1,
     int maxEntities = 65535,
-  }) : query = Query2<Position, Sprite>(positionCaste, spriteCaste),
-       _transforms = Float32List(maxEntities * 4),
-       _rects = Float32List(maxEntities * 4),
-       _colors = Int32List(maxEntities),
-       _paint = Paint()
-         ..filterQuality = FilterQuality.none
-         ..isAntiAlias = false;
+  })  : query = Query2<Position, Sprite>(positionCaste, spriteCaste),
+        _transforms = Float32List(maxEntities * 4),
+        _rects = Float32List(maxEntities * 4),
+        _colors = Int32List(maxEntities),
+        _paint = Paint()
+          ..filterQuality = FilterQuality.none
+          ..isAntiAlias = false;
 
   void render(Canvas canvas, [double scale = 1.0]) {
     int count = 0;

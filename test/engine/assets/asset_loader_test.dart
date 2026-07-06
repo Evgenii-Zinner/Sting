@@ -119,7 +119,8 @@ void main() {
 
   test('AssetLoader can load embedded base64 image string', () async {
     // 1x1 transparent PNG base64 encoded
-    const transparent1x1Base64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+    const transparent1x1Base64 =
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
 
     final image = await AssetLoader.loadEmbeddedImage(transparent1x1Base64);
     expect(image.width, 1);

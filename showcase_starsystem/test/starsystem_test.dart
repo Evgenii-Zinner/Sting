@@ -1,12 +1,9 @@
-import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
 import 'package:sting/engine/components/parallax.dart';
 import 'package:sting/engine/components/virtual_joypad.dart';
-import 'package:sting/engine/components/viewport.dart';
-import 'package:sting/engine/systems/input_mapping_system.dart';
 
 import '../lib/main.dart';
 import '../lib/embedded_assets.dart';
@@ -15,7 +12,8 @@ import 'package:sting/engine/assets/asset_loader.dart';
 void main() {
   test('StarSystemGame initializes and applies gravity correctly', () async {
     // 1. Initialize engine
-    final Image mockAtlas = await AssetLoader.loadEmbeddedImage(EmbeddedAssets.assets['atlas.png']!);
+    final Image mockAtlas = await AssetLoader.loadEmbeddedImage(
+        EmbeddedAssets.assets['atlas.png']!);
     final game = StarSystemGame(mockAtlas);
 
     // Check initial state
@@ -23,7 +21,8 @@ void main() {
     final velocities = game.scene.getCaste<Velocity>('Velocity');
 
     // Expect 4 positions now because we added 1 background starfield parallax entity
-    expect(positions.length, 4, reason: 'Should have spawned 1 star, 2 planets, 1 bg');
+    expect(positions.length, 4,
+        reason: 'Should have spawned 1 star, 2 planets, 1 bg');
 
     // Check castes for new systems
     expect(game.scene.getCaste<Parallax>('Parallax'), isNotNull);
@@ -43,7 +42,8 @@ void main() {
     expect(planet1Id, isNot(-1));
 
     final initialVelocity = velocities.get(planet1Id)!;
-    expect(initialVelocity.dy, closeTo(57.7, 0.1), reason: 'Planet 1 initial dy velocity should be ~57.7');
+    expect(initialVelocity.dy, closeTo(57.7, 0.1),
+        reason: 'Planet 1 initial dy velocity should be ~57.7');
     expect(initialVelocity.dx, 0.0);
 
     final initialPosition = positions.get(planet1Id)!;
@@ -70,20 +70,31 @@ void main() {
     final newVelocity = velocities.get(planet1Id)!;
     final newPosition = positions.get(planet1Id)!;
 
-    expect(newVelocity.dx, closeTo(-22.22, 0.1), reason: 'Gravity should pull planet in -x direction');
-    expect(newVelocity.dy, closeTo(57.7, 0.1), reason: 'Tangent velocity should remain unchanged mostly');
+    expect(newVelocity.dx, closeTo(-22.22, 0.1),
+        reason: 'Gravity should pull planet in -x direction');
+    expect(newVelocity.dy, closeTo(57.7, 0.1),
+        reason: 'Tangent velocity should remain unchanged mostly');
 
-    expect(newPosition.x, closeTo(150.0 - 22.22, 0.1), reason: 'Position x should move inwards due to new velocity');
-    expect(newPosition.y, closeTo(57.7, 0.1), reason: 'Position y should increase due to orbital velocity');
+    expect(newPosition.x, closeTo(150.0 - 22.22, 0.1),
+        reason: 'Position x should move inwards due to new velocity');
+    expect(newPosition.y, closeTo(57.7, 0.1),
+        reason: 'Position y should increase due to orbital velocity');
   });
 
-  test('StarSystemGame joypad updates bounds properly when tested independently', () async {
-    final Image mockAtlas = await AssetLoader.loadEmbeddedImage(EmbeddedAssets.assets['atlas.png']!);
+  test(
+      'StarSystemGame joypad updates bounds properly when tested independently',
+      () async {
+    final Image mockAtlas = await AssetLoader.loadEmbeddedImage(
+        EmbeddedAssets.assets['atlas.png']!);
     final game = StarSystemGame(mockAtlas);
 
     // Test that the game object actually has the virtual joypad initialized
     expect(game.joypadEntityId, isNot(-1));
     expect(game.virtualJoypadSystem, isNotNull);
-    expect(game.scene.getCaste<VirtualJoypad>('VirtualJoypad').get(game.joypadEntityId), isNotNull);
+    expect(
+        game.scene
+            .getCaste<VirtualJoypad>('VirtualJoypad')
+            .get(game.joypadEntityId),
+        isNotNull);
   });
 }

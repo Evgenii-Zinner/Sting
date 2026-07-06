@@ -29,7 +29,8 @@ void main() {
         positionCaste.add(1, Position.create(10, 10)); // Box A
         boundingBoxCaste.add(1, BoundingBox.create(10, 10));
 
-        positionCaste.add(2, Position.create(18, 10)); // Box B (overlaps by 2 on X)
+        positionCaste.add(
+            2, Position.create(18, 10)); // Box B (overlaps by 2 on X)
         boundingBoxCaste.add(2, BoundingBox.create(10, 10));
 
         system.resolveAABBAABB(1, 2);
@@ -45,7 +46,8 @@ void main() {
         positionCaste.add(1, Position.create(10, 10)); // Box A
         boundingBoxCaste.add(1, BoundingBox.create(10, 10));
 
-        positionCaste.add(2, Position.create(10, 16)); // Box B (overlaps by 4 on Y)
+        positionCaste.add(
+            2, Position.create(10, 16)); // Box B (overlaps by 4 on Y)
         boundingBoxCaste.add(2, BoundingBox.create(10, 10));
 
         system.resolveAABBAABB(1, 2);
@@ -79,7 +81,10 @@ void main() {
         positionCaste.add(1, Position.create(10, 10)); // Circle A
         circleColliderCaste.add(1, CircleCollider.create(5));
 
-        positionCaste.add(2, Position.create(16, 10)); // Circle B (distance 6, radii sum 10, overlap 4)
+        positionCaste.add(
+            2,
+            Position.create(
+                16, 10)); // Circle B (distance 6, radii sum 10, overlap 4)
         circleColliderCaste.add(2, CircleCollider.create(5));
 
         system.resolveCircleCircle(1, 2);
@@ -125,7 +130,8 @@ void main() {
         positionCaste.add(1, Position.create(10, 10)); // Box A (10..20, 10..20)
         boundingBoxCaste.add(1, BoundingBox.create(10, 10));
 
-        positionCaste.add(2, Position.create(22, 15)); // Circle B center (radius 4)
+        positionCaste.add(
+            2, Position.create(22, 15)); // Circle B center (radius 4)
         circleColliderCaste.add(2, CircleCollider.create(4));
 
         // Closest point on AABB is (20, 15). Distance is 2. Overlap is 4 - 2 = 2.
@@ -142,7 +148,8 @@ void main() {
         positionCaste.add(1, Position.create(10, 10)); // Box A (10..20, 10..20)
         boundingBoxCaste.add(1, BoundingBox.create(10, 10));
 
-        positionCaste.add(2, Position.create(18, 15)); // Circle B center inside box, radius 2
+        positionCaste.add(
+            2, Position.create(18, 15)); // Circle B center inside box, radius 2
         circleColliderCaste.add(2, CircleCollider.create(2));
 
         // Center is at 18. Right edge is at 20. distToRight = 2.

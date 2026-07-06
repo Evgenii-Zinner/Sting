@@ -54,20 +54,24 @@ class SimpleResolutionSystem {
       if (overlapX < overlapY) {
         // Resolve along X axis
         final shift = overlapX / 2;
-        if (dx > 0) { // B is to the right of A
+        if (dx > 0) {
+          // B is to the right of A
           posA.x -= shift;
           posB.x += shift;
-        } else { // B is to the left of A
+        } else {
+          // B is to the left of A
           posA.x += shift;
           posB.x -= shift;
         }
       } else {
         // Resolve along Y axis
         final shift = overlapY / 2;
-        if (dy > 0) { // B is below A
+        if (dy > 0) {
+          // B is below A
           posA.y -= shift;
           posB.y += shift;
-        } else { // B is above A
+        } else {
+          // B is above A
           posA.y += shift;
           posB.y -= shift;
         }
@@ -84,7 +88,8 @@ class SimpleResolutionSystem {
     final posB = _positionCaste.get(entityB);
     final circleB = _circleColliderCaste.get(entityB);
 
-    if (posA == null || circleA == null || posB == null || circleB == null) return;
+    if (posA == null || circleA == null || posB == null || circleB == null)
+      return;
 
     final dx = posB.x - posA.x;
     final dy = posB.y - posA.y;
@@ -122,7 +127,8 @@ class SimpleResolutionSystem {
 
     final posA = _positionCaste.get(entityA);
     final boxA = _boundingBoxCaste.get(entityA);
-    final posB = _positionCaste.get(entityB); // This is the center of the circle
+    final posB =
+        _positionCaste.get(entityB); // This is the center of the circle
     final circleB = _circleColliderCaste.get(entityB);
 
     if (posA == null || boxA == null || posB == null || circleB == null) return;
@@ -150,18 +156,6 @@ class SimpleResolutionSystem {
     // If center is inside AABB, distance is 0.
     // We need special handling for center inside AABB
     if (distanceSquared == 0) {
-      // Calculate centers
-      final centerAx = posA.x + boxA.width / 2;
-      final centerAy = posA.y + boxA.height / 2;
-
-      // Vector from AABB center to circle center
-      final centerDx = posB.x - centerAx;
-      final centerDy = posB.y - centerAy;
-
-      // Calculate half extents
-      final halfAWidth = boxA.width / 2;
-      final halfAHeight = boxA.height / 2;
-
       // Find shortest path out
       final distToLeft = posB.x - posA.x;
       final distToRight = (posA.x + boxA.width) - posB.x;
@@ -174,20 +168,24 @@ class SimpleResolutionSystem {
       if (minX < minY) {
         final pushOutX = minX + circleB.radius;
         final shift = pushOutX / 2;
-        if (distToLeft < distToRight) { // Circle is closer to left edge
+        if (distToLeft < distToRight) {
+          // Circle is closer to left edge
           posA.x += shift;
           posB.x -= shift;
-        } else { // Circle is closer to right edge
+        } else {
+          // Circle is closer to right edge
           posA.x -= shift;
           posB.x += shift;
         }
       } else {
         final pushOutY = minY + circleB.radius;
         final shift = pushOutY / 2;
-        if (distToTop < distToBottom) { // Circle is closer to top edge
+        if (distToTop < distToBottom) {
+          // Circle is closer to top edge
           posA.y += shift;
           posB.y -= shift;
-        } else { // Circle is closer to bottom edge
+        } else {
+          // Circle is closer to bottom edge
           posA.y -= shift;
           posB.y += shift;
         }

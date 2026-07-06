@@ -22,7 +22,8 @@ import 'dart:typed_data';
 extension type ParticleEmitter(ByteData data) {
   /// Creates a new ParticleEmitter component with the specified maximum number of particles.
   ParticleEmitter.create(int maxParticles)
-      : this(ByteData(24 + maxParticles * 28)..setInt32(0, maxParticles, Endian.little));
+      : this(ByteData(24 + maxParticles * 28)
+          ..setInt32(0, maxParticles, Endian.little));
 
   /// The maximum number of particles this emitter can manage.
   int get maxParticles => data.getInt32(0, Endian.little);
@@ -47,24 +48,38 @@ extension type ParticleEmitter(ByteData data) {
 
   // --- Particle Data Accessors ---
 
-  double getParticleX(int index) => data.getFloat32(24 + index * 28 + 0, Endian.little);
-  void setParticleX(int index, double value) => data.setFloat32(24 + index * 28 + 0, value, Endian.little);
+  double getParticleX(int index) =>
+      data.getFloat32(24 + index * 28 + 0, Endian.little);
+  void setParticleX(int index, double value) =>
+      data.setFloat32(24 + index * 28 + 0, value, Endian.little);
 
-  double getParticleY(int index) => data.getFloat32(24 + index * 28 + 4, Endian.little);
-  void setParticleY(int index, double value) => data.setFloat32(24 + index * 28 + 4, value, Endian.little);
+  double getParticleY(int index) =>
+      data.getFloat32(24 + index * 28 + 4, Endian.little);
+  void setParticleY(int index, double value) =>
+      data.setFloat32(24 + index * 28 + 4, value, Endian.little);
 
-  double getParticleDx(int index) => data.getFloat32(24 + index * 28 + 8, Endian.little);
-  void setParticleDx(int index, double value) => data.setFloat32(24 + index * 28 + 8, value, Endian.little);
+  double getParticleDx(int index) =>
+      data.getFloat32(24 + index * 28 + 8, Endian.little);
+  void setParticleDx(int index, double value) =>
+      data.setFloat32(24 + index * 28 + 8, value, Endian.little);
 
-  double getParticleDy(int index) => data.getFloat32(24 + index * 28 + 12, Endian.little);
-  void setParticleDy(int index, double value) => data.setFloat32(24 + index * 28 + 12, value, Endian.little);
+  double getParticleDy(int index) =>
+      data.getFloat32(24 + index * 28 + 12, Endian.little);
+  void setParticleDy(int index, double value) =>
+      data.setFloat32(24 + index * 28 + 12, value, Endian.little);
 
-  double getParticleLife(int index) => data.getFloat32(24 + index * 28 + 16, Endian.little);
-  void setParticleLife(int index, double value) => data.setFloat32(24 + index * 28 + 16, value, Endian.little);
+  double getParticleLife(int index) =>
+      data.getFloat32(24 + index * 28 + 16, Endian.little);
+  void setParticleLife(int index, double value) =>
+      data.setFloat32(24 + index * 28 + 16, value, Endian.little);
 
-  double getParticleMaxLife(int index) => data.getFloat32(24 + index * 28 + 20, Endian.little);
-  void setParticleMaxLife(int index, double value) => data.setFloat32(24 + index * 28 + 20, value, Endian.little);
+  double getParticleMaxLife(int index) =>
+      data.getFloat32(24 + index * 28 + 20, Endian.little);
+  void setParticleMaxLife(int index, double value) =>
+      data.setFloat32(24 + index * 28 + 20, value, Endian.little);
 
-  int getParticleColor(int index) => data.getUint32(24 + index * 28 + 24, Endian.little);
-  void setParticleColor(int index, int value) => data.setUint32(24 + index * 28 + 24, value, Endian.little);
+  int getParticleColor(int index) =>
+      data.getUint32(24 + index * 28 + 24, Endian.little);
+  void setParticleColor(int index, int value) =>
+      data.setUint32(24 + index * 28 + 24, value, Endian.little);
 }

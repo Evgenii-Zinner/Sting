@@ -21,20 +21,31 @@ void main() {
 
     setUp(() {
       scene = Scene();
-      scene.registerCaste<Position>('Position', ComponentCaste<Position>(Swarm.maxEntities));
-      scene.registerCaste<Velocity>('Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
-      scene.registerCaste<Sprite>('Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
-      scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
-      scene.registerCaste<EnemyAI>('EnemyAI', ComponentCaste<EnemyAI>(Swarm.maxEntities));
+      scene.registerCaste<Position>(
+          'Position', ComponentCaste<Position>(Swarm.maxEntities));
+      scene.registerCaste<Velocity>(
+          'Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
+      scene.registerCaste<Sprite>(
+          'Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
+      scene.registerCaste<BoundingBox>(
+          'BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
+      scene.registerCaste<EnemyAI>(
+          'EnemyAI', ComponentCaste<EnemyAI>(Swarm.maxEntities));
       scene.registerCaste<Health>("Health", ComponentCaste<Health>(100));
       scene.registerCaste<Damage>("Damage", ComponentCaste<Damage>(100));
       scene.registerCaste<Viewport>('Viewport', ComponentCaste<Viewport>(1));
 
       viewportEntity = scene.createEntity();
-      scene.getCaste<Viewport>('Viewport').add(viewportEntity, Viewport.create()..x = 0.0..y = 0.0);
+      scene.getCaste<Viewport>('Viewport').add(
+          viewportEntity,
+          Viewport.create()
+            ..x = 0.0
+            ..y = 0.0);
 
       playerEntity = scene.createEntity();
-      scene.getCaste<Position>('Position').add(playerEntity, Position.create(100.0, 100.0));
+      scene
+          .getCaste<Position>('Position')
+          .add(playerEntity, Position.create(100.0, 100.0));
 
       spawnerSystem = EnemySpawnerSystem(scene, spawnInterval: 1.0);
       spawnerSystem.setTargetEntity(playerEntity);

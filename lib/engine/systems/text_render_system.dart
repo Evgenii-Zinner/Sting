@@ -37,7 +37,8 @@ class TextRenderSystem {
       }
 
       // Draw the cached paragraph at the cached offset
-      canvas.drawParagraph(textRender.cachedParagraph!, textRender.cachedOffset);
+      canvas.drawParagraph(
+          textRender.cachedParagraph!, textRender.cachedOffset);
     });
   }
 }

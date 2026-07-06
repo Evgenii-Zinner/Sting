@@ -4,7 +4,10 @@ import 'dart:typed_data';
 /// Index 0: width, Index 1: height.
 extension type BoundingBox(Float32List data) {
   /// Creates a new BoundingBox component with the given [width] and [height].
-  BoundingBox.create(double width, double height) : this(Float32List(2)..[0] = width..[1] = height);
+  BoundingBox.create(double width, double height)
+      : this(Float32List(2)
+          ..[0] = width
+          ..[1] = height);
 
   /// Gets the width.
   double get width => data[0];

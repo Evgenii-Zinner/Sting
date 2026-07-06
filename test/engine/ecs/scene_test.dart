@@ -26,7 +26,8 @@ void main() {
     test('throws StateError if caste is already registered', () {
       scene.registerCaste<Position>('Position', positionCaste);
 
-      expect(() => scene.registerCaste<Position>('Position', positionCaste), throwsStateError);
+      expect(() => scene.registerCaste<Position>('Position', positionCaste),
+          throwsStateError);
     });
 
     test('throws StateError if caste is not registered', () {

@@ -36,7 +36,8 @@ class PlayerStatsUISystem {
 
       final xpUI = complexUICaste.get(_xpEntityId);
       if (xpUI != null) {
-        xpUI.text = 'Lvl ${playerStats.level} | XP: ${playerStats.xp} / ${playerStats.level * 100}';
+        xpUI.text =
+            'Lvl ${playerStats.level} | XP: ${playerStats.xp} / ${playerStats.level * 100}';
       }
     }
 

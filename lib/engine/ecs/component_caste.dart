@@ -81,7 +81,8 @@ class ComponentCaste<T> implements AbstractCaste {
   /// Throws [RangeError] if index is out of bounds.
   T? getComponentAt(int index) {
     if (index < 0 || index >= _caste.length) {
-      throw RangeError.index(index, this, 'index', 'Index out of range', _caste.length);
+      throw RangeError.index(
+          index, this, 'index', 'Index out of range', _caste.length);
     }
     return _components[index];
   }

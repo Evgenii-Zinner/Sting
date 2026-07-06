@@ -22,17 +22,18 @@ class ComplexUIRenderSystem {
       if (complexUI.isDirty ||
           complexUI.cachedPath == null ||
           complexUI.cachedPaint == null) {
-
         // 1. Rebuild Paint
         final paint = Paint()..color = Color(complexUI.backgroundColor);
         complexUI.cachedPaint = paint;
 
         // 2. Rebuild Path
         final path = Path();
-        final rect = Rect.fromLTWH(complexUI.x, complexUI.y, complexUI.width, complexUI.height);
+        final rect = Rect.fromLTWH(
+            complexUI.x, complexUI.y, complexUI.width, complexUI.height);
 
         if (complexUI.borderRadius > 0) {
-          path.addRRect(RRect.fromRectAndRadius(rect, Radius.circular(complexUI.borderRadius)));
+          path.addRRect(RRect.fromRectAndRadius(
+              rect, Radius.circular(complexUI.borderRadius)));
         } else {
           path.addRect(rect);
         }
@@ -56,9 +57,9 @@ class ComplexUIRenderSystem {
           complexUI.cachedParagraph = paragraph;
 
           // Update the cached offset to be vertically centered
-          final textY = complexUI.y + (complexUI.height - paragraph.height) / 2.0;
+          final textY =
+              complexUI.y + (complexUI.height - paragraph.height) / 2.0;
           complexUI.updateCachedOffset(complexUI.x, textY);
-
         } else {
           complexUI.cachedParagraph = null;
         }
@@ -73,7 +74,8 @@ class ComplexUIRenderSystem {
 
       // Draw the cached paragraph
       if (complexUI.cachedParagraph != null) {
-        canvas.drawParagraph(complexUI.cachedParagraph!, complexUI.cachedOffset);
+        canvas.drawParagraph(
+            complexUI.cachedParagraph!, complexUI.cachedOffset);
       }
     });
   }

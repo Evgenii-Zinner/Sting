@@ -4,7 +4,8 @@ import 'dart:ui';
 
 class AssetLoader {
   static Future<Image> loadImage(String filePath) {
-    throw UnsupportedError('loadImage is not supported on Web. Use loadEmbeddedImage instead.');
+    throw UnsupportedError(
+        'loadImage is not supported on Web. Use loadEmbeddedImage instead.');
   }
 
   static Future<Image> streamRawImage(
@@ -13,7 +14,8 @@ class AssetLoader {
     int height, {
     PixelFormat format = PixelFormat.rgba8888,
   }) {
-    throw UnsupportedError('streamRawImage is not supported on Web. Use loadEmbeddedImage instead.');
+    throw UnsupportedError(
+        'streamRawImage is not supported on Web. Use loadEmbeddedImage instead.');
   }
 
   static Future<Image> loadEmbeddedImage(String base64String) async {

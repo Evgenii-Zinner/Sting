@@ -29,7 +29,8 @@ void main() {
     // but the system requires an Image.
     // We'll skip testing the drawRawAtlas exact path since we can't instantiate a real Image synchronously.
 
-    final system = ParticleSystem(positions, emitters, null as dynamic, const ui.Rect.fromLTWH(0, 0, 10, 10));
+    final system = ParticleSystem(positions, emitters, null as dynamic,
+        const ui.Rect.fromLTWH(0, 0, 10, 10));
 
     system.update(0.5);
 
@@ -55,7 +56,8 @@ void main() {
 
     emitters.add(entity, emitter);
 
-    final system = ParticleSystem(positions, emitters, null as dynamic, const ui.Rect.fromLTWH(0, 0, 10, 10));
+    final system = ParticleSystem(positions, emitters, null as dynamic,
+        const ui.Rect.fromLTWH(0, 0, 10, 10));
 
     system.update(0.25); // Should emit 2 particles (0.1, 0.2)
 
@@ -63,33 +65,36 @@ void main() {
     expect(emitter.accumulator, closeTo(0.05, 0.001));
   });
 
-  test('ParticleSystem rendering - ensure buffers are sub-viewed correctly', () async {
-      // Create a 1x1 image for testing
-      final ui.PictureRecorder recorder = ui.PictureRecorder();
-      final ui.Canvas canvasForImage = ui.Canvas(recorder);
-      canvasForImage.drawRect(const ui.Rect.fromLTWH(0,0,1,1), ui.Paint()..color = const ui.Color(0xFFFFFFFF));
-      final ui.Image image = await recorder.endRecording().toImage(1, 1);
+  test('ParticleSystem rendering - ensure buffers are sub-viewed correctly',
+      () async {
+    // Create a 1x1 image for testing
+    final ui.PictureRecorder recorder = ui.PictureRecorder();
+    final ui.Canvas canvasForImage = ui.Canvas(recorder);
+    canvasForImage.drawRect(const ui.Rect.fromLTWH(0, 0, 1, 1),
+        ui.Paint()..color = const ui.Color(0xFFFFFFFF));
+    final ui.Image image = await recorder.endRecording().toImage(1, 1);
 
-      final positions = ComponentCaste<Position>(100);
-      final emitters = ComponentCaste<ParticleEmitter>(100);
+    final positions = ComponentCaste<Position>(100);
+    final emitters = ComponentCaste<ParticleEmitter>(100);
 
-      final entity = 1;
-      positions.add(entity, Position.create(100.0, 100.0));
+    final entity = 1;
+    positions.add(entity, Position.create(100.0, 100.0));
 
-      final emitter = ParticleEmitter.create(10);
-      emitter.emitRate = 10;
-      emitter.activeParticles = 0;
+    final emitter = ParticleEmitter.create(10);
+    emitter.emitRate = 10;
+    emitter.activeParticles = 0;
 
-      emitters.add(entity, emitter);
+    emitters.add(entity, emitter);
 
-      final system = ParticleSystem(positions, emitters, image, const ui.Rect.fromLTWH(0, 0, 1, 1));
+    final system = ParticleSystem(
+        positions, emitters, image, const ui.Rect.fromLTWH(0, 0, 1, 1));
 
-      system.update(0.25);
+    system.update(0.25);
 
-      final renderRecorder = ui.PictureRecorder();
-      final canvas = ui.Canvas(renderRecorder);
-      final paint = ui.Paint();
+    final renderRecorder = ui.PictureRecorder();
+    final canvas = ui.Canvas(renderRecorder);
+    final paint = ui.Paint();
 
-      expect(() => system.render(canvas, paint), returnsNormally);
+    expect(() => system.render(canvas, paint), returnsNormally);
   });
 }

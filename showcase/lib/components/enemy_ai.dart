@@ -5,7 +5,8 @@ import 'dart:typed_data';
 /// We need target tracking but no per-frame allocations.
 extension type EnemyAI(Float32List data) {
   /// Creates a new EnemyAI component.
-  EnemyAI.create(int targetId) : this(Float32List(1)..[0] = targetId.toDouble());
+  EnemyAI.create(int targetId)
+      : this(Float32List(1)..[0] = targetId.toDouble());
 
   /// Gets the target entity ID.
   int get targetId => data[0].toInt();

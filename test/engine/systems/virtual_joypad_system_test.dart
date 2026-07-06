@@ -7,6 +7,7 @@ import 'package:sting/engine/components/ui_bounding_box.dart';
 import 'package:sting/engine/components/complex_ui.dart';
 import 'package:sting/engine/systems/virtual_joypad_system.dart';
 import 'package:sting/engine/systems/input_system.dart';
+import 'package:sting/engine/renderer.dart';
 
 void main() {
   group('VirtualJoypadSystem', () {
@@ -29,7 +30,8 @@ void main() {
 
     test('captures pointer on down inside bounds', () {
       final joypadEntity = swarm.createEntity();
-      final joypad = VirtualJoypad.create(maxRadius: 50.0, centerX: 50.0, centerY: 50.0);
+      final joypad =
+          VirtualJoypad.create(maxRadius: 50.0, centerX: 50.0, centerY: 50.0);
       final box = UIBoundingBox.fromBounds(x: 0, y: 0, width: 100, height: 100);
 
       joypads.add(joypadEntity, joypad);
@@ -55,7 +57,8 @@ void main() {
 
     test('updates vector when pointer moves', () {
       final joypadEntity = swarm.createEntity();
-      final joypad = VirtualJoypad.create(maxRadius: 50.0, centerX: 50.0, centerY: 50.0);
+      final joypad =
+          VirtualJoypad.create(maxRadius: 50.0, centerX: 50.0, centerY: 50.0);
       final box = UIBoundingBox.fromBounds(x: 0, y: 0, width: 100, height: 100);
 
       joypads.add(joypadEntity, joypad);
@@ -63,14 +66,22 @@ void main() {
 
       // Capture first
       inputSystem.handlePacket(PointerDataPacket(data: [
-        PointerData(device: 1, change: PointerChange.down, physicalX: 50.0, physicalY: 50.0)
+        PointerData(
+            device: 1,
+            change: PointerChange.down,
+            physicalX: 50.0,
+            physicalY: 50.0)
       ]));
       system.update();
       expect(joypad.activePointerId, 0.0);
 
       // Move to right
       inputSystem.handlePacket(PointerDataPacket(data: [
-        PointerData(device: 1, change: PointerChange.move, physicalX: 75.0, physicalY: 50.0)
+        PointerData(
+            device: 1,
+            change: PointerChange.move,
+            physicalX: 75.0,
+            physicalY: 50.0)
       ]));
       system.update();
 
@@ -80,7 +91,8 @@ void main() {
 
     test('clamps vector and position to max radius', () {
       final joypadEntity = swarm.createEntity();
-      final joypad = VirtualJoypad.create(maxRadius: 50.0, centerX: 50.0, centerY: 50.0);
+      final joypad =
+          VirtualJoypad.create(maxRadius: 50.0, centerX: 50.0, centerY: 50.0);
       final box = UIBoundingBox.fromBounds(x: 0, y: 0, width: 100, height: 100);
 
       joypads.add(joypadEntity, joypad);
@@ -88,13 +100,21 @@ void main() {
 
       // Capture first
       inputSystem.handlePacket(PointerDataPacket(data: [
-        PointerData(device: 1, change: PointerChange.down, physicalX: 50.0, physicalY: 50.0)
+        PointerData(
+            device: 1,
+            change: PointerChange.down,
+            physicalX: 50.0,
+            physicalY: 50.0)
       ]));
       system.update();
 
       // Move way out to right (distance 100, maxRadius is 50)
       inputSystem.handlePacket(PointerDataPacket(data: [
-        PointerData(device: 1, change: PointerChange.move, physicalX: 150.0, physicalY: 50.0)
+        PointerData(
+            device: 1,
+            change: PointerChange.move,
+            physicalX: 150.0,
+            physicalY: 50.0)
       ]));
       system.update();
 
@@ -121,13 +141,21 @@ void main() {
 
       // Capture first
       inputSystem.handlePacket(PointerDataPacket(data: [
-        PointerData(device: 1, change: PointerChange.down, physicalX: 50.0, physicalY: 50.0)
+        PointerData(
+            device: 1,
+            change: PointerChange.down,
+            physicalX: 50.0,
+            physicalY: 50.0)
       ]));
       system.update();
 
       // Move knob up and right
       inputSystem.handlePacket(PointerDataPacket(data: [
-        PointerData(device: 1, change: PointerChange.move, physicalX: 100.0, physicalY: 0.0)
+        PointerData(
+            device: 1,
+            change: PointerChange.move,
+            physicalX: 100.0,
+            physicalY: 0.0)
       ]));
       system.update();
 
@@ -145,7 +173,8 @@ void main() {
 
     test('releases pointer on up', () {
       final joypadEntity = swarm.createEntity();
-      final joypad = VirtualJoypad.create(maxRadius: 50.0, centerX: 50.0, centerY: 50.0);
+      final joypad =
+          VirtualJoypad.create(maxRadius: 50.0, centerX: 50.0, centerY: 50.0);
       final box = UIBoundingBox.fromBounds(x: 0, y: 0, width: 100, height: 100);
 
       joypads.add(joypadEntity, joypad);
@@ -153,27 +182,93 @@ void main() {
 
       // Capture
       inputSystem.handlePacket(PointerDataPacket(data: [
-        PointerData(device: 1, change: PointerChange.down, physicalX: 50.0, physicalY: 50.0)
+        PointerData(
+            device: 1,
+            change: PointerChange.down,
+            physicalX: 50.0,
+            physicalY: 50.0)
       ]));
       system.update();
       expect(joypad.activePointerId, 0.0);
 
       // Move
       inputSystem.handlePacket(PointerDataPacket(data: [
-        PointerData(device: 1, change: PointerChange.move, physicalX: 75.0, physicalY: 50.0)
+        PointerData(
+            device: 1,
+            change: PointerChange.move,
+            physicalX: 75.0,
+            physicalY: 50.0)
       ]));
       system.update();
       expect(joypad.vectorX, 0.5);
 
       // Release
       inputSystem.handlePacket(PointerDataPacket(data: [
-        PointerData(device: 1, change: PointerChange.up, physicalX: 75.0, physicalY: 50.0)
+        PointerData(
+            device: 1,
+            change: PointerChange.up,
+            physicalX: 75.0,
+            physicalY: 50.0)
       ]));
       system.update();
 
       expect(joypad.activePointerId, -1.0);
       expect(joypad.vectorX, 0.0);
       expect(joypad.vectorY, 0.0);
+    });
+
+    test('maps physical pointer coordinates to virtual space using Renderer',
+        () {
+      final renderer = Renderer(
+        virtualWidth: 800,
+        virtualHeight: 600,
+      );
+      final mappedSystem = VirtualJoypadSystem(
+          joypads, uiBoxes, complexUIs, inputSystem, renderer);
+
+      final joypadEntity = swarm.createEntity();
+      final joypad =
+          VirtualJoypad.create(maxRadius: 50.0, centerX: 50.0, centerY: 50.0);
+      final box = UIBoundingBox.fromBounds(x: 0, y: 0, width: 100, height: 100);
+
+      joypads.add(joypadEntity, joypad);
+      uiBoxes.add(joypadEntity, box);
+
+      if (PlatformDispatcher.instance.views.isNotEmpty) {
+        final view = PlatformDispatcher.instance.views.first;
+        final pSize = view.physicalSize;
+        if (!pSize.isEmpty) {
+          final rect = renderer.calculateVirtualRect(pSize);
+          final scale = rect.width / 800.0;
+          // Virtual coordinates (75, 50) inside box, which is vectorX = 0.5
+          final px = rect.left + 75.0 * scale;
+          final py = rect.top + 50.0 * scale;
+
+          // Pointer down to capture
+          inputSystem.handlePacket(PointerDataPacket(data: [
+            PointerData(
+                device: 1,
+                change: PointerChange.down,
+                physicalX: px,
+                physicalY: py)
+          ]));
+          mappedSystem.update();
+          expect(joypad.activePointerId, 0.0);
+
+          // Move to virtual (100, 50) -> vectorX = 1.0
+          final pmx = rect.left + 100.0 * scale;
+          final pmy = rect.top + 50.0 * scale;
+          inputSystem.handlePacket(PointerDataPacket(data: [
+            PointerData(
+                device: 1,
+                change: PointerChange.move,
+                physicalX: pmx,
+                physicalY: pmy)
+          ]));
+          mappedSystem.update();
+          expect(joypad.vectorX, 1.0);
+        }
+      }
     });
   });
 }

@@ -9,11 +9,14 @@ import '../../lib/systems/player_stats_ui_system.dart';
 
 void main() {
   group('PlayerStatsUISystem', () {
-    test('updates ComplexUI text components correctly based on player stats', () {
+    test('updates ComplexUI text components correctly based on player stats',
+        () {
       final scene = Scene();
       scene.registerCaste<Health>('Health', ComponentCaste<Health>(10));
-      scene.registerCaste<PlayerStats>('PlayerStats', ComponentCaste<PlayerStats>(10));
-      scene.registerCaste<ComplexUI>('ComplexUI', ComponentCaste<ComplexUI>(10));
+      scene.registerCaste<PlayerStats>(
+          'PlayerStats', ComponentCaste<PlayerStats>(10));
+      scene.registerCaste<ComplexUI>(
+          'ComplexUI', ComponentCaste<ComplexUI>(10));
 
       final player = scene.createEntity();
       scene.getCaste<Health>('Health').add(player, Health.create(100));

@@ -18,11 +18,16 @@ void main() {
 
     setUp(() {
       scene = Scene();
-      scene.registerCaste<Position>('Position', ComponentCaste<Position>(Swarm.maxEntities));
-      scene.registerCaste<Velocity>('Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
-      scene.registerCaste<Sprite>('Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
-      scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
-      scene.registerCaste<EnemyAI>('EnemyAI', ComponentCaste<EnemyAI>(Swarm.maxEntities));
+      scene.registerCaste<Position>(
+          'Position', ComponentCaste<Position>(Swarm.maxEntities));
+      scene.registerCaste<Velocity>(
+          'Velocity', ComponentCaste<Velocity>(Swarm.maxEntities));
+      scene.registerCaste<Sprite>(
+          'Sprite', ComponentCaste<Sprite>(Swarm.maxEntities));
+      scene.registerCaste<BoundingBox>(
+          'BoundingBox', ComponentCaste<BoundingBox>(Swarm.maxEntities));
+      scene.registerCaste<EnemyAI>(
+          'EnemyAI', ComponentCaste<EnemyAI>(Swarm.maxEntities));
       scene.registerCaste<Health>("Health", ComponentCaste<Health>(100));
       scene.registerCaste<Damage>("Damage", ComponentCaste<Damage>(100));
     });

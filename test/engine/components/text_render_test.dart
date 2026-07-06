@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/text_render.dart';
-import 'dart:ui';
 
 void main() {
   group('TextRender Component', () {
@@ -52,12 +51,14 @@ void main() {
       expect(textRender.isDirty, isFalse);
     });
 
-    test('changing coordinates updates cached offset but does not set isDirty', () {
+    test('changing coordinates updates cached offset but does not set isDirty',
+        () {
       final textRender = TextRender(x: 10.0, y: 10.0);
       textRender.clearDirty();
 
       textRender.x = 20.0;
-      expect(textRender.isDirty, isFalse); // Position change shouldn't require paragraph rebuild
+      expect(textRender.isDirty,
+          isFalse); // Position change shouldn't require paragraph rebuild
       expect(textRender.cachedOffset, const Offset(20.0, 10.0));
 
       textRender.y = 30.0;

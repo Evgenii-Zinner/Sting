@@ -17,15 +17,15 @@ class MockImage implements ui.Image {
   @override
   void dispose() {}
   @override
-  Future<ByteData?> toByteData({ui.ImageByteFormat format = ui.ImageByteFormat.rawRgba}) async => null;
+  Future<ByteData?> toByteData(
+          {ui.ImageByteFormat format = ui.ImageByteFormat.rawRgba}) async =>
+      null;
   @override
   ui.ColorSpace get colorSpace => ui.ColorSpace.sRGB;
   @override
   bool get debugDisposed => false;
   @override
   MockImage clone() => this;
-  @override
-  bool get isCloneOfBase => false;
   @override
   List<StackTrace>? debugGetOpenHandleStackTraces() => null;
   @override

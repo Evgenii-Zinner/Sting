@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/widgets.dart';
 import 'engine/renderer.dart';
 import 'engine/time.dart';
 
@@ -14,17 +15,17 @@ void initEngine() {
     time.update(timeStamp.inMicroseconds);
 
     // Fixed step loop logic processing.
-    while(time.consumeFixedStep()) {
+    while (time.consumeFixedStep()) {
       // In later steps, ECS logic updates go here utilizing time.fixedDeltaTime.
     }
-
-    // Request next frame to keep loop going
-    dispatcher.scheduleFrame();
   };
 
   dispatcher.onDrawFrame = () {
     renderer.renderFrame();
     // In later steps, this is where Canvas.drawAtlas and SceneBuilder will be used.
+
+    // Request next frame at the end of draw frame to keep loop going smoothly
+    PlatformDispatcher.instance.scheduleFrame();
   };
 
   // Kick off the first frame
@@ -32,5 +33,6 @@ void initEngine() {
 }
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   initEngine();
 }

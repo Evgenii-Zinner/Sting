@@ -67,7 +67,8 @@ class GameplayCollisionSystem {
       bool projectileDestroyed = false;
 
       // Query around projectile
-      _grid.queryAABB(dmgPos.x, dmgPos.y, dmgBox.width, dmgBox.height, (foundEntity) {
+      _grid.queryAABB(dmgPos.x, dmgPos.y, dmgBox.width, dmgBox.height,
+          (foundEntity) {
         if (projectileDestroyed) return false;
 
         // Target must be an enemy and have Health
@@ -118,7 +119,9 @@ class GameplayCollisionSystem {
     final playerHealth = healthCaste.get(playerEntityId);
 
     if (playerPos != null && playerBox != null && playerHealth != null) {
-      _grid.queryAABB(playerPos.x, playerPos.y, playerBox.width, playerBox.height, (foundEntity) {
+      _grid.queryAABB(
+          playerPos.x, playerPos.y, playerBox.width, playerBox.height,
+          (foundEntity) {
         // If found entity is an enemy with damage
         if (enemyAICaste.get(foundEntity) != null) {
           final enemyDmg = damageCaste.get(foundEntity);
@@ -127,12 +130,12 @@ class GameplayCollisionSystem {
 
           if (enemyDmg != null && enemyPos != null && enemyBox != null) {
             if (_checkAABB(playerPos, playerBox, enemyPos, enemyBox)) {
-               // Player takes damage
-               // We should probably have invincibility frames, but for this MVP, let's just subtract
-               // To avoid instantly dying in 1 frame, we could subtract a small amount or add a timer.
-               // Let's just do it directly.
-               playerHealth.current -= enemyDmg.amount;
-               if (playerHealth.current < 0) playerHealth.current = 0;
+              // Player takes damage
+              // We should probably have invincibility frames, but for this MVP, let's just subtract
+              // To avoid instantly dying in 1 frame, we could subtract a small amount or add a timer.
+              // Let's just do it directly.
+              playerHealth.current -= enemyDmg.amount;
+              if (playerHealth.current < 0) playerHealth.current = 0;
             }
           }
         }
@@ -143,61 +146,62 @@ class GameplayCollisionSystem {
     // 3. Process Player Magnet and Gems
     final magnet = expMagnetCaste.get(playerEntityId);
     if (magnet != null && playerPos != null && playerBox != null) {
-       // Center of player
-       final px = playerPos.x + playerBox.width / 2;
-       final py = playerPos.y + playerBox.height / 2;
-       final radius = magnet.radius;
+      // Center of player
+      final px = playerPos.x + playerBox.width / 2;
+      final py = playerPos.y + playerBox.height / 2;
+      final radius = magnet.radius;
 
-       // Query broad phase for magnet radius
-       _grid.queryAABB(px - radius, py - radius, radius * 2, radius * 2, (foundEntity) {
-          final gem = expGemCaste.get(foundEntity);
-          if (gem != null) {
-             final gemPos = positionCaste.get(foundEntity);
-             final gemBox = boundingBoxCaste.get(foundEntity);
+      // Query broad phase for magnet radius
+      _grid.queryAABB(px - radius, py - radius, radius * 2, radius * 2,
+          (foundEntity) {
+        final gem = expGemCaste.get(foundEntity);
+        if (gem != null) {
+          final gemPos = positionCaste.get(foundEntity);
+          final gemBox = boundingBoxCaste.get(foundEntity);
 
-             if (gemPos != null && gemBox != null) {
-                // Check if inside magnet radius
-                final gx = gemPos.x + gemBox.width / 2;
-                final gy = gemPos.y + gemBox.height / 2;
+          if (gemPos != null && gemBox != null) {
+            // Check if inside magnet radius
+            final gx = gemPos.x + gemBox.width / 2;
+            final gy = gemPos.y + gemBox.height / 2;
 
-                final dx = gx - px;
-                final dy = gy - py;
-                final distSq = dx * dx + dy * dy;
+            final dx = gx - px;
+            final dy = gy - py;
+            final distSq = dx * dx + dy * dy;
 
-                if (distSq <= radius * radius) {
-                   // Inside magnet. Set gem velocity towards player
-                   final gemVel = velocityCaste.get(foundEntity);
-                   if (gemVel != null) {
-                      final dist = sqrt(distSq);
-                      if (dist > 0.0) {
-                         const double pullSpeed = 400.0;
-                         gemVel.dx = (-dx / dist) * pullSpeed;
-                         gemVel.dy = (-dy / dist) * pullSpeed;
-                      }
-                   }
-
-                   // Check narrow phase for actual collection (intersects with player box)
-                   if (_checkAABB(playerPos, playerBox, gemPos, gemBox)) {
-                      // Collect gem
-                      final stats = playerStatsCaste.get(playerEntityId);
-                      if (stats != null) {
-                         stats.xp += gem.xpValue;
-                         // Level up check handled in another system or here
-                         if (stats.xp >= stats.level * 100) {
-                            stats.level += 1;
-                            // Maybe reset XP or keep accumulating
-                         }
-                      }
-                      // Destroy gem
-                      if (!_toDestroy.contains(foundEntity)) {
-                         _toDestroy.add(foundEntity);
-                      }
-                   }
+            if (distSq <= radius * radius) {
+              // Inside magnet. Set gem velocity towards player
+              final gemVel = velocityCaste.get(foundEntity);
+              if (gemVel != null) {
+                final dist = sqrt(distSq);
+                if (dist > 0.0) {
+                  const double pullSpeed = 400.0;
+                  gemVel.dx = (-dx / dist) * pullSpeed;
+                  gemVel.dy = (-dy / dist) * pullSpeed;
                 }
-             }
+              }
+
+              // Check narrow phase for actual collection (intersects with player box)
+              if (_checkAABB(playerPos, playerBox, gemPos, gemBox)) {
+                // Collect gem
+                final stats = playerStatsCaste.get(playerEntityId);
+                if (stats != null) {
+                  stats.xp += gem.xpValue;
+                  // Level up check handled in another system or here
+                  if (stats.xp >= stats.level * 100) {
+                    stats.level += 1;
+                    // Maybe reset XP or keep accumulating
+                  }
+                }
+                // Destroy gem
+                if (!_toDestroy.contains(foundEntity)) {
+                  _toDestroy.add(foundEntity);
+                }
+              }
+            }
           }
-          return true;
-       });
+        }
+        return true;
+      });
     }
 
     // Process queued spawns and destroys
@@ -209,22 +213,29 @@ class GameplayCollisionSystem {
     }
   }
 
-  bool _checkAABB(Position posA, BoundingBox boxA, Position posB, BoundingBox boxB) {
+  bool _checkAABB(
+      Position posA, BoundingBox boxA, Position posB, BoundingBox boxB) {
     return posA.x < posB.x + boxB.width &&
-           posA.x + boxA.width > posB.x &&
-           posA.y < posB.y + boxB.height &&
-           posA.y + boxA.height > posB.y;
+        posA.x + boxA.width > posB.x &&
+        posA.y < posB.y + boxB.height &&
+        posA.y + boxA.height > posB.y;
   }
 
   void _spawnExpGem(double x, double y, int value) {
-     final gemEntity = _scene.createEntity();
-     if (gemEntity != -1) {
-        _scene.getCaste<Position>('Position').add(gemEntity, Position.create(x, y));
-        // Gems need velocity if magnet pulls them
-        _scene.getCaste<Velocity>('Velocity').add(gemEntity, Velocity.create(0.0, 0.0));
-        // Needs a BoundingBox
-        _scene.getCaste<BoundingBox>('BoundingBox').add(gemEntity, BoundingBox.create(8.0, 8.0));
-        _scene.getCaste<ExpGem>('ExpGem').add(gemEntity, ExpGem.create(value));
-     }
+    final gemEntity = _scene.createEntity();
+    if (gemEntity != -1) {
+      _scene
+          .getCaste<Position>('Position')
+          .add(gemEntity, Position.create(x, y));
+      // Gems need velocity if magnet pulls them
+      _scene
+          .getCaste<Velocity>('Velocity')
+          .add(gemEntity, Velocity.create(0.0, 0.0));
+      // Needs a BoundingBox
+      _scene
+          .getCaste<BoundingBox>('BoundingBox')
+          .add(gemEntity, BoundingBox.create(8.0, 8.0));
+      _scene.getCaste<ExpGem>('ExpGem').add(gemEntity, ExpGem.create(value));
+    }
   }
 }

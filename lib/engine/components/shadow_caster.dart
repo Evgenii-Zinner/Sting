@@ -6,7 +6,8 @@ import 'dart:typed_data';
 extension type ShadowCaster(Float32List _data) implements Float32List {
   static const int componentSize = 1;
 
-  ShadowCaster.create({bool active = true}) : _data = Float32List(componentSize) {
+  ShadowCaster.create({bool active = true})
+      : _data = Float32List(componentSize) {
     this.active = active;
   }
 

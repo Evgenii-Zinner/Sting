@@ -47,7 +47,8 @@ void main() {
       expect(caste.contains(Swarm.maxEntities + 1), isFalse);
     });
 
-    test('indexOf returns correct index and -1 for missing/invalid entities', () {
+    test('indexOf returns correct index and -1 for missing/invalid entities',
+        () {
       final caste = Caste(10);
       caste.add(5);
       caste.add(15);

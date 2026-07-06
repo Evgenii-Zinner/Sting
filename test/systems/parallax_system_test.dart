@@ -42,11 +42,13 @@ void main() {
       viewportCaste.add(cameraEntity, Viewport.create(100.0, 50.0, 1.0));
       system.activeCameraEntity = cameraEntity;
 
-      final entity1 = 1; // Factor 1.0 (moves exactly with camera visually, so Position = BasePosition)
+      final entity1 =
+          1; // Factor 1.0 (moves exactly with camera visually, so Position = BasePosition)
       positionCaste.add(entity1, Position.create(0, 0));
       parallaxCaste.add(entity1, Parallax.create(1.0, 1.0, 10.0, 20.0));
 
-      final entity2 = 2; // Factor 0.0 (static relative to screen, so Position moves opposite to camera translation)
+      final entity2 =
+          2; // Factor 0.0 (static relative to screen, so Position moves opposite to camera translation)
       positionCaste.add(entity2, Position.create(0, 0));
       parallaxCaste.add(entity2, Parallax.create(0.0, 0.0, 10.0, 20.0));
 
@@ -62,7 +64,7 @@ void main() {
 
       final pos2 = positionCaste.get(entity2)!;
       expect(pos2.x, closeTo(110.0, 0.001)); // 10.0 + 100.0 * 1.0
-      expect(pos2.y, closeTo(70.0, 0.001));  // 20.0 + 50.0 * 1.0
+      expect(pos2.y, closeTo(70.0, 0.001)); // 20.0 + 50.0 * 1.0
 
       final pos3 = positionCaste.get(entity3)!;
       expect(pos3.x, closeTo(60.0, 0.001)); // 10.0 + 100.0 * 0.5

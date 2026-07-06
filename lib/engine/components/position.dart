@@ -4,7 +4,10 @@ import 'dart:typed_data';
 /// Index 0: x, Index 1: y.
 extension type Position(Float32List data) {
   /// Creates a new Position component with the given [x] and [y] coordinates.
-  Position.create(double x, double y) : this(Float32List(2)..[0] = x..[1] = y);
+  Position.create(double x, double y)
+      : this(Float32List(2)
+          ..[0] = x
+          ..[1] = y);
 
   /// Gets the x coordinate.
   double get x => data[0];

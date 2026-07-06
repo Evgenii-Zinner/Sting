@@ -19,7 +19,8 @@ void main() {
       // Register required castes
       scene.registerCaste<Position>('Position', ComponentCaste<Position>(100));
       scene.registerCaste<Velocity>('Velocity', ComponentCaste<Velocity>(100));
-      scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(100));
+      scene.registerCaste<BoundingBox>(
+          'BoundingBox', ComponentCaste<BoundingBox>(100));
       scene.registerCaste<Sprite>('Sprite', ComponentCaste<Sprite>(100));
 
       final entity = Prefab.spawnStandardEnemy(
@@ -53,11 +54,13 @@ void main() {
       expect(sprite, isNotNull);
     });
 
-    test('spawnStandardEnemy throws StateError if a required caste is missing', () {
+    test('spawnStandardEnemy throws StateError if a required caste is missing',
+        () {
       // Register all but Sprite
       scene.registerCaste<Position>('Position', ComponentCaste<Position>(100));
       scene.registerCaste<Velocity>('Velocity', ComponentCaste<Velocity>(100));
-      scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(100));
+      scene.registerCaste<BoundingBox>(
+          'BoundingBox', ComponentCaste<BoundingBox>(100));
 
       expect(
         () => Prefab.spawnStandardEnemy(scene, 0, 0, 0, 0, 10, 10),
@@ -69,7 +72,8 @@ void main() {
       // Fast forward the Swarm inside scene to max entities
       scene.registerCaste<Position>('Position', ComponentCaste<Position>(100));
       scene.registerCaste<Velocity>('Velocity', ComponentCaste<Velocity>(100));
-      scene.registerCaste<BoundingBox>('BoundingBox', ComponentCaste<BoundingBox>(100));
+      scene.registerCaste<BoundingBox>(
+          'BoundingBox', ComponentCaste<BoundingBox>(100));
       scene.registerCaste<Sprite>('Sprite', ComponentCaste<Sprite>(100));
 
       for (var i = 0; i < 65535; i++) {

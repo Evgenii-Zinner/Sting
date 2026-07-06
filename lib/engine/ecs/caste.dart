@@ -29,7 +29,8 @@ class Caste {
       : _sparse = Uint16List(Swarm.maxEntities + 1),
         _dense = Uint16List(capacity) {
     if (capacity < 0 || capacity > Swarm.maxEntities + 1) {
-      throw ArgumentError.value(capacity, 'capacity', 'Must be between 0 and ${Swarm.maxEntities + 1}');
+      throw ArgumentError.value(capacity, 'capacity',
+          'Must be between 0 and ${Swarm.maxEntities + 1}');
     }
   }
 
@@ -41,7 +42,8 @@ class Caste {
   /// Useful for fast O(1) linear iteration.
   int elementAt(int index) {
     if (index < 0 || index >= _length) {
-      throw RangeError.index(index, this, 'index', 'Index out of range', _length);
+      throw RangeError.index(
+          index, this, 'index', 'Index out of range', _length);
     }
     return _dense[index];
   }
@@ -73,7 +75,8 @@ class Caste {
   /// Throws [StateError] if the set is at full capacity.
   void add(int entity) {
     if (entity < 0 || entity > Swarm.maxEntities) {
-      throw RangeError.value(entity, 'entity', 'Must be between 0 and ${Swarm.maxEntities}');
+      throw RangeError.value(
+          entity, 'entity', 'Must be between 0 and ${Swarm.maxEntities}');
     }
 
     if (contains(entity)) {

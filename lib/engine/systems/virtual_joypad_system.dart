@@ -1,10 +1,12 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:sting/engine/components/virtual_joypad.dart';
 import 'package:sting/engine/components/ui_bounding_box.dart';
 import 'package:sting/engine/components/complex_ui.dart';
 import 'package:sting/engine/ecs/component_caste.dart';
 import 'package:sting/engine/systems/input_system.dart';
+import 'package:sting/engine/renderer.dart';
 
 /// Handles virtual joypad input, translating touch vectors into normalized values
 /// and updating the visual knob UI element.
@@ -13,13 +15,15 @@ class VirtualJoypadSystem {
   final ComponentCaste<UIBoundingBox> _uiBoxes;
   final ComponentCaste<ComplexUI> _complexUIs;
   final InputSystem _inputSystem;
+  final Renderer? _renderer;
 
   VirtualJoypadSystem(
     this._joypads,
     this._uiBoxes,
     this._complexUIs,
-    this._inputSystem,
-  );
+    this._inputSystem, [
+    this._renderer,
+  ]);
 
   void update() {
     for (int i = 0; i < _joypads.length; i++) {
@@ -39,6 +43,10 @@ class VirtualJoypadSystem {
   }
 
   void _processInput(VirtualJoypad joypad, UIBoundingBox? boundingBox) {
+    final views = PlatformDispatcher.instance.views;
+    final hasView = views.isNotEmpty;
+    final physicalSize = hasView ? views.first.physicalSize : Size.zero;
+
     if (joypad.activePointerId == -1.0) {
       // Look for a new pointer inside the bounds
       if (boundingBox != null) {
@@ -47,11 +55,15 @@ class VirtualJoypadSystem {
             double px = _inputSystem.getPointerX(p);
             double py = _inputSystem.getPointerY(p);
 
+            if (_renderer != null && hasView && !physicalSize.isEmpty) {
+              px = _renderer.mapPointerX(px, physicalSize);
+              py = _renderer.mapPointerY(py, physicalSize);
+            }
+
             if (px >= boundingBox.x &&
                 px <= boundingBox.x + boundingBox.width &&
                 py >= boundingBox.y &&
                 py <= boundingBox.y + boundingBox.height) {
-
               // We found a pointer touching the joypad area, capture it
               joypad.activePointerId = p.toDouble();
               break;
@@ -74,6 +86,11 @@ class VirtualJoypadSystem {
         // Pointer moved, calculate vector
         double px = _inputSystem.getPointerX(pId);
         double py = _inputSystem.getPointerY(pId);
+
+        if (_renderer != null && hasView && !physicalSize.isEmpty) {
+          px = _renderer.mapPointerX(px, physicalSize);
+          py = _renderer.mapPointerY(py, physicalSize);
+        }
 
         double dx = px - joypad.centerX;
         double dy = py - joypad.centerY;

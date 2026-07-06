@@ -26,7 +26,8 @@ class Scene {
   /// The [caste] will now be automatically updated when entities are destroyed.
   void registerCaste<T>(String name, ComponentCaste<T> caste) {
     if (_casteMap.containsKey(name)) {
-      throw StateError('Caste with name "$name" is already registered in the Scene.');
+      throw StateError(
+          'Caste with name "$name" is already registered in the Scene.');
     }
     _castes.add(caste);
     _casteMap[name] = caste;
