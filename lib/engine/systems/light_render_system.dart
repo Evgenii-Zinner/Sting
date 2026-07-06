@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'dart:math' as math;
+import 'dart:typed_data';
 import '../ecs/query.dart';
 import '../ecs/component_caste.dart';
 import '../components/position.dart';
@@ -34,6 +35,13 @@ class LightRenderSystem {
   // Pre-allocated array to store shadow casters in range of the current light
   final List<int> _potentialCasters = [];
 
+  // 1D Shadow Map components
+  late final Float32List _depthBuffer;
+  late final Float32List _rayCos;
+  late final Float32List _raySin;
+  late final double _invTwoPiRayCount;
+  static const double _twoPi = math.pi * 2.0;
+
   LightRenderSystem({
     required ComponentCaste<Position> positionCaste,
     required ComponentCaste<Light> lightCaste,
@@ -55,7 +63,18 @@ class LightRenderSystem {
         _ambientPaint = Paint()
           ..blendMode = BlendMode.srcOver
           ..isAntiAlias = false,
-        _shadowPath = Path();
+        _shadowPath = Path() {
+    _depthBuffer = Float32List(rayCount);
+    _rayCos = Float32List(rayCount);
+    _raySin = Float32List(rayCount);
+    _invTwoPiRayCount = rayCount / _twoPi;
+
+    for (int i = 0; i < rayCount; i++) {
+      final double angle = i * _twoPi / rayCount;
+      _rayCos[i] = math.cos(angle);
+      _raySin[i] = math.sin(angle);
+    }
+  }
 
   void render(Canvas canvas, Size size, [double scale = 1.0]) {
     double offsetX = 0.0;
@@ -116,7 +135,6 @@ class LightRenderSystem {
       }
 
       // 1. Broad phase query to find all potential shadow casters once per light
-      int casterCount = 0;
       // Use the entity ID as an index or just a temporary list.
       // To strictly adhere to zero per-frame allocations, we can use a class-level list
       // and clear it. But since we need a list anyway, let's declare it at the class level.
@@ -158,35 +176,32 @@ class LightRenderSystem {
 
       _shadowPath.reset();
 
-      // 2. Simple 1D shadow mapping via raycasting
-      final double angleStep = (math.pi * 2.0) / rayCount;
+      // 2. Fast 1D shadow mapping via edge rasterization
+      for (int i = 0; i < rayCount; i++) {
+        _depthBuffer[i] = radius;
+      }
+
+      for (int j = 0; j < _potentialCasters.length; j++) {
+        final int targetEntity = _potentialCasters[j];
+        final targetPos = _positionCaste.get(targetEntity)!;
+        final targetBounds = _boundingBoxCaste.get(targetEntity)!;
+
+        // Bounding box edges relative to the light center
+        final double left = targetPos.x - lx;
+        final double right = left + targetBounds.width;
+        final double top = targetPos.y - ly;
+        final double bottom = top + targetBounds.height;
+
+        _rasterizeEdge(left, top, right, top);       // Top edge
+        _rasterizeEdge(right, top, right, bottom);    // Right edge
+        _rasterizeEdge(right, bottom, left, bottom);  // Bottom edge
+        _rasterizeEdge(left, bottom, left, top);      // Left edge
+      }
 
       for (int i = 0; i < rayCount; i++) {
-        final double angle = i * angleStep;
-        final double dx = math.cos(angle);
-        final double dy = math.sin(angle);
-
-        double minDistance = radius;
-
-        // Check against the pre-filtered potential casters
-        for (int j = 0; j < _potentialCasters.length; j++) {
-          final int targetEntity = _potentialCasters[j];
-          final targetPos = _positionCaste.get(targetEntity)!;
-          final targetBounds = _boundingBoxCaste.get(targetEntity)!;
-
-          final double left = targetPos.x;
-          final double right = left + targetBounds.width;
-          final double top = targetPos.y;
-          final double bottom = top + targetBounds.height;
-
-          final double dist = _rayIntersectAABB(lx, ly, dx, dy, left, top, right, bottom);
-          if (dist > 0 && dist < minDistance) {
-             minDistance = dist;
-          }
-        }
-
-        final double endX = lx + dx * minDistance;
-        final double endY = ly + dy * minDistance;
+        final double dist = _depthBuffer[i];
+        final double endX = lx + _rayCos[i] * dist;
+        final double endY = ly + _raySin[i] * dist;
 
         if (i == 0) {
           _shadowPath.moveTo(endX, endY);
@@ -220,32 +235,48 @@ class LightRenderSystem {
     }
   }
 
-  // Fast Ray vs AABB intersection returning distance, or -1 if no intersection
-  double _rayIntersectAABB(double rx, double ry, double rdx, double rdy, double minX, double minY, double maxX, double maxY) {
-      double tmin = -double.infinity;
-      double tmax = double.infinity;
+  // Rasterizes a line segment relative to the light center into the 1D shadow map
+  void _rasterizeEdge(double ax, double ay, double bx, double by) {
+    double thetaA = math.atan2(ay, ax);
+    double thetaB = math.atan2(by, bx);
 
-      if (rdx != 0.0) {
-        double tx1 = (minX - rx) / rdx;
-        double tx2 = (maxX - rx) / rdx;
-        tmin = math.max(tmin, math.min(tx1, tx2));
-        tmax = math.min(tmax, math.max(tx1, tx2));
-      } else if (rx < minX || rx > maxX) {
-        return -1.0;
-      }
+    if (thetaA < 0) thetaA += _twoPi;
+    if (thetaB < 0) thetaB += _twoPi;
 
-      if (rdy != 0.0) {
-        double ty1 = (minY - ry) / rdy;
-        double ty2 = (maxY - ry) / rdy;
-        tmin = math.max(tmin, math.min(ty1, ty2));
-        tmax = math.min(tmax, math.max(ty1, ty2));
-      } else if (ry < minY || ry > maxY) {
-        return -1.0;
-      }
+    double diff = thetaB - thetaA;
+    if (diff > math.pi) {
+      diff -= _twoPi;
+    } else if (diff < -math.pi) {
+      diff += _twoPi;
+    }
 
-      if (tmax >= tmin && tmax >= 0.0) {
-         return tmin > 0.0 ? tmin : tmax;
+    double startAngle, endAngle;
+    if (diff > 0) {
+      startAngle = thetaA;
+      endAngle = thetaA + diff;
+    } else {
+      startAngle = thetaB;
+      endAngle = thetaB - diff;
+    }
+
+    int startBin = (startAngle * _invTwoPiRayCount).floor();
+    int endBin = (endAngle * _invTwoPiRayCount).ceil();
+
+    final double nx = by - ay;
+    final double ny = -(bx - ax);
+    final double c = ax * nx + ay * ny;
+
+    for (int i = startBin; i <= endBin; i++) {
+      int bin = i % rayCount;
+      if (bin < 0) bin += rayCount;
+
+      final double denom = _rayCos[bin] * nx + _raySin[bin] * ny;
+      if (denom != 0.0) {
+        final double t = c / denom;
+        if (t > 0.0 && t < _depthBuffer[bin]) {
+          _depthBuffer[bin] = t;
+        }
       }
-      return -1.0;
+    }
   }
 }
