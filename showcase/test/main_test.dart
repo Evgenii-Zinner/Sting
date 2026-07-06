@@ -36,6 +36,13 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('Bullet Haven Game MVP Setup Tests', () {
+    tearDown(() {
+      final dispatcher = ui.PlatformDispatcher.instance;
+      dispatcher.onBeginFrame = null;
+      dispatcher.onDrawFrame = null;
+      dispatcher.onMetricsChanged = null;
+    });
+
     test('Engine initializes correctly with castes registered', () {
       final mockImage = MockImage();
       final game = BulletHavenGame(mockImage);
