@@ -88,6 +88,14 @@ class GravitySystem {
       final vel = velocities.get(entity);
       if (vel == null) continue;
 
+      // Initialize Verlet history for newly spawned entities using their starting velocity
+      if (pos.prevX == pos.x &&
+          pos.prevY == pos.y &&
+          (vel.dx != 0.0 || vel.dy != 0.0)) {
+        pos.prevX = pos.x - vel.dx * dt;
+        pos.prevY = pos.y - vel.dy * dt;
+      }
+
       _forceBuffer[0] = 0.0;
       _forceBuffer[1] = 0.0;
 

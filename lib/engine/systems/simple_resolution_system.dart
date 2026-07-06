@@ -88,8 +88,9 @@ class SimpleResolutionSystem {
     final posB = _positionCaste.get(entityB);
     final circleB = _circleColliderCaste.get(entityB);
 
-    if (posA == null || circleA == null || posB == null || circleB == null)
+    if (posA == null || circleA == null || posB == null || circleB == null) {
       return;
+    }
 
     final dx = posB.x - posA.x;
     final dy = posB.y - posA.y;

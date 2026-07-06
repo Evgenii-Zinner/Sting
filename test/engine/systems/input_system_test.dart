@@ -185,9 +185,9 @@ void main() {
 
     test('Forwards pointer packets to the original dispatcher handler', () {
       bool originalCalled = false;
-      final mockOriginalHandler = (PointerDataPacket packet) {
+      void mockOriginalHandler(PointerDataPacket packet) {
         originalCalled = true;
-      };
+      }
 
       final oldHook = PlatformDispatcher.instance.onPointerDataPacket;
       PlatformDispatcher.instance.onPointerDataPacket = mockOriginalHandler;
