@@ -368,7 +368,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Implement an Input Mapping system that auto-detects available input sources (keyboard, mouse, physical gamepad, touch/virtual joypad) across all cross-platform targets and automatically applies the appropriate control scheme bindings without per-frame allocations.
   * **Acceptance Criteria:** System dynamically adapts to available physical inputs and maps them to abstract game actions seamlessly. 100% test coverage.
 
-* [ ] **Task 27.4: Ultra-Fast 2D Lighting (No Raytracing)**
+* [x] **Task 27.4: Ultra-Fast 2D Lighting (No Raytracing)**
   * **Role Needed:** Rendering Engineer
   * **Skill:** `skills/rendering_engineer.json`
   * **Description:** Introduce a high-performance 2D lighting system avoiding expensive raytracing. Explore using 1D shadow mapping or fast polygonal shadow casting techniques (e.g. self-transparent shadow meshes) combined with `dart:ui` custom shaders, maintaining single-batch atlas rendering efficiency.
