@@ -68,7 +68,9 @@ class ComplexUIRenderSystem {
       }
 
       // Draw the cached path using the cached paint
-      if (complexUI.cachedPath != null && complexUI.cachedPaint != null) {
+      if (complexUI.cachedPath != null &&
+          complexUI.cachedPaint != null &&
+          ((complexUI.backgroundColor >> 24) & 0xFF) > 0) {
         canvas.drawPath(complexUI.cachedPath!, complexUI.cachedPaint!);
       }
 

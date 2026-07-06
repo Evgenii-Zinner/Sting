@@ -537,11 +537,11 @@ class StarSystemGame {
   void startGame() {
     gameStateSystem.changeState(GameState.statePlaying);
   }
+}
 
-  void main() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    final atlas = await AssetLoader.loadEmbeddedImage(
-        EmbeddedAssets.assets['atlas.png']!);
-    StarSystemGame(atlas);
-  }
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final atlas =
+      await AssetLoader.loadEmbeddedImage(EmbeddedAssets.assets['atlas.png']!);
+  StarSystemGame(atlas);
 }

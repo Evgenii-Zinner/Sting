@@ -188,14 +188,33 @@ class BulletHavenGame {
     final xpId = scene.createEntity();
     final healthId = scene.createEntity();
 
-    scene.getCaste<ComplexUI>('ComplexUI').add(scoreId,
-        ComplexUI(text: "Score: 0", x: 10, y: 10, width: 150, height: 20));
+    scene.getCaste<ComplexUI>('ComplexUI').add(
+        scoreId,
+        ComplexUI(
+            text: "Score: 0",
+            x: 10,
+            y: 10,
+            width: 150,
+            height: 20,
+            backgroundColor: 0x00000000));
     scene.getCaste<ComplexUI>('ComplexUI').add(
         xpId,
         ComplexUI(
-            text: "Lvl 1 | XP: 0 / 100", x: 10, y: 30, width: 200, height: 20));
-    scene.getCaste<ComplexUI>('ComplexUI').add(healthId,
-        ComplexUI(text: "HP: 100/100", x: 10, y: 50, width: 150, height: 20));
+            text: "Lvl 1 | XP: 0 / 100",
+            x: 10,
+            y: 30,
+            width: 200,
+            height: 20,
+            backgroundColor: 0x00000000));
+    scene.getCaste<ComplexUI>('ComplexUI').add(
+        healthId,
+        ComplexUI(
+            text: "HP: 100/100",
+            x: 10,
+            y: 50,
+            width: 150,
+            height: 20,
+            backgroundColor: 0x00000000));
 
     scene.getCaste<UIBoundingBox>('UIBoundingBox').add(scoreId,
         UIBoundingBox.fromBounds(x: 10, y: 10, width: 150, height: 20));
