@@ -388,7 +388,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Integrate `ParallaxSystem`, `VirtualJoypadSystem`, and `InputMappingSystem` into the Star System showcase (`showcase_starsystem/lib/main.dart`). Use existing components and engine public APIs to implement parallax background, touch virtual joypad controls for camera, and input mapping appropriately.
   * **Acceptance Criteria:** The Star System showcase utilizes the newly implemented engine features correctly. 100% test coverage.
 
-* [ ] **Task 28.3: Showcase Integration & System Tests**
+* [x] **Task 28.3: Showcase Integration & System Tests**
   * **Role Needed:** QA SDET Engineer
   * **Skill:** `skills/qa_sdet_engineer.json`
   * **Description:** Write programmatic internal integration and system tests for the `showcase` and `showcase_starsystem` targets. Ensure that the integrated `ParallaxSystem`, `VirtualJoypadSystem`, and `InputMappingSystem` operate correctly in tandem with the core game loop and ECS state without UI flakiness.

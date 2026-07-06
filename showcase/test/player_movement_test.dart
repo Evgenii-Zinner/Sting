@@ -13,6 +13,8 @@ import 'package:sting/engine/components/sprite.dart';
 import 'package:sting/engine/components/sprite_animation.dart';
 import 'package:sting/engine/components/bounding_box.dart';
 import 'package:sting/engine/systems/input_system.dart';
+import 'package:sting/engine/components/virtual_joypad.dart';
+import 'package:sting/engine/systems/input_mapping_system.dart';
 import '../lib/components/weapon.dart';
 
 import '../lib/prefabs/player_prefab.dart';
@@ -33,6 +35,7 @@ void main() {
       scene.registerCaste<Health>('Health', ComponentCaste<Health>(100));
       scene.registerCaste<ExpMagnet>('ExpMagnet', ComponentCaste<ExpMagnet>(100));
       scene.registerCaste<PlayerStats>('PlayerStats', ComponentCaste<PlayerStats>(100));
+      scene.registerCaste<VirtualJoypad>('VirtualJoypad', ComponentCaste<VirtualJoypad>(1));
     });
 
     test('spawnPlayer creates entity with correct components', () {
@@ -66,11 +69,18 @@ void main() {
     test('PlayerInputSystem updates velocity based on virtual joystick input', () {
       // 1. Setup InputSystem manually (don't hook platform dispatcher for testing)
       final inputSystem = InputSystem(hook: false);
+      final inputMappingSystem = InputMappingSystem(inputSystem, hook: false);
+
+      final joypadId = scene.createEntity();
+      final joypad = VirtualJoypad.create(maxRadius: 50.0, centerX: 400.0, centerY: 300.0, knobEntityId: 0.0);
+      scene.getCaste<VirtualJoypad>('VirtualJoypad').add(joypadId, joypad);
 
       // 2. Setup PlayerInputSystem
       final playerInputSystem = PlayerInputSystem(
-        inputSystem: inputSystem,
+        inputMappingSystem: inputMappingSystem,
         velocityCaste: scene.getCaste<Velocity>('Velocity'),
+        joypadCaste: scene.getCaste<VirtualJoypad>('VirtualJoypad'),
+        joypadEntityId: joypadId,
       );
       playerInputSystem.updateScreenSize(800.0, 600.0); // Center is 400, 300
 
@@ -85,45 +95,27 @@ void main() {
       expect(velocity.dx, closeTo(0.0, 0.001));
       expect(velocity.dy, closeTo(0.0, 0.001));
 
-      // Simulate pointer down event at (500, 300) -> right of center
-      inputSystem.handlePacket(PointerDataPacket(data: [
-        PointerData(
-          change: PointerChange.down,
-          device: 1,
-          physicalX: 500.0,
-          physicalY: 300.0,
-        )
-      ]));
+      // Simulate joypad moved right
+      joypad.vectorX = 1.0;
+      joypad.vectorY = 0.0;
 
       // Update input system - should set velocity to move right at max speed
       playerInputSystem.update();
       expect(velocity.dx, closeTo(playerInputSystem.speed, 0.001));
       expect(velocity.dy, closeTo(0.0, 0.001));
 
-      // Simulate pointer move event at (400, 200) -> above center
-      inputSystem.handlePacket(PointerDataPacket(data: [
-        PointerData(
-          change: PointerChange.move,
-          device: 1,
-          physicalX: 400.0,
-          physicalY: 200.0,
-        )
-      ]));
+      // Simulate joypad moved up
+      joypad.vectorX = 0.0;
+      joypad.vectorY = -1.0;
 
       // Update input system - should set velocity to move up at max speed
       playerInputSystem.update();
       expect(velocity.dx, closeTo(0.0, 0.001));
       expect(velocity.dy, closeTo(-playerInputSystem.speed, 0.001));
 
-      // Simulate pointer up event -> release
-      inputSystem.handlePacket(PointerDataPacket(data: [
-        PointerData(
-          change: PointerChange.up,
-          device: 1,
-          physicalX: 400.0,
-          physicalY: 200.0,
-        )
-      ]));
+      // Simulate joypad release
+      joypad.vectorX = 0.0;
+      joypad.vectorY = 0.0;
 
       // Update input system - should reset velocity to zero
       playerInputSystem.update();
