@@ -93,15 +93,24 @@ class GravitySystem {
 
       _tree.accumulateForce(entity, pos.x, pos.y, theta, g, _forceBuffer);
 
-      // dv = (F/m) * dt, but actually the tree returns acceleration (since we didn't multiply by receiving body mass inside tree)
-      // Wait, tree force formula: F = G * M / d^2.
-      // If we want true force: F_total = G * M * m / d^2.
-      // We did: force = (g * mass) / distSq. This is actually acceleration if it's the source mass!
-      // Acceleration a = F/m = (G * M * m / d^2) / m = G * M / d^2.
-      // Yes! _tree.accumulateForce returns ACCELERATION!
+      // Verlet Integration Step (much more stable for orbits)
+      final double tempX = pos.x;
+      final double tempY = pos.y;
 
-      vel.dx += _forceBuffer[0] * dt;
-      vel.dy += _forceBuffer[1] * dt;
+      final double accX = _forceBuffer[0];
+      final double accY = _forceBuffer[1];
+
+      pos.x = 2.0 * pos.x - pos.prevX + accX * dt * dt;
+      pos.y = 2.0 * pos.y - pos.prevY + accY * dt * dt;
+
+      pos.prevX = tempX;
+      pos.prevY = tempY;
+
+      // Keep velocity component in sync for other subsystems
+      if (dt > 0.0) {
+        vel.dx = (pos.x - pos.prevX) / dt;
+        vel.dy = (pos.y - pos.prevY) / dt;
+      }
     }
   }
 }

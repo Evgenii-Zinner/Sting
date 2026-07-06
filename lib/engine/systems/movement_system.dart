@@ -17,8 +17,14 @@ class MovementSystem {
   /// Modifies the Float32Lists directly without allocating new objects.
   void update(double dt) {
     query.forEach((entity, position, velocity) {
+      double tempX = position.x;
+      double tempY = position.y;
+
       position.x += velocity.dx * dt;
       position.y += velocity.dy * dt;
+
+      position.prevX = tempX;
+      position.prevY = tempY;
     });
   }
 }
