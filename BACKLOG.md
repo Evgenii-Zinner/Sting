@@ -376,13 +376,13 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
 
 ## 28. Phase 13 Showcase Integration
 
-* [ ] **Task 28.1: Bullet Haven Showcase Integration**
+* [x] **Task 28.1: Bullet Haven Showcase Integration**
   * **Role Needed:** Gameplay Scripter
   * **Skill:** `skills/gameplay_scripter.json`
   * **Description:** Integrate `ParallaxSystem`, `VirtualJoypadSystem`, and `InputMappingSystem` into the Bullet Haven showcase (`showcase/lib/main.dart`). Use existing components and engine public APIs to implement parallax background, touch virtual joypad controls, and input mapping correctly.
   * **Acceptance Criteria:** The Bullet Haven showcase utilizes the newly implemented engine features correctly. 100% test coverage.
 
-* [ ] **Task 28.2: Star System Showcase Integration**
+* [x] **Task 28.2: Star System Showcase Integration**
   * **Role Needed:** Gameplay Scripter
   * **Skill:** `skills/gameplay_scripter.json`
   * **Description:** Integrate `ParallaxSystem`, `VirtualJoypadSystem`, and `InputMappingSystem` into the Star System showcase (`showcase_starsystem/lib/main.dart`). Use existing components and engine public APIs to implement parallax background, touch virtual joypad controls for camera, and input mapping appropriately.
@@ -393,3 +393,30 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Skill:** `skills/qa_sdet_engineer.json`
   * **Description:** Write programmatic internal integration and system tests for the `showcase` and `showcase_starsystem` targets. Ensure that the integrated `ParallaxSystem`, `VirtualJoypadSystem`, and `InputMappingSystem` operate correctly in tandem with the core game loop and ECS state without UI flakiness.
   * **Acceptance Criteria:** Comprehensive integration and system tests are implemented for both showcases, verifying accurate rendering offsets, proper touch input vector mapping, and correct control scheme adaptation. 100% test coverage for integration points.
+
+## 29. Phase 14: Advanced Features, Tooling & Production Readiness
+
+* [ ] **Task 29.1: World-Space Anchored UI (Immersive UI)**
+  * **Role Needed:** Gameplay UI Engineer
+  * **Skill:** `skills/gameplay_ui_engineer.json`
+  * **Description:** Implement a world-space UI component (e.g. `WorldUI`) and rendering system that translates entity world coordinates to viewport screen-space coordinates, enabling floating health bars, damage numbers, and indicators that track moving objects without per-frame allocations.
+  * **Acceptance Criteria:** Floating UI elements correctly track world-space moving entities on screen. Zero per-frame allocations during movement and rendering. 100% test coverage.
+
+* [ ] **Task 29.2: Component Extension Type Code Generator**
+  * **Role Needed:** Tooling Engineer
+  * **Skill:** `skills/tooling_engineer.json`
+  * **Description:** Develop a command-line utility in `tools/` that parses a simplified component schema (JSON or YAML) and automatically generates the zero-allocation Dart 3 extension types on typed arrays (`Float32List`, `ByteData`), reducing manual boilerplate and index offset mistakes.
+  * **Acceptance Criteria:** Tool successfully parses schemas and generates valid, lint-clean Dart files. Generated components operate correctly with Caste storage. 100% test coverage for parser and generator logic.
+
+* [ ] **Task 29.3: Dedicated Memory Architecture & Limits Guide**
+  * **Role Needed:** Systems Architect
+  * **Skill:** `skills/systems_architect.json`
+  * **Description:** Write a detailed document `docs/MEMORY_LIMITS.md` explaining Sting's static memory model, the Swarm max entity count (65,535), Caste preallocation constraints, memory reuse patterns, and best practices for sizing component caches during game startup.
+  * **Acceptance Criteria:** Documentation is clear, accurate, matches the codebase limits, and is stored in `docs/MEMORY_LIMITS.md`.
+
+* [ ] **Task 29.4: Cross-Platform Native Audio Integration**
+  * **Role Needed:** Audio Engineer
+  * **Skill:** `skills/audio_engineer.json`
+  * **Description:** Replace the static mocked `AudioBindings` with a real cross-platform audio player backend (e.g., integrating `soloud` or another FFI/native audio library) that consumes the flat bit-packed audio queue without per-frame heap allocations.
+  * **Acceptance Criteria:** Real audio files are loaded and played on multiple platforms (iOS, Android, Web, Windows/macOS) directly consuming the preallocated ring buffer. Zero per-frame allocations. 100% test coverage.
+

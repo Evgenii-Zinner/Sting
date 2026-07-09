@@ -74,9 +74,6 @@ class PlayerInputSystem {
     // 3. Normalize vector
     final length = sqrt(inputDx * inputDx + inputDy * inputDy);
     if (length > 0.0) {
-      // If combined input is > 1.0 (e.g. from keyboard), normalize it.
-      // If from joypad, it might already be normalized, but safe to do it anyway.
-      double scale = speed;
       if (length > 1.0) {
         inputDx /= length;
         inputDy /= length;
