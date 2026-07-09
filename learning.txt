@@ -1,0 +1,1 @@
+Learned that the ParallaxSystem, VirtualJoypadSystem, and InputMappingSystem were already integrated correctly into the showcase examples but required testing and verification of integration. Task 28.1 specifically involved ensuring these components work without regressions in Bullet Haven.
