@@ -452,7 +452,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Implement `GridPathfinder` inside `lib/engine/systems/pathfinding_system.dart` which solves A* routes on both rectangular and hexagonal grid structures and writes the path directly to the `MovementQueue`. Use pre-allocated static node pools.
   * **Acceptance Criteria:** System calculates paths correctly without per-frame allocations. 100% test coverage.
 
-* [ ] **Task 30.6: Utility AI Component**
+* [x] **Task 30.6: Utility AI Component**
   * **Role Needed:** AI & Pathfinding Engineer
   * **Skill:** `skills/ai_pathfinding_engineer.json`
   * **Description:** Create a component `UtilityAI` in `lib/engine/components/utility_ai.dart` storing task ID, target entity, parameter coordinates, and parallel Float32List slices for tension and damping.
