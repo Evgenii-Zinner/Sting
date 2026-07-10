@@ -43,15 +43,13 @@ class ComplexUI {
         _textColor = textColor,
         _fontSize = fontSize,
         _borderRadius = borderRadius,
-        _cachedOffset = Offset(x, y);
+        _cachedOffset = Offset(0, 0);
 
   /// The x-coordinate on the screen.
   double get x => _x;
   set x(double value) {
     if (_x != value) {
       _x = value;
-      _cachedOffset = Offset(_x, _y);
-      _isDirty = true;
     }
   }
 
@@ -60,8 +58,6 @@ class ComplexUI {
   set y(double value) {
     if (_y != value) {
       _y = value;
-      _cachedOffset = Offset(_x, _y);
-      _isDirty = true;
     }
   }
 

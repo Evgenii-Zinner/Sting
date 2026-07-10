@@ -37,14 +37,6 @@ void main() {
       ui.clearDirty();
       expect(ui.isDirty, isFalse);
 
-      ui.x = 5;
-      expect(ui.isDirty, isTrue);
-
-      ui.clearDirty();
-      ui.y = 5;
-      expect(ui.isDirty, isTrue);
-
-      ui.clearDirty();
       ui.width = 150;
       expect(ui.isDirty, isTrue);
 
@@ -74,10 +66,10 @@ void main() {
     });
 
     test('Setters to same value do not trigger dirty flag', () {
-      final ui = ComplexUI(x: 10, y: 10);
+      final ui = ComplexUI(x: 10, y: 10, width: 100);
       ui.clearDirty();
 
-      ui.x = 10;
+      ui.width = 100;
       expect(ui.isDirty, isFalse);
     });
 

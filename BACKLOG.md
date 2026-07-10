@@ -420,3 +420,9 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Replace the static mocked `AudioBindings` with a real cross-platform audio player backend (e.g., integrating `soloud` or another FFI/native audio library) that consumes the flat bit-packed audio queue without per-frame heap allocations.
   * **Acceptance Criteria:** Real audio files are loaded and played on multiple platforms (iOS, Android, Web, Windows/macOS) directly consuming the preallocated ring buffer. Zero per-frame allocations. 100% test coverage.
 
+
+* [x] **Task 29.1: World-Space Anchored UI (Immersive UI)**
+  * **Role Needed:** Gameplay UI Engineer
+  * **Skill:** `skills/gameplay_ui_engineer.json`
+  * **Description:** Implement a world-space UI component (e.g. `WorldUI`) and rendering system that translates entity world coordinates to viewport screen-space coordinates, enabling floating health bars, damage numbers, and indicators that track moving objects without per-frame allocations.
+  * **Acceptance Criteria:** Floating UI elements correctly track world-space moving entities on screen. Zero per-frame allocations during movement and rendering. 100% test coverage.

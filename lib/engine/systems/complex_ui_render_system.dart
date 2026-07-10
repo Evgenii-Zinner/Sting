@@ -27,9 +27,9 @@ class ComplexUIRenderSystem {
         complexUI.cachedPaint = paint;
 
         // 2. Rebuild Path
+        // Build the path relative to (0,0) to avoid rebuilding on position change
         final path = Path();
-        final rect = Rect.fromLTWH(
-            complexUI.x, complexUI.y, complexUI.width, complexUI.height);
+        final rect = Rect.fromLTWH(0, 0, complexUI.width, complexUI.height);
 
         if (complexUI.borderRadius > 0) {
           path.addRRect(RRect.fromRectAndRadius(
@@ -58,14 +58,17 @@ class ComplexUIRenderSystem {
 
           // Update the cached offset to be vertically centered
           final textY =
-              complexUI.y + (complexUI.height - paragraph.height) / 2.0;
-          complexUI.updateCachedOffset(complexUI.x, textY);
+              (complexUI.height - complexUI.cachedParagraph!.height) / 2.0;
+          complexUI.updateCachedOffset(0, textY);
         } else {
           complexUI.cachedParagraph = null;
         }
 
         complexUI.clearDirty();
       }
+
+      canvas.save();
+      canvas.translate(complexUI.x, complexUI.y);
 
       // Draw the cached path using the cached paint
       if (complexUI.cachedPath != null &&
@@ -79,6 +82,8 @@ class ComplexUIRenderSystem {
         canvas.drawParagraph(
             complexUI.cachedParagraph!, complexUI.cachedOffset);
       }
+
+      canvas.restore();
     });
   }
 }
