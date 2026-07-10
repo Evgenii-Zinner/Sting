@@ -6,6 +6,7 @@ import 'package:sting/engine/ecs/component_caste.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/sprite.dart';
 import 'package:sting/engine/components/viewport.dart';
+import 'package:sting/engine/components/shader_material.dart';
 import 'package:sting/engine/systems/sprite_render_system.dart';
 
 void main() {
@@ -16,6 +17,7 @@ void main() {
     final swarm = Swarm();
     final positionCaste = ComponentCaste<Position>(65535);
     final spriteCaste = ComponentCaste<Sprite>(65535);
+    final shaderCaste = ComponentCaste<ShaderMaterial>(65535);
 
     // Create a 1x1 dummy image
     final Uint8List transparent1x1Png = Uint8List.fromList([
@@ -96,6 +98,7 @@ void main() {
       atlas: image,
       positionCaste: positionCaste,
       spriteCaste: spriteCaste,
+      shaderCaste: shaderCaste,
     );
 
     // Create an entity with both components

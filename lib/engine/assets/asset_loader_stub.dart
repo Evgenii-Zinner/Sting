@@ -18,4 +18,8 @@ class AssetLoader {
     throw UnsupportedError(
         'loadEmbeddedImage is not supported on this platform');
   }
+
+  static Future<FragmentProgram> loadShader(String assetKey) {
+    throw UnsupportedError('loadShader is not supported on this platform');
+  }
 }

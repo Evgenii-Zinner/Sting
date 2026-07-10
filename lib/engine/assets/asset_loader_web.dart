@@ -25,4 +25,8 @@ class AssetLoader {
     codec.dispose();
     return frame.image;
   }
+
+  static Future<FragmentProgram> loadShader(String assetKey) async {
+    return FragmentProgram.fromAsset(assetKey);
+  }
 }

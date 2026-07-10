@@ -126,4 +126,11 @@ void main() {
     expect(image.width, 1);
     expect(image.height, 1);
   });
+
+  test('AssetLoader loadShader loads from asset', () async {
+    expect(
+      () => AssetLoader.loadShader('non_existent.frag'),
+      throwsA(isA<Exception>()),
+    );
+  });
 }
