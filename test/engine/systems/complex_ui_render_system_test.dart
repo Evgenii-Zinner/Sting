@@ -8,6 +8,9 @@ import 'package:sting/engine/systems/complex_ui_render_system.dart';
 class MockCanvas extends Fake implements Canvas {
   int drawPathCount = 0;
   int drawParagraphCount = 0;
+  int saveCount = 0;
+  int restoreCount = 0;
+  int translateCount = 0;
 
   @override
   void drawPath(Path path, Paint paint) {
@@ -17,6 +20,21 @@ class MockCanvas extends Fake implements Canvas {
   @override
   void drawParagraph(Paragraph paragraph, Offset offset) {
     drawParagraphCount++;
+  }
+
+  @override
+  void save() {
+    saveCount++;
+  }
+
+  @override
+  void restore() {
+    restoreCount++;
+  }
+
+  @override
+  void translate(double dx, double dy) {
+    translateCount++;
   }
 }
 
@@ -43,6 +61,9 @@ void main() {
 
       expect(canvas.drawPathCount, 1);
       expect(canvas.drawParagraphCount, 0);
+      expect(canvas.saveCount, 1);
+      expect(canvas.restoreCount, 1);
+      expect(canvas.translateCount, 1);
       expect(ui.isDirty, isFalse);
       expect(ui.cachedPath, isNotNull);
       expect(ui.cachedPaint, isNotNull);
@@ -58,6 +79,9 @@ void main() {
 
       expect(canvas.drawPathCount, 1);
       expect(canvas.drawParagraphCount, 1);
+      expect(canvas.saveCount, 1);
+      expect(canvas.restoreCount, 1);
+      expect(canvas.translateCount, 1);
       expect(ui.isDirty, isFalse);
       expect(ui.cachedParagraph, isNotNull);
     });
