@@ -422,7 +422,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
 
 ## 30. Phase 15: General-Purpose Simulator & AI Systems
 
-* [ ] **Task 30.1: Hexagonal Grid Mathematics Library**
+* [x] **Task 30.1: Hexagonal Grid Mathematics Library**
   * **Role Needed:** Hex Grid Engineer
   * **Skill:** `skills/hex_grid_engineer.json`
   * **Description:** Implement axial hexagonal math utilities in `lib/engine/math/hex_math.dart`. Include conversions `gridToWorld` and `worldToGrid` for pointy-topped and flat-topped hexagons, `hexDistance` calculations, and neighbor lookups.
