@@ -1,4 +1,0 @@
-### Task 29.4: Cross-Platform Native Audio Integration - Inquiry by Audio Engineer
-- **Context:** While running the full integration test suite after migrating to `flutter_soloud` for audio, the test `showcase_starsystem/test/starsystem_test.dart` failed.
-- **Question/Choice:** The failure occurs because the expected verlet integration coordinates for gravity are outdated or incorrect relative to the latest engine code changes (possibly modified by previous integration tasks). I reverted my naive fixes to the test suite as they constitute scope creep and may hide real regressions in the engine's core physics system. The N-Body simulation's positional expectation needs an orchestrator to verify if the math was updated.
-- **Proposed Options (if any):** Option A: Update `starsystem_test.dart` math assertions. Option B: Investigate regressions in the gravity / movement systems.
