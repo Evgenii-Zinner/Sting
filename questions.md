@@ -2,3 +2,8 @@
 - **Context:** While running the full integration test suite after migrating to `flutter_soloud` for audio, the test `showcase_starsystem/test/starsystem_test.dart` failed.
 - **Question/Choice:** The failure occurs because the expected verlet integration coordinates for gravity are outdated or incorrect relative to the latest engine code changes (possibly modified by previous integration tasks). I reverted my naive fixes to the test suite as they constitute scope creep and may hide real regressions in the engine's core physics system. The N-Body simulation's positional expectation needs an orchestrator to verify if the math was updated.
 - **Proposed Options (if any):** Option A: Update `starsystem_test.dart` math assertions. Option B: Investigate regressions in the gravity / movement systems.
+
+### Task 30.8: Cross-Platform Shader Asset Loader - Inquiry by Graphics Pipeline Engineer
+- **Context:** Task 30.8 requires implementing fragment shader asset loading on Web, specifically stating to "support fetching shader programs asynchronously using HTTP or loading from embedded base64 strings". However, `dart:ui` only supports `FragmentProgram.fromAsset` for loading runtime shaders; it does not support creating a `FragmentProgram` from raw bytes (e.g. from an HTTP response or base64 decoded string).
+- **Question/Choice:** Should I proceed with just using `FragmentProgram.fromAsset` for all platforms (as it is the only supported API and Web relies on it by registering `.shader` files in `pubspec.yaml`), or is there an alternative `dart:ui` rendering technique expected?
+- **Proposed Options (if any):** Option A: Only support `FragmentProgram.fromAsset` for cross-platform shader loading. Option B: Revisit the shader loading requirements in the backlog.
