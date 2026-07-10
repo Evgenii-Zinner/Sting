@@ -428,13 +428,13 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Implement axial hexagonal math utilities in `lib/engine/math/hex_math.dart`. Include conversions `gridToWorld` and `worldToGrid` for pointy-topped and flat-topped hexagons, `hexDistance` calculations, and neighbor lookups.
   * **Acceptance Criteria:** Math library functions operate without allocations, returning correct coordinates and distances. 100% test coverage.
 
-* [ ] **Task 30.2: HexTilemap Component**
+* [x] **Task 30.2: HexTilemap Component**
   * **Role Needed:** Hex Grid Engineer
   * **Skill:** `skills/hex_grid_engineer.json`
   * **Description:** Create an ECS component `HexTilemap` in `lib/engine/components/hex_tilemap.dart` backed by a flat `Int32List` array. Implement 1D index mapping coordinates `(q, r)` offset by the radius.
   * **Acceptance Criteria:** Component works with `ComponentCaste`. 100% test coverage. Zero allocations.
 
-* [ ] **Task 30.3: HexTilemap Render System**
+* [x] **Task 30.3: HexTilemap Render System**
   * **Role Needed:** Hex Grid Engineer
   * **Skill:** `skills/hex_grid_engineer.json`
   * **Description:** Implement a `HexTilemapRenderSystem` in `lib/engine/systems/hex_tilemap_render_system.dart`. Use `Canvas.drawRawAtlas` with pre-allocated Float32List transform and rect arrays to translate axial coordinates into pointy-topped hexes.

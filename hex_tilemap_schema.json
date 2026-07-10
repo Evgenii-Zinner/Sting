@@ -1,0 +1,9 @@
+{
+  "name": "HexTilemap",
+  "type": "Int32List",
+  "description": "Represents a hexagonal tilemap backed by a flat Int32List array. 1D index mapping coordinates (q, r) offset by the radius. Format: [radius, isFlatTopped, data...]",
+  "fields": [
+    { "name": "radius" },
+    { "name": "isFlatTopped" }
+  ]
+}
