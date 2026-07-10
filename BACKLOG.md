@@ -396,13 +396,13 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
 
 ## 29. Phase 14: Advanced Features, Tooling & Production Readiness
 
-* [ ] **Task 29.1: World-Space Anchored UI (Immersive UI)**
+* [x] **Task 29.1: World-Space Anchored UI (Immersive UI)**
   * **Role Needed:** Gameplay UI Engineer
   * **Skill:** `skills/gameplay_ui_engineer.json`
   * **Description:** Implement a world-space UI component (e.g. `WorldUI`) and rendering system that translates entity world coordinates to viewport screen-space coordinates, enabling floating health bars, damage numbers, and indicators that track moving objects without per-frame allocations.
   * **Acceptance Criteria:** Floating UI elements correctly track world-space moving entities on screen. Zero per-frame allocations during movement and rendering. 100% test coverage.
 
-* [ ] **Task 29.2: Component Extension Type Code Generator**
+* [x] **Task 29.2: Component Extension Type Code Generator**
   * **Role Needed:** Tooling Engineer
   * **Skill:** `skills/tooling_engineer.json`
   * **Description:** Develop a command-line utility in `tools/` that parses a simplified component schema (JSON or YAML) and automatically generates the zero-allocation Dart 3 extension types on typed arrays (`Float32List`, `ByteData`), reducing manual boilerplate and index offset mistakes.
@@ -421,8 +421,3 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Acceptance Criteria:** Real audio files are loaded and played on multiple platforms (iOS, Android, Web, Windows/macOS) directly consuming the preallocated ring buffer. Zero per-frame allocations. 100% test coverage.
 
 
-* [x] **Task 29.1: World-Space Anchored UI (Immersive UI)**
-  * **Role Needed:** Gameplay UI Engineer
-  * **Skill:** `skills/gameplay_ui_engineer.json`
-  * **Description:** Implement a world-space UI component (e.g. `WorldUI`) and rendering system that translates entity world coordinates to viewport screen-space coordinates, enabling floating health bars, damage numbers, and indicators that track moving objects without per-frame allocations.
-  * **Acceptance Criteria:** Floating UI elements correctly track world-space moving entities on screen. Zero per-frame allocations during movement and rendering. 100% test coverage.
