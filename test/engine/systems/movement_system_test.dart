@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
+import 'package:sting/engine/components/mass.dart';
 import 'package:sting/engine/ecs/component_caste.dart';
 import 'package:sting/engine/systems/movement_system.dart';
 
@@ -40,6 +41,37 @@ void main() {
       final pos2 = positionCaste.get(2)!;
       expect(pos2.x, 20.0);
       expect(pos2.y, 20.0);
+    });
+
+    test('skips entities with mass component if massCaste is provided', () {
+      final positionCaste = ComponentCaste<Position>(10);
+      final velocityCaste = ComponentCaste<Velocity>(10);
+      final massCaste = ComponentCaste<Mass>(10);
+
+      final system = MovementSystem(
+        positionCaste: positionCaste,
+        velocityCaste: velocityCaste,
+        massCaste: massCaste,
+      );
+
+      // Entity 0: has Position, Velocity, and Mass (should not move via MovementSystem)
+      positionCaste.add(0, Position.create(0, 0));
+      velocityCaste.add(0, Velocity.create(10, 10));
+      massCaste.add(0, Mass.create(100));
+
+      // Entity 1: has Position and Velocity, no Mass (should move)
+      positionCaste.add(1, Position.create(0, 0));
+      velocityCaste.add(1, Velocity.create(10, 10));
+
+      system.update(1.0);
+
+      final pos0 = positionCaste.get(0)!;
+      expect(pos0.x, 0.0);
+      expect(pos0.y, 0.0);
+
+      final pos1 = positionCaste.get(1)!;
+      expect(pos1.x, 10.0);
+      expect(pos1.y, 10.0);
     });
 
     test('zero allocations per tick', () {

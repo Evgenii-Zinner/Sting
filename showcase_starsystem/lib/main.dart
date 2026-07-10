@@ -106,13 +106,15 @@ class StarSystemGame {
     movementSystem = MovementSystem(
       positionCaste: scene.getCaste<Position>('Position'),
       velocityCaste: scene.getCaste<Velocity>('Velocity'),
+      massCaste: scene.getCaste<Mass>('Mass'),
     );
 
     gravitySystem = GravitySystem(
       gameStateSystem,
       theta: 0.5,
       g: 50.0,
-      maxNodes: 1000,
+      softening: 15.0,
+      maxNodes: 20000,
     );
 
     spriteRenderSystem = SpriteRenderSystem(

@@ -99,5 +99,27 @@ void main() {
       // Should not throw
       gravitySystem.update(scene, 1.0);
     });
+    test(
+        'respects custom softening parameter to cap gravitational force at close distance',
+        () {
+      final customGravitySystem =
+          GravitySystem(gameStateSystem, g: 10.0, softening: 5.0);
+
+      // Entity 1: Heavy mass at origin
+      posCaste.add(1, Position.create(0.0, 0.0));
+      velCaste.add(1, Velocity.create(0.0, 0.0));
+      massCaste.add(1, Mass.create(1000.0));
+
+      // Entity 2: Light mass extremely close (dist = 1.0)
+      posCaste.add(2, Position.create(1.0, 0.0));
+      velCaste.add(2, Velocity.create(0.0, 0.0));
+      massCaste.add(2, Mass.create(1.0));
+
+      customGravitySystem.update(scene, 1.0);
+
+      final vel2 = velCaste.get(2)!;
+
+      expect(vel2.dx, closeTo(-75.44, 0.1));
+    });
   });
 }

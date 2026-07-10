@@ -414,7 +414,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Write a detailed document `docs/MEMORY_LIMITS.md` explaining Sting's static memory model, the Swarm max entity count (65,535), Caste preallocation constraints, memory reuse patterns, and best practices for sizing component caches during game startup.
   * **Acceptance Criteria:** Documentation is clear, accurate, matches the codebase limits, and is stored in `docs/MEMORY_LIMITS.md`.
 
-* [ ] **Task 29.4: Cross-Platform Native Audio Integration**
+* [x] **Task 29.4: Cross-Platform Native Audio Integration**
   * **Role Needed:** Audio Engineer
   * **Skill:** `skills/audio_engineer.json`
   * **Description:** Replace the static mocked `AudioBindings` with a real cross-platform audio player backend (e.g., integrating `soloud` or another FFI/native audio library) that consumes the flat bit-packed audio queue without per-frame heap allocations.

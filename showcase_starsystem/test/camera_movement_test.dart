@@ -1,5 +1,4 @@
 import 'dart:ui' as ui;
-import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/viewport.dart';
 import 'package:sting/engine/components/virtual_joypad.dart';
@@ -23,13 +22,15 @@ void main() {
     });
 
     test('Camera moves with InputMappingSystem and updates Parallax', () async {
-      final ui.Image mockAtlas = await AssetLoader.loadEmbeddedImage(EmbeddedAssets.assets['atlas.png']!);
+      final ui.Image mockAtlas = await AssetLoader.loadEmbeddedImage(
+          EmbeddedAssets.assets['atlas.png']!);
       final game = StarSystemGame(mockAtlas);
 
       // Allow systems to initialize metrics
       ui.PlatformDispatcher.instance.onMetricsChanged?.call();
 
-      final viewportComp = game.scene.getCaste<Viewport>('Viewport').get(game.cameraEntityId)!;
+      final viewportComp =
+          game.scene.getCaste<Viewport>('Viewport').get(game.cameraEntityId)!;
       double initialX = viewportComp.x;
       double initialY = viewportComp.y;
 
@@ -37,7 +38,8 @@ void main() {
       game.inputMappingSystem.setActionState(GameAction.moveRight, 1.0);
 
       // Tick the dispatcher (1 second simulation for clear movement)
-      ui.PlatformDispatcher.instance.onBeginFrame?.call(const Duration(seconds: 1));
+      ui.PlatformDispatcher.instance.onBeginFrame
+          ?.call(const Duration(seconds: 1));
 
       expect(viewportComp.x, greaterThan(initialX));
       expect(viewportComp.y, equals(initialY));
@@ -45,14 +47,17 @@ void main() {
       game.inputMappingSystem.setActionState(GameAction.moveRight, 0.0);
 
       // 2. Move Down via VirtualJoypad
-      final joypad = game.scene.getCaste<VirtualJoypad>('VirtualJoypad').get(game.joypadEntityId)!;
+      final joypad = game.scene
+          .getCaste<VirtualJoypad>('VirtualJoypad')
+          .get(game.joypadEntityId)!;
       joypad.vectorX = 0.0;
       joypad.vectorY = 1.0;
 
       initialX = viewportComp.x;
       initialY = viewportComp.y;
 
-      ui.PlatformDispatcher.instance.onBeginFrame?.call(const Duration(seconds: 2));
+      ui.PlatformDispatcher.instance.onBeginFrame
+          ?.call(const Duration(seconds: 2));
 
       expect(viewportComp.x, equals(initialX));
       expect(viewportComp.y, greaterThan(initialY));
@@ -63,7 +68,7 @@ void main() {
       final positionCaste = game.scene.getCaste<Position>('Position');
 
       int bgEntityId = -1;
-      for (int i = 0; i < parallaxCaste.length; i++) {
+      for (int i = 0; i < parallaxCaste.length;) {
         bgEntityId = parallaxCaste.elementAt(i);
         break;
       }
@@ -72,8 +77,18 @@ void main() {
       final bgPosition = positionCaste.get(bgEntityId)!;
       final parallax = parallaxCaste.get(bgEntityId)!;
 
-      expect(bgPosition.x, closeTo(parallax.basePositionX + (viewportComp.x * (1.0 - parallax.scrollFactorX)), 0.01));
-      expect(bgPosition.y, closeTo(parallax.basePositionY + (viewportComp.y * (1.0 - parallax.scrollFactorY)), 0.01));
+      expect(
+          bgPosition.x,
+          closeTo(
+              parallax.basePositionX +
+                  (viewportComp.x * (1.0 - parallax.scrollFactorX)),
+              0.01));
+      expect(
+          bgPosition.y,
+          closeTo(
+              parallax.basePositionY +
+                  (viewportComp.y * (1.0 - parallax.scrollFactorY)),
+              0.01));
     });
   });
 }

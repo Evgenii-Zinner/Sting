@@ -14,13 +14,17 @@ class GravitySystem {
   // Configuration
   final double theta;
   final double g;
+  final double softening;
 
   // Reusable force array
   final Float32List _forceBuffer = Float32List(2);
 
   GravitySystem(this._gameStateSystem,
-      {this.theta = 0.5, this.g = 1.0, int maxNodes = 40000})
-      : _tree = BarnesHutTree(maxNodes: maxNodes);
+      {this.theta = 0.5,
+      this.g = 1.0,
+      this.softening = 0.1,
+      int maxNodes = 40000})
+      : _tree = BarnesHutTree(maxNodes: maxNodes, softening: softening);
 
   /// Updates all entities with Position, Velocity, and Mass.
   void update(Scene scene, double dt) {

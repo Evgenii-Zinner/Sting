@@ -5,6 +5,8 @@ import 'dart:math';
 class BarnesHutTree {
   final int maxNodes;
   final int maxDepth;
+  final double softening;
+  final double softeningSq;
 
   int _nodeCount = 0;
 
@@ -16,8 +18,9 @@ class BarnesHutTree {
   final Int32List
       _nodeEntity; // entity id (1 int per node, -1 if none/internal)
 
-  BarnesHutTree({this.maxNodes = 40000, this.maxDepth = 32})
-      : _nodeBounds = Float32List(maxNodes * 4),
+  BarnesHutTree({this.maxNodes = 40000, this.maxDepth = 32, this.softening = 0.1})
+      : softeningSq = softening * softening,
+        _nodeBounds = Float32List(maxNodes * 4),
         _nodeMass = Float32List(maxNodes),
         _nodeCM = Float32List(maxNodes * 2),
         _nodeChildren = Int32List(maxNodes * 4),
@@ -35,7 +38,7 @@ class BarnesHutTree {
 
   int _allocNode(double x, double y, double width, double height) {
     if (_nodeCount >= maxNodes) {
-      throw Exception("Quadtree node limit reached.");
+      return -1;
     }
 
     int index = _nodeCount++;
@@ -71,6 +74,7 @@ class BarnesHutTree {
 
   void _insertAt(
       int nodeIdx, int entity, double x, double y, double mass, int depth) {
+    if (nodeIdx == -1) return;
     // If empty leaf
     if (_nodeMass[nodeIdx] == 0.0) {
       _nodeEntity[nodeIdx] = entity;
@@ -154,6 +158,7 @@ class BarnesHutTree {
   }
 
   int _getOrCreateChild(int nodeIdx, int quadrant) {
+    if (nodeIdx == -1) return -1;
     int cIdx = nodeIdx * 4 + quadrant;
     if (_nodeChildren[cIdx] == -1) {
       // Create child
@@ -198,7 +203,6 @@ class BarnesHutTree {
     double distSq = dx * dx + dy * dy;
 
     // Softening parameter to avoid infinite force at zero distance
-    double softeningSq = 0.01;
     distSq += softeningSq;
 
     double dist = sqrt(distSq);

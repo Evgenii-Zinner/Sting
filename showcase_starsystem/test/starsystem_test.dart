@@ -70,12 +70,12 @@ void main() {
     final newVelocity = velocities.get(planet1Id)!;
     final newPosition = positions.get(planet1Id)!;
 
-    expect(newVelocity.dx, closeTo(-22.22, 0.1),
+    expect(newVelocity.dx, closeTo(-21.89, 0.1),
         reason: 'Gravity should pull planet in -x direction');
     expect(newVelocity.dy, closeTo(57.7, 0.1),
         reason: 'Tangent velocity should remain unchanged mostly');
 
-    expect(newPosition.x, closeTo(150.0 - 22.22, 0.1),
+    expect(newPosition.x, closeTo(150.0 - 21.89, 0.1),
         reason: 'Position x should move inwards due to new velocity');
     expect(newPosition.y, closeTo(57.7, 0.1),
         reason: 'Position y should increase due to orbital velocity');

@@ -11,6 +11,10 @@
       "reasoning": "Simplest Eulerian integration that adheres to our zero-allocation logic over arrays without creating any new Vector objects."
     },
     {
+      "decision": "Bypass position integration in MovementSystem for entities with a Mass component when massCaste is provided.",
+      "reasoning": "Prevents double position integration of gravitational bodies since GravitySystem's Verlet Integration already resolves and updates their positions directly."
+    },
+    {
       "decision": "Narrow-phase collision functions (AABB, Circle) strictly accept float primitives (x, y, w, h, r).",
       "reasoning": "Enforces YAGNI by not creating separate `Rect`, `Vector2`, or `Circle` classes. Intersection functions evaluate overlaps directly from unboxed values avoiding allocation overhead."
     },
