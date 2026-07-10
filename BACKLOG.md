@@ -482,7 +482,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Integrate `ShaderMaterial` into the batch render systems (e.g. `SpriteRenderSystem` or a custom system) to bind uniforms and apply custom shaders to the canvas paint brush during render calls.
   * **Acceptance Criteria:** Shaders render custom visual effects without per-frame allocations. 100% test coverage.
 
-* [ ] **Task 30.11: GridDiffusion Component & System**
+* [x] **Task 30.11: GridDiffusion Component & System**
   * **Role Needed:** Simulation Engineer
   * **Skill:** `skills/simulation_engineer.json`
   * **Description:** Create `GridDiffusion` component and `DiffusionSystem` to compute numerical cellular diffusion (heat/gas dispersion) on rectangular and hexagonal grids using double-buffered float lists.
