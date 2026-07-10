@@ -408,7 +408,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Develop a command-line utility in `tools/` that parses a simplified component schema (JSON or YAML) and automatically generates the zero-allocation Dart 3 extension types on typed arrays (`Float32List`, `ByteData`), reducing manual boilerplate and index offset mistakes.
   * **Acceptance Criteria:** Tool successfully parses schemas and generates valid, lint-clean Dart files. Generated components operate correctly with Caste storage. 100% test coverage for parser and generator logic.
 
-* [ ] **Task 29.3: Dedicated Memory Architecture & Limits Guide**
+* [x] **Task 29.3: Dedicated Memory Architecture & Limits Guide**
   * **Role Needed:** Systems Architect
   * **Skill:** `skills/systems_architect.json`
   * **Description:** Write a detailed document `docs/MEMORY_LIMITS.md` explaining Sting's static memory model, the Swarm max entity count (65,535), Caste preallocation constraints, memory reuse patterns, and best practices for sizing component caches during game startup.
