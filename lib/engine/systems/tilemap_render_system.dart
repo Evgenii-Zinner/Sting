@@ -5,11 +5,13 @@ import '../ecs/component_caste.dart';
 import '../components/position.dart';
 import '../components/tilemap.dart';
 import '../components/viewport.dart';
+import '../components/shader_material.dart';
 
 class TilemapRenderSystem {
   final Image atlas;
   final Query2<Position, Tilemap> query;
   final ComponentCaste<Viewport>? viewportCaste;
+  final ComponentCaste<ShaderMaterial>? shaderCaste;
   int activeCameraEntity;
 
   double atlasOffsetX;
@@ -32,6 +34,7 @@ class TilemapRenderSystem {
     required ComponentCaste<Position> positionCaste,
     required ComponentCaste<Tilemap> tilemapCaste,
     this.viewportCaste,
+    this.shaderCaste,
     this.activeCameraEntity = -1,
     this.atlasOffsetX = 0.0,
     this.atlasOffsetY = 0.0,
@@ -44,9 +47,57 @@ class TilemapRenderSystem {
           ..isAntiAlias = false;
 
   void render(Canvas canvas, [double scale = 1.0]) {
+    _paint.shader = null;
     int totalTilesDrawn = 0;
 
+    bool hasViewport = false;
+    if (activeCameraEntity != -1 && viewportCaste != null) {
+      final viewport = viewportCaste!.get(activeCameraEntity);
+      if (viewport != null) {
+        hasViewport = true;
+        canvas.save();
+        canvas.scale(viewport.zoom, viewport.zoom);
+        final double snappedVx = (viewport.x * scale).roundToDouble() / scale;
+        final double snappedVy = (viewport.y * scale).roundToDouble() / scale;
+        canvas.translate(-snappedVx, -snappedVy);
+      }
+    }
+    FragmentShader? currentShader;
+    ShaderMaterial? currentMaterial;
+
+    void flushBatch(int tilesToFlush) {
+      if (tilesToFlush == 0) return;
+
+      canvas.drawRawAtlas(
+        atlas,
+        Float32List.sublistView(_transforms, 0, tilesToFlush * 4),
+        Float32List.sublistView(_rects, 0, tilesToFlush * 4),
+        null, // No colors array
+        BlendMode.srcOver, // Use srcOver when not modulating with colors
+        null, // cullRect
+        _paint,
+      );
+    }
+
     query.forEach((entity, position, tilemap) {
+      final material = shaderCaste?.get(entity);
+
+      if (material != currentMaterial || material?.shader != currentShader) {
+        if (totalTilesDrawn > 0) {
+          flushBatch(totalTilesDrawn);
+          totalTilesDrawn = 0;
+        }
+        currentShader = material?.shader;
+        currentMaterial = material;
+        _paint.shader = currentShader;
+
+        if (material != null && currentShader != null) {
+          for (int i = 0; i < material.uniforms.length; i++) {
+            currentShader!.setFloat(i, material.uniforms[i]);
+          }
+        }
+      }
+
       final atlasWidth = atlas.width;
       final tilesPerRow = atlasWidth ~/ tilemap.tileWidth;
 
@@ -96,30 +147,9 @@ class TilemapRenderSystem {
       }
     });
 
-    if (totalTilesDrawn == 0) return;
-
-    bool hasViewport = false;
-    if (activeCameraEntity != -1 && viewportCaste != null) {
-      final viewport = viewportCaste!.get(activeCameraEntity);
-      if (viewport != null) {
-        hasViewport = true;
-        canvas.save();
-        canvas.scale(viewport.zoom, viewport.zoom);
-        final double snappedVx = (viewport.x * scale).roundToDouble() / scale;
-        final double snappedVy = (viewport.y * scale).roundToDouble() / scale;
-        canvas.translate(-snappedVx, -snappedVy);
-      }
+    if (totalTilesDrawn > 0) {
+      flushBatch(totalTilesDrawn);
     }
-
-    canvas.drawRawAtlas(
-      atlas,
-      Float32List.sublistView(_transforms, 0, totalTilesDrawn * 4),
-      Float32List.sublistView(_rects, 0, totalTilesDrawn * 4),
-      null, // No colors array
-      BlendMode.srcOver, // Use srcOver when not modulating with colors
-      null, // cullRect
-      _paint,
-    );
 
     if (hasViewport) {
       canvas.restore();

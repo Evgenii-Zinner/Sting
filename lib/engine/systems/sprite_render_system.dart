@@ -5,11 +5,13 @@ import '../ecs/component_caste.dart';
 import '../components/position.dart';
 import '../components/sprite.dart';
 import '../components/viewport.dart';
+import '../components/shader_material.dart';
 
 class SpriteRenderSystem {
   final Image atlas;
   final Query2<Position, Sprite> query;
   final ComponentCaste<Viewport>? viewportCaste;
+  final ComponentCaste<ShaderMaterial>? shaderCaste;
   int activeCameraEntity;
 
   // Pre-allocated arrays for drawAtlas to prevent per-frame allocations.
@@ -25,6 +27,7 @@ class SpriteRenderSystem {
     required ComponentCaste<Position> positionCaste,
     required ComponentCaste<Sprite> spriteCaste,
     this.viewportCaste,
+    this.shaderCaste,
     this.activeCameraEntity = -1,
     int maxEntities = 65535,
   })  : query = Query2<Position, Sprite>(positionCaste, spriteCaste),
@@ -36,9 +39,59 @@ class SpriteRenderSystem {
           ..isAntiAlias = false;
 
   void render(Canvas canvas, [double scale = 1.0]) {
+    _paint.shader = null;
     int count = 0;
 
+    bool hasViewport = false;
+    if (activeCameraEntity != -1 && viewportCaste != null) {
+      final viewport = viewportCaste!.get(activeCameraEntity);
+      if (viewport != null) {
+        hasViewport = true;
+        canvas.save();
+        canvas.scale(viewport.zoom, viewport.zoom);
+        final double snappedVx = (viewport.x * scale).roundToDouble() / scale;
+        final double snappedVy = (viewport.y * scale).roundToDouble() / scale;
+        canvas.translate(-snappedVx, -snappedVy);
+      }
+    }
+    FragmentShader? currentShader;
+    ShaderMaterial? currentMaterial;
+
+    void flushBatch(int countToFlush) {
+      if (countToFlush == 0) return;
+
+      canvas.drawRawAtlas(
+        atlas,
+        Float32List.sublistView(_transforms, 0, countToFlush * 4),
+        Float32List.sublistView(_rects, 0, countToFlush * 4),
+        Int32List.sublistView(_colors, 0, countToFlush),
+        BlendMode.modulate,
+        null, // cullRect
+        _paint,
+      );
+    }
+
     query.forEach((entity, position, sprite) {
+      final material = shaderCaste?.get(entity);
+
+      // We must flush the batch if the shader object changes OR if the material instance changes
+      // (because a different material might have different uniform values even with the same shader)
+      if (material != currentMaterial || material?.shader != currentShader) {
+        if (count > 0) {
+          flushBatch(count);
+          count = 0;
+        }
+        currentShader = material?.shader;
+        currentMaterial = material;
+        _paint.shader = currentShader;
+
+        if (material != null && currentShader != null) {
+          for (int i = 0; i < material.uniforms.length; i++) {
+            currentShader!.setFloat(i, material.uniforms[i]);
+          }
+        }
+      }
+
       // 1. Fill RSTransform (scos, ssin, tx, ty)
       final transformIndex = count * 4;
       _transforms[transformIndex] = sprite.transformScos;
@@ -62,36 +115,9 @@ class SpriteRenderSystem {
       count++;
     });
 
-    if (count == 0) return;
-
-    bool hasViewport = false;
-    if (activeCameraEntity != -1 && viewportCaste != null) {
-      final viewport = viewportCaste!.get(activeCameraEntity);
-      if (viewport != null) {
-        hasViewport = true;
-        canvas.save();
-        canvas.scale(viewport.zoom, viewport.zoom);
-        final double snappedVx = (viewport.x * scale).roundToDouble() / scale;
-        final double snappedVy = (viewport.y * scale).roundToDouble() / scale;
-        canvas.translate(-snappedVx, -snappedVy);
-      }
+    if (count > 0) {
+      flushBatch(count);
     }
-
-    // Use Canvas.drawRawAtlas to avoid object allocation.
-    // drawRawAtlas uses flat Float32List and Int32List.
-    // We must pass an empty Int32List for colors if we don't want tinting, but here we provide it.
-    // However, the signature might differ slightly depending on dart:ui version.
-
-    canvas.drawRawAtlas(
-      atlas,
-      // Pass sublists to avoid drawing garbage at the end
-      Float32List.sublistView(_transforms, 0, count * 4),
-      Float32List.sublistView(_rects, 0, count * 4),
-      Int32List.sublistView(_colors, 0, count),
-      BlendMode.modulate,
-      null, // cullRect
-      _paint,
-    );
 
     if (hasViewport) {
       canvas.restore();
