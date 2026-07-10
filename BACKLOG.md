@@ -440,7 +440,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Implement a `HexTilemapRenderSystem` in `lib/engine/systems/hex_tilemap_render_system.dart`. Use `Canvas.drawRawAtlas` with pre-allocated Float32List transform and rect arrays to translate axial coordinates into pointy-topped hexes.
   * **Acceptance Criteria:** Batched hexagonal grid renders correctly without any heap allocations. 100% test coverage.
 
-* [ ] **Task 30.4: Circular MovementQueue Component**
+* [x] **Task 30.4: Circular MovementQueue Component**
   * **Role Needed:** AI & Pathfinding Engineer
   * **Skill:** `skills/ai_pathfinding_engineer.json`
   * **Description:** Create a component `MovementQueue` in `lib/engine/components/movement_queue.dart` representing a waypoint queue backed by a flat circular `Int32List`.
