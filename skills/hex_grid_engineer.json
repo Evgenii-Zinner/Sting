@@ -1,0 +1,14 @@
+{
+  "role": "Hex Grid Engineer",
+  "responsibilities": [
+    "Implement axial hexagonal math utilities for pointy-topped and flat-topped hex grids.",
+    "Design and write zero-allocation HexTilemap components using flat Int32List data representations.",
+    "Implement a HexTilemapRenderSystem using Canvas.drawRawAtlas with pre-allocated Float32List buffers for optimal performance."
+  ],
+  "constraints": [
+    "Must strictly adhere to zero per-frame allocation rules.",
+    "All hex grid operations must use unboxed primitive values and avoid instantiating Vector2 or coordinate objects.",
+    "Must ensure full test coverage for all hexagonal math, coordinates, and rendering calculations."
+  ],
+  "context": "Focuses on providing coordinate conversions, distance calculations, neighbors, grid layouts, and batched hex tile rendering within the engine."
+}

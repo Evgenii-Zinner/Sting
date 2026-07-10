@@ -1,0 +1,14 @@
+{
+  "role": "Graphics Pipeline Engineer",
+  "responsibilities": [
+    "Extend the AssetLoader to support loading and binding FragmentShader files asynchronously on both Native (IO) and Web targets.",
+    "Implement ShaderMaterial components storing shader program references and preallocated Float32List parameters.",
+    "Integrate FragmentShader binding into the Sprite and Tilemap batch render systems."
+  ],
+  "constraints": [
+    "Must strictly adhere to zero per-frame allocation rules.",
+    "The shader loading mechanisms must be fully cross-platform and compatible with Web platforms (e.g. CanvasKit/HTML byte streams) as well as Native.",
+    "Uniform float updates and shader binds must not allocate heap objects during frame draw calls."
+  ],
+  "context": "Focuses on enabling shaders, post-processing materials, uniform updates, and custom graphic pipelines within the engine."
+}

@@ -420,4 +420,79 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Replace the static mocked `AudioBindings` with a real cross-platform audio player backend (e.g., integrating `soloud` or another FFI/native audio library) that consumes the flat bit-packed audio queue without per-frame heap allocations.
   * **Acceptance Criteria:** Real audio files are loaded and played on multiple platforms (iOS, Android, Web, Windows/macOS) directly consuming the preallocated ring buffer. Zero per-frame allocations. 100% test coverage.
 
+## 30. Phase 15: General-Purpose Simulator & AI Systems
+
+* [ ] **Task 30.1: Hexagonal Grid Mathematics Library**
+  * **Role Needed:** Hex Grid Engineer
+  * **Skill:** `skills/hex_grid_engineer.json`
+  * **Description:** Implement axial hexagonal math utilities in `lib/engine/math/hex_math.dart`. Include conversions `gridToWorld` and `worldToGrid` for pointy-topped and flat-topped hexagons, `hexDistance` calculations, and neighbor lookups.
+  * **Acceptance Criteria:** Math library functions operate without allocations, returning correct coordinates and distances. 100% test coverage.
+
+* [ ] **Task 30.2: HexTilemap Component**
+  * **Role Needed:** Hex Grid Engineer
+  * **Skill:** `skills/hex_grid_engineer.json`
+  * **Description:** Create an ECS component `HexTilemap` in `lib/engine/components/hex_tilemap.dart` backed by a flat `Int32List` array. Implement 1D index mapping coordinates `(q, r)` offset by the radius.
+  * **Acceptance Criteria:** Component works with `ComponentCaste`. 100% test coverage. Zero allocations.
+
+* [ ] **Task 30.3: HexTilemap Render System**
+  * **Role Needed:** Hex Grid Engineer
+  * **Skill:** `skills/hex_grid_engineer.json`
+  * **Description:** Implement a `HexTilemapRenderSystem` in `lib/engine/systems/hex_tilemap_render_system.dart`. Use `Canvas.drawRawAtlas` with pre-allocated Float32List transform and rect arrays to translate axial coordinates into pointy-topped hexes.
+  * **Acceptance Criteria:** Batched hexagonal grid renders correctly without any heap allocations. 100% test coverage.
+
+* [ ] **Task 30.4: Circular MovementQueue Component**
+  * **Role Needed:** AI & Pathfinding Engineer
+  * **Skill:** `skills/ai_pathfinding_engineer.json`
+  * **Description:** Create a component `MovementQueue` in `lib/engine/components/movement_queue.dart` representing a waypoint queue backed by a flat circular `Int32List`.
+  * **Acceptance Criteria:** Waypoints can be enqueued/dequeued correctly without per-frame allocations. 100% test coverage.
+
+* [ ] **Task 30.5: A* Grid Pathfinder System**
+  * **Role Needed:** AI & Pathfinding Engineer
+  * **Skill:** `skills/ai_pathfinding_engineer.json`
+  * **Description:** Implement `GridPathfinder` inside `lib/engine/systems/pathfinding_system.dart` which solves A* routes on both rectangular and hexagonal grid structures and writes the path directly to the `MovementQueue`. Use pre-allocated static node pools.
+  * **Acceptance Criteria:** System calculates paths correctly without per-frame allocations. 100% test coverage.
+
+* [ ] **Task 30.6: Utility AI Component**
+  * **Role Needed:** AI & Pathfinding Engineer
+  * **Skill:** `skills/ai_pathfinding_engineer.json`
+  * **Description:** Create a component `UtilityAI` in `lib/engine/components/utility_ai.dart` storing task ID, target entity, parameter coordinates, and parallel Float32List slices for tension and damping.
+  * **Acceptance Criteria:** Component integrates with `ComponentCaste` and uses flat buffers. 100% test coverage. Zero allocations.
+
+* [ ] **Task 30.7: Utility AI Bidding System**
+  * **Role Needed:** AI & Pathfinding Engineer
+  * **Skill:** `skills/ai_pathfinding_engineer.json`
+  * **Description:** Implement a `UtilityAISystem` in `lib/engine/systems/utility_ai_system.dart` to calculate actions utility bids, update tension/damping arrays, and update the active task ID with hysteresis.
+  * **Acceptance Criteria:** Decision engine updates active tasks and handles bids without heap allocations. 100% test coverage.
+
+* [ ] **Task 30.8: Cross-Platform Shader Asset Loader**
+  * **Role Needed:** Graphics Pipeline Engineer
+  * **Skill:** `skills/graphics_pipeline_engineer.json`
+  * **Description:** Implement fragment shader asset loading in `AssetLoader` on both Native and Web platforms. On Web, support fetching shader programs asynchronously using HTTP or loading from embedded base64 strings to ensure complete platform compatibility.
+  * **Acceptance Criteria:** Programs load correctly on all target environments (native and Web/CanvasKit). 100% test coverage.
+
+* [ ] **Task 30.9: ShaderMaterial Component & Custom Uniforms**
+  * **Role Needed:** Graphics Pipeline Engineer
+  * **Skill:** `skills/graphics_pipeline_engineer.json`
+  * **Description:** Create a `ShaderMaterial` component in `lib/engine/components/shader_material.dart` storing the shader program and a contiguous `Float32List` uniforms buffer.
+  * **Acceptance Criteria:** Component wraps shader states and uniform slices. 100% test coverage. Zero allocations.
+
+* [ ] **Task 30.10: Batched Shader Render System Integration**
+  * **Role Needed:** Graphics Pipeline Engineer
+  * **Skill:** `skills/graphics_pipeline_engineer.json`
+  * **Description:** Integrate `ShaderMaterial` into the batch render systems (e.g. `SpriteRenderSystem` or a custom system) to bind uniforms and apply custom shaders to the canvas paint brush during render calls.
+  * **Acceptance Criteria:** Shaders render custom visual effects without per-frame allocations. 100% test coverage.
+
+* [ ] **Task 30.11: GridDiffusion Component & System**
+  * **Role Needed:** Simulation Engineer
+  * **Skill:** `skills/simulation_engineer.json`
+  * **Description:** Create `GridDiffusion` component and `DiffusionSystem` to compute numerical cellular diffusion (heat/gas dispersion) on rectangular and hexagonal grids using double-buffered float lists.
+  * **Acceptance Criteria:** Diffusion updates correctly without causing per-frame allocations. 100% test coverage.
+
+* [ ] **Task 30.12: Porting Showcase Integration & Subsystem Tests**
+  * **Role Needed:** QA SDET Engineer
+  * **Skill:** `skills/qa_sdet_engineer.json`
+  * **Description:** Write comprehensive integration tests verifying the interaction of the new hexagonal tilemaps, pathfinding queue, utility AI decision engine, and diffusion/shader pipelines in tandem.
+  * **Acceptance Criteria:** Test suite executes successfully, verifying correct behavior and confirming zero allocations per frame. 100% pass rate.
+
+
 
