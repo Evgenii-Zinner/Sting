@@ -446,7 +446,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Create a component `MovementQueue` in `lib/engine/components/movement_queue.dart` representing a waypoint queue backed by a flat circular `Int32List`.
   * **Acceptance Criteria:** Waypoints can be enqueued/dequeued correctly without per-frame allocations. 100% test coverage.
 
-* [ ] **Task 30.5: A* Grid Pathfinder System**
+* [x] **Task 30.5: A* Grid Pathfinder System**
   * **Role Needed:** AI & Pathfinding Engineer
   * **Skill:** `skills/ai_pathfinding_engineer.json`
   * **Description:** Implement `GridPathfinder` inside `lib/engine/systems/pathfinding_system.dart` which solves A* routes on both rectangular and hexagonal grid structures and writes the path directly to the `MovementQueue`. Use pre-allocated static node pools.
@@ -493,6 +493,5 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Skill:** `skills/qa_sdet_engineer.json`
   * **Description:** Write comprehensive integration tests verifying the interaction of the new hexagonal tilemaps, pathfinding queue, utility AI decision engine, and diffusion/shader pipelines in tandem.
   * **Acceptance Criteria:** Test suite executes successfully, verifying correct behavior and confirming zero allocations per frame. 100% pass rate.
-
 
 
