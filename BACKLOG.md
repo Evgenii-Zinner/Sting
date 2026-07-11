@@ -93,7 +93,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
 
 ## Active Milestone (Phase 15: General-Purpose Simulator & AI Systems - Remaining Tasks)
 
-* [ ] **Task 30.7: Utility AI Bidding System**
+* [x] **Task 30.7: Utility AI Bidding System**
   * **Role Needed:** AI & Pathfinding Engineer
   * **Skill:** `skills/ai_pathfinding_engineer.json`
   * **Description:** Implement a `UtilityAISystem` in `lib/engine/systems/utility_ai_system.dart` to calculate actions utility bids, update tension/damping arrays, and update the active task ID with hysteresis.
