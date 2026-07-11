@@ -133,4 +133,9 @@ void main() {
       throwsA(isA<Exception>()),
     );
   });
+
+  test('AssetLoader loadShader loads valid shader from asset', () async {
+    final program = await AssetLoader.loadShader('test/assets/test_shader.frag');
+    expect(program, isNotNull);
+  });
 }
