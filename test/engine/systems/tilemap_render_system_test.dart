@@ -10,90 +10,23 @@ import 'package:sting/engine/components/shader_material.dart';
 import 'package:sting/engine/systems/tilemap_render_system.dart';
 
 void main() {
-  test(
-      'TilemapRenderSystem should call drawRawAtlas correctly without allocations',
-      () async {
-    // 1. Create dependencies
+  test('TilemapRenderSystem should call drawRawAtlas correctly without allocations', () async {
     final swarm = Swarm();
     final positionCaste = ComponentCaste<Position>(65535);
     final tilemapCaste = ComponentCaste<Tilemap>(65535);
     final shaderCaste = ComponentCaste<ShaderMaterial>(65535);
 
-    // Create a 1x1 dummy image
     final Uint8List transparent1x1Png = Uint8List.fromList([
-      0x89,
-      0x50,
-      0x4e,
-      0x47,
-      0x0d,
-      0x0a,
-      0x1a,
-      0x0a,
-      0x00,
-      0x00,
-      0x00,
-      0x0d,
-      0x49,
-      0x48,
-      0x44,
-      0x52,
-      0x00,
-      0x00,
-      0x00,
-      0x01,
-      0x00,
-      0x00,
-      0x00,
-      0x01,
-      0x08,
-      0x06,
-      0x00,
-      0x00,
-      0x00,
-      0x1f,
-      0x15,
-      0xc4,
-      0x89,
-      0x00,
-      0x00,
-      0x00,
-      0x0a,
-      0x49,
-      0x44,
-      0x41,
-      0x54,
-      0x78,
-      0x9c,
-      0x63,
-      0x00,
-      0x01,
-      0x00,
-      0x00,
-      0x05,
-      0x00,
-      0x01,
-      0x0d,
-      0x0a,
-      0x2d,
-      0xb4,
-      0x00,
-      0x00,
-      0x00,
-      0x00,
-      0x49,
-      0x45,
-      0x4e,
-      0x44,
-      0xae,
-      0x42,
-      0x60,
-      0x82
+      0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52,
+      0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x08, 0x06, 0x00, 0x00, 0x00, 0x1f, 0x15, 0xc4,
+      0x89, 0x00, 0x00, 0x00, 0x0a, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9c, 0x63, 0x00, 0x01, 0x00, 0x00,
+      0x05, 0x00, 0x01, 0x0d, 0x0a, 0x2d, 0xb4, 0x00, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4e, 0x44, 0xae,
+      0x42, 0x60, 0x82
     ]);
     final codec = await instantiateImageCodec(transparent1x1Png);
     final frame = await codec.getNextFrame();
     final image = frame.image;
 
-    // Create system
     final system = TilemapRenderSystem(
       atlas: image,
       positionCaste: positionCaste,
@@ -101,7 +34,6 @@ void main() {
       shaderCaste: shaderCaste,
     );
 
-    // Create an entity with both components
     final entity = swarm.createEntity();
 
     final pos = Position.create(10, 20);
@@ -112,97 +44,29 @@ void main() {
     tilemap.setTile(1, 1, 1);
     tilemapCaste.add(entity, tilemap);
 
-    // Mock canvas
     final recorder = PictureRecorder();
     final canvas = Canvas(recorder);
 
-    // Try rendering
     expect(() => system.render(canvas), returnsNormally);
   });
 
-  test('TilemapRenderSystem should apply viewport transformations correctly',
-      () async {
-    // 1. Create dependencies
+  test('TilemapRenderSystem should apply viewport transformations correctly', () async {
     final swarm = Swarm();
     final positionCaste = ComponentCaste<Position>(65535);
     final tilemapCaste = ComponentCaste<Tilemap>(65535);
     final viewportCaste = ComponentCaste<Viewport>(65535);
 
-    // Create a 1x1 dummy image
     final Uint8List transparent1x1Png = Uint8List.fromList([
-      0x89,
-      0x50,
-      0x4e,
-      0x47,
-      0x0d,
-      0x0a,
-      0x1a,
-      0x0a,
-      0x00,
-      0x00,
-      0x00,
-      0x0d,
-      0x49,
-      0x48,
-      0x44,
-      0x52,
-      0x00,
-      0x00,
-      0x00,
-      0x01,
-      0x00,
-      0x00,
-      0x00,
-      0x01,
-      0x08,
-      0x06,
-      0x00,
-      0x00,
-      0x00,
-      0x1f,
-      0x15,
-      0xc4,
-      0x89,
-      0x00,
-      0x00,
-      0x00,
-      0x0a,
-      0x49,
-      0x44,
-      0x41,
-      0x54,
-      0x78,
-      0x9c,
-      0x63,
-      0x00,
-      0x01,
-      0x00,
-      0x00,
-      0x05,
-      0x00,
-      0x01,
-      0x0d,
-      0x0a,
-      0x2d,
-      0xb4,
-      0x00,
-      0x00,
-      0x00,
-      0x00,
-      0x49,
-      0x45,
-      0x4e,
-      0x44,
-      0xae,
-      0x42,
-      0x60,
-      0x82
+      0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52,
+      0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x08, 0x06, 0x00, 0x00, 0x00, 0x1f, 0x15, 0xc4,
+      0x89, 0x00, 0x00, 0x00, 0x0a, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9c, 0x63, 0x00, 0x01, 0x00, 0x00,
+      0x05, 0x00, 0x01, 0x0d, 0x0a, 0x2d, 0xb4, 0x00, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4e, 0x44, 0xae,
+      0x42, 0x60, 0x82
     ]);
     final codec = await instantiateImageCodec(transparent1x1Png);
     final frame = await codec.getNextFrame();
     final image = frame.image;
 
-    // Create system
     final system = TilemapRenderSystem(
       atlas: image,
       positionCaste: positionCaste,
@@ -210,12 +74,10 @@ void main() {
       viewportCaste: viewportCaste,
     );
 
-    // Setup active camera
     final cameraEntity = swarm.createEntity();
     viewportCaste.add(cameraEntity, Viewport.create(100.0, 50.0, 2.0));
     system.activeCameraEntity = cameraEntity;
 
-    // Create an entity to render
     final entity = swarm.createEntity();
     positionCaste.add(entity, Position.create(10, 20));
 
@@ -224,11 +86,50 @@ void main() {
     tilemap.setTile(1, 1, 1);
     tilemapCaste.add(entity, tilemap);
 
-    // Mock canvas
     final recorder = PictureRecorder();
     final canvas = Canvas(recorder);
 
-    // Try rendering, should apply canvas transforms based on viewport
+    expect(() => system.render(canvas), returnsNormally);
+  });
+
+  test('TilemapRenderSystem processes ShaderMaterial correctly without throwing', () async {
+    final swarm = Swarm();
+    final positionCaste = ComponentCaste<Position>(65535);
+    final tilemapCaste = ComponentCaste<Tilemap>(65535);
+    final shaderCaste = ComponentCaste<ShaderMaterial>(65535);
+
+    final Uint8List transparent1x1Png = Uint8List.fromList([
+      0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52,
+      0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x08, 0x06, 0x00, 0x00, 0x00, 0x1f, 0x15, 0xc4,
+      0x89, 0x00, 0x00, 0x00, 0x0a, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9c, 0x63, 0x00, 0x01, 0x00, 0x00,
+      0x05, 0x00, 0x01, 0x0d, 0x0a, 0x2d, 0xb4, 0x00, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4e, 0x44, 0xae,
+      0x42, 0x60, 0x82
+    ]);
+    final codec = await instantiateImageCodec(transparent1x1Png);
+    final frame = await codec.getNextFrame();
+    final image = frame.image;
+
+    final system = TilemapRenderSystem(
+      atlas: image,
+      positionCaste: positionCaste,
+      tilemapCaste: tilemapCaste,
+      shaderCaste: shaderCaste,
+    );
+
+    final entity = swarm.createEntity();
+    positionCaste.add(entity, Position.create(10, 20));
+
+    final tilemap = Tilemap.create(1, 1, 1, 1);
+    tilemap.setTile(0, 0, 1);
+    tilemapCaste.add(entity, tilemap);
+
+    final material = ShaderMaterial(null, 1);
+    material.uniforms[0] = 42.0;
+    shaderCaste.add(entity, material);
+
+    final recorder = PictureRecorder();
+    final canvas = Canvas(recorder);
+
     expect(() => system.render(canvas), returnsNormally);
   });
 }
