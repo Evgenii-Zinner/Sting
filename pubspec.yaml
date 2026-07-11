@@ -23,3 +23,5 @@ flutter:
     - showcase/assets/enemy.png
     - showcase/assets/projectile.png
     - showcase/assets/tilemap.png
+  shaders:
+    - test/assets/test_shader.frag

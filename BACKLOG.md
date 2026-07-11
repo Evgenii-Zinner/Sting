@@ -99,7 +99,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Implement a `UtilityAISystem` in `lib/engine/systems/utility_ai_system.dart` to calculate actions utility bids, update tension/damping arrays, and update the active task ID with hysteresis.
   * **Acceptance Criteria:** Decision engine updates active tasks and handles bids without heap allocations. 100% test coverage.
 
-* [ ] **Task 30.8: Cross-Platform Shader Asset Loader**
+* [x] **Task 30.8: Cross-Platform Shader Asset Loader**
   * **Role Needed:** Graphics Pipeline Engineer
   * **Skill:** `skills/graphics_pipeline_engineer.json`
   * **Description:** Implement fragment shader asset loading in `AssetLoader` using Flutter's standard asset-loading system (`FragmentProgram.fromAsset`) on both Native and Web platforms. Avoid custom HTTP fetching or base64 decoding for shaders.
