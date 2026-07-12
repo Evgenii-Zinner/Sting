@@ -82,43 +82,42 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * Task 29.2: Component Extension Type Code Generator
   * Task 29.3: Dedicated Memory Architecture & Limits Guide
   * Task 29.4: Cross-Platform Native Audio Integration
-* [x] **Phase 15: General-Purpose Simulator & AI Systems (Completed Tasks)**
+* [x] **Phase 15: General-Purpose Simulator & AI Systems**
   * Task 30.1: Hexagonal Grid Mathematics Library
   * Task 30.2: HexTilemap Component
   * Task 30.3: HexTilemap Render System
   * Task 30.4: Circular MovementQueue Component
   * Task 30.5: A* Grid Pathfinder System
   * Task 30.6: Utility AI Component
+  * Task 30.7: Utility AI Bidding System
+  * Task 30.8: Cross-Platform Shader Asset Loader
+  * Task 30.9: ShaderMaterial Component & Custom Uniforms
+  * Task 30.10: Batched Shader Render System Integration
   * Task 30.11: GridDiffusion Component & System
+  * Task 30.12: Porting Showcase Integration & Subsystem Tests
 
-## Active Milestone (Phase 15: General-Purpose Simulator & AI Systems - Remaining Tasks)
+## Active Milestone (Phase 16: Continuous 2D Space & Advanced Pathfinding/Avoidance)
 
-* [x] **Task 30.7: Utility AI Bidding System**
+* [ ] **Task 31.1: Spline & Polyline Library & Segment Query**
+  * **Role Needed:** Physics and Math Engineer
+  * **Skill:** `skills/physics_engineer.json`
+  * **Description:** Implement a 2D spline (Bezier/Hermite) and polyline library with efficient segment queries (closest point on segment, distance to segment, capsule-sweep bounds checks) to support continuous roads and pipeline boundaries.
+  * **Acceptance Criteria:** Mathematically correct segment projection and distance computation. 100% test coverage. Zero allocations per frame.
+
+* [ ] **Task 31.2: Polygonal NavMesh & Pathfinding**
   * **Role Needed:** AI & Pathfinding Engineer
   * **Skill:** `skills/ai_pathfinding_engineer.json`
-  * **Description:** Implement a `UtilityAISystem` in `lib/engine/systems/utility_ai_system.dart` to calculate actions utility bids, update tension/damping arrays, and update the active task ID with hysteresis.
-  * **Acceptance Criteria:** Decision engine updates active tasks and handles bids without heap allocations. 100% test coverage.
+  * **Description:** Design a 2D polygonal navigation mesh (NavMesh) system that supports dynamic obstacle carving (cliffs, craters) and computes paths using A* over the dual graph or triangulation (e.g. Funnel algorithm).
+  * **Acceptance Criteria:** Dynamic navigation mesh generation, obstacle carving, and pathfinding queries. 100% test coverage. Zero allocations per frame.
 
-* [x] **Task 30.8: Cross-Platform Shader Asset Loader**
-  * **Role Needed:** Graphics Pipeline Engineer
-  * **Skill:** `skills/graphics_pipeline_engineer.json`
-  * **Description:** Implement fragment shader asset loading in `AssetLoader` using Flutter's standard asset-loading system (`FragmentProgram.fromAsset`) on both Native and Web platforms. Avoid custom HTTP fetching or base64 decoding for shaders.
-  * **Acceptance Criteria:** Shaders load correctly via standard assets on all target environments. 100% test coverage.
+* [ ] **Task 31.3: Steering & Arrival Forces**
+  * **Role Needed:** Physics and Math Engineer
+  * **Skill:** `skills/physics_engineer.json`
+  * **Description:** Implement continuous steering behaviors (Seek, Flee, and Arrive with deceleration thresholds) operating on entity position/velocity components.
+  * **Acceptance Criteria:** Drones steer organically toward targets, slowing down on arrival without overshooting. 100% test coverage. Zero allocations per frame.
 
-* [x] **Task 30.9: ShaderMaterial Component & Custom Uniforms**
-  * **Role Needed:** Graphics Pipeline Engineer
-  * **Skill:** `skills/graphics_pipeline_engineer.json`
-  * **Description:** Create a `ShaderMaterial` component in `lib/engine/components/shader_material.dart` storing the shader program and a contiguous `Float32List` uniforms buffer.
-  * **Acceptance Criteria:** Component wraps shader states and uniform slices. 100% test coverage. Zero allocations.
-
-* [x] **Task 30.10: Batched Shader Render System Integration**
-  * **Role Needed:** Graphics Pipeline Engineer
-  * **Skill:** `skills/graphics_pipeline_engineer.json`
-  * **Description:** Integrate `ShaderMaterial` into the batch render systems (e.g. `SpriteRenderSystem` or a custom system) to bind uniforms and apply custom shaders to the canvas paint brush during render calls.
-  * **Acceptance Criteria:** Shaders render custom visual effects without per-frame allocations. 100% test coverage.
-
-* [x] **Task 30.12: Porting Showcase Integration & Subsystem Tests**
-  * **Role Needed:** QA SDET Engineer
-  * **Skill:** `skills/qa_sdet_engineer.json`
-  * **Description:** Write comprehensive integration tests verifying the interaction of the new hexagonal tilemaps, pathfinding queue, utility AI decision engine, and diffusion/shader pipelines in tandem.
-  * **Acceptance Criteria:** Test suite executes successfully, verifying correct behavior and confirming zero allocations per frame. 100% pass rate.
+* [ ] **Task 31.4: Predictive RVO/ORCA Local Collision Avoidance**
+  * **Role Needed:** AI & Pathfinding Engineer
+  * **Skill:** `skills/ai_pathfinding_engineer.json`
+  * **Description:** Implement predictive reciprocal collision avoidance (RVO/ORCA) in 2D continuous space to allow multiple drones to navigate narrow corridors without overlapping.
+  * **Acceptance Criteria:** Multiple entities dynamically negotiate passing in narrow corridors without collision. 100% test coverage. Zero allocations per frame.
