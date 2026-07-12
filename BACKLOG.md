@@ -105,13 +105,13 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Implement fragment shader asset loading in `AssetLoader` using Flutter's standard asset-loading system (`FragmentProgram.fromAsset`) on both Native and Web platforms. Avoid custom HTTP fetching or base64 decoding for shaders.
   * **Acceptance Criteria:** Shaders load correctly via standard assets on all target environments. 100% test coverage.
 
-* [ ] **Task 30.9: ShaderMaterial Component & Custom Uniforms**
+* [x] **Task 30.9: ShaderMaterial Component & Custom Uniforms**
   * **Role Needed:** Graphics Pipeline Engineer
   * **Skill:** `skills/graphics_pipeline_engineer.json`
   * **Description:** Create a `ShaderMaterial` component in `lib/engine/components/shader_material.dart` storing the shader program and a contiguous `Float32List` uniforms buffer.
   * **Acceptance Criteria:** Component wraps shader states and uniform slices. 100% test coverage. Zero allocations.
 
-* [ ] **Task 30.10: Batched Shader Render System Integration**
+* [x] **Task 30.10: Batched Shader Render System Integration**
   * **Role Needed:** Graphics Pipeline Engineer
   * **Skill:** `skills/graphics_pipeline_engineer.json`
   * **Description:** Integrate `ShaderMaterial` into the batch render systems (e.g. `SpriteRenderSystem` or a custom system) to bind uniforms and apply custom shaders to the canvas paint brush during render calls.
