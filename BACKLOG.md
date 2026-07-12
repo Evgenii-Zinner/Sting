@@ -117,7 +117,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Integrate `ShaderMaterial` into the batch render systems (e.g. `SpriteRenderSystem` or a custom system) to bind uniforms and apply custom shaders to the canvas paint brush during render calls.
   * **Acceptance Criteria:** Shaders render custom visual effects without per-frame allocations. 100% test coverage.
 
-* [ ] **Task 30.12: Porting Showcase Integration & Subsystem Tests**
+* [x] **Task 30.12: Porting Showcase Integration & Subsystem Tests**
   * **Role Needed:** QA SDET Engineer
   * **Skill:** `skills/qa_sdet_engineer.json`
   * **Description:** Write comprehensive integration tests verifying the interaction of the new hexagonal tilemaps, pathfinding queue, utility AI decision engine, and diffusion/shader pipelines in tandem.
