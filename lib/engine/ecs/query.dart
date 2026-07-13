@@ -62,3 +62,66 @@ class Query2<T1, T2> {
     }
   }
 }
+
+/// A query that iterates over three ComponentCastes, finding the intersection
+/// of entities that have components in all three castes.
+class Query3<T1, T2, T3> {
+  final ComponentCaste<T1> _caste1;
+  final ComponentCaste<T2> _caste2;
+  final ComponentCaste<T3> _caste3;
+
+  Query3(this._caste1, this._caste2, this._caste3);
+
+  /// Iterates over all entities that exist in all three castes, executing [action].
+  /// Uses a callback to avoid allocating Iterator objects during loops.
+  void forEach(void Function(int entity, T1 c1, T2 c2, T3 c3) action) {
+    // Find the smallest caste for optimal iteration
+    int len1 = _caste1.length;
+    int len2 = _caste2.length;
+    int len3 = _caste3.length;
+
+    if (len1 <= len2 && len1 <= len3) {
+      for (var i = 0; i < len1; i++) {
+        final entity = _caste1.elementAt(i);
+        final c2 = _caste2.get(entity);
+        if (c2 != null) {
+          final c3 = _caste3.get(entity);
+          if (c3 != null) {
+            final c1 = _caste1.getComponentAt(i);
+            if (c1 != null) {
+              action(entity, c1, c2, c3);
+            }
+          }
+        }
+      }
+    } else if (len2 <= len1 && len2 <= len3) {
+      for (var i = 0; i < len2; i++) {
+        final entity = _caste2.elementAt(i);
+        final c1 = _caste1.get(entity);
+        if (c1 != null) {
+          final c3 = _caste3.get(entity);
+          if (c3 != null) {
+            final c2 = _caste2.getComponentAt(i);
+            if (c2 != null) {
+              action(entity, c1, c2, c3);
+            }
+          }
+        }
+      }
+    } else {
+      for (var i = 0; i < len3; i++) {
+        final entity = _caste3.elementAt(i);
+        final c1 = _caste1.get(entity);
+        if (c1 != null) {
+          final c2 = _caste2.get(entity);
+          if (c2 != null) {
+            final c3 = _caste3.getComponentAt(i);
+            if (c3 != null) {
+              action(entity, c1, c2, c3);
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -110,7 +110,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Design a 2D polygonal navigation mesh (NavMesh) system that supports dynamic obstacle carving (cliffs, craters) and computes paths using A* over the dual graph or triangulation (e.g. Funnel algorithm).
   * **Acceptance Criteria:** Dynamic navigation mesh generation, obstacle carving, and pathfinding queries. 100% test coverage. Zero allocations per frame.
 
-* [ ] **Task 31.3: Steering & Arrival Forces**
+* [x] **Task 31.3: Steering & Arrival Forces**
   * **Role Needed:** Physics and Math Engineer
   * **Skill:** `skills/physics_engineer.json`
   * **Description:** Implement continuous steering behaviors (Seek, Flee, and Arrive with deceleration thresholds) operating on entity position/velocity components.

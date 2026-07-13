@@ -119,4 +119,74 @@ void main() {
       expect(results[4], {'comp1': 'D', 'comp2': 40});
     });
   });
+
+  group('Query3', () {
+    test('forEach finds intersections correctly across three castes', () {
+      final caste1 = ComponentCaste<String>(100);
+      final caste2 = ComponentCaste<int>(100);
+      final caste3 = ComponentCaste<double>(100);
+
+      // Entity 1 is in all three
+      caste1.add(1, 'A');
+      caste2.add(1, 10);
+      caste3.add(1, 1.1);
+
+      // Entity 2 is only in caste1 and caste2
+      caste1.add(2, 'B');
+      caste2.add(2, 20);
+
+      // Entity 3 is only in caste3
+      caste3.add(3, 3.3);
+
+      // Entity 4 is in all three
+      caste1.add(4, 'D');
+      caste2.add(4, 40);
+      caste3.add(4, 4.4);
+
+      final query = Query3(caste1, caste2, caste3);
+
+      final results = <int, Map<String, dynamic>>{};
+      query.forEach((entity, comp1, comp2, comp3) {
+        results[entity] = {'comp1': comp1, 'comp2': comp2, 'comp3': comp3};
+      });
+
+      expect(results.length, 2);
+      expect(results[1], {'comp1': 'A', 'comp2': 10, 'comp3': 1.1});
+      expect(results[4], {'comp1': 'D', 'comp2': 40, 'comp3': 4.4});
+    });
+
+    test('forEach handles no intersections across three castes', () {
+      final caste1 = ComponentCaste<String>(100);
+      final caste2 = ComponentCaste<int>(100);
+      final caste3 = ComponentCaste<double>(100);
+
+      caste1.add(1, 'A');
+      caste2.add(2, 20);
+      caste3.add(3, 3.3);
+
+      final query = Query3(caste1, caste2, caste3);
+
+      int count = 0;
+      query.forEach((entity, comp1, comp2, comp3) {
+        count++;
+      });
+
+      expect(count, 0);
+    });
+
+    test('forEach handles empty castes across three castes', () {
+      final caste1 = ComponentCaste<String>(100);
+      final caste2 = ComponentCaste<int>(100);
+      final caste3 = ComponentCaste<double>(100);
+
+      final query = Query3(caste1, caste2, caste3);
+
+      int count = 0;
+      query.forEach((entity, comp1, comp2, comp3) {
+        count++;
+      });
+
+      expect(count, 0);
+    });
+  });
 }
