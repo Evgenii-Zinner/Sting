@@ -98,7 +98,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
 
 ## Active Milestone (Phase 16: Continuous 2D Space & Advanced Pathfinding/Avoidance)
 
-* [ ] **Task 31.1: Spline & Polyline Library & Segment Query**
+* [x] **Task 31.1: Spline & Polyline Library & Segment Query**
   * **Role Needed:** Physics and Math Engineer
   * **Skill:** `skills/physics_engineer.json`
   * **Description:** Implement a 2D spline (Bezier/Hermite) and polyline library with efficient segment queries (closest point on segment, distance to segment, capsule-sweep bounds checks) to support continuous roads and pipeline boundaries.
