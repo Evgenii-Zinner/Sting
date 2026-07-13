@@ -104,7 +104,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Implement a 2D spline (Bezier/Hermite) and polyline library with efficient segment queries (closest point on segment, distance to segment, capsule-sweep bounds checks) to support continuous roads and pipeline boundaries.
   * **Acceptance Criteria:** Mathematically correct segment projection and distance computation. 100% test coverage. Zero allocations per frame.
 
-* [ ] **Task 31.2: Polygonal NavMesh & Pathfinding**
+* [x] **Task 31.2: Polygonal NavMesh & Pathfinding**
   * **Role Needed:** AI & Pathfinding Engineer
   * **Skill:** `skills/ai_pathfinding_engineer.json`
   * **Description:** Design a 2D polygonal navigation mesh (NavMesh) system that supports dynamic obstacle carving (cliffs, craters) and computes paths using A* over the dual graph or triangulation (e.g. Funnel algorithm).
