@@ -116,7 +116,7 @@ Phase 1 through Phase 7 have been successfully completed and reviewed by the AI 
   * **Description:** Implement continuous steering behaviors (Seek, Flee, and Arrive with deceleration thresholds) operating on entity position/velocity components.
   * **Acceptance Criteria:** Drones steer organically toward targets, slowing down on arrival without overshooting. 100% test coverage. Zero allocations per frame.
 
-* [ ] **Task 31.4: Predictive RVO/ORCA Local Collision Avoidance**
+* [x] **Task 31.4: Predictive RVO/ORCA Local Collision Avoidance**
   * **Role Needed:** AI & Pathfinding Engineer
   * **Skill:** `skills/ai_pathfinding_engineer.json`
   * **Description:** Implement predictive reciprocal collision avoidance (RVO/ORCA) in 2D continuous space to allow multiple drones to navigate narrow corridors without overlapping.
