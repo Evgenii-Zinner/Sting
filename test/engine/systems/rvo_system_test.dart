@@ -44,7 +44,7 @@ void main() {
       velocityCaste.add(0, Velocity.create(50.0, 0.0));
       preferredVelocityCaste.add(0, PreferredVelocity.create(50.0, 0.0));
       circleColliderCaste.add(0, CircleCollider.create(10.0));
-      grid.insert(0, pos0.x, pos0.y);
+      grid.insertPoint(0, pos0.x, pos0.y);
 
       // Agent 1 moving Left
       final pos1 = Position.create(80.0, 0.0);
@@ -52,7 +52,7 @@ void main() {
       velocityCaste.add(1, Velocity.create(-50.0, 0.0));
       preferredVelocityCaste.add(1, PreferredVelocity.create(-50.0, 0.0));
       circleColliderCaste.add(1, CircleCollider.create(10.0));
-      grid.insert(1, pos1.x, pos1.y);
+      grid.insertPoint(1, pos1.x, pos1.y);
 
       // They will collide in 0.8 seconds (distance 80, rel speed 100). Horizon is 2.0.
       system.update(0.1);
@@ -79,14 +79,14 @@ void main() {
       velocityCaste.add(0, Velocity.create(50.0, 0.0));
       preferredVelocityCaste.add(0, PreferredVelocity.create(50.0, 0.0));
       circleColliderCaste.add(0, CircleCollider.create(10.0));
-      grid.insert(0, pos0.x, pos0.y);
+      grid.insertPoint(0, pos0.x, pos0.y);
 
       final pos1 = Position.create(50.0, 0.0);
       positionCaste.add(1, pos1);
       velocityCaste.add(1, Velocity.create(0.0, 0.0));
       preferredVelocityCaste.add(1, PreferredVelocity.create(0.0, 0.0));
       circleColliderCaste.add(1, CircleCollider.create(10.0));
-      grid.insert(1, pos1.x, pos1.y);
+      grid.insertPoint(1, pos1.x, pos1.y);
 
       system.update(0.1);
 
@@ -108,14 +108,14 @@ void main() {
       velocityCaste.add(0, Velocity.create(-50.0, 0.0));
       preferredVelocityCaste.add(0, PreferredVelocity.create(-50.0, 0.0));
       circleColliderCaste.add(0, CircleCollider.create(10.0));
-      grid.insert(0, pos0.x, pos0.y);
+      grid.insertPoint(0, pos0.x, pos0.y);
 
       final pos1 = Position.create(80.0, 0.0);
       positionCaste.add(1, pos1);
       velocityCaste.add(1, Velocity.create(50.0, 0.0));
       preferredVelocityCaste.add(1, PreferredVelocity.create(50.0, 0.0));
       circleColliderCaste.add(1, CircleCollider.create(10.0));
-      grid.insert(1, pos1.x, pos1.y);
+      grid.insertPoint(1, pos1.x, pos1.y);
 
       system.update(0.1);
 
@@ -137,7 +137,7 @@ void main() {
       velocityCaste.add(0, Velocity.create(50.0, 0.0));
       preferredVelocityCaste.add(0, PreferredVelocity.create(50.0, 0.0));
       circleColliderCaste.add(0, CircleCollider.create(10.0));
-      grid.insert(0, pos0.x, pos0.y);
+      grid.insertPoint(0, pos0.x, pos0.y);
 
       // Agent 1 moving Left at y=-30
       final pos1 = Position.create(80.0, -30.0);
@@ -145,7 +145,7 @@ void main() {
       velocityCaste.add(1, Velocity.create(-50.0, 0.0));
       preferredVelocityCaste.add(1, PreferredVelocity.create(-50.0, 0.0));
       circleColliderCaste.add(1, CircleCollider.create(10.0));
-      grid.insert(1, pos1.x, pos1.y);
+      grid.insertPoint(1, pos1.x, pos1.y);
 
       // They will pass each other with a y-distance of 60. Combined radii is 20.
       // So cpaDistSq (3600) > radiusSq (400), no collision expected.

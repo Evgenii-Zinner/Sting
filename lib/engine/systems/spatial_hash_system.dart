@@ -20,7 +20,7 @@ class SpatialHashSystem {
     // 2. Repopulate the grid with current positions.
     // O(activeEntities) time complexity, no allocation.
     query.forEach((entity, position) {
-      _grid.insert(entity, position.x, position.y);
+      _grid.insertPoint(entity, position.x, position.y);
     });
   }
 }
