@@ -5,13 +5,21 @@
     {
       "decision": "Implement AudioSystem using flat TypedData arrays to track active sounds.",
       "reasoning": "Follows the constraint of Zero allocations per frame and Data-Oriented Design by avoiding the instantiation of 'ActiveSound' objects."
+    },
+    {
+      "decision": "Implement 2D positional audio via AudioSpatialSystem using an AudioManager interface and primitive math.",
+      "reasoning": "Allows zero-allocation per-frame computation of distance-based attenuation (using inverse distance model) and stereo panning (-1 to 1) between an active AudioListener (Float32List) and multiple AudioEmitters (ByteData), while keeping the backend decoupled."
     }
   ],
   "avoided_paths": [
     {
       "path": "Creating an Object-Oriented AudioSystem that stores a List of ActiveSound objects.",
       "failure_reason": "Violates the zero allocations per frame constraint as new active sound wrappers would need to be allocated."
+    },
+    {
+      "path": "Instantiating Vector math objects for distance calculations.",
+      "reasoning": "Violates zero allocation constraints. Calculations use unboxed primitive doubles directly."
     }
   ],
-  "context": "The AudioSystem processes an AudioEventQueue, which is a ring buffer over an Int32List, and stores the processed elements into another Int32List based structure to keep track of active handles/entities without triggering Garbage Collection."
+  "context": "The AudioSystem processes an AudioEventQueue, which is a ring buffer over an Int32List, and stores the processed elements into another Int32List based structure to keep track of active handles/entities without triggering Garbage Collection. Positional audio components scale via flat extension types."
 }
