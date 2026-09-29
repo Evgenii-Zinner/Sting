@@ -237,4 +237,73 @@ void main() {
       expect(result.depth, closeTo(5.0, 0.001));
     });
   });
+
+  group('SAT Collision - Primitives', () {
+    late SATCollisionResult result;
+
+    setUp(() {
+      result = SATCollisionResult();
+    });
+
+    test('testAABBAABB detects collision and computes normal/depth', () {
+      testAABBAABB(0, 0, 10, 10, 8, 2, 10, 10, result);
+      expect(result.intersects, isTrue);
+      // Box B is to the right of Box A. The normal should point from A to B (so +X).
+      expect(result.normalX, 1.0);
+      expect(result.normalY, 0.0);
+      // Overlap is 2 on X, 8 on Y. Minimum overlap is X.
+      expect(result.depth, 2.0);
+    });
+
+    test('testAABBAABB handles no collision', () {
+      testAABBAABB(0, 0, 10, 10, 20, 20, 10, 10, result);
+      expect(result.intersects, isFalse);
+    });
+
+    test('testCircleCircle detects collision and computes normal/depth', () {
+      testCircleCircle(0, 0, 5, 8, 0, 5, result);
+      expect(result.intersects, isTrue);
+      // Circle B is to the right of Circle A
+      expect(result.normalX, 1.0);
+      expect(result.normalY, 0.0);
+      expect(result.depth, 2.0); // 5 + 5 - 8 = 2
+    });
+
+    test('testCircleCircle handles exact same position', () {
+      testCircleCircle(0, 0, 5, 0, 0, 5, result);
+      expect(result.intersects, isTrue);
+      expect(result.normalX, 1.0);
+      expect(result.normalY, 0.0);
+      expect(result.depth, 10.0);
+    });
+
+    test('testCircleCircle handles no collision', () {
+      testCircleCircle(0, 0, 5, 20, 20, 5, result);
+      expect(result.intersects, isFalse);
+    });
+
+    test('testAABBCircle detects collision (circle outside)', () {
+      // Box A at (0, 0) to (10, 10). Circle B center at (12, 5), radius 4
+      testAABBCircle(0, 0, 10, 10, 12, 5, 4, result);
+      expect(result.intersects, isTrue);
+      expect(result.normalX, 1.0);
+      expect(result.normalY, 0.0);
+      expect(result.depth, 2.0); // 4 - (12 - 10) = 2
+    });
+
+    test('testAABBCircle detects collision (circle center inside box)', () {
+      // Box A at (0, 0) to (10, 10). Circle B center at (8, 5), radius 2
+      testAABBCircle(0, 0, 10, 10, 8, 5, 2, result);
+      expect(result.intersects, isTrue);
+      // Closest edge is right edge. Dist to right is 2.
+      expect(result.normalX, 1.0);
+      expect(result.normalY, 0.0);
+      expect(result.depth, 4.0); // distToRight (2) + radius (2) = 4
+    });
+
+    test('testAABBCircle handles no collision', () {
+      testAABBCircle(0, 0, 10, 10, 20, 20, 5, result);
+      expect(result.intersects, isFalse);
+    });
+  });
 }
