@@ -1,0 +1,30 @@
+--- lib/engine/systems/ui_window_system.dart
++++ lib/engine/systems/ui_window_system.dart
+@@ -29,6 +29,9 @@
+         _draggedWindow = entity;
+         handled = true;
+         break; // Only interact with top-most valid hit
+       }
+     }
++
++    if (handled) return true; // prevent click-through
+
+     // Now check buttons
+     for (int i = 0; i < buttons.length; i++) {
+@@ -37,6 +40,7 @@
+       final bx = button.relativeX;
+       final by = button.relativeY;
+
++      if (button.state == 3.0) continue; // Skip disabled buttons
++
+       if (px >= bx &&
+           px <= bx + button.width &&
+           py >= by &&
+@@ -148,6 +152,7 @@
+       int colorHex = button.normalColorHex.toInt();
+       if (state == 1.0) colorHex = button.hoverColorHex.toInt();
+       if (state == 2.0) colorHex = button.pressedColorHex.toInt();
++      if (state == 3.0) colorHex = 0xFF555555; // Default disabled color (grey)
+
+       _buttonPaint.color = Color(colorHex);
+       final rect = Rect.fromLTWH(button.relativeX, button.relativeY, button.width, button.height);
