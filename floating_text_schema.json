@@ -1,0 +1,15 @@
+{
+  "name": "FloatingText",
+  "type": "Float32List",
+  "fields": [
+    {"name": "worldX"},
+    {"name": "worldY"},
+    {"name": "velocityX"},
+    {"name": "velocityY"},
+    {"name": "lifetime"},
+    {"name": "maxLifetime"},
+    {"name": "alpha"},
+    {"name": "scale"},
+    {"name": "numberValue"}
+  ]
+}
