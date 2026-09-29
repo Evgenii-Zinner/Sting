@@ -1,0 +1,33 @@
+{
+  "topic": "Logistics Networks & Ground Trail Fields",
+  "last_updated": "2026-09-30",
+  "decisions": [
+    {
+      "decision": "Store GroundTrailField intensity in a flat contiguous Float32List with 1D index mapping.",
+      "reasoning": "Maintains fast contiguous iteration for decay passes (`intensity -= decayRate * dt`) and zero memory fragmentation."
+    },
+    {
+      "decision": "Distribute trail deposits bilinearly across surrounding grid cells.",
+      "reasoning": "Prevents blocky grid aliasing artifacts while moving entities trace smooth desire paths."
+    },
+    {
+      "decision": "Model CapsuleCorridor logistics segments using flat numeric node IDs, transit speeds, and capacity counters.",
+      "reasoning": "Allows high-throughput simulation of automated transport networks without dynamic graph node allocation."
+    },
+    {
+      "decision": "Track cargo/capsule travel along corridors as normalized scalar progression `t` in `[0.0, 1.0]`.",
+      "reasoning": "Interpolates world position between endpoint nodes with trivial scalar math, avoiding heap-allocated waypoint vectors."
+    }
+  ],
+  "avoided_paths": [
+    {
+      "path": "Using linked-list or dynamic collection graph nodes for corridor network traversal.",
+      "failure_reason": "Causes frequent heap allocations and cache misses during packet routing and delivery checks."
+    },
+    {
+      "path": "Dynamically resizing trail or logistics buffers during active simulation.",
+      "failure_reason": "Violates the static pre-allocation memory model of the engine."
+    }
+  ],
+  "context": "Ground trails and capsule logistics corridors provide simulation and visual feedback for factory, city-builder, and tactical RTS games under zero-allocation constraints."
+}

@@ -1,32 +1,55 @@
 # Sting
 
-A bare-metal, high-performance 2D game engine for Dart, designed for massive entity counts and uncompromising performance.
+A bare-metal, high-performance 2D Entity Component System (ECS) game engine for Dart, designed for massive entity counts and uncompromising 60/120 FPS performance.
 
 ## Core Philosophy
 
-* **Zero Flutter Framework**: Sting does not use `runApp()`, `Widgets`, or `BuildContext`. It binds directly to `PlatformDispatcher.instance.onBeginFrame` and `dart:ui` to talk directly to the underlying graphics engine (Impeller/Skia).
-* **Strict ECS**: Data-oriented Entity Component System. Entities are purely `int` IDs. Components are flat data classes. Systems handle all logic.
+* **Zero Flutter Framework Overhead**: Sting does not use `runApp()`, `Widgets`, or `BuildContext`. It binds directly to `PlatformDispatcher.instance.onBeginFrame` and `dart:ui` to talk directly to the underlying graphics engine (Impeller/Skia).
+* **Strict ECS Architecture**: Data-oriented Entity Component System. Entities are pure `int` IDs (constrained to 16-bit space for optimal cache locality). Components are flat Dart 3 extension types on contiguous typed arrays (`Float32List`, `Int32List`, `ByteData`). Systems are stateless query processors.
+* **Zero Allocations per Frame**: The runtime game loop enforces zero heap allocations per frame, eliminating garbage collector (GC) pauses during active gameplay.
 
 ## Tech Stack
 
-* **Language**: Dart 3.x (Utilizing Records, Patterns, and Extension Types for memory efficiency and ergonomics).
-* **Rendering**: Pure `dart:ui` (`Canvas`, `PictureRecorder`, `SceneBuilder`, `drawAtlas` for batch rendering).
-* **Target**: Cross-platform (iOS, Android, Web, Desktop).
+* **Language**: Dart 3.x (utilizing Records, Patterns, and Extension Types for zero-cost abstractions and ergonomics).
+* **Rendering**: Pure `dart:ui` (`Canvas`, `PictureRecorder`, `SceneBuilder`, `drawRawAtlas` for batched sprite rendering).
+* **Target Platforms**: Cross-platform (Desktop, Mobile, Web).
 
-## AI-Driven Development
+## Engine Subsystems
 
-This project is built using AI-driven development practices.
-All AI agents contributing to this repository must follow the strict rules outlined in `AGENTS.md`.
-Architectural decisions, failed attempts, and historical context are maintained in the `shared_memories/` directory to ensure agents learn from past iterations and do not repeat mistakes.
+### Core Engine
+* **Entity Management (`EntityManager`)**: 16-bit entity generation and recycling with O(1) bit-flag liveness verification.
+* **Sparse Set Component Storage (`SparseSet` / `ComponentStorage`)**: Briggs & Torczon sparse set architecture ensuring contiguous cache-line iteration and O(1) random access.
+* **Query Engine**: Zero-allocation multi-component queries iterating directly over the smallest dense storage.
+* **Batch Sprite Rendering (`BatchedSpriteRenderSystem`)**: High-throughput sprite rendering via `Canvas.drawRawAtlas`.
+* **Spatial Partitioning (`SpatialHashGrid`)**: 2D spatial hash grid mapping entities to 1D buckets for O(1) broad-phase spatial queries.
+* **Kinematics & Physics**: Eulerian and Verlet integration with unboxed primitive narrow-phase collisions (AABB, Circle) and resolution.
+* **Hierarchical State Machine**: Global game loop state management (Menu, Playing, Paused, GameOver).
+* **Audio Dispatcher**: Ring-buffered flat audio event queue processed in bulk without per-frame event allocations.
 
-## Engine Status
+### Modular Systems (Post-Phase 8)
+* **Terrain & Slope Kinematics (`SlopePhysicsSystem`, `HeightMap`)**: 2D heightmap elevation grid with bilinear sub-tile interpolation and directional slope modifiers affecting velocity and friction.
+* **Tactical Radar & Minimap (`RadarSystem`, `RadarDisplay`)**: Zero-allocation viewport/world-space radar projecting dynamic blips, sweep lines, and orientation indicators.
+* **Dynamic Fog of War (`FogOfWarSystem`, `DiscoveryGrid`)**: Flat-array visibility and exploration grid supporting circular vision cones, explored shroud, and unexplored mask overlays.
+* **Ground Trail & Desire Paths (`GroundTrailField`)**: Persistent trail heatmaps where moving entities deposit footstep intensity that decays over time, dynamically visualizing popular path routes.
+* **Capsule Corridor Logistics (`CapsuleCorridor`, `LogisticsSystem`)**: Node-to-node logistics routes supporting bidirectional transit, capacity constraints, and directional flow speeds.
+* **Interactive UI Suite**:
+  * **Draggable Windows & Buttons (`UIWindow`, `UIButton`)**: Zero-allocation window docking, drag-handling, and hierarchical button click detection.
+  * **Progress Bar Component (`ProgressBar`)**: Render system for health, energy, and reload bars with cached `RRect` bounds.
+  * **Sci-Fi Radial Intent Dial (`RadialDial`)**: Screen-space radial action selector with interactive sector highlighting and intent selection.
 
-Sting has completed its foundational core (Phase 7) and is currently deemed **ready for MVP game production**. The robust Data-Oriented Design (DOD) constraints guarantee zero-allocation game loops, handling batch rendering, spatial hashing, UI, tilemaps, and state management flawlessly.
+## Documentation
+
+* [Sting Engine Comprehensive Guide](file:///docs/STING_ENGINE_GUIDE.md) — Complete architectural overview, subsystem details, and concrete code examples.
+* [Architecture FAQ](file:///docs/ARCHITECTURE_FAQ.md) — Common architectural patterns, terminology evolutions, and FAQ.
+* [Memory Limits & Architecture Guide](file:///docs/MEMORY_LIMITS.md) — Zero-allocation constraints, pre-allocation guidelines, and cache sizing.
+* [Engine Design Document](file:///docs/DESIGN.md) — Foundational design specification and future roadmap.
+* [Contributor Guidelines](file:///AGENTS.md) — Workflow instructions and zero-allocation TDD rules for contributors and AI agents.
 
 ## Project Structure
 
-* `docs/` - System design and architectural documentation.
-* `lib/` - Engine source code.
-* `showcase/` - Showcase games and prototypes built using the engine.
-* `test/` - 100% test coverage requirement for all engine features.
-* `shared_memories/` - Structured memory for AI agents (JSON format) to track decisions and avoided paths.
+* `docs/` — Architectural documentation, engine guides, and memory limits.
+* `lib/` — Engine source code (`core/`, `components/`, `systems/`, `rendering/`, `ui/`, `logistics/`).
+* `showcase/` — Showcase prototypes demonstrating engine capabilities.
+* `test/` — Comprehensive test suite (100% test coverage enforced).
+* `shared_memories/` — Shared memory knowledge base tracking architectural decisions and avoided pitfalls.
+

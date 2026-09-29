@@ -1,0 +1,33 @@
+{
+  "topic": "Tactical Radar, Minimap & Fog of War",
+  "last_updated": "2026-09-30",
+  "decisions": [
+    {
+      "decision": "Store DiscoveryGrid visibility and exploration states in flat Uint8List buffers with 1D index mapping.",
+      "reasoning": "Provides compact byte-level representation for unexplored (0), explored/shrouded (1), and currently visible (2) tiles, fitting in CPU L1/L2 caches."
+    },
+    {
+      "decision": "Evaluate circular vision cones in FogOfWarSystem using radius-squared comparisons `dx*dx + dy*dy <= r*r`.",
+      "reasoning": "Avoids expensive square root (`sqrt`) and trigonometric operations across multiple observer units."
+    },
+    {
+      "decision": "Project radar blips directly from world positions to radar canvas coordinates via pre-calculated scale and center offsets.",
+      "reasoning": "Renders blips and sweep lines in a single pass without allocating intermediate collection buffers or wrapper objects."
+    },
+    {
+      "decision": "Store radar blip color definitions as 32-bit ARGB integers.",
+      "reasoning": "Maintains exact color fidelity and avoids IEEE 754 24-bit mantissa truncation inherent to 32-bit floats."
+    }
+  ],
+  "avoided_paths": [
+    {
+      "path": "Creating and combining complex geometric dart:ui Path clipping masks for Fog of War every frame.",
+      "failure_reason": "Vector path boolean clipping on the CPU causes severe frame drops and massive allocation overhead."
+    },
+    {
+      "path": "Allocating lists of visible entities or radar blip records during RadarSystem updates.",
+      "failure_reason": "Violates the zero-allocation runtime constraint; radar rendering iterates directly over query components."
+    }
+  ],
+  "context": "Radar and Fog of War systems provide strategic situational awareness for RTS and tactical games while strictly respecting the engine's zero-allocation performance rules."
+}

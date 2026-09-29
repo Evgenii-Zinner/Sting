@@ -27,7 +27,10 @@ When an AI agent is invoked to contribute to the Sting engine, it must follow th
 1. **Check the Backlog:** Read the `BACKLOG.md` file in the root directory. Find the highest priority uncompleted task (working top to bottom).
 2. **Assume the Role:** The backlog task will specify a "Role Needed" and a corresponding "Skill" JSON file in the `skills/` directory (e.g., `skills/ecs_core_engineer.json`). Read this file to understand your core competencies, responsibilities, and specific constraints for this task.
 3. **Execute:** Implement the task, adhering strictly to the constraints outlined in your assumed role's skill profile, the TDD requirements, and the memory constraints.
-4. **Update Status:** Once completed and all tests/benchmarks pass, update `BACKLOG.md` to mark the task as done (e.g., change `[ ]` to `[x]`).
+4. **Update Status & Documentation:**
+   * Mark completed tasks in `BACKLOG.md` (change `[ ]` to `[x]`).
+   * **Update Documentation**: Whenever you introduce new components, systems, or APIs, you **must** update `docs/ARCHITECTURE_FAQ.md` and `docs/STING_ENGINE_GUIDE.md` with usage examples and descriptions.
+   * **Update Shared Memories**: Document any architectural decisions, zero-allocation data layouts, or platform gotchas in `shared_memories/`.
 
 ## 5. Architectural Boundaries
 * **Entities are ints.** Do not create an `Entity` class that holds data.
@@ -37,7 +40,7 @@ When an AI agent is invoked to contribute to the Sting engine, it must follow th
 If you are asked to implement something that violates these rules, push back or find an ECS-compliant solution.
 
 ## 6. Architecture FAQ
-For common architectural questions, naming conventions (like the "Sting" theme), existing core systems (`Swarm`, `Caste`), rendering APIs, and details about upcoming features in the backlog, strictly consult the FAQ document at `docs/ARCHITECTURE_FAQ.md`. Please review this file thoroughly before asking the user basic architectural or implementation questions.
+For common architectural questions, naming conventions (like `EntityManager`, `SparseSet`, `ComponentStorage`, and legacy `Swarm`/`Caste` themes), rendering APIs, and details about existing features, strictly consult the FAQ document at `docs/ARCHITECTURE_FAQ.md`. Please review this file thoroughly before asking the user basic architectural or implementation questions.
 
 ## 7. Engine Maturity
 As of Phase 8, the core engine (ECS, Batch Rendering, Physics, UI, Assets, Game State) is considered feature-complete for MVP game development. When building games or prototype layers on top of Sting, agents must purely utilize the engine's public APIs and architectural patterns (e.g., Components as Extension Types on Flat Arrays, Systems for Logic) without modifying the internal engine implementation.

@@ -41,8 +41,9 @@ class AudioBindings {
     double pitch = 1.0,
     bool loop = false,
   }) {
-    if (!_initialized)
+    if (!_initialized) {
       return _nextHandle++; // MOCK behavior for tests when not initialized.
+    }
 
     final source = _soundHashes[soundId];
     if (source == null) return 0;

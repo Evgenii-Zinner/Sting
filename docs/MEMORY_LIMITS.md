@@ -54,11 +54,11 @@ class MovementSystem {
 
 ---
 
-## 2. The Swarm: Maximum Entity Count
+## 2. The Swarm / EntityManager: Maximum Entity Count
 
-The `Swarm` is Sting's core entity manager, responsible for creating, tracking, and destroying entities.
+The `Swarm` (implemented as `EntityManager` in modern engine releases) is Sting's core entity manager, responsible for creating, tracking, and destroying entities.
 
-- **Maximum Entities (65,535):** The maximum number of simultaneous entities active in a Sting engine scene is hard-capped at 65,535 (`Swarm.maxEntities`).
+- **Maximum Entities (65,535):** The maximum number of simultaneous entities active in a Sting engine scene is hard-capped at 65,535 (`EntityManager.maxEntities` / `Swarm.maxEntities`).
 - **Why 65,535?** By capping the entity count under 65,536, the engine can utilize `Uint16List` typed arrays internally for mapping Entity IDs. This halves memory consumption and vastly increases CPU cache line locality compared to using 32-bit integers (`Uint32List`).
 - **Recycling:** The Swarm automatically recycles entity IDs from destroyed entities using an internal stack (`Int32List`), avoiding continuous incrementation that would rapidly exhaust the available 16-bit ID pool.
 
@@ -82,13 +82,13 @@ scene.destroyEntity(playerEntityId);
 
 ---
 
-## 3. Caste: Preallocation Constraints
+## 3. Caste / SparseSet: Preallocation Constraints
 
-A `Caste` acts as the storage mechanism for components in Sting. It utilizes an integer-based **Sparse Set** data structure mapping Entity IDs to contiguous dense array indices, ensuring O(1) component lookups and cache-friendly contiguous iteration.
+A `Caste` (implemented as `SparseSet` / `ComponentStorage` in modern engine releases) acts as the storage mechanism for components in Sting. It utilizes an integer-based **Sparse Set** data structure mapping Entity IDs to contiguous dense array indices, ensuring O(1) component lookups and cache-friendly contiguous iteration.
 
-- **Sparse Array Footprint:** The sparse mapping array is always pre-allocated to the global maximum possible entities (`Swarm.maxEntities + 1`), consuming exactly 131,072 bytes (128 KB) per `Caste`.
-- **Dense Array Capacity:** The dense array size is explicitly defined by the `capacity` parameter when you initialize the `Caste`. This capacity cannot exceed `Swarm.maxEntities + 1`.
-- **No Dynamic Resizing:** A `Caste` cannot grow at runtime. Once you hit the defined `capacity` and attempt to add a component to a new entity, the engine will throw a `StateError`.
+- **Sparse Array Footprint:** The sparse mapping array is always pre-allocated to the global maximum possible entities (`EntityManager.maxEntities + 1`), consuming exactly 131,072 bytes (128 KB) per `SparseSet`.
+- **Dense Array Capacity:** The dense array size is explicitly defined by the `capacity` parameter when you initialize the storage. This capacity cannot exceed `EntityManager.maxEntities + 1`.
+- **No Dynamic Resizing:** Component storage cannot grow at runtime. Once you hit the defined `capacity` and attempt to add a component to a new entity, the engine will throw a `StateError`.
 
 ### Usage Example: Preallocating Castes
 

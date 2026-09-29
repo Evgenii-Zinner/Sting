@@ -40,8 +40,9 @@ class UIWindowSystem {
       }
     }
 
-    if (handled)
+    if (handled) {
       return true; // prevent click-through to buttons below a dragged window
+    }
 
     // Now check buttons
     for (int i = 0; i < buttons.length; i++) {
@@ -75,10 +76,12 @@ class UIWindowSystem {
         // Clamp to screen
         if (newX < 0) newX = 0;
         if (newY < 0) newY = 0;
-        if (newX + window.width > screenWidth)
+        if (newX + window.width > screenWidth) {
           newX = screenWidth - window.width;
-        if (newY + window.height > screenHeight)
+        }
+        if (newY + window.height > screenHeight) {
           newY = screenHeight - window.height;
+        }
 
         window.x = newX;
         window.y = newY;

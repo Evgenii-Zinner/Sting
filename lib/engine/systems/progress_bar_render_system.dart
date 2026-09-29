@@ -80,16 +80,19 @@ class ProgressBarRenderSystem {
       if (_bgPaint.color.toARGB32() != bgCol) _bgPaint.color = Color(bgCol);
 
       final ghostCol = bar.ghostColorHex.toInt();
-      if (_ghostPaint.color.toARGB32() != ghostCol)
+      if (_ghostPaint.color.toARGB32() != ghostCol) {
         _ghostPaint.color = Color(ghostCol);
+      }
 
       final fillCol = bar.fillColorHex.toInt();
-      if (_fillPaint.color.toARGB32() != fillCol)
+      if (_fillPaint.color.toARGB32() != fillCol) {
         _fillPaint.color = Color(fillCol);
+      }
 
       final borderCol = bar.borderColorHex.toInt();
-      if (_borderPaint.color.toARGB32() != borderCol)
+      if (_borderPaint.color.toARGB32() != borderCol) {
         _borderPaint.color = Color(borderCol);
+      }
 
       _borderPaint.strokeWidth = bar.borderWidth;
 

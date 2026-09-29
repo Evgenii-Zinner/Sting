@@ -19,19 +19,19 @@ Welcome to the Sting Engine Architecture FAQ. Please review these questions and 
 
 ## Entity Component System (ECS)
 
-### Q: What is `Swarm`?
-**A:** `Swarm` is Sting's Entity Manager.
+### Q: What is `EntityManager` (formerly `Swarm`)?
+**A:** `EntityManager` is Sting's Entity Manager.
 * Entities are strictly integers (`int`). There is no `Entity` object.
-* `Swarm` manages the allocation and recycling of these integer IDs.
+* `EntityManager` manages the allocation and recycling of these integer IDs.
 * It is constrained to `Int16` limits (65,535 max entities) to cap memory usage.
 * It uses a `Uint32List` of bit-flags to track entity liveness (1 bit per entity). This enables fast, O(1) liveness checks and prevents double frees without creating any objects.
 
-### Q: What is `Caste`?
-**A:** `Caste` is Sting's Sparse Set implementation for component storage. In the insect theme, a "caste" is a specific group within a swarm (e.g., all entities that have a `Position` component).
+### Q: What is `SparseSet` and `ComponentStorage` (formerly `Caste`)?
+**A:** `SparseSet` is Sting's Sparse Set implementation for component index mapping, and `ComponentStorage<T>` couples a `SparseSet` with dense typed data arrays.
 * It maps sparse entity IDs to dense component array indices.
 * It uses `Uint16List` arrays for maximum memory efficiency, since entity limits are `Int16`.
 
-### Q: Why does `Caste` use the Briggs & Torczon validation technique?
+### Q: Why does `SparseSet` use the Briggs & Torczon validation technique?
 **A:** Traditional sparse sets initialize the sparse array with a sentinel value (like `-1`) to denote "empty". Briggs & Torczon validation uses an uninitialized sparse array and checks back against the dense array to verify validity.
 * **Benefit:** It eliminates the need to initialize the sparse array or use sentinel values.
 * **Benefit:** It makes clearing the entire set an O(1) operation—you simply reset the `count` of items to 0.
@@ -97,3 +97,47 @@ Phase 8 is currently in progress. The focus is on assembling a Bullet Haven MVP 
 
 ### Q: Why did the showcase render as a black screen with just UI initially?
 **A:** The `TilemapRenderSystem` and `AnimationSystem` were not properly wired into the `BulletHavenGame` systems list and update loops. Since no tilemap was rendered for the background, and `AnimationSystem` wasn't updating `Sprite` source rects (which default to 0x0 on creation), nothing but the screen-space UI bounding boxes appeared. Wiring the systems into the `dt` update loop and the `onRender` canvas callback resolves this.
+
+## Post-Phase 8 Modular Subsystems & Advanced Features
+
+### 1. HeightMap & Continuous Terrain Queries
+* **Component:** `HeightMap` (`lib/engine/components/height_map.dart`) backed by a flat `Float32List`.
+* **Capabilities:** Supports arbitrary grid resolution, bilinear elevation sampling, and gradient/normal extraction across continuous coordinates without allocations.
+
+### 2. Slope Kinematics & Incline Physics
+* **Components:** `SlopeModifier` (`lib/engine/components/slope_modifier.dart`) storing friction, uphill drag, downhill acceleration, and sliding thresholds.
+* **System:** `SlopePhysicsSystem` (`lib/engine/systems/slope_physics_system.dart`) queries `HeightMap`, `Position`, and `Velocity` to apply gravity sliding, deceleration on steep inclines, and slope deflection.
+
+### 3. Asset Management & Cross-Platform Loading
+* **Module:** `AssetManager` (`lib/engine/assets/asset_manager.dart`) and `AssetLoader` (`asset_loader_io.dart`, `asset_loader_web.dart`, `asset_loader_stub.dart`).
+* **Design:** Provides zero-allocation runtime image lookup by key, platform-agnostic byte loading, and asynchronous texture cache management without Flutter's `AssetBundle`.
+
+### 4. Interactive Draggable Windows & Buttons UI
+* **Components:** `UIWindow` and `UIButton` (`lib/engine/components/ui_window.dart`, `ui_button.dart`).
+* **System:** `UIWindowSystem` (`lib/engine/systems/ui_window_system.dart`).
+* **Features:** Window drag bars with clamp bounds, hover/pressed state tracking, disabled button states, and zero-allocation immediate-mode canvas rendering with cached `Paint` objects.
+
+### 5. Sci-Fi Radial Intent Dial UI
+* **Component:** `RadialDial` (`lib/engine/components/radial_dial.dart`) storing active segment count, selection angle, deadzone radius, and active item state.
+* **System:** `RadialDialSystem` (`lib/engine/systems/radial_dial_system.dart`) renders segmented radial wheels and maps analog/pointer angles to intent slots.
+
+### 6. Zero-Allocation Progress Bar
+* **Component:** `ProgressBar` (`lib/engine/components/progress_bar.dart`) storing 16 layout, color, and interpolation configurations directly in flat `Float32List`.
+* **System:** `ProgressBarRenderSystem` (`lib/engine/systems/progress_bar_render_system.dart`) features smooth visual-value lag interpolation, world-space (over entity head) and screen-space rendering, and pixel-snapped rendering.
+
+### 7. Tactical Radar & Minimap System
+* **Component:** `RadarDisplay` (`lib/engine/components/radar_display.dart`) backed by `Float32List(10)` with a `Uint32List` view for 32-bit ARGB color precision.
+* **System:** `RadarSystem` (`lib/engine/systems/radar_system.dart`) sweeps radar beams across entities and draws circular blips on a tactical minimap overlay without per-frame allocations.
+
+### 8. Fog of War & Discovery Grid
+* **Component:** `DiscoveryGrid` (`lib/engine/components/discovery_grid.dart`) backed by a flat `Uint8List` tracking exploration states (`0 = Unexplored`, `1 = Explored/Dim`, `2 = Visible`).
+* **System:** `FogOfWarSystem` (`lib/engine/systems/fog_of_war_system.dart`) performs viewport-culled tile rendering and radius-based revelation around player entities.
+
+### 9. Capsule Corridor Logistics & Flow Fields
+* **Component:** `CapsuleCorridor` (`lib/engine/components/capsule_corridor.dart`) backed by `Float32List(11)` representing pill-shaped transport lanes with directional speed.
+* **System:** `CapsuleCorridorSystem` (`lib/engine/systems/capsule_corridor_system.dart`) queries intersecting entities and accelerates them along the corridor line with zero allocations.
+
+### 10. Ground Trail & Desire Path Feedback
+* **Components:** `GroundTrailField`, `TrailEmitter`, `TrailFeedback` (`lib/engine/components/`).
+* **System:** `GroundTrailSystem` (`lib/engine/systems/ground_trail_system.dart`) simulates cumulative foot-traffic wear on terrain with exponential decay and provides speed boost feedback when following established paths.
+

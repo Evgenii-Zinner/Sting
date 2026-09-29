@@ -1,0 +1,33 @@
+{
+  "topic": "Terrain Elevation & Slope Kinematics",
+  "last_updated": "2026-09-30",
+  "decisions": [
+    {
+      "decision": "Store HeightMap elevation data in a contiguous 1D Float32List with 1D index mapping `(y * width + x)`.",
+      "reasoning": "Guarantees sequential memory locality, zero heap allocations, and rapid cache-line prefetching compared to nested Dart lists."
+    },
+    {
+      "decision": "Use bilinear interpolation for continuous sub-tile elevation and gradient queries.",
+      "reasoning": "Calculates smooth elevation curves and surface slope angles at arbitrary world coordinates without requiring discrete cell stepping."
+    },
+    {
+      "decision": "Compute surface normal and slope vector using unboxed scalar math `(dx, dy)` in place.",
+      "reasoning": "Calculates uphill/downhill force projections and velocity adjustments without instantiating Vector2 or Record heap objects in the hot physics loop."
+    },
+    {
+      "decision": "Implement SlopeModifier as an extension type or flat component holding uphill/downhill friction and acceleration coefficients.",
+      "reasoning": "Allows entities (vehicles, pedestrians, projectiles) to configure custom terrain traversal dynamics efficiently."
+    }
+  ],
+  "avoided_paths": [
+    {
+      "path": "Using nested arrays `List<List<double>>` for heightmap storage.",
+      "failure_reason": "Causes significant pointer indirection, cache misses, and memory fragmentation for large terrain maps."
+    },
+    {
+      "path": "Instantiating normal vector or slope calculation result objects inside SlopePhysicsSystem.update.",
+      "failure_reason": "Violates the zero-allocation-per-frame constraint across thousands of simulated entities."
+    }
+  ],
+  "context": "SlopePhysicsSystem and HeightMap provide continuous 2.5D topographic interaction for 2D top-down simulation while maintaining strict zero-allocation performance."
+}

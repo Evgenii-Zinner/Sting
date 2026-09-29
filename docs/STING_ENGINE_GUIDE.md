@@ -19,11 +19,11 @@ Sting is built strictly around **Data-Oriented Design (DOD)** and an **Entity Co
 
 ## 2. Core Subsystems
 
-### 2.1 ECS Core: Swarm, Caste, and Queries
+### 2.1 ECS Core: EntityManager, ComponentStorage, and Queries
 
-*   **Swarm (Entity Manager)**: Manages the allocation and recycling of integer entity IDs. It tracks up to 65,535 active entities using bit-flags (`Uint32List`) for O(1) liveness checks and zero allocations.
-*   **Caste (Component Storage)**: A Sparse Set implementation mapping entity IDs to dense component array indices using the Briggs & Torczon validation technique. This allows O(1) clears and prevents the need for sentinel initialization.
-*   **Queries (`Query1`, `Query2`)**: Allow fast iteration over entities that possess specific components. Iteration is done via callbacks to strictly prevent iterator object allocations.
+*   **EntityManager (formerly Swarm)**: Manages the allocation and recycling of integer entity IDs. It tracks up to 65,535 active entities using bit-flags (`Uint32List`) for O(1) liveness checks and zero allocations.
+*   **ComponentStorage & SparseSet (formerly Caste)**: A Sparse Set implementation mapping entity IDs to dense component array indices using the Briggs & Torczon validation technique. This allows O(1) clears and prevents the need for sentinel initialization.
+*   **Queries (`Query1`, `Query2`, `Query3`)**: Allow fast iteration over entities that possess specific components. Iteration is done via callbacks to strictly prevent iterator object allocations.
 
 ### 2.2 Rendering Subsystem
 
@@ -31,7 +31,7 @@ Sting binds directly to `dart:ui` (`Canvas`, `PlatformDispatcher`).
 *   **Sprite Rendering**: Relies on `Canvas.drawRawAtlas`. Data is passed using `.sublistView()` on flat `Float32List` arrays, completely avoiding the instantiation of `Rect` and `RSTransform` objects on every frame.
 *   **Tilemaps**: Rendered using a `TilemapRenderSystem` using flat `Int32List` arrays.
 *   **Camera/Viewport**: Handled via canvas transformation (save, translate, scale, restore) rather than instantiating camera objects per entity.
-*   **Asset Streaming**: Assets are decoded directly from `dart:io` `File` via raw pixel buffers in isolates to prevent main thread blocking, avoiding Flutter's `AssetBundle`.
+*   **Asset Management**: `AssetManager` and cross-platform `AssetLoader` stream and cache textures with zero-allocation lookups.
 
 ### 2.3 Physics and Kinematics Subsystem
 
@@ -39,6 +39,7 @@ Sting binds directly to `dart:ui` (`Canvas`, `PlatformDispatcher`).
 *   **Narrow-phase**: Math functions (AABB, Circle) strictly accept raw unboxed floats (x, y, w, h, r).
 *   **Collision Resolution**: Handled via `SimpleResolutionSystem` providing callbacks for immediate positional separation. Continuous Collision Detection (CCD) is intentionally omitted for performance.
 *   **Movement**: Standard Eulerian integration via `MovementSystem` (`Velocity * dt`).
+*   **Slope Kinematics**: `SlopePhysicsSystem` applies gradient-based acceleration, drag, and sliding on uneven terrain based on `HeightMap` components.
 
 ### 2.4 Input Subsystem
 
@@ -50,52 +51,59 @@ Sting binds directly to `dart:ui` (`Canvas`, `PlatformDispatcher`).
 *   An event-driven audio dispatcher built around flat queues (`Int32List`).
 *   Audio requests (sound ID, volume, pitch) are pushed into ring buffers and processed in bulk.
 
-### 2.6 UI Subsystem
+### 2.6 UI & Interactive Widgets
 
-*   Specialized `UICaste` focusing on screen-space AABB collisions synchronized with input pointer slots.
-*   Rendering objects (`ParagraphBuilder`, `Path`) are cached on components and rebuilt only on state shifts.
+*   **Draggable Windows & Buttons**: `UIWindowSystem` manages draggable floating windows, button hitboxes, hover/press states, and zero-allocation immediate-mode canvas rendering.
+*   **Progress Bars & Gauges**: `ProgressBarRenderSystem` provides smooth visual-value lag interpolation and dual-space (world/screen) bar rendering.
+*   **Radial Intent Dials**: `RadialDialSystem` renders interactive sci-fi radial wheels for rapid analogue/pointer intent selection.
 
 ### 2.7 Game State Management
 
 *   A global `GameState` component attached to a singleton entity ID tracks high-level states (Menu, Playing, Paused, GameOver). Logic systems selectively update based on these states.
 
+### 2.8 Logistics & Terrain Overlays
+
+*   **Capsule Corridors**: `CapsuleCorridorSystem` creates directional logistics transport lanes that apply acceleration to moving entities within the pill-shaped corridor bounds.
+*   **Ground Trails & Desire Paths**: `GroundTrailSystem` simulates cumulative foot-traffic wear with exponential decay, providing movement feedback and visual path wear.
+*   **Fog of War**: `FogOfWarSystem` dynamically calculates and renders visible, explored, and hidden terrain over a flat `Uint8List` discovery grid.
+*   **Tactical Radar & Minimap**: `RadarSystem` scans entity positions and projects them onto an animated radar sweep minimap.
+
 ---
 
 ## 3. Endpoints and API Usage
 
-### Managing Entities with `Swarm`
+### Managing Entities with `EntityManager`
 ```dart
-final swarm = Swarm();
-int entityId = swarm.createEntity();
-swarm.destroyEntity(entityId);
+final entities = EntityManager();
+int entityId = entities.createEntity();
+entities.destroyEntity(entityId);
 ```
 
-### Storing Data with Components and `Caste`
-Components should be simple data holders, ideally wrapping typed data.
+### Storing Data with Components and `ComponentStorage`
+Components are flat data holders, using Dart 3 extension types over typed data arrays:
 ```dart
-class Position {
-  final Float32List data;
-  Position(this.data);
-  // Extension types are preferred in Sting for zero-cost abstractions
+extension type Position(Float32List _data) {
+  Position(double x, double y) : this(Float32List.fromList([x, y]));
+  double get x => _data[0];
+  set x(double val) => _data[0] = val;
+  double get y => _data[1];
+  set y(double val) => _data[1] = val;
 }
 
-final positionCaste = Caste(1000); // Capacity for 1000 entities
-final positionData = ComponentCaste<Position>(positionCaste, List.filled(1000, null));
+final posStorage = ComponentStorage<Position>(1000); // Capacity for 1000 entities
 
-// Add entity to caste
-positionCaste.add(entityId);
-// Sync data
-positionData.set(entityId, Position(Float32List(2)));
+// Add entity and assign component
+posStorage.add(entityId, Position(100, 200));
 ```
 
-### Querying with `Query1` and `Query2`
+### Querying with `Query1`, `Query2`, and `Query3`
 ```dart
-final query = Query2<Position, Velocity>(positionCaste, velocityCaste);
+final query = Query2<Position, Velocity>(posStorage, velStorage);
 
 query.forEach((entity, pos, vel) {
   // Update position based on velocity
-  pos.x += vel.x * dt;
-  pos.y += vel.y * dt;
+  pos.x += vel.dx * dt;
+  pos.y += vel.dy * dt;
 });
 ```
 
