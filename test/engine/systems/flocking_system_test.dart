@@ -20,7 +20,8 @@ void main() {
       swarm = EntityManager();
       positionCaste = ComponentStorage<Position>(EntityManager.maxEntities);
       velocityCaste = ComponentStorage<Velocity>(EntityManager.maxEntities);
-      flockingAgentCaste = ComponentStorage<FlockingAgent>(EntityManager.maxEntities);
+      flockingAgentCaste =
+          ComponentStorage<FlockingAgent>(EntityManager.maxEntities);
       spatialHashGrid = SpatialHashGrid(100.0, 1000);
 
       flockingSystem = FlockingSystem(
@@ -67,7 +68,8 @@ void main() {
       flockingSystem.update(1.0);
 
       final vel = velocityCaste.get(agentId)!;
-      expect(vel.dx, lessThan(0.0), reason: 'Should steer away from neighbor in X');
+      expect(vel.dx, lessThan(0.0),
+          reason: 'Should steer away from neighbor in X');
       expect(vel.dy, closeTo(0.0, 0.0001), reason: 'No Y influence');
     });
 
@@ -97,7 +99,8 @@ void main() {
 
       final vel = velocityCaste.get(agentId)!;
       expect(vel.dx, closeTo(0.0, 0.0001), reason: 'No X influence');
-      expect(vel.dy, greaterThan(0.0), reason: 'Should align with neighbor in Y');
+      expect(vel.dy, greaterThan(0.0),
+          reason: 'Should align with neighbor in Y');
     });
 
     test('applies cohesion correctly', () {
@@ -125,8 +128,10 @@ void main() {
       flockingSystem.update(1.0);
 
       final vel = velocityCaste.get(agentId)!;
-      expect(vel.dx, greaterThan(0.0), reason: 'Should steer towards center of mass X');
-      expect(vel.dy, greaterThan(0.0), reason: 'Should steer towards center of mass Y');
+      expect(vel.dx, greaterThan(0.0),
+          reason: 'Should steer towards center of mass X');
+      expect(vel.dy, greaterThan(0.0),
+          reason: 'Should steer towards center of mass Y');
     });
 
     test('ignores neighbors outside radius', () {
@@ -175,14 +180,16 @@ void main() {
 
       final neighborId = swarm.createEntity();
       positionCaste.add(neighborId, Position.create(10.0, 0.0));
-      velocityCaste.add(neighborId, Velocity.create(100.0, 0.0)); // High velocity
+      velocityCaste.add(
+          neighborId, Velocity.create(100.0, 0.0)); // High velocity
       flockingAgentCaste.add(neighborId, FlockingAgent.create());
 
       populateGrid();
       flockingSystem.update(1.0);
 
       final vel = velocityCaste.get(agentId)!;
-      expect(vel.dx, closeTo(200.0, 0.0001), reason: 'Expect scaled max force by weight');
+      expect(vel.dx, closeTo(200.0, 0.0001),
+          reason: 'Expect scaled max force by weight');
       // maxForce limits the raw force *before* weight multiplication in FlockingSystem:
       // steerResult[0] = 2.0
       // finalAlignForceX = 2.0 * 100.0 = 200.0

@@ -26,10 +26,18 @@ class FogOfWarSystem {
   void render(Canvas canvas, Rect viewportRect) {
     // Determine the visible grid bounds based on the viewport to avoid rendering
     // off-screen cells.
-    final int startCol = ((viewportRect.left - grid.originX) / grid.cellSize).floor().clamp(0, grid.columns - 1);
-    final int endCol = ((viewportRect.right - grid.originX) / grid.cellSize).floor().clamp(0, grid.columns - 1);
-    final int startRow = ((viewportRect.top - grid.originY) / grid.cellSize).floor().clamp(0, grid.rows - 1);
-    final int endRow = ((viewportRect.bottom - grid.originY) / grid.cellSize).floor().clamp(0, grid.rows - 1);
+    final int startCol = ((viewportRect.left - grid.originX) / grid.cellSize)
+        .floor()
+        .clamp(0, grid.columns - 1);
+    final int endCol = ((viewportRect.right - grid.originX) / grid.cellSize)
+        .floor()
+        .clamp(0, grid.columns - 1);
+    final int startRow = ((viewportRect.top - grid.originY) / grid.cellSize)
+        .floor()
+        .clamp(0, grid.rows - 1);
+    final int endRow = ((viewportRect.bottom - grid.originY) / grid.cellSize)
+        .floor()
+        .clamp(0, grid.rows - 1);
 
     for (int row = startRow; row <= endRow; row++) {
       for (int col = startCol; col <= endCol; col++) {

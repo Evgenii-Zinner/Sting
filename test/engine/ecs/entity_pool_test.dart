@@ -64,7 +64,8 @@ void main() {
 
       expect(entity2, equals(entity1));
       expect(pool.freeCount, equals(0));
-      expect(initCount, equals(beforeInitCount)); // Initializer not called again on reuse
+      expect(initCount,
+          equals(beforeInitCount)); // Initializer not called again on reuse
     });
 
     test('despawn returns false when full', () {

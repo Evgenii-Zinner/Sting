@@ -128,7 +128,8 @@ void main() {
 
       // Move to around 30 degrees (value = 30/180 = 0.166)
       // Rounded to nearest 1/4 (0.25 segments) -> 0.25 (since 0.166 > 0.125)
-      system.handlePointerMove(100 + 40 * cos(30 * pi / 180), 100 + 40 * sin(30 * pi / 180));
+      system.handlePointerMove(
+          100 + 40 * cos(30 * pi / 180), 100 + 40 * sin(30 * pi / 180));
       expect(dial.currentValue, closeTo(0.25, 0.001));
     });
 

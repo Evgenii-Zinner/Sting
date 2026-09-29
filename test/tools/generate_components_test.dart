@@ -60,14 +60,16 @@ void main() {
 
       final code = generateComponentCode(schema);
       expect(code, contains('extension type MixedData(ByteData data)'));
-      expect(code, contains('MixedData.create(int id, double health, int flags)'));
+      expect(
+          code, contains('MixedData.create(int id, double health, int flags)'));
       expect(code, contains('..setUint32(0, id)'));
       expect(code, contains('..setFloat32(4, health)'));
       expect(code, contains('..setUint8(8, flags)'));
       expect(code, contains('int get id => data.getUint32(0);'));
       expect(code, contains('double get health => data.getFloat32(4);'));
       expect(code, contains('int get flags => data.getUint8(8);'));
-      expect(code, contains('set flags(int value) => data.setUint8(8, value);'));
+      expect(
+          code, contains('set flags(int value) => data.setUint8(8, value);'));
     });
   });
 }

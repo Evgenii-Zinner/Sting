@@ -22,7 +22,8 @@ void main() {
     }
 
     test('rectangular grid diffuses correctly and conserves mass', () {
-      final grid = GridDiffusion.create(columns: 3, rows: 3, diffusionRate: 1.0);
+      final grid =
+          GridDiffusion.create(columns: 3, rows: 3, diffusionRate: 1.0);
 
       // Setup a hot spot in the center
       // 0 0 0
@@ -47,11 +48,16 @@ void main() {
       // delta = 2.25 - 0.0 = 2.25
       // new_val = 0.0 + 2.25 * 1.0 = 2.25
 
-      expect(grid.getValue(1, 1), closeTo(0.0, 0.001), reason: 'Center should diffuse outward completely at rate 1.0');
-      expect(grid.getValue(1, 0), closeTo(2.25, 0.001), reason: 'Top neighbor should receive heat');
-      expect(grid.getValue(1, 2), closeTo(2.25, 0.001), reason: 'Bottom neighbor should receive heat');
-      expect(grid.getValue(0, 1), closeTo(2.25, 0.001), reason: 'Left neighbor should receive heat');
-      expect(grid.getValue(2, 1), closeTo(2.25, 0.001), reason: 'Right neighbor should receive heat');
+      expect(grid.getValue(1, 1), closeTo(0.0, 0.001),
+          reason: 'Center should diffuse outward completely at rate 1.0');
+      expect(grid.getValue(1, 0), closeTo(2.25, 0.001),
+          reason: 'Top neighbor should receive heat');
+      expect(grid.getValue(1, 2), closeTo(2.25, 0.001),
+          reason: 'Bottom neighbor should receive heat');
+      expect(grid.getValue(0, 1), closeTo(2.25, 0.001),
+          reason: 'Left neighbor should receive heat');
+      expect(grid.getValue(2, 1), closeTo(2.25, 0.001),
+          reason: 'Right neighbor should receive heat');
 
       // Corners should remain 0 after 1 step
       expect(grid.getValue(0, 0), closeTo(0.0, 0.001));
@@ -62,7 +68,8 @@ void main() {
     });
 
     test('hexagonal grid diffuses correctly and conserves mass', () {
-      final grid = GridDiffusion.create(columns: 3, rows: 3, isHexagonal: true, diffusionRate: 1.0);
+      final grid = GridDiffusion.create(
+          columns: 3, rows: 3, isHexagonal: true, diffusionRate: 1.0);
 
       // Setup a hot spot in the center
       // Row 0 (even): 0 0 0
@@ -103,7 +110,8 @@ void main() {
     });
 
     test('adiabatic boundary works correctly on corners', () {
-      final grid = GridDiffusion.create(columns: 2, rows: 2, diffusionRate: 1.0);
+      final grid =
+          GridDiffusion.create(columns: 2, rows: 2, diffusionRate: 1.0);
 
       // Hot spot in top-left corner
       // 10 0

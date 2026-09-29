@@ -109,7 +109,8 @@ class ParticleSystem {
         if (lifeRatio > 1.0) lifeRatio = 1.0;
 
         // Interpolate Color
-        emitter.setParticleColor(p, _lerpColor(startColor, endColor, lifeRatio));
+        emitter.setParticleColor(
+            p, _lerpColor(startColor, endColor, lifeRatio));
 
         // Interpolate Scale
         double currentScale;
@@ -117,7 +118,9 @@ class ParticleSystem {
           double t = midScaleRatio > 0.0 ? lifeRatio / midScaleRatio : 1.0;
           currentScale = startScale + (midScale - startScale) * t;
         } else {
-          double t = midScaleRatio < 1.0 ? (lifeRatio - midScaleRatio) / (1.0 - midScaleRatio) : 1.0;
+          double t = midScaleRatio < 1.0
+              ? (lifeRatio - midScaleRatio) / (1.0 - midScaleRatio)
+              : 1.0;
           currentScale = midScale + (endScale - midScale) * t;
         }
         emitter.setParticleScale(p, currentScale);
@@ -213,4 +216,3 @@ class ParticleSystem {
     }
   }
 }
-

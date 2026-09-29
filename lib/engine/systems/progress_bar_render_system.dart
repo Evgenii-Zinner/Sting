@@ -63,8 +63,10 @@ class ProgressBarRenderSystem {
           if (viewport != null) {
             final scale = viewport.zoom;
             // Prevent sub-pixel jitter
-            renderX = ((renderX - viewport.x) * scale).roundToDouble() / scale + viewport.x;
-            renderY = ((renderY - viewport.y) * scale).roundToDouble() / scale + viewport.y;
+            renderX = ((renderX - viewport.x) * scale).roundToDouble() / scale +
+                viewport.x;
+            renderY = ((renderY - viewport.y) * scale).roundToDouble() / scale +
+                viewport.y;
           }
         }
       }
@@ -78,13 +80,16 @@ class ProgressBarRenderSystem {
       if (_bgPaint.color.toARGB32() != bgCol) _bgPaint.color = Color(bgCol);
 
       final ghostCol = bar.ghostColorHex.toInt();
-      if (_ghostPaint.color.toARGB32() != ghostCol) _ghostPaint.color = Color(ghostCol);
+      if (_ghostPaint.color.toARGB32() != ghostCol)
+        _ghostPaint.color = Color(ghostCol);
 
       final fillCol = bar.fillColorHex.toInt();
-      if (_fillPaint.color.toARGB32() != fillCol) _fillPaint.color = Color(fillCol);
+      if (_fillPaint.color.toARGB32() != fillCol)
+        _fillPaint.color = Color(fillCol);
 
       final borderCol = bar.borderColorHex.toInt();
-      if (_borderPaint.color.toARGB32() != borderCol) _borderPaint.color = Color(borderCol);
+      if (_borderPaint.color.toARGB32() != borderCol)
+        _borderPaint.color = Color(borderCol);
 
       _borderPaint.strokeWidth = bar.borderWidth;
 
@@ -105,12 +110,14 @@ class ProgressBarRenderSystem {
         canvas.drawRRect(bgRRect, _bgPaint);
 
         if (visualRatio > targetRatio && ghostWidth > 0) {
-          final ghostRRect = RRect.fromLTRBR(0, 0, ghostWidth, h, Radius.circular(r));
+          final ghostRRect =
+              RRect.fromLTRBR(0, 0, ghostWidth, h, Radius.circular(r));
           canvas.drawRRect(ghostRRect, _ghostPaint);
         }
 
         if (fillWidth > 0) {
-          final fillRRect = RRect.fromLTRBR(0, 0, fillWidth, h, Radius.circular(r));
+          final fillRRect =
+              RRect.fromLTRBR(0, 0, fillWidth, h, Radius.circular(r));
           canvas.drawRRect(fillRRect, _fillPaint);
         }
 

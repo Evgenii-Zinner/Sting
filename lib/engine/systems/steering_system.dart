@@ -53,7 +53,8 @@ class SteeringSystem {
         double steerForceY = desiredVy - velocity.dy;
 
         // Limit steering force to maxForce
-        final double steerDistSq = steerForceX * steerForceX + steerForceY * steerForceY;
+        final double steerDistSq =
+            steerForceX * steerForceX + steerForceY * steerForceY;
         if (steerDistSq > steering.maxForce * steering.maxForce) {
           final double steerDist = sqrt(steerDistSq);
           steerForceX = (steerForceX / steerDist) * steering.maxForce;
@@ -66,7 +67,8 @@ class SteeringSystem {
         velocity.dy += steerForceY * dt;
 
         // Limit velocity to maxSpeed
-        final double velSq = velocity.dx * velocity.dx + velocity.dy * velocity.dy;
+        final double velSq =
+            velocity.dx * velocity.dx + velocity.dy * velocity.dy;
         if (velSq > steering.maxSpeed * steering.maxSpeed) {
           final double speed = sqrt(velSq);
           velocity.dx = (velocity.dx / speed) * steering.maxSpeed;
@@ -75,20 +77,20 @@ class SteeringSystem {
       } else {
         // We are exactly at the target. If arrive, stop.
         if (steering.behavior == Steering.behaviorArrive) {
-           double steerForceX = -velocity.dx;
-           double steerForceY = -velocity.dy;
+          double steerForceX = -velocity.dx;
+          double steerForceY = -velocity.dy;
 
-           final double steerDistSq = steerForceX * steerForceX + steerForceY * steerForceY;
-           if (steerDistSq > steering.maxForce * steering.maxForce) {
-             final double steerDist = sqrt(steerDistSq);
-             steerForceX = (steerForceX / steerDist) * steering.maxForce;
-             steerForceY = (steerForceY / steerDist) * steering.maxForce;
-           }
-           velocity.dx += steerForceX * dt;
-           velocity.dy += steerForceY * dt;
+          final double steerDistSq =
+              steerForceX * steerForceX + steerForceY * steerForceY;
+          if (steerDistSq > steering.maxForce * steering.maxForce) {
+            final double steerDist = sqrt(steerDistSq);
+            steerForceX = (steerForceX / steerDist) * steering.maxForce;
+            steerForceY = (steerForceY / steerDist) * steering.maxForce;
+          }
+          velocity.dx += steerForceX * dt;
+          velocity.dy += steerForceY * dt;
         }
       }
     });
   }
 }
-

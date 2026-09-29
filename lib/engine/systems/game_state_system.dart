@@ -43,4 +43,3 @@ class GameStateSystem {
     return currentState == GameState.statePlaying;
   }
 }
-

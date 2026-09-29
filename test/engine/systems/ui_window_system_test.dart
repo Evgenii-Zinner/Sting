@@ -44,12 +44,14 @@ void main() {
       expect(window.dragOffsetY, 10.0);
 
       // Move pointer
-      system.handlePointerMove(50.0, 50.0, screenWidth: 800.0, screenHeight: 600.0);
+      system.handlePointerMove(50.0, 50.0,
+          screenWidth: 800.0, screenHeight: 600.0);
       expect(window.x, 40.0);
       expect(window.y, 40.0);
 
       // Clamp test
-      system.handlePointerMove(900.0, 700.0, screenWidth: 800.0, screenHeight: 600.0);
+      system.handlePointerMove(900.0, 700.0,
+          screenWidth: 800.0, screenHeight: 600.0);
       expect(window.x, 700.0); // 800 - 100
       expect(window.y, 500.0); // 600 - 100
 

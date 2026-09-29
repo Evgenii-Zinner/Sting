@@ -13,11 +13,13 @@ class FSMSystem {
 
   /// Optional callback executed when an entity enters a new state.
   /// Callback signature: void onStateEnter(int entity, EntityFSM fsm, int previousState, int newState)
-  final void Function(int entity, EntityFSM fsm, int previousState, int newState)? onStateEnter;
+  final void Function(
+      int entity, EntityFSM fsm, int previousState, int newState)? onStateEnter;
 
   /// Optional callback executed when an entity exits its current state.
   /// Callback signature: void onStateExit(int entity, EntityFSM fsm, int currentState, int nextState)
-  final void Function(int entity, EntityFSM fsm, int currentState, int nextState)? onStateExit;
+  final void Function(
+      int entity, EntityFSM fsm, int currentState, int nextState)? onStateExit;
 
   late final Query1<EntityFSM> _query;
 
@@ -59,4 +61,3 @@ class FSMSystem {
     });
   }
 }
-

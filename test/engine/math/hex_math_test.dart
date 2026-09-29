@@ -88,7 +88,8 @@ void main() {
       expect(r2, -1);
     });
 
-    test('neighbor functions return correct relative and absolute coordinates', () {
+    test('neighbor functions return correct relative and absolute coordinates',
+        () {
       expect(HexMath.neighborDq(0), 1);
       expect(HexMath.neighborDr(0), 0);
 

@@ -153,7 +153,8 @@ class RadialDialSystem {
       final handleX = dial.centerX + cos(currentAngle) * radius;
       final handleY = dial.centerY + sin(currentAngle) * radius;
 
-      canvas.drawCircle(Offset(handleX, handleY), strokeWidth / 2.0, _handlePaint);
+      canvas.drawCircle(
+          Offset(handleX, handleY), strokeWidth / 2.0, _handlePaint);
     }
   }
 }

@@ -38,7 +38,8 @@ void main() {
       );
     });
 
-    test('Separates overlapping AABBs based on mass (Positional Correction)', () {
+    test('Separates overlapping AABBs based on mass (Positional Correction)',
+        () {
       positionCaste.add(1, Position.create(10, 10));
       boundingBoxCaste.add(1, BoundingBox.create(10, 10));
       massCaste.add(1, Mass.create(10)); // invMass = 0.1
@@ -100,7 +101,8 @@ void main() {
       velocityCaste.add(1, Velocity.create(10, 10));
       grid.insertPoint(1, 15, 15);
 
-      positionCaste.add(2, Position.create(15, 10)); // Overlaps by 5, normal is X=1
+      positionCaste.add(
+          2, Position.create(15, 10)); // Overlaps by 5, normal is X=1
       boundingBoxCaste.add(2, BoundingBox.create(10, 10));
       massCaste.add(2, Mass.create(0, friction: 0.5)); // infinite mass
       velocityCaste.add(2, Velocity.create(0, 0));

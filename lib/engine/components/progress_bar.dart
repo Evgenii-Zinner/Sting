@@ -107,5 +107,6 @@ extension type ProgressBar(Float32List data) {
   set catchUpSpeed(double value) => data[15] = value;
 
   /// Helper getter for the ratio of currentValue to maxValue, clamped between 0 and 1.
-  double get ratio => (currentValue / (maxValue > 0 ? maxValue : 1.0)).clamp(0.0, 1.0);
+  double get ratio =>
+      (currentValue / (maxValue > 0 ? maxValue : 1.0)).clamp(0.0, 1.0);
 }

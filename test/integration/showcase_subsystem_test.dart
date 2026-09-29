@@ -34,28 +34,38 @@ class MockCanvas extends Fake implements Canvas {
 }
 
 void main() {
-  test('Integration: Subsystem Interaction (Diffusion -> AI -> Pathfinding -> Shader)', () async {
+  test(
+      'Integration: Subsystem Interaction (Diffusion -> AI -> Pathfinding -> Shader)',
+      () async {
     final scene = Scene();
 
     scene.registerCaste<Position>('Position', ComponentStorage<Position>(10));
-    scene.registerCaste<HexTilemap>('HexTilemap', ComponentStorage<HexTilemap>(10));
-    scene.registerCaste<MovementQueue>('MovementQueue', ComponentStorage<MovementQueue>(10));
-    scene.registerCaste<UtilityAI>('UtilityAI', ComponentStorage<UtilityAI>(10));
-    scene.registerCaste<GridDiffusion>('GridDiffusion', ComponentStorage<GridDiffusion>(10));
-    scene.registerCaste<ShaderMaterial>('ShaderMaterial', ComponentStorage<ShaderMaterial>(10));
+    scene.registerCaste<HexTilemap>(
+        'HexTilemap', ComponentStorage<HexTilemap>(10));
+    scene.registerCaste<MovementQueue>(
+        'MovementQueue', ComponentStorage<MovementQueue>(10));
+    scene.registerCaste<UtilityAI>(
+        'UtilityAI', ComponentStorage<UtilityAI>(10));
+    scene.registerCaste<GridDiffusion>(
+        'GridDiffusion', ComponentStorage<GridDiffusion>(10));
+    scene.registerCaste<ShaderMaterial>(
+        'ShaderMaterial', ComponentStorage<ShaderMaterial>(10));
 
     final entity = scene.createEntity();
 
     // 1. Initial State Setup
-    final gridDiffusion = GridDiffusion.create(columns: 5, rows: 5, diffusionRate: 0.25);
+    final gridDiffusion =
+        GridDiffusion.create(columns: 5, rows: 5, diffusionRate: 0.25);
     gridDiffusion.setValueAt(12, 1.0); // Heat at center
     scene.getCaste<GridDiffusion>('GridDiffusion').add(entity, gridDiffusion);
 
     final utilityAi = UtilityAI.create(0, 0, 0, 0, 2);
     // Task 0: Stay idle (Base tension 0.1)
-    utilityAi.tension[0] = 0.1; utilityAi.damping[0] = 0.0;
+    utilityAi.tension[0] = 0.1;
+    utilityAi.damping[0] = 0.0;
     // Task 1: Flee heat (Tension will be driven by diffusion)
-    utilityAi.tension[1] = 0.0; utilityAi.damping[1] = 0.1;
+    utilityAi.tension[1] = 0.0;
+    utilityAi.damping[1] = 0.1;
     scene.getCaste<UtilityAI>('UtilityAI').add(entity, utilityAi);
 
     final movementQueue = MovementQueue.create(10);
@@ -63,7 +73,9 @@ void main() {
 
     // ShaderMaterial with 1 uniform (heat intensity)
     final shaderMaterial = ShaderMaterial(null, 1);
-    scene.getCaste<ShaderMaterial>('ShaderMaterial').add(entity, shaderMaterial);
+    scene
+        .getCaste<ShaderMaterial>('ShaderMaterial')
+        .add(entity, shaderMaterial);
 
     final hexTilemap = HexTilemap.create(2, 1);
     hexTilemap.setTile(0, 0, 1);
@@ -72,10 +84,12 @@ void main() {
     scene.getCaste<Position>('Position').add(entity, Position.create(0.0, 0.0));
 
     // 2. Diffusion Step
-    final diffusionSystem = DiffusionSystem(diffusionCaste: scene.getCaste<GridDiffusion>('GridDiffusion'));
+    final diffusionSystem = DiffusionSystem(
+        diffusionCaste: scene.getCaste<GridDiffusion>('GridDiffusion'));
     diffusionSystem.update();
 
-    final updatedGrid = scene.getCaste<GridDiffusion>('GridDiffusion').get(entity)!;
+    final updatedGrid =
+        scene.getCaste<GridDiffusion>('GridDiffusion').get(entity)!;
     final centerHeat = updatedGrid.getValueAt(12); // ~0.75 after diffusion
     expect(centerHeat, greaterThan(0.0));
 
@@ -109,19 +123,83 @@ void main() {
     expect(found, isTrue);
 
     // 5. Shader/Render Step (Driven by State)
-    final shaderComp = scene.getCaste<ShaderMaterial>('ShaderMaterial').get(entity)!;
-    final queueComp = scene.getCaste<MovementQueue>('MovementQueue').get(entity)!;
+    final shaderComp =
+        scene.getCaste<ShaderMaterial>('ShaderMaterial').get(entity)!;
+    final queueComp =
+        scene.getCaste<MovementQueue>('MovementQueue').get(entity)!;
 
     // Pass the path length to the shader as a uniform
     shaderComp.uniforms[0] = queueComp.count.toDouble();
     expect(shaderComp.uniforms[0], greaterThan(0));
 
     final Uint8List transparent1x1Png = Uint8List.fromList([
-      0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52,
-      0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x08, 0x06, 0x00, 0x00, 0x00, 0x1f, 0x15, 0xc4,
-      0x89, 0x00, 0x00, 0x00, 0x0a, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9c, 0x63, 0x00, 0x01, 0x00, 0x00,
-      0x05, 0x00, 0x01, 0x0d, 0x0a, 0x2d, 0xb4, 0x00, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4e, 0x44, 0xae,
-      0x42, 0x60, 0x82
+      0x89,
+      0x50,
+      0x4e,
+      0x47,
+      0x0d,
+      0x0a,
+      0x1a,
+      0x0a,
+      0x00,
+      0x00,
+      0x00,
+      0x0d,
+      0x49,
+      0x48,
+      0x44,
+      0x52,
+      0x00,
+      0x00,
+      0x00,
+      0x01,
+      0x00,
+      0x00,
+      0x00,
+      0x01,
+      0x08,
+      0x06,
+      0x00,
+      0x00,
+      0x00,
+      0x1f,
+      0x15,
+      0xc4,
+      0x89,
+      0x00,
+      0x00,
+      0x00,
+      0x0a,
+      0x49,
+      0x44,
+      0x41,
+      0x54,
+      0x78,
+      0x9c,
+      0x63,
+      0x00,
+      0x01,
+      0x00,
+      0x00,
+      0x05,
+      0x00,
+      0x01,
+      0x0d,
+      0x0a,
+      0x2d,
+      0xb4,
+      0x00,
+      0x00,
+      0x00,
+      0x00,
+      0x49,
+      0x45,
+      0x4e,
+      0x44,
+      0xae,
+      0x42,
+      0x60,
+      0x82
     ]);
     final codec = await instantiateImageCodec(transparent1x1Png);
     final frame = await codec.getNextFrame();

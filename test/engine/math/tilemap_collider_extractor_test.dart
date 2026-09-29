@@ -12,7 +12,8 @@ void main() {
       // Solid tile at (1, 1)
       bool isSolid(int x, int y) => x == 1 && y == 1;
 
-      final count = extractor.extractOrthogonalAABBs(10.0, 10.0, isSolid, outBuffer);
+      final count =
+          extractor.extractOrthogonalAABBs(10.0, 10.0, isSolid, outBuffer);
 
       expect(count, 4);
       expect(outBuffer.sublist(0, 4), [10.0, 10.0, 10.0, 10.0]); // x, y, w, h
@@ -25,7 +26,8 @@ void main() {
       // Solid tiles at (0, 0), (1, 0), (2, 0)
       bool isSolid(int x, int y) => y == 0;
 
-      final count = extractor.extractOrthogonalAABBs(10.0, 10.0, isSolid, outBuffer);
+      final count =
+          extractor.extractOrthogonalAABBs(10.0, 10.0, isSolid, outBuffer);
 
       expect(count, 4);
       expect(outBuffer.sublist(0, 4), [0.0, 0.0, 30.0, 10.0]);
@@ -38,7 +40,8 @@ void main() {
       // Solid tiles at (0, 0), (0, 1), (0, 2)
       bool isSolid(int x, int y) => x == 0;
 
-      final count = extractor.extractOrthogonalAABBs(10.0, 10.0, isSolid, outBuffer);
+      final count =
+          extractor.extractOrthogonalAABBs(10.0, 10.0, isSolid, outBuffer);
 
       expect(count, 4);
       expect(outBuffer.sublist(0, 4), [0.0, 0.0, 10.0, 30.0]);
@@ -51,7 +54,8 @@ void main() {
       // Solid tiles at (0, 0), (1, 0), (0, 1), (1, 1)
       bool isSolid(int x, int y) => x < 2 && y < 2;
 
-      final count = extractor.extractOrthogonalAABBs(10.0, 10.0, isSolid, outBuffer);
+      final count =
+          extractor.extractOrthogonalAABBs(10.0, 10.0, isSolid, outBuffer);
 
       expect(count, 4);
       expect(outBuffer.sublist(0, 4), [0.0, 0.0, 20.0, 20.0]);
@@ -63,7 +67,8 @@ void main() {
 
       bool isSolid(int x, int y) => x == 0 && y == 0;
 
-      final count = extractor.extractOrthogonalAABBs(10.0, 10.0, isSolid, outBuffer);
+      final count =
+          extractor.extractOrthogonalAABBs(10.0, 10.0, isSolid, outBuffer);
 
       expect(count, 0); // Didn't write anything
     });

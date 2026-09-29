@@ -39,9 +39,15 @@ class CameraShakeSystem {
 
       if (shake > 0.0) {
         // Simple pseudo-random noise function (zero allocations)
-        double offsetX = traumaComponent.maxTranslationX * shake * _pseudoNoise(_time * traumaComponent.frequency, 1);
-        double offsetY = traumaComponent.maxTranslationY * shake * _pseudoNoise(_time * traumaComponent.frequency, 2);
-        double rotation = traumaComponent.maxRotation * shake * _pseudoNoise(_time * traumaComponent.frequency, 3);
+        double offsetX = traumaComponent.maxTranslationX *
+            shake *
+            _pseudoNoise(_time * traumaComponent.frequency, 1);
+        double offsetY = traumaComponent.maxTranslationY *
+            shake *
+            _pseudoNoise(_time * traumaComponent.frequency, 2);
+        double rotation = traumaComponent.maxRotation *
+            shake *
+            _pseudoNoise(_time * traumaComponent.frequency, 3);
 
         viewport.x += offsetX;
         viewport.y += offsetY;
@@ -74,9 +80,15 @@ class CameraShakeSystem {
 
     if (shake > 0.0) {
       // Simple pseudo-random noise function (zero allocations)
-      double offsetX = traumaComponent.maxTranslationX * shake * _pseudoNoise(_time * traumaComponent.frequency, 1);
-      double offsetY = traumaComponent.maxTranslationY * shake * _pseudoNoise(_time * traumaComponent.frequency, 2);
-      double rotation = traumaComponent.maxRotation * shake * _pseudoNoise(_time * traumaComponent.frequency, 3);
+      double offsetX = traumaComponent.maxTranslationX *
+          shake *
+          _pseudoNoise(_time * traumaComponent.frequency, 1);
+      double offsetY = traumaComponent.maxTranslationY *
+          shake *
+          _pseudoNoise(_time * traumaComponent.frequency, 2);
+      double rotation = traumaComponent.maxRotation *
+          shake *
+          _pseudoNoise(_time * traumaComponent.frequency, 3);
 
       viewport.x += offsetX;
       viewport.y += offsetY;
@@ -89,4 +101,3 @@ class CameraShakeSystem {
     return sin(t + offset * 12.345) * cos(t * 1.5 + offset * 3.1415);
   }
 }
-

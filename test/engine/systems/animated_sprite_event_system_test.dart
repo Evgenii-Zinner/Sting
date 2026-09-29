@@ -76,8 +76,7 @@ void main() {
       expect(triggerCount, 1); // Should not increase
     });
 
-    test(
-        'Trigger resets and fires again on next loop if triggerOnce is false',
+    test('Trigger resets and fires again on next loop if triggerOnce is false',
         () {
       final animation = SpriteAnimation.create(0.1, 5);
       final trigger = AnimationEventTrigger.create(2, 42, triggerOnce: false);
@@ -102,7 +101,9 @@ void main() {
       expect(triggerCount, 2);
     });
 
-    test('Trigger does not fire again on subsequent loops if triggerOnce is true', () {
+    test(
+        'Trigger does not fire again on subsequent loops if triggerOnce is true',
+        () {
       final animation = SpriteAnimation.create(0.1, 5);
       final trigger = AnimationEventTrigger.create(2, 42, triggerOnce: true);
 

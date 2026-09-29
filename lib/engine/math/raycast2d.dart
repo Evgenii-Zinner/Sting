@@ -150,9 +150,9 @@ class Raycast2D {
         } else {
           final neighborPoly = navMesh.getPolygon(neighborId);
           if (neighborPoly != null) {
-             if (poly.isTraversable && !neighborPoly.isTraversable) {
-               isBoundary = true;
-             }
+            if (poly.isTraversable && !neighborPoly.isTraversable) {
+              isBoundary = true;
+            }
           }
         }
 

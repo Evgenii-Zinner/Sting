@@ -1,7 +1,8 @@
 import 'dart:typed_data';
 
 extension type LocalTransform(Float32List data) {
-  LocalTransform.create(double lx, double ly, double localRotation, double localScaleX, double localScaleY)
+  LocalTransform.create(double lx, double ly, double localRotation,
+      double localScaleX, double localScaleY)
       : this(Float32List(5)
           ..[0] = lx
           ..[1] = ly

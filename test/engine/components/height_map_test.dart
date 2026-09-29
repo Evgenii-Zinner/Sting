@@ -86,10 +86,14 @@ void main() {
       expect(hm.sampleHeight(0.5, 0.5), closeTo(10.0, 0.0001));
 
       // Off-center
-      expect(hm.sampleHeight(0.75, 0.25), closeTo(10.0, 0.0001)); // (0.25*0 + 0.75*10)*0.75 + (0.25*10 + 0.75*20)*0.25 -> 7.5*0.75 + 17.5*0.25 = 5.625 + 4.375 = 10.0
+      expect(
+          hm.sampleHeight(0.75, 0.25),
+          closeTo(10.0,
+              0.0001)); // (0.25*0 + 0.75*10)*0.75 + (0.25*10 + 0.75*20)*0.25 -> 7.5*0.75 + 17.5*0.25 = 5.625 + 4.375 = 10.0
     });
 
-    test('analytical gradient calculation against known mathematical slopes', () {
+    test('analytical gradient calculation against known mathematical slopes',
+        () {
       final hm = HeightMap.create(
         columns: 3,
         rows: 3,

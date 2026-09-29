@@ -32,7 +32,8 @@ void main() {
 
     test('ignores camera if target entity has no position', () {
       final viewport = Viewport.create(0.0, 0.0, 1.0);
-      final cameraFollow = CameraFollow.create(targetEntity: noPositionTargetEntityId);
+      final cameraFollow =
+          CameraFollow.create(targetEntity: noPositionTargetEntityId);
 
       viewportCaste.add(cameraNoPositionEntityId, viewport);
       cameraFollowCaste.add(cameraNoPositionEntityId, cameraFollow);
@@ -47,7 +48,8 @@ void main() {
       final position = Position.create(400.0, 300.0); // Center of screen
       positionCaste.add(targetEntityId, position);
 
-      final viewport = Viewport.create(0.0, 0.0, 1.0); // Viewport center is 400, 300
+      final viewport =
+          Viewport.create(0.0, 0.0, 1.0); // Viewport center is 400, 300
       viewportCaste.add(cameraEntityId, viewport);
 
       final cameraFollow = CameraFollow.create(
@@ -72,7 +74,8 @@ void main() {
       final position = Position.create(400.0, 300.0);
       positionCaste.add(targetEntityId, position);
 
-      final viewport = Viewport.create(0.0, 0.0, 1.0); // Viewport center is 400, 300
+      final viewport =
+          Viewport.create(0.0, 0.0, 1.0); // Viewport center is 400, 300
       viewportCaste.add(cameraEntityId, viewport);
 
       final cameraFollow = CameraFollow.create(
@@ -84,8 +87,10 @@ void main() {
       cameraFollowCaste.add(cameraEntityId, cameraFollow);
 
       // Move target significantly outside deadzone
-      position.x = 500.0; // Over right deadzone bound (450) by 50. Desired center X is 450.
-      position.y = 150.0; // Under top deadzone bound (250) by 100. Desired center Y is 200.
+      position.x =
+          500.0; // Over right deadzone bound (450) by 50. Desired center X is 450.
+      position.y =
+          150.0; // Under top deadzone bound (250) by 100. Desired center Y is 200.
 
       system.update();
 
@@ -176,7 +181,7 @@ void main() {
       system.update();
       // Desired X = 0 - 400 = -400. Min X is -50, so clamped to -50
       expect(viewport.x, -50.0);
-      
+
       // Let's test the upper bound for negatives
       position.x = 1000.0;
       system.update();
@@ -211,7 +216,7 @@ void main() {
     test('updates field values on CameraFollow', () {
       final cameraFollow = CameraFollow.create(targetEntity: 5);
       expect(cameraFollow.targetEntity, 5);
-      
+
       cameraFollow.targetEntity = 10;
       expect(cameraFollow.targetEntity, 10);
 

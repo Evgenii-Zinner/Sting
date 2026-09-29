@@ -98,15 +98,21 @@ class SegmentMath {
     final double rY2 = rY + rH;
 
     return _linesIntersect(x1, y1, x2, y2, rX, rY, rX2, rY) || // Top
-           _linesIntersect(x1, y1, x2, y2, rX2, rY, rX2, rY2) || // Right
-           _linesIntersect(x1, y1, x2, y2, rX2, rY2, rX, rY2) || // Bottom
-           _linesIntersect(x1, y1, x2, y2, rX, rY2, rX, rY); // Left
+        _linesIntersect(x1, y1, x2, y2, rX2, rY, rX2, rY2) || // Right
+        _linesIntersect(x1, y1, x2, y2, rX2, rY2, rX, rY2) || // Bottom
+        _linesIntersect(x1, y1, x2, y2, rX, rY2, rX, rY); // Left
   }
 
   // Helper for line segment intersection
   static bool _linesIntersect(
-    double x1, double y1, double x2, double y2,
-    double x3, double y3, double x4, double y4,
+    double x1,
+    double y1,
+    double x2,
+    double y2,
+    double x3,
+    double y3,
+    double x4,
+    double y4,
   ) {
     final double uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) /
         ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));

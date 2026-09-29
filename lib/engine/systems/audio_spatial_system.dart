@@ -90,7 +90,7 @@ class AudioSpatialSystem {
       // Calculate stereo pan based on relative X distance
       double pan = 0.0;
       if (emitter.maxDistance > 0.0) {
-          pan = dx / emitter.maxDistance;
+        pan = dx / emitter.maxDistance;
       }
 
       if (pan < -1.0) pan = -1.0;
@@ -100,4 +100,3 @@ class AudioSpatialSystem {
     });
   }
 }
-

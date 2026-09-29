@@ -4,9 +4,12 @@ class SplineMath {
   ///
   /// The curve is defined by a start point (p0), a control point (p1), and an end point (p2).
   static (double, double) evaluateQuadraticBezier(
-    double p0x, double p0y,
-    double p1x, double p1y,
-    double p2x, double p2y,
+    double p0x,
+    double p0y,
+    double p1x,
+    double p1y,
+    double p2x,
+    double p2y,
     double t,
   ) {
     final double u = 1.0 - t;
@@ -23,10 +26,14 @@ class SplineMath {
   ///
   /// The curve is defined by a start point (p0), two control points (p1, p2), and an end point (p3).
   static (double, double) evaluateCubicBezier(
-    double p0x, double p0y,
-    double p1x, double p1y,
-    double p2x, double p2y,
-    double p3x, double p3y,
+    double p0x,
+    double p0y,
+    double p1x,
+    double p1y,
+    double p2x,
+    double p2y,
+    double p3x,
+    double p3y,
     double t,
   ) {
     final double u = 1.0 - t;
@@ -35,8 +42,10 @@ class SplineMath {
     final double uuu = uu * u;
     final double ttt = tt * t;
 
-    final double x = uuu * p0x + 3 * uu * t * p1x + 3 * u * tt * p2x + ttt * p3x;
-    final double y = uuu * p0y + 3 * uu * t * p1y + 3 * u * tt * p2y + ttt * p3y;
+    final double x =
+        uuu * p0x + 3 * uu * t * p1x + 3 * u * tt * p2x + ttt * p3x;
+    final double y =
+        uuu * p0y + 3 * uu * t * p1y + 3 * u * tt * p2y + ttt * p3y;
 
     return (x, y);
   }
@@ -45,10 +54,14 @@ class SplineMath {
   ///
   /// The curve is defined by a start point (p0), start tangent (t0), end point (p1), and end tangent (t1).
   static (double, double) evaluateHermite(
-    double p0x, double p0y,
-    double t0x, double t0y,
-    double p1x, double p1y,
-    double t1x, double t1y,
+    double p0x,
+    double p0y,
+    double t0x,
+    double t0y,
+    double p1x,
+    double p1y,
+    double t1x,
+    double t1y,
     double t,
   ) {
     final double tt = t * t;

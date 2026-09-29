@@ -109,8 +109,10 @@ void main() {
 
       final shaderMaterial = ShaderMaterial(null, 5); // Too small
 
-      expect(() => material.serializeUniforms(shaderMaterial, 0), throwsRangeError);
-      expect(() => material.serializeUniforms(shaderMaterial, -1), throwsRangeError);
+      expect(() => material.serializeUniforms(shaderMaterial, 0),
+          throwsRangeError);
+      expect(() => material.serializeUniforms(shaderMaterial, -1),
+          throwsRangeError);
     });
   });
 }

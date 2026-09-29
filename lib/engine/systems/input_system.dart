@@ -159,4 +159,3 @@ class InputSystem {
     PlatformDispatcher.instance.onPointerDataPacket = null;
   }
 }
-

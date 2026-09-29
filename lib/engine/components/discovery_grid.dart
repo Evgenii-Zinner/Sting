@@ -25,15 +25,21 @@ class DiscoveryGrid {
   /// Reveals a circle of the grid, setting intersected cells to Visible (2).
   void revealCircle(double worldX, double worldY, double radius) {
     final double radiusSq = radius * radius;
-    final int startCol = ((worldX - radius - originX) / cellSize).floor().clamp(0, columns - 1);
-    final int endCol = ((worldX + radius - originX) / cellSize).floor().clamp(0, columns - 1);
-    final int startRow = ((worldY - radius - originY) / cellSize).floor().clamp(0, rows - 1);
-    final int endRow = ((worldY + radius - originY) / cellSize).floor().clamp(0, rows - 1);
+    final int startCol =
+        ((worldX - radius - originX) / cellSize).floor().clamp(0, columns - 1);
+    final int endCol =
+        ((worldX + radius - originX) / cellSize).floor().clamp(0, columns - 1);
+    final int startRow =
+        ((worldY - radius - originY) / cellSize).floor().clamp(0, rows - 1);
+    final int endRow =
+        ((worldY + radius - originY) / cellSize).floor().clamp(0, rows - 1);
 
     for (int row = startRow; row <= endRow; row++) {
       for (int col = startCol; col <= endCol; col++) {
-        final double cellCenterX = originX + (col * cellSize) + (cellSize * 0.5);
-        final double cellCenterY = originY + (row * cellSize) + (cellSize * 0.5);
+        final double cellCenterX =
+            originX + (col * cellSize) + (cellSize * 0.5);
+        final double cellCenterY =
+            originY + (row * cellSize) + (cellSize * 0.5);
 
         final double dx = worldX - cellCenterX;
         final double dy = worldY - cellCenterY;

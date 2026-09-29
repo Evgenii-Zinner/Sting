@@ -1,4 +1,3 @@
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/math/fixed64.dart';
 import 'dart:math' as math;
@@ -92,7 +91,8 @@ void main() {
     test('sqrt', () {
       expect(Fixed64.fromDouble(4.0).sqrt().toDouble(), 2.0);
       expect(Fixed64.fromDouble(9.0).sqrt().toDouble(), 3.0);
-      expect(Fixed64.fromDouble(2.0).sqrt().toDouble(), closeTo(1.41421356, 0.0000001));
+      expect(Fixed64.fromDouble(2.0).sqrt().toDouble(),
+          closeTo(1.41421356, 0.0000001));
       expect(Fixed64.zero.sqrt().toDouble(), 0.0);
 
       expect(() => Fixed64.fromDouble(-1.0).sqrt(), throwsArgumentError);
@@ -142,14 +142,17 @@ void main() {
 
   group('FixedVec2', () {
     test('Creation and getters', () {
-      final v = FixedVec2.fromValues(Fixed64.fromDouble(1.5), Fixed64.fromDouble(2.5));
+      final v = FixedVec2.fromValues(
+          Fixed64.fromDouble(1.5), Fixed64.fromDouble(2.5));
       expect(v.x.toDouble(), 1.5);
       expect(v.y.toDouble(), 2.5);
     });
 
     test('Vector arithmetic', () {
-      final v1 = FixedVec2.fromValues(Fixed64.fromDouble(1.0), Fixed64.fromDouble(2.0));
-      final v2 = FixedVec2.fromValues(Fixed64.fromDouble(3.0), Fixed64.fromDouble(4.0));
+      final v1 = FixedVec2.fromValues(
+          Fixed64.fromDouble(1.0), Fixed64.fromDouble(2.0));
+      final v2 = FixedVec2.fromValues(
+          Fixed64.fromDouble(3.0), Fixed64.fromDouble(4.0));
 
       final vSum = v1 + v2;
       expect(vSum.x.toDouble(), 4.0);

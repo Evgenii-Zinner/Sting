@@ -104,12 +104,14 @@ void main() {
     });
 
     test('update list of entities advances time only once per update call', () {
-      final trauma1 = CameraTrauma.create(trauma: 1.0, decayRate: 0.0, maxTranslationX: 10.0);
+      final trauma1 = CameraTrauma.create(
+          trauma: 1.0, decayRate: 0.0, maxTranslationX: 10.0);
       final viewport1 = Viewport.create(100.0, 100.0, 1.0);
       traumaCaste.add(1, trauma1);
       viewportCaste.add(1, viewport1);
 
-      final trauma2 = CameraTrauma.create(trauma: 1.0, decayRate: 0.0, maxTranslationX: 10.0);
+      final trauma2 = CameraTrauma.create(
+          trauma: 1.0, decayRate: 0.0, maxTranslationX: 10.0);
       final viewport2 = Viewport.create(100.0, 100.0, 1.0);
       traumaCaste.add(2, trauma2);
       viewportCaste.add(2, viewport2);

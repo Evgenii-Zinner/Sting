@@ -225,7 +225,8 @@ class GridPathfinder {
     if (nodeState[neighbor] == 0 || tentativeG < gScore[neighbor]) {
       cameFrom[neighbor] = current;
       gScore[neighbor] = tentativeG;
-      fScore[neighbor] = tentativeG + _heuristic(neighbor, target, columns, type);
+      fScore[neighbor] =
+          tentativeG + _heuristic(neighbor, target, columns, type);
 
       if (nodeState[neighbor] == 0) {
         nodeState[neighbor] = 1;
@@ -243,11 +244,13 @@ class GridPathfinder {
     final int by = b ~/ columns;
 
     if (type == GridType.rectangular) {
-      return (ax - bx).abs().toDouble() + (ay - by).abs().toDouble(); // Manhattan
+      return (ax - bx).abs().toDouble() +
+          (ay - by).abs().toDouble(); // Manhattan
     } else if (type == GridType.rectangular8Way) {
       final double dx = (ax - bx).abs().toDouble();
       final double dy = (ay - by).abs().toDouble();
-      return math.max(dx, dy) + (1.41421356237 - 1.0) * math.min(dx, dy); // Octile
+      return math.max(dx, dy) +
+          (1.41421356237 - 1.0) * math.min(dx, dy); // Octile
     } else {
       return HexMath.hexDistance(ax, ay, bx, by).toDouble();
     }
@@ -270,8 +273,13 @@ class GridPathfinder {
   static const List<int> _rectDx = [0, 1, 0, -1, 1, 1, -1, -1];
   static const List<int> _rectDy = [-1, 0, 1, 0, -1, 1, -1, 1];
   static const List<double> _rectCost = [
-    1.0, 1.0, 1.0, 1.0,
-    1.41421356237, 1.41421356237, 1.41421356237, 1.41421356237
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.41421356237,
+    1.41421356237,
+    1.41421356237,
+    1.41421356237
   ];
 }
-

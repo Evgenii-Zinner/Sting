@@ -52,7 +52,8 @@ class PhysicsResponseSystem {
     _contactDepth = Float32List(maxContacts);
   }
 
-  void _addContact(int entityA, int entityB, double nx, double ny, double depth) {
+  void _addContact(
+      int entityA, int entityB, double nx, double ny, double depth) {
     if (_contactCount < _maxContacts) {
       _contactEntityA[_contactCount] = entityA;
       _contactEntityB[_contactCount] = entityB;
@@ -77,7 +78,8 @@ class PhysicsResponseSystem {
   void _findAABBAABBContacts() {
     if (_boundingBoxCaste == null) return;
 
-    final query = Query2<Position, BoundingBox>(_positionCaste, _boundingBoxCaste);
+    final query =
+        Query2<Position, BoundingBox>(_positionCaste, _boundingBoxCaste);
 
     query.forEach((entityA, posA, boxA) {
       _grid.queryAABB(posA.x, posA.y, boxA.width, boxA.height, (entityB) {
@@ -87,13 +89,11 @@ class PhysicsResponseSystem {
         if (boxB != null) {
           final posB = _positionCaste.get(entityB);
           if (posB != null) {
-            testAABBAABB(
-              posA.x, posA.y, boxA.width, boxA.height,
-              posB.x, posB.y, boxB.width, boxB.height,
-              _result
-            );
+            testAABBAABB(posA.x, posA.y, boxA.width, boxA.height, posB.x,
+                posB.y, boxB.width, boxB.height, _result);
             if (_result.intersects) {
-              _addContact(entityA, entityB, _result.normalX, _result.normalY, _result.depth);
+              _addContact(entityA, entityB, _result.normalX, _result.normalY,
+                  _result.depth);
             }
           }
         }
@@ -105,24 +105,25 @@ class PhysicsResponseSystem {
   void _findCircleCircleContacts() {
     if (_circleColliderCaste == null) return;
 
-    final query = Query2<Position, CircleCollider>(_positionCaste, _circleColliderCaste);
+    final query =
+        Query2<Position, CircleCollider>(_positionCaste, _circleColliderCaste);
 
     query.forEach((entityA, posA, circleA) {
       final diameter = circleA.radius * 2;
-      _grid.queryAABB(posA.x - circleA.radius, posA.y - circleA.radius, diameter, diameter, (entityB) {
+      _grid.queryAABB(
+          posA.x - circleA.radius, posA.y - circleA.radius, diameter, diameter,
+          (entityB) {
         if (entityA >= entityB) return true;
 
         final circleB = _circleColliderCaste.get(entityB);
         if (circleB != null) {
           final posB = _positionCaste.get(entityB);
           if (posB != null) {
-            testCircleCircle(
-              posA.x, posA.y, circleA.radius,
-              posB.x, posB.y, circleB.radius,
-              _result
-            );
+            testCircleCircle(posA.x, posA.y, circleA.radius, posB.x, posB.y,
+                circleB.radius, _result);
             if (_result.intersects) {
-              _addContact(entityA, entityB, _result.normalX, _result.normalY, _result.depth);
+              _addContact(entityA, entityB, _result.normalX, _result.normalY,
+                  _result.depth);
             }
           }
         }
@@ -134,7 +135,8 @@ class PhysicsResponseSystem {
   void _findAABBCircleContacts() {
     if (_boundingBoxCaste == null || _circleColliderCaste == null) return;
 
-    final query = Query2<Position, BoundingBox>(_positionCaste, _boundingBoxCaste);
+    final query =
+        Query2<Position, BoundingBox>(_positionCaste, _boundingBoxCaste);
 
     query.forEach((entityA, posA, boxA) {
       _grid.queryAABB(posA.x, posA.y, boxA.width, boxA.height, (entityB) {
@@ -144,13 +146,11 @@ class PhysicsResponseSystem {
         if (circleB != null) {
           final posB = _positionCaste.get(entityB);
           if (posB != null) {
-            testAABBCircle(
-              posA.x, posA.y, boxA.width, boxA.height,
-              posB.x, posB.y, circleB.radius,
-              _result
-            );
+            testAABBCircle(posA.x, posA.y, boxA.width, boxA.height, posB.x,
+                posB.y, circleB.radius, _result);
             if (_result.intersects) {
-              _addContact(entityA, entityB, _result.normalX, _result.normalY, _result.depth);
+              _addContact(entityA, entityB, _result.normalX, _result.normalY,
+                  _result.depth);
             }
           }
         }
@@ -172,7 +172,8 @@ class PhysicsResponseSystem {
       final massA = _massCaste.get(entityA);
       final massB = _massCaste.get(entityB);
 
-      if (posA == null || posB == null || massA == null || massB == null) continue;
+      if (posA == null || posB == null || massA == null || massB == null)
+        continue;
 
       final invMassA = massA.inverseMass;
       final invMassB = massB.inverseMass;
@@ -185,7 +186,8 @@ class PhysicsResponseSystem {
       // We apply a small slop to prevent jitter and a percent factor to smooth it.
       const double slop = 0.01;
       const double percent = 0.8; // 80% resolution per step
-      final double correctionMagnitude = math.max(depth - slop, 0.0) / totalInvMass * percent;
+      final double correctionMagnitude =
+          math.max(depth - slop, 0.0) / totalInvMass * percent;
 
       final cx = nx * correctionMagnitude;
       final cy = ny * correctionMagnitude;
@@ -250,7 +252,8 @@ class PhysicsResponseSystem {
         jt /= totalInvMass;
 
         // Clamp friction using Coulomb's law (mu * normal force)
-        final mu = math.sqrt(massA.friction * massA.friction + massB.friction * massB.friction);
+        final mu = math.sqrt(
+            massA.friction * massA.friction + massB.friction * massB.friction);
 
         double frictionImpulseX;
         double frictionImpulseY;
@@ -272,4 +275,3 @@ class PhysicsResponseSystem {
     }
   }
 }
-

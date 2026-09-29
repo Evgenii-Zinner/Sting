@@ -67,7 +67,8 @@ void main() {
     expect(emitter.activeParticles, 0);
   });
 
-  test('ParticleSystem handles scale correctly with edge case midScaleRatios', () {
+  test('ParticleSystem handles scale correctly with edge case midScaleRatios',
+      () {
     final positions = ComponentStorage<Position>(100);
     final emitters = ComponentStorage<ParticleEmitter>(100);
 

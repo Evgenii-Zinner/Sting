@@ -44,7 +44,8 @@ void main() {
 
       // Child local transform
       parentCaste.add(childId, Parent.create(parentId));
-      localTransformCaste.add(childId, LocalTransform.create(5.0, 0.0, math.pi / 2, 1.5, 1.5));
+      localTransformCaste.add(
+          childId, LocalTransform.create(5.0, 0.0, math.pi / 2, 1.5, 1.5));
       positionCaste.add(childId, Position.create(0.0, 0.0));
       rotationCaste.add(childId, Rotation.create(0.0));
       scaleCaste.add(childId, Scale.create(1.0, 1.0));
@@ -88,14 +89,16 @@ void main() {
 
       // Child
       parentCaste.add(childId, Parent.create(rootId));
-      localTransformCaste.add(childId, LocalTransform.create(50.0, 0.0, 0.0, 1.0, 1.0));
+      localTransformCaste.add(
+          childId, LocalTransform.create(50.0, 0.0, 0.0, 1.0, 1.0));
       positionCaste.add(childId, Position.create(0.0, 0.0));
       rotationCaste.add(childId, Rotation.create(0.0));
       scaleCaste.add(childId, Scale.create(1.0, 1.0));
 
       // GrandChild - We add it BEFORE the child in the hierarchy to test out-of-order resolution
       parentCaste.add(grandChildId, Parent.create(childId));
-      localTransformCaste.add(grandChildId, LocalTransform.create(0.0, 50.0, 0.0, 1.0, 1.0));
+      localTransformCaste.add(
+          grandChildId, LocalTransform.create(0.0, 50.0, 0.0, 1.0, 1.0));
       positionCaste.add(grandChildId, Position.create(0.0, 0.0));
       rotationCaste.add(grandChildId, Rotation.create(0.0));
       scaleCaste.add(grandChildId, Scale.create(1.0, 1.0));
@@ -117,12 +120,14 @@ void main() {
 
       // A is child of B
       parentCaste.add(entityA, Parent.create(entityB));
-      localTransformCaste.add(entityA, LocalTransform.create(10.0, 0.0, 0.0, 1.0, 1.0));
+      localTransformCaste.add(
+          entityA, LocalTransform.create(10.0, 0.0, 0.0, 1.0, 1.0));
       positionCaste.add(entityA, Position.create(0.0, 0.0));
 
       // B is child of A
       parentCaste.add(entityB, Parent.create(entityA));
-      localTransformCaste.add(entityB, LocalTransform.create(0.0, 10.0, 0.0, 1.0, 1.0));
+      localTransformCaste.add(
+          entityB, LocalTransform.create(0.0, 10.0, 0.0, 1.0, 1.0));
       positionCaste.add(entityB, Position.create(0.0, 0.0));
 
       // Should not throw StackOverflowError

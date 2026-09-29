@@ -5,7 +5,8 @@ import 'dart:typed_data';
 /// Index 0: targetUiEntityId, Index 1: offsetX, Index 2: offsetY
 extension type WorldUI(Float32List data) {
   /// Creates a new WorldUI component mapping to [targetUiEntityId].
-  WorldUI.create(double targetUiEntityId, [double offsetX = 0.0, double offsetY = 0.0])
+  WorldUI.create(double targetUiEntityId,
+      [double offsetX = 0.0, double offsetY = 0.0])
       : this(Float32List(3)
           ..[0] = targetUiEntityId
           ..[1] = offsetX

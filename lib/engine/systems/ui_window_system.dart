@@ -40,7 +40,8 @@ class UIWindowSystem {
       }
     }
 
-    if (handled) return true; // prevent click-through to buttons below a dragged window
+    if (handled)
+      return true; // prevent click-through to buttons below a dragged window
 
     // Now check buttons
     for (int i = 0; i < buttons.length; i++) {
@@ -63,7 +64,8 @@ class UIWindowSystem {
     return handled;
   }
 
-  void handlePointerMove(double px, double py, {double screenWidth = 10000.0, double screenHeight = 10000.0}) {
+  void handlePointerMove(double px, double py,
+      {double screenWidth = 10000.0, double screenHeight = 10000.0}) {
     if (_draggedWindow != -1) {
       final window = windows.get(_draggedWindow);
       if (window != null && window.isDragging == 1.0) {
@@ -73,8 +75,10 @@ class UIWindowSystem {
         // Clamp to screen
         if (newX < 0) newX = 0;
         if (newY < 0) newY = 0;
-        if (newX + window.width > screenWidth) newX = screenWidth - window.width;
-        if (newY + window.height > screenHeight) newY = screenHeight - window.height;
+        if (newX + window.width > screenWidth)
+          newX = screenWidth - window.width;
+        if (newY + window.height > screenHeight)
+          newY = screenHeight - window.height;
 
         window.x = newX;
         window.y = newY;
@@ -93,7 +97,8 @@ class UIWindowSystem {
           px <= bx + button.width &&
           py >= by &&
           py <= by + button.height) {
-        if (button.state != 3.0) { // Not disabled
+        if (button.state != 3.0) {
+          // Not disabled
           button.state = 1.0; // Hovered
         }
       } else {
@@ -118,7 +123,8 @@ class UIWindowSystem {
       final bx = button.relativeX;
       final by = button.relativeY;
 
-      if (button.state == 2.0) { // Was pressed
+      if (button.state == 2.0) {
+        // Was pressed
         if (px >= bx &&
             px <= bx + button.width &&
             py >= by &&
@@ -140,24 +146,22 @@ class UIWindowSystem {
       // Background
       _windowBgPaint.color = Color(window.backgroundColorHex.toInt());
       canvas.drawRRect(
-        RRect.fromRectAndRadius(
-          Rect.fromLTWH(window.x, window.y, window.width, window.height),
-          Radius.circular(window.borderRadius)
-        ),
-        _windowBgPaint
-      );
+          RRect.fromRectAndRadius(
+              Rect.fromLTWH(window.x, window.y, window.width, window.height),
+              Radius.circular(window.borderRadius)),
+          _windowBgPaint);
 
       // Title Bar
       _titleBarBgPaint.color = Color(window.titleBarColorHex.toInt());
       // Only rounded top corners for title bar
       canvas.drawRRect(
-        RRect.fromRectAndCorners(
-          Rect.fromLTWH(window.x, window.y, window.width, window.titleBarHeight),
-          topLeft: Radius.circular(window.borderRadius),
-          topRight: Radius.circular(window.borderRadius),
-        ),
-        _titleBarBgPaint
-      );
+          RRect.fromRectAndCorners(
+            Rect.fromLTWH(
+                window.x, window.y, window.width, window.titleBarHeight),
+            topLeft: Radius.circular(window.borderRadius),
+            topRight: Radius.circular(window.borderRadius),
+          ),
+          _titleBarBgPaint);
 
       // Border
       _borderPaint.color = Color(window.borderColorHex.toInt());
@@ -165,12 +169,10 @@ class UIWindowSystem {
       // If glowing border is requested, we can simulate via elevation or shadow, but zero-allocation means we avoid new Paint objects.
       // Just drawing the border.
       canvas.drawRRect(
-        RRect.fromRectAndRadius(
-          Rect.fromLTWH(window.x, window.y, window.width, window.height),
-          Radius.circular(window.borderRadius)
-        ),
-        _borderPaint
-      );
+          RRect.fromRectAndRadius(
+              Rect.fromLTWH(window.x, window.y, window.width, window.height),
+              Radius.circular(window.borderRadius)),
+          _borderPaint);
     }
 
     for (int i = 0; i < buttons.length; i++) {
@@ -183,8 +185,10 @@ class UIWindowSystem {
       if (state == 3.0) colorHex = 0xFF555555; // Default disabled color (grey)
 
       _buttonPaint.color = Color(colorHex);
-      final rect = Rect.fromLTWH(button.relativeX, button.relativeY, button.width, button.height);
-      final rrect = RRect.fromRectAndRadius(rect, Radius.circular(button.borderRadius));
+      final rect = Rect.fromLTWH(
+          button.relativeX, button.relativeY, button.width, button.height);
+      final rrect =
+          RRect.fromRectAndRadius(rect, Radius.circular(button.borderRadius));
 
       canvas.drawRRect(rrect, _buttonPaint);
 

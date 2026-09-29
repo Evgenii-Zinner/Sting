@@ -22,7 +22,8 @@ void main() {
 
     test('evaluateCubicBezier', () {
       // Start point
-      var (x, y) = SplineMath.evaluateCubicBezier(0, 0, 0, 10, 10, 10, 10, 0, 0.0);
+      var (x, y) =
+          SplineMath.evaluateCubicBezier(0, 0, 0, 10, 10, 10, 10, 0, 0.0);
       expect(x, closeTo(0.0, 1e-6));
       expect(y, closeTo(0.0, 1e-6));
 
@@ -39,7 +40,8 @@ void main() {
 
     test('evaluateHermite', () {
       // Start point
-      var (x, y) = SplineMath.evaluateHermite(0, 0, 10, 10, 10, 0, -10, 10, 0.0);
+      var (x, y) =
+          SplineMath.evaluateHermite(0, 0, 10, 10, 10, 0, -10, 10, 0.0);
       expect(x, closeTo(0.0, 1e-6));
       expect(y, closeTo(0.0, 1e-6));
 

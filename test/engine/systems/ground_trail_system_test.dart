@@ -55,8 +55,10 @@ void main() {
       fieldCaste.add(1, field);
 
       final emitterEntity = 2;
-      positionCaste.add(emitterEntity, Position.create(15.0, 15.0)); // Cell (1, 1)
-      emitterCaste.add(emitterEntity, TrailEmitter.create(5.0)); // Add 5.0 per second
+      positionCaste.add(
+          emitterEntity, Position.create(15.0, 15.0)); // Cell (1, 1)
+      emitterCaste.add(
+          emitterEntity, TrailEmitter.create(5.0)); // Add 5.0 per second
 
       system.update(1.0);
       expect(field.getValue(1, 1), closeTo(5.0, 0.001));
@@ -81,7 +83,8 @@ void main() {
       field.setValue(4, 4, 10.0); // Ground value is 10.0 here
 
       final agentEntity = 3;
-      positionCaste.add(agentEntity, Position.create(35.0, 35.0)); // Cell (3, 3)
+      positionCaste.add(
+          agentEntity, Position.create(35.0, 35.0)); // Cell (3, 3)
       final feedback = TrailFeedback.create(
         baseFriction: 0.5,
         boostedFriction: 0.1,
@@ -116,7 +119,8 @@ void main() {
       field.setValue(0, 0, 48.0);
 
       final emitterEntity = 2;
-      positionCaste.add(emitterEntity, Position.create(5.0, 5.0)); // Cell (0, 0)
+      positionCaste.add(
+          emitterEntity, Position.create(5.0, 5.0)); // Cell (0, 0)
       emitterCaste.add(emitterEntity, TrailEmitter.create(10.0));
 
       system.update(1.0);
@@ -139,9 +143,12 @@ void main() {
       field.setValue(1, 1, 40.0);
 
       expect(field.sampleValue(0.0, 0.0), closeTo(10.0, 0.001));
-      expect(field.sampleValue(5.0, 0.0), closeTo(15.0, 0.001)); // midpoint horizontally
-      expect(field.sampleValue(0.0, 5.0), closeTo(20.0, 0.001)); // midpoint vertically
-      expect(field.sampleValue(5.0, 5.0), closeTo(25.0, 0.001)); // midpoint both
+      expect(field.sampleValue(5.0, 0.0),
+          closeTo(15.0, 0.001)); // midpoint horizontally
+      expect(field.sampleValue(0.0, 5.0),
+          closeTo(20.0, 0.001)); // midpoint vertically
+      expect(
+          field.sampleValue(5.0, 5.0), closeTo(25.0, 0.001)); // midpoint both
     });
   });
 }

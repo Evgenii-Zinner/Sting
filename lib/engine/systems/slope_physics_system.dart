@@ -51,7 +51,8 @@ class SlopePhysicsSystem {
         final double gDir = (vel.dx * gx + vel.dy * gy) / currentS;
 
         if (gDir > 0) {
-          final double factor = (1.0 - gDir * slopeMod.uphillResistance * dt).clamp(0.0, 1.0);
+          final double factor =
+              (1.0 - gDir * slopeMod.uphillResistance * dt).clamp(0.0, 1.0);
           vel.dx *= factor;
           vel.dy *= factor;
 

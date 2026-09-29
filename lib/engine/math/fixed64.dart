@@ -1,5 +1,3 @@
-
-
 /// Q32.32 fixed-point numeric representation.
 /// The higher 32 bits represent the integer part.
 /// The lower 32 bits represent the fractional part.
@@ -15,7 +13,8 @@ extension type const Fixed64(int rawValue) {
   static const Fixed64 halfPi = Fixed64(6746518852);
 
   // Conversion
-  static Fixed64 fromDouble(double value) => Fixed64((value * _multiplier).round());
+  static Fixed64 fromDouble(double value) =>
+      Fixed64((value * _multiplier).round());
   double toDouble() => rawValue * _divider;
 
   static Fixed64 fromInt(int value) => Fixed64(value << _fractionBits);
@@ -82,7 +81,8 @@ extension type const Fixed64(int rawValue) {
   }
 
   Fixed64 sqrt() {
-    if (rawValue < 0) throw ArgumentError('Cannot calculate square root of a negative number');
+    if (rawValue < 0)
+      throw ArgumentError('Cannot calculate square root of a negative number');
     if (rawValue == 0) return Fixed64.zero;
 
     // Use Newton-Raphson method with fixed-point math to avoid BigInt allocation
@@ -142,6 +142,8 @@ extension type const FixedVec2((Fixed64, Fixed64) _data) {
   Fixed64 get x => _data.$1;
   Fixed64 get y => _data.$2;
 
-  FixedVec2 operator +(FixedVec2 other) => FixedVec2((x + other.x, y + other.y));
-  FixedVec2 operator -(FixedVec2 other) => FixedVec2((x - other.x, y - other.y));
+  FixedVec2 operator +(FixedVec2 other) =>
+      FixedVec2((x + other.x, y + other.y));
+  FixedVec2 operator -(FixedVec2 other) =>
+      FixedVec2((x - other.x, y - other.y));
 }

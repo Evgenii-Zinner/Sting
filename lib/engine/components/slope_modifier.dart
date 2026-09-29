@@ -11,15 +11,15 @@ extension type SlopeModifier(Float32List data) {
     double gravityPull = 9.8,
     double slideThreshold = 0.3,
   }) : this(Float32List(8)
-          ..[0] = uphillResistance
-          ..[1] = downhillBoost
-          ..[2] = maxClimbableSlope
-          ..[3] = gravityPull
-          ..[4] = slideThreshold
-          ..[5] = 0.0 // currentSlopeGrade
-          ..[6] = 0.0 // currentSlopeAngle
-          ..[7] = 0.0 // isStuckOrSliding
-        );
+              ..[0] = uphillResistance
+              ..[1] = downhillBoost
+              ..[2] = maxClimbableSlope
+              ..[3] = gravityPull
+              ..[4] = slideThreshold
+              ..[5] = 0.0 // currentSlopeGrade
+              ..[6] = 0.0 // currentSlopeAngle
+              ..[7] = 0.0 // isStuckOrSliding
+            );
 
   double get uphillResistance => data[0];
   set uphillResistance(double value) => data[0] = value;

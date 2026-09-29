@@ -17,8 +17,10 @@ void main() {
 
     test('spawnStandardEnemy creates entity with all required components', () {
       // Register required castes
-      scene.registerCaste<Position>('Position', ComponentStorage<Position>(100));
-      scene.registerCaste<Velocity>('Velocity', ComponentStorage<Velocity>(100));
+      scene.registerCaste<Position>(
+          'Position', ComponentStorage<Position>(100));
+      scene.registerCaste<Velocity>(
+          'Velocity', ComponentStorage<Velocity>(100));
       scene.registerCaste<BoundingBox>(
           'BoundingBox', ComponentStorage<BoundingBox>(100));
       scene.registerCaste<Sprite>('Sprite', ComponentStorage<Sprite>(100));
@@ -57,8 +59,10 @@ void main() {
     test('spawnStandardEnemy throws StateError if a required caste is missing',
         () {
       // Register all but Sprite
-      scene.registerCaste<Position>('Position', ComponentStorage<Position>(100));
-      scene.registerCaste<Velocity>('Velocity', ComponentStorage<Velocity>(100));
+      scene.registerCaste<Position>(
+          'Position', ComponentStorage<Position>(100));
+      scene.registerCaste<Velocity>(
+          'Velocity', ComponentStorage<Velocity>(100));
       scene.registerCaste<BoundingBox>(
           'BoundingBox', ComponentStorage<BoundingBox>(100));
 
@@ -70,8 +74,10 @@ void main() {
 
     test('spawnStandardEnemy returns -1 if max entities reached', () {
       // Fast forward the EntityManager inside scene to max entities
-      scene.registerCaste<Position>('Position', ComponentStorage<Position>(100));
-      scene.registerCaste<Velocity>('Velocity', ComponentStorage<Velocity>(100));
+      scene.registerCaste<Position>(
+          'Position', ComponentStorage<Position>(100));
+      scene.registerCaste<Velocity>(
+          'Velocity', ComponentStorage<Velocity>(100));
       scene.registerCaste<BoundingBox>(
           'BoundingBox', ComponentStorage<BoundingBox>(100));
       scene.registerCaste<Sprite>('Sprite', ComponentStorage<Sprite>(100));

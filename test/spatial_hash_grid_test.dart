@@ -79,7 +79,8 @@ void main() {
     test('throws RangeError on invalid entity ID', () {
       final grid = SpatialHashGrid(64.0, 1024);
       expect(() => grid.insertPoint(-1, 0.0, 0.0), throwsRangeError);
-      expect(() => grid.insertPoint(EntityManager.maxEntities, 0.0, 0.0), throwsRangeError);
+      expect(() => grid.insertPoint(EntityManager.maxEntities, 0.0, 0.0),
+          throwsRangeError);
     });
 
     test('queryAABB accurate broad-phase collision candidates', () {

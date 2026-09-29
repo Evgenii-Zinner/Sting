@@ -34,4 +34,3 @@ class CameraSystem {
         targetPosition.y - (screenHeight / 2.0) / cameraViewport.zoom;
   }
 }
-

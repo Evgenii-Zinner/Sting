@@ -141,8 +141,10 @@ class HexTilemapRenderSystem {
           _transforms[transformIndex + 1] = 0.0; // ssin
 
           // Center the tile sprite on the hex coordinate
-          _transforms[transformIndex + 2] = startX + hexX - (tileWidth / 2.0); // tx
-          _transforms[transformIndex + 3] = startY + hexY - (tileHeight / 2.0); // ty
+          _transforms[transformIndex + 2] =
+              startX + hexX - (tileWidth / 2.0); // tx
+          _transforms[transformIndex + 3] =
+              startY + hexY - (tileHeight / 2.0); // ty
 
           // Calculate source rect
           // Assuming tileId 1 is the first tile at (0,0) in atlas
@@ -173,4 +175,3 @@ class HexTilemapRenderSystem {
     }
   }
 }
-

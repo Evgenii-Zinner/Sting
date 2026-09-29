@@ -136,11 +136,11 @@ class NavMeshPathfinder {
     }
 
     if (startPolyId == targetPolyId) {
-        outPathX[0] = startX;
-        outPathY[0] = startY;
-        outPathX[1] = targetX;
-        outPathY[1] = targetY;
-        return 2;
+      outPathX[0] = startX;
+      outPathY[0] = startY;
+      outPathX[1] = targetX;
+      outPathY[1] = targetY;
+      return 2;
     }
 
     final int totalPolys = navMesh.polygonCount;
@@ -162,7 +162,8 @@ class NavMeshPathfinder {
       if (current == -1) break;
 
       if (current == targetPolyId) {
-        return _reconstructAndSmoothPath(current, startX, startY, targetX, targetY);
+        return _reconstructAndSmoothPath(
+            current, startX, startY, targetX, targetY);
       }
 
       nodeState[current] = 2; // closed
@@ -208,8 +209,8 @@ class NavMeshPathfinder {
     return math.sqrt(dx * dx + dy * dy);
   }
 
-  int _reconstructAndSmoothPath(
-      int current, double startX, double startY, double targetX, double targetY) {
+  int _reconstructAndSmoothPath(int current, double startX, double startY,
+      double targetX, double targetY) {
     int count = 0;
     int curr = current;
     while (curr != -1) {
@@ -257,26 +258,26 @@ class NavMeshPathfinder {
       }
 
       if (sharedEdgeIdx1 != -1 && sharedEdgeIdx2 != -1) {
-         final int aNext = (sharedEdgeIdx1 + 1) % poly1.vertexCount;
+        final int aNext = (sharedEdgeIdx1 + 1) % poly1.vertexCount;
 
-         final double px1 = poly1.verticesX[sharedEdgeIdx1];
-         final double py1 = poly1.verticesY[sharedEdgeIdx1];
-         final double px2 = poly1.verticesX[aNext];
-         final double py2 = poly1.verticesY[aNext];
+        final double px1 = poly1.verticesX[sharedEdgeIdx1];
+        final double py1 = poly1.verticesY[sharedEdgeIdx1];
+        final double px2 = poly1.verticesX[aNext];
+        final double py2 = poly1.verticesY[aNext];
 
-         // Instead of looking from center to center which can be unreliable if shapes are non-axis-aligned,
-         // We can figure out left/right from the start point or previous portal.
-         // Let's use a simpler heuristic for testing: if px1 is "closer" to the left, etc.
-         // In a robust implementation, the winding is derived from polygon orientation.
-         // Let's assume poly1 is strictly CCW. If poly1 is CCW, edge px1->px2 has poly1 to its LEFT,
-         // meaning px1->px2 points "forward" along the boundary.
-         // Looking OUTWARD from poly1, right is px1, left is px2.
+        // Instead of looking from center to center which can be unreliable if shapes are non-axis-aligned,
+        // We can figure out left/right from the start point or previous portal.
+        // Let's use a simpler heuristic for testing: if px1 is "closer" to the left, etc.
+        // In a robust implementation, the winding is derived from polygon orientation.
+        // Let's assume poly1 is strictly CCW. If poly1 is CCW, edge px1->px2 has poly1 to its LEFT,
+        // meaning px1->px2 points "forward" along the boundary.
+        // Looking OUTWARD from poly1, right is px1, left is px2.
 
-         _portalRightX[portalCount] = px1;
-         _portalRightY[portalCount] = py1;
-         _portalLeftX[portalCount] = px2;
-         _portalLeftY[portalCount] = py2;
-         portalCount++;
+        _portalRightX[portalCount] = px1;
+        _portalRightY[portalCount] = py1;
+        _portalLeftX[portalCount] = px2;
+        _portalLeftY[portalCount] = py2;
+        portalCount++;
       }
     }
 
@@ -290,7 +291,8 @@ class NavMeshPathfinder {
     return _funnel(portalCount);
   }
 
-  double _triArea2(double ax, double ay, double bx, double by, double cx, double cy) {
+  double _triArea2(
+      double ax, double ay, double bx, double by, double cx, double cy) {
     return (cx - ax) * (by - ay) - (bx - ax) * (cy - ay);
   }
 
@@ -318,79 +320,89 @@ class NavMeshPathfinder {
     pathCount++;
 
     for (int i = 1; i < portalCount; i++) {
-        // If the left and right points are swapped in our naive logic, fix it for the funnel
-        double leftX = _portalLeftX[i];
-        double leftY = _portalLeftY[i];
-        double rightX = _portalRightX[i];
-        double rightY = _portalRightY[i];
+      // If the left and right points are swapped in our naive logic, fix it for the funnel
+      double leftX = _portalLeftX[i];
+      double leftY = _portalLeftY[i];
+      double rightX = _portalRightX[i];
+      double rightY = _portalRightY[i];
 
-        if (i < portalCount - 1) { // Skip target portal which has left==right
-            if (_triArea2(portalApexX, portalApexY, rightX, rightY, leftX, leftY) < 0.0) {
-               // Swap them if they are crossed from the apex's perspective
-               final double tmpX = leftX;
-               final double tmpY = leftY;
-               leftX = rightX;
-               leftY = rightY;
-               rightX = tmpX;
-               rightY = tmpY;
-            }
+      if (i < portalCount - 1) {
+        // Skip target portal which has left==right
+        if (_triArea2(portalApexX, portalApexY, rightX, rightY, leftX, leftY) <
+            0.0) {
+          // Swap them if they are crossed from the apex's perspective
+          final double tmpX = leftX;
+          final double tmpY = leftY;
+          leftX = rightX;
+          leftY = rightY;
+          rightX = tmpX;
+          rightY = tmpY;
         }
+      }
 
-        // Update right vertex
-        if (_triArea2(portalApexX, portalApexY, portalRightX, portalRightY, rightX, rightY) <= 0.0) {
-            if (portalApexX == portalRightX && portalApexY == portalRightY ||
-                _triArea2(portalApexX, portalApexY, portalLeftX, portalLeftY, rightX, rightY) > 0.0) {
-                // Tighten the funnel
-                portalRightX = rightX;
-                portalRightY = rightY;
-                rightIndex = i;
-            } else {
-                // Right over left, insert left to path and restart scan from left point
-                outPathX[pathCount] = portalLeftX;
-                outPathY[pathCount] = portalLeftY;
-                pathCount++;
+      // Update right vertex
+      if (_triArea2(portalApexX, portalApexY, portalRightX, portalRightY,
+              rightX, rightY) <=
+          0.0) {
+        if (portalApexX == portalRightX && portalApexY == portalRightY ||
+            _triArea2(portalApexX, portalApexY, portalLeftX, portalLeftY,
+                    rightX, rightY) >
+                0.0) {
+          // Tighten the funnel
+          portalRightX = rightX;
+          portalRightY = rightY;
+          rightIndex = i;
+        } else {
+          // Right over left, insert left to path and restart scan from left point
+          outPathX[pathCount] = portalLeftX;
+          outPathY[pathCount] = portalLeftY;
+          pathCount++;
 
-                portalApexX = portalLeftX;
-                portalApexY = portalLeftY;
-                apexIndex = leftIndex;
+          portalApexX = portalLeftX;
+          portalApexY = portalLeftY;
+          apexIndex = leftIndex;
 
-                portalLeftX = portalApexX;
-                portalLeftY = portalApexY;
-                portalRightX = portalApexX;
-                portalRightY = portalApexY;
+          portalLeftX = portalApexX;
+          portalLeftY = portalApexY;
+          portalRightX = portalApexX;
+          portalRightY = portalApexY;
 
-                i = apexIndex;
-                continue;
-            }
+          i = apexIndex;
+          continue;
         }
+      }
 
-        // Update left vertex
-        if (_triArea2(portalApexX, portalApexY, portalLeftX, portalLeftY, leftX, leftY) >= 0.0) {
-             if (portalApexX == portalLeftX && portalApexY == portalLeftY ||
-                _triArea2(portalApexX, portalApexY, portalRightX, portalRightY, leftX, leftY) < 0.0) {
-                // Tighten the funnel
-                portalLeftX = leftX;
-                portalLeftY = leftY;
-                leftIndex = i;
-            } else {
-                // Left over right, insert right to path and restart scan from right point
-                outPathX[pathCount] = portalRightX;
-                outPathY[pathCount] = portalRightY;
-                pathCount++;
+      // Update left vertex
+      if (_triArea2(portalApexX, portalApexY, portalLeftX, portalLeftY, leftX,
+              leftY) >=
+          0.0) {
+        if (portalApexX == portalLeftX && portalApexY == portalLeftY ||
+            _triArea2(portalApexX, portalApexY, portalRightX, portalRightY,
+                    leftX, leftY) <
+                0.0) {
+          // Tighten the funnel
+          portalLeftX = leftX;
+          portalLeftY = leftY;
+          leftIndex = i;
+        } else {
+          // Left over right, insert right to path and restart scan from right point
+          outPathX[pathCount] = portalRightX;
+          outPathY[pathCount] = portalRightY;
+          pathCount++;
 
-                portalApexX = portalRightX;
-                portalApexY = portalRightY;
-                apexIndex = rightIndex;
+          portalApexX = portalRightX;
+          portalApexY = portalRightY;
+          apexIndex = rightIndex;
 
-                portalLeftX = portalApexX;
-                portalLeftY = portalApexY;
-                portalRightX = portalApexX;
-                portalRightY = portalApexY;
+          portalLeftX = portalApexX;
+          portalLeftY = portalApexY;
+          portalRightX = portalApexX;
+          portalRightY = portalApexY;
 
-                i = apexIndex;
-                continue;
-            }
+          i = apexIndex;
+          continue;
         }
+      }
     }
 
     // Append target
@@ -398,10 +410,11 @@ class NavMeshPathfinder {
     final double targetY = _portalLeftY[portalCount - 1];
 
     // Only append if it's not identical to the last point to avoid dupes
-    if (outPathX[pathCount-1] != targetX || outPathY[pathCount-1] != targetY) {
-       outPathX[pathCount] = targetX;
-       outPathY[pathCount] = targetY;
-       pathCount++;
+    if (outPathX[pathCount - 1] != targetX ||
+        outPathY[pathCount - 1] != targetY) {
+      outPathX[pathCount] = targetX;
+      outPathY[pathCount] = targetY;
+      pathCount++;
     }
 
     return pathCount;

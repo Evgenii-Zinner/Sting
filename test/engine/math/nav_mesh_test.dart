@@ -6,7 +6,8 @@ void main() {
   group('NavMesh', () {
     test('addPolygon and getPolygon work', () {
       final navMesh = NavMesh();
-      final poly = NavPolygon(0, [0.0, 10.0, 10.0, 0.0], [0.0, 0.0, 10.0, 10.0]);
+      final poly =
+          NavPolygon(0, [0.0, 10.0, 10.0, 0.0], [0.0, 0.0, 10.0, 10.0]);
       navMesh.addPolygon(poly);
 
       expect(navMesh.polygonCount, 1);
@@ -17,7 +18,8 @@ void main() {
     test('findPolygon correctly identifies point inside polygon', () {
       final navMesh = NavMesh();
       // 10x10 square
-      navMesh.addPolygon(NavPolygon(0, [0.0, 10.0, 10.0, 0.0], [0.0, 0.0, 10.0, 10.0]));
+      navMesh.addPolygon(
+          NavPolygon(0, [0.0, 10.0, 10.0, 0.0], [0.0, 0.0, 10.0, 10.0]));
       // Triangle adjacent
       navMesh.addPolygon(NavPolygon(1, [10.0, 20.0, 10.0], [0.0, 5.0, 10.0]));
 
@@ -29,9 +31,11 @@ void main() {
     test('buildNeighbors correctly connects adjacent polygons', () {
       final navMesh = NavMesh();
       // Poly 0: square 0..10
-      navMesh.addPolygon(NavPolygon(0, [0.0, 10.0, 10.0, 0.0], [0.0, 0.0, 10.0, 10.0]));
+      navMesh.addPolygon(
+          NavPolygon(0, [0.0, 10.0, 10.0, 0.0], [0.0, 0.0, 10.0, 10.0]));
       // Poly 1: square 10..20, sharing edge x=10, y:0..10
-      navMesh.addPolygon(NavPolygon(1, [10.0, 20.0, 20.0, 10.0], [0.0, 0.0, 10.0, 10.0]));
+      navMesh.addPolygon(
+          NavPolygon(1, [10.0, 20.0, 20.0, 10.0], [0.0, 0.0, 10.0, 10.0]));
 
       navMesh.buildNeighbors();
 
@@ -50,9 +54,12 @@ void main() {
 
     test('carveAABB disconnects intersecting polygons', () {
       final navMesh = NavMesh();
-      navMesh.addPolygon(NavPolygon(0, [0.0, 10.0, 10.0, 0.0], [0.0, 0.0, 10.0, 10.0]));
-      navMesh.addPolygon(NavPolygon(1, [10.0, 20.0, 20.0, 10.0], [0.0, 0.0, 10.0, 10.0]));
-      navMesh.addPolygon(NavPolygon(2, [20.0, 30.0, 30.0, 20.0], [0.0, 0.0, 10.0, 10.0]));
+      navMesh.addPolygon(
+          NavPolygon(0, [0.0, 10.0, 10.0, 0.0], [0.0, 0.0, 10.0, 10.0]));
+      navMesh.addPolygon(
+          NavPolygon(1, [10.0, 20.0, 20.0, 10.0], [0.0, 0.0, 10.0, 10.0]));
+      navMesh.addPolygon(
+          NavPolygon(2, [20.0, 30.0, 30.0, 20.0], [0.0, 0.0, 10.0, 10.0]));
 
       navMesh.buildNeighbors();
 
@@ -82,11 +89,14 @@ void main() {
       navMesh = NavMesh();
       // Setup a small corridor
       // Poly 0: (0,0) to (10,10)
-      navMesh.addPolygon(NavPolygon(0, [0.0, 10.0, 10.0, 0.0], [0.0, 0.0, 10.0, 10.0]));
+      navMesh.addPolygon(
+          NavPolygon(0, [0.0, 10.0, 10.0, 0.0], [0.0, 0.0, 10.0, 10.0]));
       // Poly 1: (10,0) to (20,10)
-      navMesh.addPolygon(NavPolygon(1, [10.0, 20.0, 20.0, 10.0], [0.0, 0.0, 10.0, 10.0]));
+      navMesh.addPolygon(
+          NavPolygon(1, [10.0, 20.0, 20.0, 10.0], [0.0, 0.0, 10.0, 10.0]));
       // Poly 2: (20,0) to (30,10)
-      navMesh.addPolygon(NavPolygon(2, [20.0, 30.0, 30.0, 20.0], [0.0, 0.0, 10.0, 10.0]));
+      navMesh.addPolygon(
+          NavPolygon(2, [20.0, 30.0, 30.0, 20.0], [0.0, 0.0, 10.0, 10.0]));
       navMesh.buildNeighbors();
 
       pathfinder = NavMeshPathfinder(navMesh, 10, 20);
@@ -114,11 +124,14 @@ void main() {
     test('findPath handles complex funnel around a corner', () {
       final correctLShape = NavMesh();
       // Poly 0: bottom part of vertical bar: 0..10, 0..20
-      correctLShape.addPolygon(NavPolygon(0, [0.0, 10.0, 10.0, 0.0], [0.0, 0.0, 20.0, 20.0]));
+      correctLShape.addPolygon(
+          NavPolygon(0, [0.0, 10.0, 10.0, 0.0], [0.0, 0.0, 20.0, 20.0]));
       // Poly 1: top part of vertical bar (intersection): 0..10, 20..30
-      correctLShape.addPolygon(NavPolygon(1, [0.0, 10.0, 10.0, 0.0], [20.0, 20.0, 30.0, 30.0]));
+      correctLShape.addPolygon(
+          NavPolygon(1, [0.0, 10.0, 10.0, 0.0], [20.0, 20.0, 30.0, 30.0]));
       // Poly 2: horizontal bar: 10..40, 20..30
-      correctLShape.addPolygon(NavPolygon(2, [10.0, 40.0, 40.0, 10.0], [20.0, 20.0, 30.0, 30.0]));
+      correctLShape.addPolygon(
+          NavPolygon(2, [10.0, 40.0, 40.0, 10.0], [20.0, 20.0, 30.0, 30.0]));
       correctLShape.buildNeighbors();
 
       final lPathfinder = NavMeshPathfinder(correctLShape, 10, 20);
@@ -148,27 +161,31 @@ void main() {
     });
 
     test('findPath returns 0 when starting or ending outside nav mesh', () {
-       expect(pathfinder.findPath(-10.0, 5.0, 28.0, 5.0), 0);
-       expect(pathfinder.findPath(2.0, 5.0, 100.0, 100.0), 0);
+      expect(pathfinder.findPath(-10.0, 5.0, 28.0, 5.0), 0);
+      expect(pathfinder.findPath(2.0, 5.0, 100.0, 100.0), 0);
     });
   });
 
   group('_NavMinHeap (via NavMeshPathfinder)', () {
     test('handles pathfinding that requires heap updates', () {
-       final heapMesh = NavMesh();
-       // 4 polys arranged in a square
-       // 0 - 1
-       // |   |
-       // 2 - 3
-       heapMesh.addPolygon(NavPolygon(0, [0.0, 10.0, 10.0, 0.0], [0.0, 0.0, 10.0, 10.0]));
-       heapMesh.addPolygon(NavPolygon(1, [10.0, 20.0, 20.0, 10.0], [0.0, 0.0, 10.0, 10.0]));
-       heapMesh.addPolygon(NavPolygon(2, [0.0, 10.0, 10.0, 0.0], [10.0, 10.0, 20.0, 20.0]));
-       heapMesh.addPolygon(NavPolygon(3, [10.0, 20.0, 20.0, 10.0], [10.0, 10.0, 20.0, 20.0]));
-       heapMesh.buildNeighbors();
+      final heapMesh = NavMesh();
+      // 4 polys arranged in a square
+      // 0 - 1
+      // |   |
+      // 2 - 3
+      heapMesh.addPolygon(
+          NavPolygon(0, [0.0, 10.0, 10.0, 0.0], [0.0, 0.0, 10.0, 10.0]));
+      heapMesh.addPolygon(
+          NavPolygon(1, [10.0, 20.0, 20.0, 10.0], [0.0, 0.0, 10.0, 10.0]));
+      heapMesh.addPolygon(
+          NavPolygon(2, [0.0, 10.0, 10.0, 0.0], [10.0, 10.0, 20.0, 20.0]));
+      heapMesh.addPolygon(
+          NavPolygon(3, [10.0, 20.0, 20.0, 10.0], [10.0, 10.0, 20.0, 20.0]));
+      heapMesh.buildNeighbors();
 
-       final pathfinder = NavMeshPathfinder(heapMesh, 10, 20);
-       final count = pathfinder.findPath(5.0, 5.0, 15.0, 15.0);
-       expect(count, greaterThan(0));
+      final pathfinder = NavMeshPathfinder(heapMesh, 10, 20);
+      final count = pathfinder.findPath(5.0, 5.0, 15.0, 15.0);
+      expect(count, greaterThan(0));
     });
   });
 }

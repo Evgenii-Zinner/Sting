@@ -113,4 +113,3 @@ typedef ComponentCaste<T> = ComponentStorage<T>;
 
 /// Backward-compatible alias for [AbstractComponentStorage].
 typedef AbstractCaste = AbstractComponentStorage;
-

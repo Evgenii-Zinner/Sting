@@ -37,8 +37,8 @@ class TilemapColliderExtractor {
   ///
   /// Returns the total number of floats written to the buffer.
   /// If the buffer is too small, extraction stops and returns what was written.
-  int extractOrthogonalAABBs(
-      double tileWidth, double tileHeight, bool Function(int x, int y) isSolid, Float32List outBuffer) {
+  int extractOrthogonalAABBs(double tileWidth, double tileHeight,
+      bool Function(int x, int y) isSolid, Float32List outBuffer) {
     _visited.fillRange(0, _visited.length, 0);
     int floatsWritten = 0;
 
@@ -51,7 +51,9 @@ class TilemapColliderExtractor {
 
         // Find the width of the contiguous block
         int endX = x + 1;
-        while (endX < _columns && _visited[y * _columns + endX] == 0 && isSolid(endX, y)) {
+        while (endX < _columns &&
+            _visited[y * _columns + endX] == 0 &&
+            isSolid(endX, y)) {
           endX++;
         }
         int w = endX - x;
@@ -107,7 +109,8 @@ class TilemapColliderExtractor {
   int extractPolygons(GridType gridType, double tileWidth, double tileHeight,
       bool Function(int x, int y) isSolid, Float32List outBuffer) {
     if (gridType == GridType.isometricStaggered) {
-      throw ArgumentError('Polygon extraction not supported for Staggered isometric grids.');
+      throw ArgumentError(
+          'Polygon extraction not supported for Staggered isometric grids.');
     }
 
     _visited.fillRange(0, _visited.length, 0);
@@ -122,7 +125,9 @@ class TilemapColliderExtractor {
 
         // Find the width of the contiguous block
         int endX = x + 1;
-        while (endX < _columns && _visited[y * _columns + endX] == 0 && isSolid(endX, y)) {
+        while (endX < _columns &&
+            _visited[y * _columns + endX] == 0 &&
+            isSolid(endX, y)) {
           endX++;
         }
         int w = endX - x;
@@ -173,22 +178,26 @@ class TilemapColliderExtractor {
             // Left: (x, y + h)
 
             // Top
-            IsometricMath.isoToWorldDiamond(x.toDouble(), y.toDouble(), tileWidth, tileHeight, _tempCoord);
+            IsometricMath.isoToWorldDiamond(
+                x.toDouble(), y.toDouble(), tileWidth, tileHeight, _tempCoord);
             outBuffer[floatsWritten++] = _tempCoord[0];
             outBuffer[floatsWritten++] = _tempCoord[1];
 
             // Right
-            IsometricMath.isoToWorldDiamond((x + w).toDouble(), y.toDouble(), tileWidth, tileHeight, _tempCoord);
+            IsometricMath.isoToWorldDiamond((x + w).toDouble(), y.toDouble(),
+                tileWidth, tileHeight, _tempCoord);
             outBuffer[floatsWritten++] = _tempCoord[0];
             outBuffer[floatsWritten++] = _tempCoord[1];
 
             // Bottom
-            IsometricMath.isoToWorldDiamond((x + w).toDouble(), (y + h).toDouble(), tileWidth, tileHeight, _tempCoord);
+            IsometricMath.isoToWorldDiamond((x + w).toDouble(),
+                (y + h).toDouble(), tileWidth, tileHeight, _tempCoord);
             outBuffer[floatsWritten++] = _tempCoord[0];
             outBuffer[floatsWritten++] = _tempCoord[1];
 
             // Left
-            IsometricMath.isoToWorldDiamond(x.toDouble(), (y + h).toDouble(), tileWidth, tileHeight, _tempCoord);
+            IsometricMath.isoToWorldDiamond(x.toDouble(), (y + h).toDouble(),
+                tileWidth, tileHeight, _tempCoord);
             outBuffer[floatsWritten++] = _tempCoord[0];
             outBuffer[floatsWritten++] = _tempCoord[1];
           }

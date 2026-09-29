@@ -96,31 +96,51 @@ void main() {
       );
     });
 
-    test('updates volumes and pans correctly based on distance and listener', () {
+    test('updates volumes and pans correctly based on distance and listener',
+        () {
       // Add listener at origin
       final listenerEntity = 1;
       positionCaste.add(listenerEntity, Position.create(0.0, 0.0));
-      listenerCaste.add(listenerEntity, AudioListener.create(masterVolume: 1.0, hearingRange: 1000.0));
+      listenerCaste.add(listenerEntity,
+          AudioListener.create(masterVolume: 1.0, hearingRange: 1000.0));
 
       // Add emitter 1 exactly at reference distance (should be full volume, pan 0)
       final emitter1 = 2;
       positionCaste.add(emitter1, Position.create(0.0, -100.0));
-      emitterCaste.add(emitter1, AudioEmitter.create(soundId: 101, referenceDistance: 100.0, maxDistance: 1000.0));
+      emitterCaste.add(
+          emitter1,
+          AudioEmitter.create(
+              soundId: 101, referenceDistance: 100.0, maxDistance: 1000.0));
 
       // Add emitter 2 far away to the right (should have attenuated volume, pan > 0)
       final emitter2 = 3;
       positionCaste.add(emitter2, Position.create(500.0, 0.0));
-      emitterCaste.add(emitter2, AudioEmitter.create(soundId: 102, referenceDistance: 100.0, rolloffFactor: 1.0, maxDistance: 1000.0));
+      emitterCaste.add(
+          emitter2,
+          AudioEmitter.create(
+              soundId: 102,
+              referenceDistance: 100.0,
+              rolloffFactor: 1.0,
+              maxDistance: 1000.0));
 
       // Add emitter 3 far away to the left (should have attenuated volume, pan < 0)
       final emitter3 = 4;
       positionCaste.add(emitter3, Position.create(-500.0, 0.0));
-      emitterCaste.add(emitter3, AudioEmitter.create(soundId: 103, referenceDistance: 100.0, rolloffFactor: 1.0, maxDistance: 1000.0));
+      emitterCaste.add(
+          emitter3,
+          AudioEmitter.create(
+              soundId: 103,
+              referenceDistance: 100.0,
+              rolloffFactor: 1.0,
+              maxDistance: 1000.0));
 
       // Add emitter 4 out of max distance (volume 0)
       final emitter4 = 5;
       positionCaste.add(emitter4, Position.create(1500.0, 0.0));
-      emitterCaste.add(emitter4, AudioEmitter.create(soundId: 104, referenceDistance: 100.0, maxDistance: 1000.0));
+      emitterCaste.add(
+          emitter4,
+          AudioEmitter.create(
+              soundId: 104, referenceDistance: 100.0, maxDistance: 1000.0));
 
       system.update();
 
@@ -145,11 +165,13 @@ void main() {
     test('respects listener master volume', () {
       final listenerEntity = 1;
       positionCaste.add(listenerEntity, Position.create(0.0, 0.0));
-      listenerCaste.add(listenerEntity, AudioListener.create(masterVolume: 0.5, hearingRange: 1000.0));
+      listenerCaste.add(listenerEntity,
+          AudioListener.create(masterVolume: 0.5, hearingRange: 1000.0));
 
       final emitterEntity = 2;
       positionCaste.add(emitterEntity, Position.create(0.0, 0.0));
-      emitterCaste.add(emitterEntity, AudioEmitter.create(soundId: 200, volume: 1.0));
+      emitterCaste.add(
+          emitterEntity, AudioEmitter.create(soundId: 200, volume: 1.0));
 
       system.update();
 
@@ -163,7 +185,8 @@ void main() {
 
       final emitterEntity = 2;
       positionCaste.add(emitterEntity, Position.create(0.0, 0.0));
-      emitterCaste.add(emitterEntity, AudioEmitter.create(soundId: 200, isPlaying: false));
+      emitterCaste.add(
+          emitterEntity, AudioEmitter.create(soundId: 200, isPlaying: false));
 
       system.update();
 

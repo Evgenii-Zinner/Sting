@@ -4,7 +4,8 @@ import 'package:sting/engine/components/grid_diffusion.dart';
 void main() {
   group('GridDiffusion', () {
     test('creates with correct metadata for rectangular grid', () {
-      final grid = GridDiffusion.create(columns: 10, rows: 5, diffusionRate: 0.25);
+      final grid =
+          GridDiffusion.create(columns: 10, rows: 5, diffusionRate: 0.25);
 
       expect(grid.columns, 10);
       expect(grid.rows, 5);
@@ -15,7 +16,8 @@ void main() {
     });
 
     test('creates with correct metadata for hexagonal grid', () {
-      final grid = GridDiffusion.create(columns: 8, rows: 8, isHexagonal: true, diffusionRate: 0.1);
+      final grid = GridDiffusion.create(
+          columns: 8, rows: 8, isHexagonal: true, diffusionRate: 0.1);
 
       expect(grid.columns, 8);
       expect(grid.rows, 8);

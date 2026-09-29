@@ -10,7 +10,8 @@ extension type UtilityAI(ByteData data) {
   static const int _floatSize = 4;
 
   /// Creates a UtilityAI component with space for [numConsiderations] considerations.
-  UtilityAI.create(int activeTaskId, int targetEntityId, double targetX, double targetY, int numConsiderations)
+  UtilityAI.create(int activeTaskId, int targetEntityId, double targetX,
+      double targetY, int numConsiderations)
       : this(ByteData(_headerSize + numConsiderations * _floatSize * 2)
           ..setInt32(0, activeTaskId, Endian.host)
           ..setInt32(4, targetEntityId, Endian.host)
@@ -30,12 +31,14 @@ extension type UtilityAI(ByteData data) {
   set targetY(double value) => data.setFloat32(12, value, Endian.host);
 
   /// Gets the number of considerations (derived from buffer length).
-  int get numConsiderations => (data.lengthInBytes - _headerSize) ~/ (_floatSize * 2);
+  int get numConsiderations =>
+      (data.lengthInBytes - _headerSize) ~/ (_floatSize * 2);
 
   /// Returns a Float32List view over the tension considerations.
   Float32List get tension {
     final numCons = numConsiderations;
-    return Float32List.sublistView(data, _headerSize, _headerSize + numCons * _floatSize);
+    return Float32List.sublistView(
+        data, _headerSize, _headerSize + numCons * _floatSize);
   }
 
   /// Returns a Float32List view over the damping considerations.

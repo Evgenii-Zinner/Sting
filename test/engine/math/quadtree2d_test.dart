@@ -108,21 +108,24 @@ void main() {
     });
 
     test('queryAABB() excludes elements fully outside query region', () {
-       quadtree.insert(1, 10, 10, 20, 20);
-       quadtree.insert(2, 80, 80, 90, 90);
+      quadtree.insert(1, 10, 10, 20, 20);
+      quadtree.insert(2, 80, 80, 90, 90);
 
-       final outEntities = Int32List(10);
-       final count = quadtree.queryAABB(0, 0, 30, 30, outEntities);
+      final outEntities = Int32List(10);
+      final count = quadtree.queryAABB(0, 0, 30, 30, outEntities);
 
-       expect(count, 1);
-       expect(outEntities[0], 1);
+      expect(count, 1);
+      expect(outEntities[0], 1);
     });
 
     test('stress test for zero-allocation verification', () {
       // Since this runs in Dart VM, we can't strictly assert zero allocations easily,
       // but we can ensure it completes very fast and doesn't crash on high entity counts.
       final qt = QuadTree2D(
-        0, 0, 1000, 1000,
+        0,
+        0,
+        1000,
+        1000,
         maxEntitiesPerNode: 10,
         maxDepth: 6,
         maxNodes: 5000,

@@ -19,7 +19,8 @@ class FloatingTextSystem {
 
   /// Pre-allocated paint objects for 256 alpha levels to support visual fading
   /// without allocating Paint or Rect objects per frame.
-  final List<Paint> _alphaPaints = List.generate(256, (i) => Paint()..color = Color.fromARGB(i, 255, 255, 255));
+  final List<Paint> _alphaPaints = List.generate(
+      256, (i) => Paint()..color = Color.fromARGB(i, 255, 255, 255));
 
   /// Creates a FloatingTextSystem.
   FloatingTextSystem({
@@ -29,21 +30,22 @@ class FloatingTextSystem {
   }) : _textQuery = Query1<FloatingText>(floatingTextCaste);
 
   /// Pre-caches numbers from 0 to [maxCacheValue] to prevent allocations during gameplay.
-  void preCacheNumbers(int maxCacheValue, {double fontSize = 16.0, int color = 0xFFFFFFFF}) {
+  void preCacheNumbers(int maxCacheValue,
+      {double fontSize = 16.0, int color = 0xFFFFFFFF}) {
     for (int i = 0; i <= maxCacheValue; i++) {
       _paragraphCache[i] = _buildParagraph(i.toString(), fontSize, color);
     }
   }
 
   Paragraph _buildParagraph(String text, double fontSize, int color) {
-     final builder = ParagraphBuilder(ParagraphStyle(
-        fontSize: fontSize,
-      ));
-      builder.pushStyle(TextStyle(color: Color(color)));
-      builder.addText(text);
-      final paragraph = builder.build();
-      paragraph.layout(const ParagraphConstraints(width: double.infinity));
-      return paragraph;
+    final builder = ParagraphBuilder(ParagraphStyle(
+      fontSize: fontSize,
+    ));
+    builder.pushStyle(TextStyle(color: Color(color)));
+    builder.addText(text);
+    final paragraph = builder.build();
+    paragraph.layout(const ParagraphConstraints(width: double.infinity));
+    return paragraph;
   }
 
   /// Updates the lifetime, alpha, and positions of the floating text.
@@ -122,4 +124,3 @@ class FloatingTextSystem {
     });
   }
 }
-

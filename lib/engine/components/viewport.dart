@@ -4,7 +4,8 @@ import 'dart:typed_data';
 /// Index 0: x, Index 1: y, Index 2: zoom, Index 3: angle.
 extension type Viewport(Float32List data) {
   /// Creates a new Viewport component with the given [x], [y], [zoom], and [angle].
-  Viewport.create([double x = 0.0, double y = 0.0, double zoom = 1.0, double angle = 0.0])
+  Viewport.create(
+      [double x = 0.0, double y = 0.0, double zoom = 1.0, double angle = 0.0])
       : this(Float32List(4)
           ..[0] = x
           ..[1] = y

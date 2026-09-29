@@ -36,7 +36,8 @@ class RadarSystem {
     for (var i = 0; i < length; i++) {
       final radar = _radarCaste.getComponentAt(i);
       if (radar != null) {
-        radar.sweepAngle = (radar.sweepAngle + radar.sweepSpeed * dt) % (2 * pi);
+        radar.sweepAngle =
+            (radar.sweepAngle + radar.sweepSpeed * dt) % (2 * pi);
       }
     }
   }
@@ -70,7 +71,8 @@ class RadarSystem {
     _bgPaint.color = Color(radar.backgroundColorHex);
     _gridPaint.color = Color(radar.radarColorHex);
     _blipPaint.color = Color(radar.blipColorHex);
-    _sweepPaint.color = Color(radar.radarColorHex).withAlpha(128); // semi-transparent sweep
+    _sweepPaint.color =
+        Color(radar.radarColorHex).withAlpha(128); // semi-transparent sweep
 
     final sx = radar.screenX;
     final sy = radar.screenY;
@@ -91,10 +93,14 @@ class RadarSystem {
       canvas.drawRect(rect, _gridPaint);
 
       // Grid lines
-      canvas.drawLine(Offset(sx - r, sy - r * 0.33), Offset(sx + r, sy - r * 0.33), _gridPaint);
-      canvas.drawLine(Offset(sx - r, sy + r * 0.33), Offset(sx + r, sy + r * 0.33), _gridPaint);
-      canvas.drawLine(Offset(sx - r * 0.33, sy - r), Offset(sx - r * 0.33, sy + r), _gridPaint);
-      canvas.drawLine(Offset(sx + r * 0.33, sy - r), Offset(sx + r * 0.33, sy + r), _gridPaint);
+      canvas.drawLine(Offset(sx - r, sy - r * 0.33),
+          Offset(sx + r, sy - r * 0.33), _gridPaint);
+      canvas.drawLine(Offset(sx - r, sy + r * 0.33),
+          Offset(sx + r, sy + r * 0.33), _gridPaint);
+      canvas.drawLine(Offset(sx - r * 0.33, sy - r),
+          Offset(sx - r * 0.33, sy + r), _gridPaint);
+      canvas.drawLine(Offset(sx + r * 0.33, sy - r),
+          Offset(sx + r * 0.33, sy + r), _gridPaint);
     }
 
     // Draw sweep line
@@ -126,8 +132,13 @@ class RadarSystem {
           canvas.drawCircle(Offset(blipX, blipY), 2.0, _blipPaint);
         } else {
           // Clamp to rect if we want square radar, though if maxRange is circular we just check bounds
-          if (blipX >= sx - r && blipX <= sx + r && blipY >= sy - r && blipY <= sy + r) {
-            canvas.drawRect(Rect.fromLTRB(blipX - 2, blipY - 2, blipX + 2, blipY + 2), _blipPaint);
+          if (blipX >= sx - r &&
+              blipX <= sx + r &&
+              blipY >= sy - r &&
+              blipY <= sy + r) {
+            canvas.drawRect(
+                Rect.fromLTRB(blipX - 2, blipY - 2, blipX + 2, blipY + 2),
+                _blipPaint);
           }
         }
       }

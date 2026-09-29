@@ -11,7 +11,8 @@ void main() {
 
     setUp(() {
       scene = Scene();
-      scene.registerCaste<UtilityAI>('UtilityAI', ComponentStorage<UtilityAI>(10));
+      scene.registerCaste<UtilityAI>(
+          'UtilityAI', ComponentStorage<UtilityAI>(10));
       system = UtilityAISystem(scene);
     });
 
@@ -19,9 +20,12 @@ void main() {
       final entity = scene.createEntity();
       final ai = UtilityAI.create(-1, -1, 0, 0, 3);
 
-      ai.tension[0] = 0.5; ai.damping[0] = 0.1; // 0.4
-      ai.tension[1] = 0.9; ai.damping[1] = 0.2; // 0.7 (Best)
-      ai.tension[2] = 0.3; ai.damping[2] = 0.0; // 0.3
+      ai.tension[0] = 0.5;
+      ai.damping[0] = 0.1; // 0.4
+      ai.tension[1] = 0.9;
+      ai.damping[1] = 0.2; // 0.7 (Best)
+      ai.tension[2] = 0.3;
+      ai.damping[2] = 0.0; // 0.3
 
       scene.getCaste<UtilityAI>('UtilityAI').add(entity, ai);
 
@@ -35,8 +39,11 @@ void main() {
       final entity = scene.createEntity();
       final ai = UtilityAI.create(0, -1, 0, 0, 2);
 
-      ai.tension[0] = 0.5; ai.damping[0] = 0.0; // 0.5 (Base)
-      ai.tension[1] = 0.55; ai.damping[1] = 0.0; // 0.55 (Better, but not enough to overcome hysteresis of 0.1)
+      ai.tension[0] = 0.5;
+      ai.damping[0] = 0.0; // 0.5 (Base)
+      ai.tension[1] = 0.55;
+      ai.damping[1] =
+          0.0; // 0.55 (Better, but not enough to overcome hysteresis of 0.1)
 
       scene.getCaste<UtilityAI>('UtilityAI').add(entity, ai);
 
@@ -55,12 +62,16 @@ void main() {
       expect(updatedAi.activeTaskId, 1);
     });
 
-    test('does not change task if scores are negative but still handles correctly', () {
+    test(
+        'does not change task if scores are negative but still handles correctly',
+        () {
       final entity = scene.createEntity();
       final ai = UtilityAI.create(-1, -1, 0, 0, 2);
 
-      ai.tension[0] = -0.5; ai.damping[0] = 0.0; // -0.5 (Best)
-      ai.tension[1] = -0.9; ai.damping[1] = 0.0; // -0.9
+      ai.tension[0] = -0.5;
+      ai.damping[0] = 0.0; // -0.5 (Best)
+      ai.tension[1] = -0.9;
+      ai.damping[1] = 0.0; // -0.9
 
       scene.getCaste<UtilityAI>('UtilityAI').add(entity, ai);
 

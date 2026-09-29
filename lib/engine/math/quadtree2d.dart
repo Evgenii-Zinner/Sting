@@ -17,12 +17,14 @@ class QuadTree2D {
   final Float32List _nodeBounds; // minX, minY, maxX, maxY (4 per node)
   final Int32List _nodeChildren; // NW, NE, SW, SE (4 per node)
   final Int32List _nodeFirstElement; // Head of element linked list (1 per node)
-  final Int32List _nodeElementCount; // Elements directly in this node (1 per node)
+  final Int32List
+      _nodeElementCount; // Elements directly in this node (1 per node)
 
   // Element pool
   final Int32List _elementEntity; // Entity ID (1 per element)
   final Float32List _elementBounds; // minX, minY, maxX, maxY (4 per element)
-  final Int32List _elementNext; // Next element index in the node (1 per element)
+  final Int32List
+      _elementNext; // Next element index in the node (1 per element)
 
   QuadTree2D(
     double rootMinX,

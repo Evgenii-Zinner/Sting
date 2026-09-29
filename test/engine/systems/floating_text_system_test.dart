@@ -28,7 +28,8 @@ void main() {
     });
 
     test('update() modifies positions based on velocity, gravity, and dt', () {
-      final text = FloatingText.create(10.0, 20.0, 50.0, -20.0, 1.0, 1.0, 1.0, 1.0, 100.0);
+      final text = FloatingText.create(
+          10.0, 20.0, 50.0, -20.0, 1.0, 1.0, 1.0, 1.0, 100.0);
       textCaste.add(1, text);
 
       system.update(0.1);
@@ -42,7 +43,8 @@ void main() {
     });
 
     test('update() updates lifetime and alpha correctly', () {
-      final text = FloatingText.create(0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 1.0, 1.0, 99.0);
+      final text =
+          FloatingText.create(0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 1.0, 1.0, 99.0);
       textCaste.add(1, text);
 
       system.update(1.0); // Half life
@@ -51,16 +53,19 @@ void main() {
       expect(text.alpha, closeTo(0.5, 0.001));
     });
 
-    test('render() correctly accesses pre-cached paragraphs without crashing', () {
+    test('render() correctly accesses pre-cached paragraphs without crashing',
+        () {
       system.preCacheNumbers(10);
-      final text = FloatingText.create(100.0, 100.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 5.0);
+      final text =
+          FloatingText.create(100.0, 100.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 5.0);
       textCaste.add(1, text);
 
       expect(() => system.render(canvas), returnsNormally);
     });
 
     test('render() skips if lifetime <= 0', () {
-      final text = FloatingText.create(100.0, 100.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 42.0);
+      final text =
+          FloatingText.create(100.0, 100.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 42.0);
       textCaste.add(1, text);
 
       expect(() => system.render(canvas), returnsNormally);

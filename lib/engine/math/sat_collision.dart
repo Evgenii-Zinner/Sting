@@ -8,8 +8,8 @@ class SATCollisionResult {
   double depth = 0.0;
 }
 
-void testPolygonPolygon(
-    Float32List polyA, int countA, Float32List polyB, int countB, SATCollisionResult outResult) {
+void testPolygonPolygon(Float32List polyA, int countA, Float32List polyB,
+    int countB, SATCollisionResult outResult) {
   double minDepth = double.infinity;
   double bestNormalX = 0.0;
   double bestNormalY = 0.0;
@@ -117,17 +117,23 @@ void testPolygonPolygon(
   }
 
   // Orient normal to point from A to B
-  double cxA = 0.0; double cyA = 0.0;
+  double cxA = 0.0;
+  double cyA = 0.0;
   for (int i = 0; i < countA; i++) {
-    cxA += polyA[i * 2]; cyA += polyA[i * 2 + 1];
+    cxA += polyA[i * 2];
+    cyA += polyA[i * 2 + 1];
   }
-  cxA /= countA; cyA /= countA;
+  cxA /= countA;
+  cyA /= countA;
 
-  double cxB = 0.0; double cyB = 0.0;
+  double cxB = 0.0;
+  double cyB = 0.0;
   for (int i = 0; i < countB; i++) {
-    cxB += polyB[i * 2]; cyB += polyB[i * 2 + 1];
+    cxB += polyB[i * 2];
+    cyB += polyB[i * 2 + 1];
   }
-  cxB /= countB; cyB /= countB;
+  cxB /= countB;
+  cyB /= countB;
 
   double dirX = cxB - cxA;
   double dirY = cyB - cyA;
@@ -143,8 +149,8 @@ void testPolygonPolygon(
   outResult.normalY = bestNormalY;
 }
 
-void testPolygonCircle(
-    Float32List poly, int count, double cx, double cy, double radius, SATCollisionResult outResult) {
+void testPolygonCircle(Float32List poly, int count, double cx, double cy,
+    double radius, SATCollisionResult outResult) {
   double minDepth = double.infinity;
   double bestNormalX = 0.0;
   double bestNormalY = 0.0;
@@ -253,11 +259,14 @@ void testPolygonCircle(
   }
 
   // Orient normal to point from polygon to circle
-  double cxA = 0.0; double cyA = 0.0;
+  double cxA = 0.0;
+  double cyA = 0.0;
   for (int i = 0; i < count; i++) {
-    cxA += poly[i * 2]; cyA += poly[i * 2 + 1];
+    cxA += poly[i * 2];
+    cyA += poly[i * 2 + 1];
   }
-  cxA /= count; cyA /= count;
+  cxA /= count;
+  cyA /= count;
 
   double dirX = cx - cxA;
   double dirY = cy - cyA;
@@ -273,11 +282,8 @@ void testPolygonCircle(
   outResult.normalY = bestNormalY;
 }
 
-void testAABBAABB(
-    double xA, double yA, double wA, double hA,
-    double xB, double yB, double wB, double hB,
-    SATCollisionResult outResult) {
-
+void testAABBAABB(double xA, double yA, double wA, double hA, double xB,
+    double yB, double wB, double hB, SATCollisionResult outResult) {
   double centerAx = xA + wA / 2;
   double centerAy = yA + hA / 2;
   double centerBx = xB + wB / 2;
@@ -310,11 +316,8 @@ void testAABBAABB(
   }
 }
 
-void testCircleCircle(
-    double cxA, double cyA, double radiusA,
-    double cxB, double cyB, double radiusB,
-    SATCollisionResult outResult) {
-
+void testCircleCircle(double cxA, double cyA, double radiusA, double cxB,
+    double cyB, double radiusB, SATCollisionResult outResult) {
   double dx = cxB - cxA;
   double dy = cyB - cyA;
   double distSq = dx * dx + dy * dy;
@@ -338,11 +341,8 @@ void testCircleCircle(
   }
 }
 
-void testAABBCircle(
-    double xA, double yA, double wA, double hA,
-    double cxB, double cyB, double radiusB,
-    SATCollisionResult outResult) {
-
+void testAABBCircle(double xA, double yA, double wA, double hA, double cxB,
+    double cyB, double radiusB, SATCollisionResult outResult) {
   // Find closest point on AABB to circle center
   double closestX = cxB;
   if (closestX < xA) {

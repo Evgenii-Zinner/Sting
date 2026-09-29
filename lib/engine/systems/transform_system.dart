@@ -18,8 +18,10 @@ class TransformSystem {
 
   // Pre-allocated array to track resolved state during the update pass.
   // We use bits in a Uint32List for zero-allocation state tracking.
-  final Uint32List _resolvedFlags = Uint32List((EntityManager.maxEntities + 1) ~/ 32 + 1);
-  final Uint32List _processingFlags = Uint32List((EntityManager.maxEntities + 1) ~/ 32 + 1);
+  final Uint32List _resolvedFlags =
+      Uint32List((EntityManager.maxEntities + 1) ~/ 32 + 1);
+  final Uint32List _processingFlags =
+      Uint32List((EntityManager.maxEntities + 1) ~/ 32 + 1);
 
   late final Query2<LocalTransform, Parent> _query;
 
@@ -134,4 +136,3 @@ class TransformSystem {
     _processingFlags[intIndex] &= ~(1 << bitIndex);
   }
 }
-

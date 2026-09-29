@@ -136,7 +136,8 @@ extension type HeightMap(Float32List _data) {
   }
 
   /// Writes the gradient to a pre-allocated Float32List at the given offset.
-  void sampleGradientTo(double worldX, double worldY, Float32List outGrad, [int offset = 0]) {
+  void sampleGradientTo(double worldX, double worldY, Float32List outGrad,
+      [int offset = 0]) {
     final (gx, gy) = sampleGradient(worldX, worldY);
     outGrad[offset] = gx;
     outGrad[offset + 1] = gy;
@@ -159,7 +160,8 @@ extension type HeightMap(Float32List _data) {
   }
 
   /// Populates the height map using a mathematical function based on world coordinates.
-  void fillFromFunction(double Function(double worldX, double worldY) heightFunc) {
+  void fillFromFunction(
+      double Function(double worldX, double worldY) heightFunc) {
     int cols = columns.toInt();
     int rws = rows.toInt();
     double oX = originX;

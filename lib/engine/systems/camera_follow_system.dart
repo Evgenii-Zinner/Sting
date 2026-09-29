@@ -73,8 +73,10 @@ class CameraFollowSystem {
 
       // Lerp the center
       final lerp = cameraFollow.lerpFactor;
-      final newCenterX = currentCenterX + (desiredCenterX - currentCenterX) * lerp;
-      final newCenterY = currentCenterY + (desiredCenterY - currentCenterY) * lerp;
+      final newCenterX =
+          currentCenterX + (desiredCenterX - currentCenterX) * lerp;
+      final newCenterY =
+          currentCenterY + (desiredCenterY - currentCenterY) * lerp;
 
       // Convert back to top-left x/y for the viewport
       double newViewportX = newCenterX - viewWidth / 2.0;
@@ -105,4 +107,3 @@ class CameraFollowSystem {
     });
   }
 }
-

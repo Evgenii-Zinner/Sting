@@ -10,7 +10,8 @@ class IsometricMath {
   /// using the Diamond projection method.
   ///
   /// The results are written into [outCoord] at indices 0 (col) and 1 (row).
-  static void worldToIsoDiamond(double wx, double wy, double tileWidth, double tileHeight, Float32List outCoord) {
+  static void worldToIsoDiamond(double wx, double wy, double tileWidth,
+      double tileHeight, Float32List outCoord) {
     final double halfWidth = tileWidth * 0.5;
     final double halfHeight = tileHeight * 0.5;
 
@@ -22,7 +23,8 @@ class IsometricMath {
   /// using the Diamond projection method.
   ///
   /// The results are written into [outCoord] at indices 0 (x) and 1 (y).
-  static void isoToWorldDiamond(double col, double row, double tileWidth, double tileHeight, Float32List outCoord) {
+  static void isoToWorldDiamond(double col, double row, double tileWidth,
+      double tileHeight, Float32List outCoord) {
     final double halfWidth = tileWidth * 0.5;
     final double halfHeight = tileHeight * 0.5;
 
@@ -34,7 +36,8 @@ class IsometricMath {
   /// using the Staggered projection method (Staggered Y).
   ///
   /// The results are written into [outCoord] at indices 0 (col) and 1 (row).
-  static void worldToIsoStaggered(double wx, double wy, double tileWidth, double tileHeight, Float32List outCoord) {
+  static void worldToIsoStaggered(double wx, double wy, double tileWidth,
+      double tileHeight, Float32List outCoord) {
     final double halfWidth = tileWidth * 0.5;
     final double halfHeight = tileHeight * 0.5;
 
@@ -50,7 +53,8 @@ class IsometricMath {
   /// using the Staggered projection method (Staggered Y).
   ///
   /// The results are written into [outCoord] at indices 0 (x) and 1 (y).
-  static void isoToWorldStaggered(double col, double row, double tileWidth, double tileHeight, Float32List outCoord) {
+  static void isoToWorldStaggered(double col, double row, double tileWidth,
+      double tileHeight, Float32List outCoord) {
     final double halfWidth = tileWidth * 0.5;
     final double halfHeight = tileHeight * 0.5;
 
@@ -60,7 +64,7 @@ class IsometricMath {
   }
 
   /// Calculates a depth sort key for isometric rendering based on grid coordinates.
-  /// 
+  ///
   /// In an isometric projection, objects further down the screen (higher Y in world space)
   /// should be rendered on top. For a diamond grid, `col + row` is directly proportional
   /// to the world Y coordinate.

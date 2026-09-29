@@ -33,8 +33,7 @@ void main() {
 
     test('setters update properties', () {
       final corridor = CapsuleCorridor.create(
-        startX: 0.0, startY: 0.0, endX: 0.0, endY: 0.0, radius: 0.0
-      );
+          startX: 0.0, startY: 0.0, endX: 0.0, endY: 0.0, radius: 0.0);
 
       corridor.startX = 5.0;
       expect(corridor.startX, closeTo(5.0, 0.0001));

@@ -18,7 +18,8 @@ class BarnesHutTree {
   final Int32List
       _nodeEntity; // entity id (1 int per node, -1 if none/internal)
 
-  BarnesHutTree({this.maxNodes = 40000, this.maxDepth = 32, this.softening = 0.1})
+  BarnesHutTree(
+      {this.maxNodes = 40000, this.maxDepth = 32, this.softening = 0.1})
       : softeningSq = softening * softening,
         _nodeBounds = Float32List(maxNodes * 4),
         _nodeMass = Float32List(maxNodes),

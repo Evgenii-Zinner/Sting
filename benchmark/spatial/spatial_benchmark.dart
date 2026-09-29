@@ -9,7 +9,8 @@ class SpatialHashGridQueryBenchmark extends BenchmarkBase {
   final int entityCount;
   int _found = 0;
 
-  SpatialHashGridQueryBenchmark({this.entityCount = 10000}) : super('SpatialHashGridQuery($entityCount)');
+  SpatialHashGridQueryBenchmark({this.entityCount = 10000})
+      : super('SpatialHashGridQuery($entityCount)');
 
   @override
   void run() {
@@ -39,7 +40,8 @@ class QuadtreeForceBenchmark extends BenchmarkBase {
   final int entityCount;
   final Float32List force = Float32List(2);
 
-  QuadtreeForceBenchmark({this.entityCount = 10000}) : super('QuadTreeForceAccumulation($entityCount)');
+  QuadtreeForceBenchmark({this.entityCount = 10000})
+      : super('QuadTreeForceAccumulation($entityCount)');
 
   @override
   void run() {

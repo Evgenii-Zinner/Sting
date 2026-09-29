@@ -6,9 +6,12 @@ void main() {
   group('PolylineMath', () {
     test('length', () {
       final points = Float32List.fromList([
-        0.0, 0.0,
-        10.0, 0.0,
-        10.0, 10.0,
+        0.0,
+        0.0,
+        10.0,
+        0.0,
+        10.0,
+        10.0,
       ]);
 
       expect(PolylineMath.length(points), 20.0);
@@ -21,9 +24,12 @@ void main() {
 
     test('evaluateAtDistance', () {
       final points = Float32List.fromList([
-        0.0, 0.0,
-        10.0, 0.0,
-        10.0, 10.0,
+        0.0,
+        0.0,
+        10.0,
+        0.0,
+        10.0,
+        10.0,
       ]);
 
       // Start
@@ -59,9 +65,12 @@ void main() {
 
     test('evaluateAt', () {
       final points = Float32List.fromList([
-        0.0, 0.0,
-        10.0, 0.0,
-        10.0, 10.0,
+        0.0,
+        0.0,
+        10.0,
+        0.0,
+        10.0,
+        10.0,
       ]);
 
       // t = 0.0

@@ -4,11 +4,14 @@ import 'dart:math' as math;
 /// A 2D Polygon representing a continuous navigation area.
 class NavPolygon {
   final int id;
+
   /// X coordinates of vertices.
   final Float32List verticesX;
+
   /// Y coordinates of vertices.
   final Float32List verticesY;
   final int vertexCount;
+
   /// Adjacent polygon IDs for each edge. -1 if no neighbor.
   final Int32List neighbors;
 
@@ -111,7 +114,8 @@ class NavMesh {
             final double by2 = polyB.verticesY[bNext];
 
             // Edges must be identical but reversed winding
-            if (_isSamePoint(ax1, ay1, bx2, by2) && _isSamePoint(ax2, ay2, bx1, by1)) {
+            if (_isSamePoint(ax1, ay1, bx2, by2) &&
+                _isSamePoint(ax2, ay2, bx1, by1)) {
               polyA.neighbors[a] = j;
               polyB.neighbors[b] = i;
               break;
@@ -143,31 +147,34 @@ class NavMesh {
       double polyMaxY = poly.verticesY[0];
 
       for (int v = 1; v < poly.vertexCount; v++) {
-         polyMinX = math.min(polyMinX, poly.verticesX[v]);
-         polyMaxX = math.max(polyMaxX, poly.verticesX[v]);
-         polyMinY = math.min(polyMinY, poly.verticesY[v]);
-         polyMaxY = math.max(polyMaxY, poly.verticesY[v]);
+        polyMinX = math.min(polyMinX, poly.verticesX[v]);
+        polyMaxX = math.max(polyMaxX, poly.verticesX[v]);
+        polyMinY = math.min(polyMinY, poly.verticesY[v]);
+        polyMaxY = math.max(polyMaxY, poly.verticesY[v]);
       }
 
-      if (polyMinX <= maxX && polyMaxX >= minX && polyMinY <= maxY && polyMaxY >= minY) {
-          overlap = true;
+      if (polyMinX <= maxX &&
+          polyMaxX >= minX &&
+          polyMinY <= maxY &&
+          polyMaxY >= minY) {
+        overlap = true;
       }
 
       if (overlap) {
-         poly.isTraversable = false;
-         // Disconnect from neighbors
-         for (int j = 0; j < poly.vertexCount; j++) {
-            final neighborId = poly.neighbors[j];
-            if (neighborId != -1) {
-              final neighborPoly = _polygons[neighborId];
-              for(int k=0; k < neighborPoly.vertexCount; k++) {
-                if(neighborPoly.neighbors[k] == i) {
-                   neighborPoly.neighbors[k] = -1;
-                }
+        poly.isTraversable = false;
+        // Disconnect from neighbors
+        for (int j = 0; j < poly.vertexCount; j++) {
+          final neighborId = poly.neighbors[j];
+          if (neighborId != -1) {
+            final neighborPoly = _polygons[neighborId];
+            for (int k = 0; k < neighborPoly.vertexCount; k++) {
+              if (neighborPoly.neighbors[k] == i) {
+                neighborPoly.neighbors[k] = -1;
               }
-              poly.neighbors[j] = -1;
             }
-         }
+            poly.neighbors[j] = -1;
+          }
+        }
       }
     }
   }

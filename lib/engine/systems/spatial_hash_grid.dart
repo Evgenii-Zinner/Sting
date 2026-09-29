@@ -44,7 +44,8 @@ class SpatialHashGrid {
 
   /// Creates a SpatialHashGrid with the specified cell size and total number of cells.
   /// [_maxNodes] determines the maximum total insertions across all cells.
-  SpatialHashGrid(this.cellSize, this.numCells, {int maxNodes = EntityManager.maxEntities * 4})
+  SpatialHashGrid(this.cellSize, this.numCells,
+      {int maxNodes = EntityManager.maxEntities * 4})
       : _invCellSize = 1.0 / cellSize,
         _maxNodes = maxNodes,
         _cellStart = Int32List(numCells)..fillRange(0, numCells, -1),
@@ -80,8 +81,8 @@ class SpatialHashGrid {
   /// Inserts an entity into the grid based on its point position (x, y).
   void insertPoint(int entity, double x, double y, [int layer = 1]) {
     if (entity < 0 || entity >= EntityManager.maxEntities) {
-      throw RangeError.value(
-          entity, 'entity', 'Must be between 0 and ${EntityManager.maxEntities - 1}');
+      throw RangeError.value(entity, 'entity',
+          'Must be between 0 and ${EntityManager.maxEntities - 1}');
     }
 
     _entityLayers[entity] = layer;
@@ -97,10 +98,12 @@ class SpatialHashGrid {
   void insert(int entity, double x, double y) => insertPoint(entity, x, y);
 
   /// Inserts an entity into the grid based on its Axis-Aligned Bounding Box.
-  void insertAABB(int entity, double minX, double minY, double maxX, double maxY, [int layer = 1]) {
+  void insertAABB(
+      int entity, double minX, double minY, double maxX, double maxY,
+      [int layer = 1]) {
     if (entity < 0 || entity >= EntityManager.maxEntities) {
-      throw RangeError.value(
-          entity, 'entity', 'Must be between 0 and ${EntityManager.maxEntities - 1}');
+      throw RangeError.value(entity, 'entity',
+          'Must be between 0 and ${EntityManager.maxEntities - 1}');
     }
 
     _entityLayers[entity] = layer;
@@ -131,7 +134,8 @@ class SpatialHashGrid {
   /// Calls [callback] for each entity found in the overlapping cells that matches [mask].
   /// Returns early if [callback] returns false, otherwise continues.
   void queryAABB(double x, double y, double width, double height,
-      bool Function(int entity) callback, [int mask = 0xFFFFFFFF]) {
+      bool Function(int entity) callback,
+      [int mask = 0xFFFFFFFF]) {
     _currentQueryId++;
     final int queryId = _currentQueryId;
 
@@ -168,7 +172,8 @@ class SpatialHashGrid {
   /// Queries the grid for entities occupying the same cell as the given point.
   ///
   /// Calls [callback] for each entity found in the cell that matches [mask].
-  void queryPoint(double x, double y, void Function(int entity) callback, [int mask = 0xFFFFFFFF]) {
+  void queryPoint(double x, double y, void Function(int entity) callback,
+      [int mask = 0xFFFFFFFF]) {
     _currentQueryId++;
     final int queryId = _currentQueryId;
 
@@ -197,9 +202,9 @@ class SpatialHashGrid {
   ///
   /// Calls [callback] for each entity found that matches [mask].
   /// Returns early if [callback] returns false, otherwise continues.
-  void queryRadius(double x, double y, double radius,
-      bool Function(int entity) callback, [int mask = 0xFFFFFFFF]) {
+  void queryRadius(
+      double x, double y, double radius, bool Function(int entity) callback,
+      [int mask = 0xFFFFFFFF]) {
     queryAABB(x - radius, y - radius, radius * 2, radius * 2, callback, mask);
   }
 }
-

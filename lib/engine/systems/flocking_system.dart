@@ -130,20 +130,23 @@ class FlockingSystem {
         // Has no specific "desired velocity" since we just push away, but we apply max force scaling.
         _steerResult[0] = _sepForceX;
         _steerResult[1] = _sepForceY;
-        if (_steerResult[0] * _steerResult[0] + _steerResult[1] * _steerResult[1] > 0.000001) {
-             final double sDistSq = _steerResult[0] * _steerResult[0] + _steerResult[1] * _steerResult[1];
-             final double sDist = sqrt(sDistSq);
-             // Normalize and scale to max force limit (or some logic; we'll treat the average as the force directly but bound it)
-             _steerResult[0] = (_steerResult[0] / sDist) * agent.maxForce; // Simplification of Reynolds' sep
-             _steerResult[1] = (_steerResult[1] / sDist) * agent.maxForce;
+        if (_steerResult[0] * _steerResult[0] +
+                _steerResult[1] * _steerResult[1] >
+            0.000001) {
+          final double sDistSq = _steerResult[0] * _steerResult[0] +
+              _steerResult[1] * _steerResult[1];
+          final double sDist = sqrt(sDistSq);
+          // Normalize and scale to max force limit (or some logic; we'll treat the average as the force directly but bound it)
+          _steerResult[0] = (_steerResult[0] / sDist) *
+              agent.maxForce; // Simplification of Reynolds' sep
+          _steerResult[1] = (_steerResult[1] / sDist) * agent.maxForce;
         } else {
-             _steerResult[0] = 0.0;
-             _steerResult[1] = 0.0;
+          _steerResult[0] = 0.0;
+          _steerResult[1] = 0.0;
         }
 
         final double finalSepForceX = _steerResult[0] * agent.separationWeight;
         final double finalSepForceY = _steerResult[1] * agent.separationWeight;
-
 
         // Alignment force
         // steer = desired - velocity
@@ -157,7 +160,6 @@ class FlockingSystem {
         final double finalAlignForceX = _steerResult[0] * agent.alignmentWeight;
         final double finalAlignForceY = _steerResult[1] * agent.alignmentWeight;
 
-
         // Cohesion force
         // steer = desired - velocity where desired = center - position
         _cohCenterX *= invCount;
@@ -165,18 +167,19 @@ class FlockingSystem {
 
         double desiredCohX = _cohCenterX - position.x;
         double desiredCohY = _cohCenterY - position.y;
-        final double cohDistSq = desiredCohX * desiredCohX + desiredCohY * desiredCohY;
+        final double cohDistSq =
+            desiredCohX * desiredCohX + desiredCohY * desiredCohY;
 
         // We often normalize this desired velocity if dist > 0
         if (cohDistSq > 0.000001) {
-            final double cohDist = sqrt(cohDistSq);
-            // Some implementations scale to maxSpeed, here we just normalize then subtract current velocity
-            // In standard boids we would scale to a max speed, but flocking agent doesn't have maxSpeed.
-            // Wait, we need to guide it towards the center.
-            // Let's use a simple steering force approach.
-            desiredCohX /= cohDist;
-            desiredCohY /= cohDist;
-            // assume unit vector * arbitrary scale, or simply:
+          final double cohDist = sqrt(cohDistSq);
+          // Some implementations scale to maxSpeed, here we just normalize then subtract current velocity
+          // In standard boids we would scale to a max speed, but flocking agent doesn't have maxSpeed.
+          // Wait, we need to guide it towards the center.
+          // Let's use a simple steering force approach.
+          desiredCohX /= cohDist;
+          desiredCohY /= cohDist;
+          // assume unit vector * arbitrary scale, or simply:
         }
 
         _steerResult[0] = desiredCohX - velocity.dx;
@@ -187,10 +190,11 @@ class FlockingSystem {
         final double finalCohForceY = _steerResult[1] * agent.cohesionWeight;
 
         // Apply forces to velocity (v = v + a*dt)
-        velocity.dx += (finalSepForceX + finalAlignForceX + finalCohForceX) * dt;
-        velocity.dy += (finalSepForceY + finalAlignForceY + finalCohForceY) * dt;
+        velocity.dx +=
+            (finalSepForceX + finalAlignForceX + finalCohForceX) * dt;
+        velocity.dy +=
+            (finalSepForceY + finalAlignForceY + finalCohForceY) * dt;
       }
     });
   }
 }
-

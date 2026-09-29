@@ -15,16 +15,18 @@ void main() {
       final system = CapsuleCorridorSystem(corridors, positions, velocities);
 
       // Create a corridor from (0,0) to (100,0) with radius 10, force 50, direction (1, 0)
-      corridors.add(1, CapsuleCorridor.create(
-        startX: 0.0,
-        startY: 0.0,
-        endX: 100.0,
-        endY: 0.0,
-        radius: 10.0,
-        flowDirectionX: 1.0,
-        flowDirectionY: 0.0,
-        flowForce: 50.0,
-      ));
+      corridors.add(
+          1,
+          CapsuleCorridor.create(
+            startX: 0.0,
+            startY: 0.0,
+            endX: 100.0,
+            endY: 0.0,
+            radius: 10.0,
+            flowDirectionX: 1.0,
+            flowDirectionY: 0.0,
+            flowForce: 50.0,
+          ));
 
       // Entity 2: inside corridor
       positions.add(2, Position.create(50.0, 5.0));
@@ -52,15 +54,31 @@ void main() {
 
       final system = CapsuleCorridorSystem(corridors, positions, velocities);
 
-      corridors.add(1, CapsuleCorridor.create(
-        startX: 0.0, startY: 0.0, endX: 100.0, endY: 0.0, radius: 20.0,
-        flowDirectionX: 1.0, flowDirectionY: 0.0, flowForce: 10.0,
-      ));
+      corridors.add(
+          1,
+          CapsuleCorridor.create(
+            startX: 0.0,
+            startY: 0.0,
+            endX: 100.0,
+            endY: 0.0,
+            radius: 20.0,
+            flowDirectionX: 1.0,
+            flowDirectionY: 0.0,
+            flowForce: 10.0,
+          ));
 
-      corridors.add(2, CapsuleCorridor.create(
-        startX: 0.0, startY: -50.0, endX: 0.0, endY: 50.0, radius: 20.0,
-        flowDirectionX: 0.0, flowDirectionY: 1.0, flowForce: 20.0,
-      ));
+      corridors.add(
+          2,
+          CapsuleCorridor.create(
+            startX: 0.0,
+            startY: -50.0,
+            endX: 0.0,
+            endY: 50.0,
+            radius: 20.0,
+            flowDirectionX: 0.0,
+            flowDirectionY: 1.0,
+            flowForce: 20.0,
+          ));
 
       // Entity at (0, 0) is inside both
       positions.add(3, Position.create(0.0, 0.0));
@@ -79,10 +97,18 @@ void main() {
 
       final system = CapsuleCorridorSystem(corridors, positions, velocities);
 
-      corridors.add(1, CapsuleCorridor.create(
-        startX: 0.0, startY: 0.0, endX: 100.0, endY: 0.0, radius: 20.0,
-        flowDirectionX: 1.0, flowDirectionY: 0.0, flowForce: 10.0,
-      ));
+      corridors.add(
+          1,
+          CapsuleCorridor.create(
+            startX: 0.0,
+            startY: 0.0,
+            endX: 100.0,
+            endY: 0.0,
+            radius: 20.0,
+            flowDirectionX: 1.0,
+            flowDirectionY: 0.0,
+            flowForce: 10.0,
+          ));
 
       // Has only position
       positions.add(2, Position.create(0.0, 0.0));
@@ -105,16 +131,18 @@ void main() {
 
       // Setup corridors
       for (var i = 0; i < 5; i++) {
-        corridors.add(i + 1, CapsuleCorridor.create(
-          startX: i * 10.0,
-          startY: 0.0,
-          endX: i * 10.0 + 10.0,
-          endY: 0.0,
-          radius: 10.0,
-          flowDirectionX: 1.0,
-          flowDirectionY: 0.0,
-          flowForce: 50.0,
-        ));
+        corridors.add(
+            i + 1,
+            CapsuleCorridor.create(
+              startX: i * 10.0,
+              startY: 0.0,
+              endX: i * 10.0 + 10.0,
+              endY: 0.0,
+              radius: 10.0,
+              flowDirectionX: 1.0,
+              flowDirectionY: 0.0,
+              flowForce: 50.0,
+            ));
       }
 
       // Setup entities

@@ -33,7 +33,8 @@ class PolylineMath {
   }
 
   /// Evaluates the point on the polyline at the specified [distance] from the start.
-  static (double, double) evaluateAtDistance(Float32List points, double distance) {
+  static (double, double) evaluateAtDistance(
+      Float32List points, double distance) {
     if (points.isEmpty) return (0.0, 0.0);
     if (points.length < 4) return (points[0], points[1]);
 
@@ -54,7 +55,8 @@ class PolylineMath {
       if (accumulatedLength + segmentLength >= distance) {
         // We found the segment containing the target distance
         final double remainingDistance = distance - accumulatedLength;
-        final double tSegment = segmentLength > 0 ? remainingDistance / segmentLength : 0.0;
+        final double tSegment =
+            segmentLength > 0 ? remainingDistance / segmentLength : 0.0;
 
         return (x1 + tSegment * dx, y1 + tSegment * dy);
       }

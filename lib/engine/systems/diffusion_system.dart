@@ -125,7 +125,8 @@ class DiffusionSystem {
           final int expectedNeighbors = isHex ? 6 : 4;
           final int missingNeighbors = expectedNeighbors - validNeighbors;
 
-          final double effectiveSum = sumNeighbors + (missingNeighbors * cellValue);
+          final double effectiveSum =
+              sumNeighbors + (missingNeighbors * cellValue);
           final double averageNeighbor = effectiveSum / expectedNeighbors;
 
           final double delta = averageNeighbor - cellValue;
@@ -140,4 +141,3 @@ class DiffusionSystem {
     });
   }
 }
-

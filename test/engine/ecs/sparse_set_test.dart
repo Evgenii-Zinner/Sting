@@ -11,7 +11,8 @@ void main() {
 
     test('throws if capacity is out of bounds', () {
       expect(() => SparseSet(-1), throwsArgumentError);
-      expect(() => SparseSet(EntityManager.maxEntities + 2), throwsArgumentError);
+      expect(
+          () => SparseSet(EntityManager.maxEntities + 2), throwsArgumentError);
     });
 
     test('adds and contains entities', () {

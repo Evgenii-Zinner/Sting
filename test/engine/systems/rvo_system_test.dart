@@ -35,7 +35,9 @@ void main() {
       );
     });
 
-    test('agents traveling head-on resolve collisions by steering (cross-product bias)', () {
+    test(
+        'agents traveling head-on resolve collisions by steering (cross-product bias)',
+        () {
       // Agent 0 moving Right
       final pos0 = Position.create(0.0, 0.0);
       positionCaste.add(0, pos0);

@@ -251,7 +251,8 @@ void main() {
       expect(pos.y, closeTo(37.5, 0.001));
     });
 
-    test('handles fallback when not enough points are provided for curve type', () {
+    test('handles fallback when not enough points are provided for curve type',
+        () {
       final follower = SplineFollower.create(
         pointCount: 2, // only 2 points but type=2 (Cubic needs 4)
         type: 2,

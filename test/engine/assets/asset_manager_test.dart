@@ -116,20 +116,21 @@ void main() {
     });
 
     test('clear() disposes images when dispose=true', () {
-       // Note: We can't easily mock Image in dart:ui to verify dispose() was called,
-       // but we can verify it doesn't throw and empties the cache.
-       // The Image disposal logic is straightforward.
-       assetManager.setImage('img1', testImage);
-       expect(assetManager.count, equals(1));
-       assetManager.clear(dispose: true);
-       expect(assetManager.count, equals(0));
-       expect(assetManager.has('img1'), isFalse);
+      // Note: We can't easily mock Image in dart:ui to verify dispose() was called,
+      // but we can verify it doesn't throw and empties the cache.
+      // The Image disposal logic is straightforward.
+      assetManager.setImage('img1', testImage);
+      expect(assetManager.count, equals(1));
+      assetManager.clear(dispose: true);
+      expect(assetManager.count, equals(0));
+      expect(assetManager.has('img1'), isFalse);
     });
   });
 
   group('AssetManager - Asynchronous Loaders', () {
     test('loadEmbeddedImage() loads and caches an image', () async {
-      final image = await assetManager.loadEmbeddedImage('embedded1', testBase64Image);
+      final image =
+          await assetManager.loadEmbeddedImage('embedded1', testBase64Image);
       expect(image, isA<Image>());
       expect(assetManager.getImage('embedded1'), equals(image));
       expect(assetManager.has('embedded1'), isTrue);
@@ -140,7 +141,8 @@ void main() {
       final file = File('test_temp_bytes.bin');
       await file.writeAsBytes([4, 5, 6]);
 
-      final bytes = await assetManager.loadBytes('file_bytes', 'test_temp_bytes.bin');
+      final bytes =
+          await assetManager.loadBytes('file_bytes', 'test_temp_bytes.bin');
       expect(bytes, equals([4, 5, 6]));
       expect(assetManager.getBytes('file_bytes'), equals(bytes));
 
@@ -151,7 +153,8 @@ void main() {
       final file = File('test_temp_text.txt');
       await file.writeAsString('Test Content');
 
-      final text = await assetManager.loadText('file_text', 'test_temp_text.txt');
+      final text =
+          await assetManager.loadText('file_text', 'test_temp_text.txt');
       expect(text, equals('Test Content'));
       expect(assetManager.getText('file_text'), equals('Test Content'));
 
@@ -161,14 +164,16 @@ void main() {
     test('loadShader() loads and caches fragment program', () async {
       // Assuming 'test/assets/test_shader.frag' exists in the pubspec.yaml assets/shaders list as specified in AGENTS.md rules.
       try {
-        final shader = await assetManager.loadShader('shader1', 'test/assets/test_shader.frag');
+        final shader = await assetManager.loadShader(
+            'shader1', 'test/assets/test_shader.frag');
         expect(shader, isA<FragmentProgram>());
         expect(assetManager.getShader('shader1'), equals(shader));
       } catch (e) {
         // If the environment isn't fully set up with shader compilation, we skip or print,
         // but the method logic should be tested if possible.
         // ignore: avoid_print
-        print('Warning: Shader compilation might be skipped if not fully supported in this test environment. Error: $e');
+        print(
+            'Warning: Shader compilation might be skipped if not fully supported in this test environment. Error: $e');
       }
     });
   });

@@ -20,7 +20,12 @@ void main() {
       slopeModifierCaste = ComponentStorage<SlopeModifier>(10);
 
       // Slope going up in the positive X direction (dx = 1)
-      slopeHeightMap = HeightMap.create(columns: 2, rows: 2, cellWidth: 1.0, cellHeight: 1.0, defaultHeight: 0.0);
+      slopeHeightMap = HeightMap.create(
+          columns: 2,
+          rows: 2,
+          cellWidth: 1.0,
+          cellHeight: 1.0,
+          defaultHeight: 0.0);
       slopeHeightMap.setElevationAtCell(1, 0, 1.0);
       slopeHeightMap.setElevationAtCell(1, 1, 1.0);
 
@@ -35,10 +40,12 @@ void main() {
     test('Uphill motion experiences drag and slows down', () {
       positionCaste.add(0, Position.create(0.5, 0.5));
       velocityCaste.add(0, Velocity.create(10.0, 0.0)); // Moving uphill
-      slopeModifierCaste.add(0, SlopeModifier.create(
-        uphillResistance: 0.5,
-        gravityPull: 0.0, // Isolate drag
-      ));
+      slopeModifierCaste.add(
+          0,
+          SlopeModifier.create(
+            uphillResistance: 0.5,
+            gravityPull: 0.0, // Isolate drag
+          ));
 
       system.update(1.0);
 
@@ -53,10 +60,12 @@ void main() {
     test('Downhill motion experiences acceleration and speeds up', () {
       positionCaste.add(0, Position.create(0.5, 0.5));
       velocityCaste.add(0, Velocity.create(-10.0, 0.0)); // Moving downhill
-      slopeModifierCaste.add(0, SlopeModifier.create(
-        downhillBoost: 0.5,
-        gravityPull: 0.0, // Isolate boost
-      ));
+      slopeModifierCaste.add(
+          0,
+          SlopeModifier.create(
+            downhillBoost: 0.5,
+            gravityPull: 0.0, // Isolate boost
+          ));
 
       system.update(1.0);
 
@@ -72,11 +81,13 @@ void main() {
     test('Gravitational sliding on incline when stationary', () {
       positionCaste.add(0, Position.create(0.5, 0.5));
       velocityCaste.add(0, Velocity.create(0.0, 0.0)); // Stationary
-      slopeModifierCaste.add(0, SlopeModifier.create(
-        gravityPull: 9.8,
-        downhillBoost: 0.0, // Isolate gravity without compounding boost
-        slideThreshold: 0.5, // Slope m=1.0 > 0.5, so will slide
-      ));
+      slopeModifierCaste.add(
+          0,
+          SlopeModifier.create(
+            gravityPull: 9.8,
+            downhillBoost: 0.0, // Isolate gravity without compounding boost
+            slideThreshold: 0.5, // Slope m=1.0 > 0.5, so will slide
+          ));
 
       system.update(1.0);
 
@@ -92,11 +103,13 @@ void main() {
     test('Unclimbable steep slope deflects/blocks uphill progress', () {
       positionCaste.add(0, Position.create(0.5, 0.5));
       velocityCaste.add(0, Velocity.create(10.0, 0.0)); // Moving uphill
-      slopeModifierCaste.add(0, SlopeModifier.create(
-        uphillResistance: 0.0, // No drag, just pure slope blocking
-        gravityPull: 0.0,
-        maxClimbableSlope: 0.5, // Slope m=1.0 > 0.5, unclimbable
-      ));
+      slopeModifierCaste.add(
+          0,
+          SlopeModifier.create(
+            uphillResistance: 0.0, // No drag, just pure slope blocking
+            gravityPull: 0.0,
+            maxClimbableSlope: 0.5, // Slope m=1.0 > 0.5, unclimbable
+          ));
 
       system.update(1.0);
 

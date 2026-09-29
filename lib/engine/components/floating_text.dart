@@ -1,7 +1,16 @@
 import 'dart:typed_data';
 
 extension type FloatingText(Float32List data) {
-  FloatingText.create(double worldX, double worldY, double velocityX, double velocityY, double lifetime, double maxLifetime, double alpha, double scale, double numberValue)
+  FloatingText.create(
+      double worldX,
+      double worldY,
+      double velocityX,
+      double velocityY,
+      double lifetime,
+      double maxLifetime,
+      double alpha,
+      double scale,
+      double numberValue)
       : this(Float32List(9)
           ..[0] = worldX
           ..[1] = worldY

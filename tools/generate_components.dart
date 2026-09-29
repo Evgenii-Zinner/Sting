@@ -4,7 +4,8 @@ import 'dart:io';
 
 void main(List<String> args) {
   if (args.isEmpty) {
-    print('Usage: dart tools/generate_components.dart <schema.json> [output.dart]');
+    print(
+        'Usage: dart tools/generate_components.dart <schema.json> [output.dart]');
     exit(1);
   }
 
@@ -61,8 +62,12 @@ String generateComponentCode(Map<String, dynamic> schema) {
   return buffer.toString();
 }
 
-void _generateTypedDataMethods(String name, String backingType, List<dynamic> fields, StringBuffer buffer) {
-  final fieldType = (backingType == 'Float32List' || backingType == 'Float64List') ? 'double' : 'int';
+void _generateTypedDataMethods(String name, String backingType,
+    List<dynamic> fields, StringBuffer buffer) {
+  final fieldType =
+      (backingType == 'Float32List' || backingType == 'Float64List')
+          ? 'double'
+          : 'int';
 
   final paramSet = <String>{};
   final paramsList = <String>[];
@@ -103,7 +108,8 @@ void _generateTypedDataMethods(String name, String backingType, List<dynamic> fi
   }
 }
 
-void _generateByteDataMethods(String name, List<dynamic> fields, StringBuffer buffer) {
+void _generateByteDataMethods(
+    String name, List<dynamic> fields, StringBuffer buffer) {
   final paramsList = <String>[];
   final paramSet = <String>{};
   final initMap = <String, String>{};
@@ -168,7 +174,9 @@ void _generateByteDataMethods(String name, List<dynamic> fields, StringBuffer bu
     String dartType = fieldTypeStr.startsWith('Float') ? 'double' : 'int';
 
     buffer.writeln();
-    buffer.writeln("  $dartType get $fieldName => data.get$fieldTypeStr($offset);");
-    buffer.writeln("  set $fieldName($dartType value) => data.set$fieldTypeStr($offset, value);");
+    buffer.writeln(
+        "  $dartType get $fieldName => data.get$fieldTypeStr($offset);");
+    buffer.writeln(
+        "  set $fieldName($dartType value) => data.set$fieldTypeStr($offset, value);");
   }
 }
