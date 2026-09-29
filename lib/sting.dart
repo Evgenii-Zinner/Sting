@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+export 'engine/assets/asset_manager.dart';
+export 'engine/components/height_map.dart';
+=======
 
 
 export 'engine/renderer.dart';
@@ -11,3 +15,4 @@ export 'engine/components/slope_modifier.dart';
 export 'engine/systems/slope_physics_system.dart';
 export 'engine/ecs/component_storage.dart';
 export 'engine/ecs/query.dart';
+>>>>>>> Stashed changes

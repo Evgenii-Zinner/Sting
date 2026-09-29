@@ -21,10 +21,9 @@ void main() {
       slopeModifierCaste = ComponentStorage<SlopeModifier>(10);
 
       // Slope going up in the positive X direction (dx = 1)
-      slopeHeightMap = HeightMap(2, 2, Float32List.fromList([
-        0.0, 1.0,
-        0.0, 1.0,
-      ]));
+      slopeHeightMap = HeightMap.create(columns: 2, rows: 2, cellWidth: 1.0, cellHeight: 1.0, defaultHeight: 0.0);
+      slopeHeightMap.setElevationAtCell(1, 0, 1.0);
+      slopeHeightMap.setElevationAtCell(1, 1, 1.0);
 
       system = SlopePhysicsSystem(
         positionCaste: positionCaste,

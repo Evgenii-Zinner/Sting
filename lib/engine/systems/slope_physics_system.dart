@@ -26,16 +26,16 @@ class SlopePhysicsSystem {
 
     _query.forEach((entity, pos, vel, slopeMod) {
       if (pos.x < 0 ||
-          pos.x >= heightMap!.width * heightMap!.scaleX ||
+          pos.x >= heightMap!.columns * heightMap!.cellWidth ||
           pos.y < 0 ||
-          pos.y >= heightMap!.height * heightMap!.scaleY) {
+          pos.y >= heightMap!.rows * heightMap!.cellHeight) {
         slopeMod.currentSlopeGrade = 0.0;
         slopeMod.currentSlopeAngle = 0.0;
         slopeMod.isStuckOrSliding = 0.0;
         return;
       }
 
-      final (gx, gy) = heightMap!.getGradientAt(pos.x, pos.y);
+      final (gx, gy) = heightMap!.sampleGradient(pos.x, pos.y);
       final double m = sqrt(gx * gx + gy * gy);
       final double theta = atan(m);
 
