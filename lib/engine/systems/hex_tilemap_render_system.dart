@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'dart:typed_data';
 import '../ecs/query.dart';
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 import '../components/position.dart';
 import '../components/hex_tilemap.dart';
 import '../components/viewport.dart';
@@ -11,8 +11,8 @@ import '../math/hex_math.dart';
 class HexTilemapRenderSystem {
   final Image atlas;
   final Query2<Position, HexTilemap> query;
-  final ComponentCaste<Viewport>? viewportCaste;
-  final ComponentCaste<ShaderMaterial>? shaderCaste;
+  final ComponentStorage<Viewport>? viewportCaste;
+  final ComponentStorage<ShaderMaterial>? shaderCaste;
   int activeCameraEntity;
 
   double atlasOffsetX;
@@ -27,8 +27,8 @@ class HexTilemapRenderSystem {
 
   HexTilemapRenderSystem({
     required this.atlas,
-    required ComponentCaste<Position> positionCaste,
-    required ComponentCaste<HexTilemap> hexTilemapCaste,
+    required ComponentStorage<Position> positionCaste,
+    required ComponentStorage<HexTilemap> hexTilemapCaste,
     required this.hexSize,
     this.viewportCaste,
     this.shaderCaste,
@@ -173,3 +173,4 @@ class HexTilemapRenderSystem {
     }
   }
 }
+

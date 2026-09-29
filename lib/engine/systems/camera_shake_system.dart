@@ -1,11 +1,11 @@
 import 'dart:math';
 import '../components/camera_trauma.dart';
 import '../components/viewport.dart';
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 
 class CameraShakeSystem {
-  final ComponentCaste<CameraTrauma> cameraTraumaCaste;
-  final ComponentCaste<Viewport> viewportCaste;
+  final ComponentStorage<CameraTrauma> cameraTraumaCaste;
+  final ComponentStorage<Viewport> viewportCaste;
 
   double _time = 0.0;
 
@@ -89,3 +89,4 @@ class CameraShakeSystem {
     return sin(t + offset * 12.345) * cos(t * 1.5 + offset * 3.1415);
   }
 }
+

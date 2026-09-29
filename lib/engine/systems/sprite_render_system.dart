@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'dart:typed_data';
 import '../ecs/query.dart';
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 import '../components/position.dart';
 import '../components/sprite.dart';
 import '../components/viewport.dart';
@@ -10,8 +10,8 @@ import '../components/shader_material.dart';
 class SpriteRenderSystem {
   final Image atlas;
   final Query2<Position, Sprite> query;
-  final ComponentCaste<Viewport>? viewportCaste;
-  final ComponentCaste<ShaderMaterial>? shaderCaste;
+  final ComponentStorage<Viewport>? viewportCaste;
+  final ComponentStorage<ShaderMaterial>? shaderCaste;
   int activeCameraEntity;
 
   // Pre-allocated arrays for drawAtlas to prevent per-frame allocations.
@@ -24,8 +24,8 @@ class SpriteRenderSystem {
 
   SpriteRenderSystem({
     required this.atlas,
-    required ComponentCaste<Position> positionCaste,
-    required ComponentCaste<Sprite> spriteCaste,
+    required ComponentStorage<Position> positionCaste,
+    required ComponentStorage<Sprite> spriteCaste,
     this.viewportCaste,
     this.shaderCaste,
     this.activeCameraEntity = -1,
@@ -124,3 +124,4 @@ class SpriteRenderSystem {
     }
   }
 }
+

@@ -1,13 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/animation_event_trigger.dart';
 import 'package:sting/engine/components/sprite_animation.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/animated_sprite_event_system.dart';
 
 void main() {
   group('AnimatedSpriteEventSystem', () {
-    late ComponentCaste<SpriteAnimation> spriteAnimationCaste;
-    late ComponentCaste<AnimationEventTrigger> triggerCaste;
+    late ComponentStorage<SpriteAnimation> spriteAnimationCaste;
+    late ComponentStorage<AnimationEventTrigger> triggerCaste;
     late AnimatedSpriteEventSystem system;
 
     late int triggeredEntity;
@@ -15,8 +15,8 @@ void main() {
     late int triggerCount;
 
     setUp(() {
-      spriteAnimationCaste = ComponentCaste<SpriteAnimation>(10);
-      triggerCaste = ComponentCaste<AnimationEventTrigger>(10);
+      spriteAnimationCaste = ComponentStorage<SpriteAnimation>(10);
+      triggerCaste = ComponentStorage<AnimationEventTrigger>(10);
 
       triggeredEntity = -1;
       triggeredEventId = -1;

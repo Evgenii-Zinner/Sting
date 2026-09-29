@@ -1,13 +1,13 @@
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 import '../ecs/query.dart';
 import '../components/position.dart';
 import '../components/viewport.dart';
 import '../components/camera_follow.dart';
 
 class CameraFollowSystem {
-  final ComponentCaste<Position> positionCaste;
-  final ComponentCaste<Viewport> viewportCaste;
-  final ComponentCaste<CameraFollow> cameraFollowCaste;
+  final ComponentStorage<Position> positionCaste;
+  final ComponentStorage<Viewport> viewportCaste;
+  final ComponentStorage<CameraFollow> cameraFollowCaste;
   late final Query2<Viewport, CameraFollow> _cameraQuery;
 
   double screenWidth = 800.0;
@@ -105,3 +105,4 @@ class CameraFollowSystem {
     });
   }
 }
+

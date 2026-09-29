@@ -4,16 +4,16 @@ import 'dart:ui';
 import 'package:sting/engine/components/virtual_joypad.dart';
 import 'package:sting/engine/components/ui_bounding_box.dart';
 import 'package:sting/engine/components/complex_ui.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/input_system.dart';
 import 'package:sting/engine/renderer.dart';
 
 /// Handles virtual joypad input, translating touch vectors into normalized values
 /// and updating the visual knob UI element.
 class VirtualJoypadSystem {
-  final ComponentCaste<VirtualJoypad> _joypads;
-  final ComponentCaste<UIBoundingBox> _uiBoxes;
-  final ComponentCaste<ComplexUI> _complexUIs;
+  final ComponentStorage<VirtualJoypad> _joypads;
+  final ComponentStorage<UIBoundingBox> _uiBoxes;
+  final ComponentStorage<ComplexUI> _complexUIs;
   final InputSystem _inputSystem;
   final Renderer? _renderer;
 
@@ -126,3 +126,4 @@ class VirtualJoypadSystem {
     }
   }
 }
+

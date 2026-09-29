@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/ecs/scene.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
 import 'package:sting/engine/components/mass.dart';
@@ -13,17 +13,17 @@ void main() {
     late Scene scene;
     late GameStateSystem gameStateSystem;
     late GravitySystem gravitySystem;
-    late ComponentCaste<Position> posCaste;
-    late ComponentCaste<Velocity> velCaste;
-    late ComponentCaste<Mass> massCaste;
-    late ComponentCaste<GameState> stateCaste;
+    late ComponentStorage<Position> posCaste;
+    late ComponentStorage<Velocity> velCaste;
+    late ComponentStorage<Mass> massCaste;
+    late ComponentStorage<GameState> stateCaste;
 
     setUp(() {
       scene = Scene();
-      posCaste = ComponentCaste<Position>(100);
-      velCaste = ComponentCaste<Velocity>(100);
-      massCaste = ComponentCaste<Mass>(100);
-      stateCaste = ComponentCaste<GameState>(10);
+      posCaste = ComponentStorage<Position>(100);
+      velCaste = ComponentStorage<Velocity>(100);
+      massCaste = ComponentStorage<Mass>(100);
+      stateCaste = ComponentStorage<GameState>(10);
 
       scene.registerCaste<Position>('Position', posCaste);
       scene.registerCaste<Velocity>('Velocity', velCaste);

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/sprite.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 
 void main() {
   group('Sprite Component', () {
@@ -58,8 +58,8 @@ void main() {
       expect(sprite.color, colorValue);
     });
 
-    test('can be stored in ComponentCaste without issues', () {
-      final caste = ComponentCaste<Sprite>(10);
+    test('can be stored in ComponentStorage without issues', () {
+      final caste = ComponentStorage<Sprite>(10);
 
       final sprite1 = Sprite.create();
       sprite1.rectLeft = 5.0;

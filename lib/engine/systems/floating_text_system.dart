@@ -1,14 +1,14 @@
 import 'dart:ui';
 import '../ecs/query.dart';
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 import '../components/floating_text.dart';
 import '../components/viewport.dart';
 
 /// A system that manages the update and rendering of FloatingText components.
 /// Ensures zero per-frame object allocations.
 class FloatingTextSystem {
-  final ComponentCaste<FloatingText> floatingTextCaste;
-  final ComponentCaste<Viewport> viewportCaste;
+  final ComponentStorage<FloatingText> floatingTextCaste;
+  final ComponentStorage<Viewport> viewportCaste;
   final double gravity;
 
   final Query1<FloatingText> _textQuery;
@@ -122,3 +122,4 @@ class FloatingTextSystem {
     });
   }
 }
+

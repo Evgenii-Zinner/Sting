@@ -1,13 +1,13 @@
-import 'package:sting/engine/ecs/swarm.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 
 void main() {
   final stopwatch = Stopwatch();
   final count = 10000;
 
-  // Swarm Spawning
+  // EntityManager Spawning
   stopwatch.start();
-  var swarm = Swarm();
+  var swarm = EntityManager();
   for (int i = 0; i < count; i++) {
     swarm.createEntity();
   }
@@ -17,8 +17,8 @@ void main() {
   stopwatch.reset();
 
   // Component Addition
-  swarm = Swarm();
-  final caste = ComponentCaste<double>(count);
+  swarm = EntityManager();
+  final caste = ComponentStorage<double>(count);
   for (int i = 0; i < count; i++) {
     swarm.createEntity();
   }

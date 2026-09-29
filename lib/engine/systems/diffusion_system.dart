@@ -1,5 +1,5 @@
 import 'package:sting/engine/components/grid_diffusion.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
 
 /// A system that calculates numerical cellular diffusion over a grid.
@@ -10,7 +10,7 @@ class DiffusionSystem {
 
   /// Creates a DiffusionSystem querying entities with `GridDiffusion`.
   DiffusionSystem({
-    required ComponentCaste<GridDiffusion> diffusionCaste,
+    required ComponentStorage<GridDiffusion> diffusionCaste,
   }) : _query = Query1<GridDiffusion>(diffusionCaste);
 
   /// Updates the diffusion state of all applicable entities.
@@ -140,3 +140,4 @@ class DiffusionSystem {
     });
   }
 }
+

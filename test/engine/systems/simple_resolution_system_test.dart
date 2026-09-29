@@ -2,20 +2,20 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/bounding_box.dart';
 import 'package:sting/engine/components/circle_collider.dart';
 import 'package:sting/engine/components/position.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/simple_resolution_system.dart';
 
 void main() {
   group('SimpleResolutionSystem', () {
-    late ComponentCaste<Position> positionCaste;
-    late ComponentCaste<BoundingBox> boundingBoxCaste;
-    late ComponentCaste<CircleCollider> circleColliderCaste;
+    late ComponentStorage<Position> positionCaste;
+    late ComponentStorage<BoundingBox> boundingBoxCaste;
+    late ComponentStorage<CircleCollider> circleColliderCaste;
     late SimpleResolutionSystem system;
 
     setUp(() {
-      positionCaste = ComponentCaste<Position>(10);
-      boundingBoxCaste = ComponentCaste<BoundingBox>(10);
-      circleColliderCaste = ComponentCaste<CircleCollider>(10);
+      positionCaste = ComponentStorage<Position>(10);
+      boundingBoxCaste = ComponentStorage<BoundingBox>(10);
+      circleColliderCaste = ComponentStorage<CircleCollider>(10);
 
       system = SimpleResolutionSystem(
         positionCaste,

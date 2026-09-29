@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:sting/engine/ecs/swarm.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
 
 /// A 2D spatial hash grid designed for massive entity counts with zero allocations per update.
 /// Uses flat arrays to implement a linked list of entities per cell.
@@ -44,14 +44,14 @@ class SpatialHashGrid {
 
   /// Creates a SpatialHashGrid with the specified cell size and total number of cells.
   /// [_maxNodes] determines the maximum total insertions across all cells.
-  SpatialHashGrid(this.cellSize, this.numCells, {int maxNodes = Swarm.maxEntities * 4})
+  SpatialHashGrid(this.cellSize, this.numCells, {int maxNodes = EntityManager.maxEntities * 4})
       : _invCellSize = 1.0 / cellSize,
         _maxNodes = maxNodes,
         _cellStart = Int32List(numCells)..fillRange(0, numCells, -1),
         _nodeEntity = Int32List(maxNodes),
         _nodeNext = Int32List(maxNodes),
-        _entityLayers = Int32List(Swarm.maxEntities),
-        _entityLastQuery = Int32List(Swarm.maxEntities);
+        _entityLayers = Int32List(EntityManager.maxEntities),
+        _entityLastQuery = Int32List(EntityManager.maxEntities);
 
   /// Computes the 1D hash cell index for the given 2D cell coordinates.
   int _hash(int cellX, int cellY) {
@@ -79,9 +79,9 @@ class SpatialHashGrid {
 
   /// Inserts an entity into the grid based on its point position (x, y).
   void insertPoint(int entity, double x, double y, [int layer = 1]) {
-    if (entity < 0 || entity >= Swarm.maxEntities) {
+    if (entity < 0 || entity >= EntityManager.maxEntities) {
       throw RangeError.value(
-          entity, 'entity', 'Must be between 0 and ${Swarm.maxEntities - 1}');
+          entity, 'entity', 'Must be between 0 and ${EntityManager.maxEntities - 1}');
     }
 
     _entityLayers[entity] = layer;
@@ -98,9 +98,9 @@ class SpatialHashGrid {
 
   /// Inserts an entity into the grid based on its Axis-Aligned Bounding Box.
   void insertAABB(int entity, double minX, double minY, double maxX, double maxY, [int layer = 1]) {
-    if (entity < 0 || entity >= Swarm.maxEntities) {
+    if (entity < 0 || entity >= EntityManager.maxEntities) {
       throw RangeError.value(
-          entity, 'entity', 'Must be between 0 and ${Swarm.maxEntities - 1}');
+          entity, 'entity', 'Must be between 0 and ${EntityManager.maxEntities - 1}');
     }
 
     _entityLayers[entity] = layer;
@@ -202,3 +202,4 @@ class SpatialHashGrid {
     queryAABB(x - radius, y - radius, radius * 2, radius * 2, callback, mask);
   }
 }
+

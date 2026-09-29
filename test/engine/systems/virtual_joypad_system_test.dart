@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/swarm.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/virtual_joypad.dart';
 import 'package:sting/engine/components/ui_bounding_box.dart';
 import 'package:sting/engine/components/complex_ui.dart';
@@ -11,18 +11,18 @@ import 'package:sting/engine/renderer.dart';
 
 void main() {
   group('VirtualJoypadSystem', () {
-    late Swarm swarm;
-    late ComponentCaste<VirtualJoypad> joypads;
-    late ComponentCaste<UIBoundingBox> uiBoxes;
-    late ComponentCaste<ComplexUI> complexUIs;
+    late EntityManager swarm;
+    late ComponentStorage<VirtualJoypad> joypads;
+    late ComponentStorage<UIBoundingBox> uiBoxes;
+    late ComponentStorage<ComplexUI> complexUIs;
     late InputSystem inputSystem;
     late VirtualJoypadSystem system;
 
     setUp(() {
-      swarm = Swarm();
-      joypads = ComponentCaste<VirtualJoypad>(10);
-      uiBoxes = ComponentCaste<UIBoundingBox>(10);
-      complexUIs = ComponentCaste<ComplexUI>(10);
+      swarm = EntityManager();
+      joypads = ComponentStorage<VirtualJoypad>(10);
+      uiBoxes = ComponentStorage<UIBoundingBox>(10);
+      complexUIs = ComponentStorage<ComplexUI>(10);
       inputSystem = InputSystem(hook: false);
 
       system = VirtualJoypadSystem(joypads, uiBoxes, complexUIs, inputSystem);

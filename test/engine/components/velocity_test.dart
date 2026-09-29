@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/velocity.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 
 void main() {
   group('Velocity Component', () {
@@ -18,8 +18,8 @@ void main() {
       expect(vel.dy, closeTo(42.1, 0.0001));
     });
 
-    test('works with ComponentCaste', () {
-      final caste = ComponentCaste<Velocity>(10);
+    test('works with ComponentStorage', () {
+      final caste = ComponentStorage<Velocity>(10);
 
       final vel1 = Velocity.create(1, 2);
       final vel2 = Velocity.create(3, 4);

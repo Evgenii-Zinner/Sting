@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/floating_text.dart';
 import 'package:sting/engine/components/viewport.dart';
 import 'package:sting/engine/systems/floating_text_system.dart';
@@ -7,15 +7,15 @@ import 'dart:ui';
 
 void main() {
   group('FloatingTextSystem', () {
-    late ComponentCaste<FloatingText> textCaste;
-    late ComponentCaste<Viewport> viewportCaste;
+    late ComponentStorage<FloatingText> textCaste;
+    late ComponentStorage<Viewport> viewportCaste;
     late FloatingTextSystem system;
     late PictureRecorder recorder;
     late Canvas canvas;
 
     setUp(() {
-      textCaste = ComponentCaste<FloatingText>(100);
-      viewportCaste = ComponentCaste<Viewport>(1);
+      textCaste = ComponentStorage<FloatingText>(100);
+      viewportCaste = ComponentStorage<Viewport>(1);
       system = FloatingTextSystem(
         floatingTextCaste: textCaste,
         viewportCaste: viewportCaste,

@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
 import 'package:sting/engine/components/steering.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
 
 /// A system that calculates and applies steering forces to entities.
@@ -11,9 +11,9 @@ class SteeringSystem {
 
   /// Creates a SteeringSystem querying entities with Position, Velocity, and Steering.
   SteeringSystem({
-    required ComponentCaste<Position> positionCaste,
-    required ComponentCaste<Velocity> velocityCaste,
-    required ComponentCaste<Steering> steeringCaste,
+    required ComponentStorage<Position> positionCaste,
+    required ComponentStorage<Velocity> velocityCaste,
+    required ComponentStorage<Steering> steeringCaste,
   }) : query = Query3<Position, Velocity, Steering>(
             positionCaste, velocityCaste, steeringCaste);
 
@@ -91,3 +91,4 @@ class SteeringSystem {
     });
   }
 }
+

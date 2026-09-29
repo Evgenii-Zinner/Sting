@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'dart:math' as math;
 import 'dart:typed_data';
 import '../ecs/query.dart';
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 import '../components/position.dart';
 import '../components/light.dart';
 import '../components/bounding_box.dart';
@@ -12,10 +12,10 @@ import 'spatial_hash_grid.dart';
 
 class LightRenderSystem {
   final Query2<Position, Light> _lightQuery;
-  final ComponentCaste<Position> _positionCaste;
-  final ComponentCaste<BoundingBox> _boundingBoxCaste;
-  final ComponentCaste<ShadowCaster> _shadowCasterCaste;
-  final ComponentCaste<Viewport>? viewportCaste;
+  final ComponentStorage<Position> _positionCaste;
+  final ComponentStorage<BoundingBox> _boundingBoxCaste;
+  final ComponentStorage<ShadowCaster> _shadowCasterCaste;
+  final ComponentStorage<Viewport>? viewportCaste;
 
   SpatialHashGrid? spatialHashGrid;
   int activeCameraEntity;
@@ -43,10 +43,10 @@ class LightRenderSystem {
   static const double _twoPi = math.pi * 2.0;
 
   LightRenderSystem({
-    required ComponentCaste<Position> positionCaste,
-    required ComponentCaste<Light> lightCaste,
-    required ComponentCaste<BoundingBox> boundingBoxCaste,
-    required ComponentCaste<ShadowCaster> shadowCasterCaste,
+    required ComponentStorage<Position> positionCaste,
+    required ComponentStorage<Light> lightCaste,
+    required ComponentStorage<BoundingBox> boundingBoxCaste,
+    required ComponentStorage<ShadowCaster> shadowCasterCaste,
     this.viewportCaste,
     this.spatialHashGrid,
     this.activeCameraEntity = -1,
@@ -277,3 +277,4 @@ class LightRenderSystem {
     }
   }
 }
+

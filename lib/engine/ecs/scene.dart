@@ -1,71 +1,82 @@
-import 'package:sting/engine/ecs/component_caste.dart';
-import 'package:sting/engine/ecs/swarm.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
 
-/// Manages entities and acts as a central registry for all [ComponentCaste]s.
+/// Manages entities and acts as a central registry for all [ComponentStorage]s.
 ///
-/// Wraps the [Swarm] entity manager to provide unified entity lifecycle management
+/// Wraps the [EntityManager] to provide unified entity lifecycle management
 /// (creating and destroying entities). When an entity is destroyed, [Scene] ensures
-/// it is cleanly removed from all registered castes.
+/// it is cleanly removed from all registered storages.
 class Scene {
-  final Swarm _swarm;
+  final EntityManager _entityManager;
 
-  /// Registry of all castes tracked by the scene, stored via their type-erased interface.
-  final List<AbstractCaste> _castes = [];
+  /// Registry of all storages tracked by the scene, stored via their type-erased interface.
+  final List<AbstractComponentStorage> _storages = [];
 
-  /// Fast lookup map for retrieving castes by their name.
-  /// Note: Dart 3 extension types are erased at runtime to their base types,
-  /// so we use a string name instead of `Type` to uniquely identify castes.
-  final Map<String, AbstractCaste> _casteMap = {};
+  /// Fast lookup map for retrieving storages by their name.
+  final Map<String, AbstractComponentStorage> _storageMap = {};
 
-  /// Creates a new [Scene], optionally accepting an existing [Swarm].
-  /// If no [Swarm] is provided, a new one is created.
-  Scene({Swarm? swarm}) : _swarm = swarm ?? Swarm();
+  /// Creates a new [Scene], optionally accepting an existing [EntityManager].
+  Scene({EntityManager? entityManager, EntityManager? swarm})
+      : _entityManager = entityManager ?? swarm ?? EntityManager();
 
-  /// Registers a [ComponentCaste] with the scene using a unique [name].
-  ///
-  /// The [caste] will now be automatically updated when entities are destroyed.
-  void registerCaste<T>(String name, ComponentCaste<T> caste) {
-    if (_casteMap.containsKey(name)) {
+  /// The underlying entity manager.
+  EntityManager get entityManager => _entityManager;
+
+  /// Alias for entityManager to maintain compatibility.
+  EntityManager get swarm => _entityManager;
+
+  /// Registers a [ComponentStorage] with the scene using a unique [name].
+  void registerStorage<T>(String name, ComponentStorage<T> storage) {
+    if (_storageMap.containsKey(name)) {
       throw StateError(
-          'Caste with name "$name" is already registered in the Scene.');
+          'Storage with name "$name" is already registered in the Scene.');
     }
-    _castes.add(caste);
-    _casteMap[name] = caste;
+    _storages.add(storage);
+    _storageMap[name] = storage;
   }
 
-  /// Retrieves a registered [ComponentCaste] for the given [name].
-  ///
-  /// Throws a [StateError] if no such caste is registered.
-  ComponentCaste<T> getCaste<T>(String name) {
-    final caste = _casteMap[name];
-    if (caste == null) {
-      throw StateError('No Caste registered with name "$name".');
+  /// Backward-compatible alias for [registerStorage].
+  void registerCaste<T>(String name, ComponentStorage<T> storage) =>
+      registerStorage<T>(name, storage);
+
+  /// Retrieves a registered [ComponentStorage] for the given [name].
+  ComponentStorage<T> getStorage<T>(String name) {
+    final storage = _storageMap[name];
+    if (storage == null) {
+      throw StateError('No Storage registered with name "$name".');
     }
-    return caste as ComponentCaste<T>;
+    return storage as ComponentStorage<T>;
   }
+
+  /// Backward-compatible alias for [getStorage].
+  ComponentStorage<T> getCaste<T>(String name) => getStorage<T>(name);
 
   /// Creates a new entity.
-  ///
-  /// Returns the ID of the new entity, or -1 if the entity limit is reached.
   int createEntity() {
-    return _swarm.createEntity();
+    return _entityManager.createEntity();
   }
 
-  /// Destroys the specified entity and removes all its components from registered castes.
-  ///
-  /// Returns `true` if the entity was successfully destroyed, or `false` if the entity ID was invalid.
+  /// Destroys the specified entity and removes all its components from registered storages.
   bool destroyEntity(int entity) {
-    // Attempt to destroy the entity via Swarm.
-    // If it fails (invalid ID or already destroyed), we abort early.
-    if (!_swarm.destroyEntity(entity)) {
+    if (!_entityManager.destroyEntity(entity)) {
       return false;
     }
 
-    // Cleanly remove the entity from all registered castes.
-    for (var i = 0; i < _castes.length; i++) {
-      _castes[i].remove(entity);
+    for (int i = 0; i < _storages.length; i++) {
+      _storages[i].remove(entity);
     }
 
     return true;
   }
+
+  /// Clears all entities and empties all registered storages.
+  void clear() {
+    _entityManager.reset();
+    for (int i = 0; i < _storages.length; i++) {
+      _storages[i].clear();
+    }
+  }
+
+  /// Returns the number of currently active entities.
+  int get activeEntityCount => _entityManager.activeEntityCount;
 }

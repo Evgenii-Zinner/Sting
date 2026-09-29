@@ -1,6 +1,6 @@
 import '../components/animation_event_trigger.dart';
 import '../components/sprite_animation.dart';
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 import '../ecs/query.dart';
 
 /// A system that monitors [SpriteAnimation]s and triggers [AnimationEventTrigger]s
@@ -14,8 +14,8 @@ class AnimatedSpriteEventSystem {
 
   /// Creates a new [AnimatedSpriteEventSystem].
   AnimatedSpriteEventSystem({
-    required ComponentCaste<SpriteAnimation> spriteAnimationCaste,
-    required ComponentCaste<AnimationEventTrigger> animationEventTriggerCaste,
+    required ComponentStorage<SpriteAnimation> spriteAnimationCaste,
+    required ComponentStorage<AnimationEventTrigger> animationEventTriggerCaste,
     this.onEventTriggered,
   }) : _query = Query2<SpriteAnimation, AnimationEventTrigger>(
           spriteAnimationCaste,
@@ -45,3 +45,4 @@ class AnimatedSpriteEventSystem {
     });
   }
 }
+

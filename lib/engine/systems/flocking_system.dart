@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:sting/engine/components/flocking_agent.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
 import 'package:sting/engine/systems/spatial_hash_grid.dart';
 
@@ -15,8 +15,8 @@ class FlockingSystem {
   final SpatialHashGrid spatialHashGrid;
 
   // Reused components for queries to avoid allocating captured variables
-  final ComponentCaste<Position> _positionCaste;
-  final ComponentCaste<Velocity> _velocityCaste;
+  final ComponentStorage<Position> _positionCaste;
+  final ComponentStorage<Velocity> _velocityCaste;
 
   // Temporary state for the current agent being queried
   int _currentAgentId = -1;
@@ -35,9 +35,9 @@ class FlockingSystem {
 
   /// Creates a FlockingSystem querying entities with Position, Velocity, and FlockingAgent.
   FlockingSystem({
-    required ComponentCaste<Position> positionCaste,
-    required ComponentCaste<Velocity> velocityCaste,
-    required ComponentCaste<FlockingAgent> flockingAgentCaste,
+    required ComponentStorage<Position> positionCaste,
+    required ComponentStorage<Velocity> velocityCaste,
+    required ComponentStorage<FlockingAgent> flockingAgentCaste,
     required this.spatialHashGrid,
   })  : _positionCaste = positionCaste,
         _velocityCaste = velocityCaste,
@@ -193,3 +193,4 @@ class FlockingSystem {
     });
   }
 }
+

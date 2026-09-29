@@ -1,5 +1,5 @@
 import 'package:sting/engine/components/tween.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
 import 'package:sting/engine/math/easing.dart';
 
@@ -10,7 +10,7 @@ class TweenSystem {
 
   /// Creates a TweenSystem querying entities with a Tween component.
   TweenSystem({
-    required ComponentCaste<Tween> tweenCaste,
+    required ComponentStorage<Tween> tweenCaste,
   }) : query = Query1<Tween>(tweenCaste);
 
   /// Updates all active Tweens.
@@ -75,3 +75,4 @@ class TweenSystem {
     return Easing.linear(t); // Default fallback
   }
 }
+

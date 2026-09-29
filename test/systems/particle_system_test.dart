@@ -1,15 +1,15 @@
 import 'dart:ui' as ui;
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/particle_emitter.dart';
 import 'package:sting/engine/systems/particle_system.dart';
 
 void main() {
   test('ParticleSystem updates lifetimes and physics', () {
-    final positions = ComponentCaste<Position>(100);
-    final emitters = ComponentCaste<ParticleEmitter>(100);
+    final positions = ComponentStorage<Position>(100);
+    final emitters = ComponentStorage<ParticleEmitter>(100);
 
     final entity = 1;
     positions.add(entity, Position.create(100.0, 100.0));
@@ -68,8 +68,8 @@ void main() {
   });
 
   test('ParticleSystem handles scale correctly with edge case midScaleRatios', () {
-    final positions = ComponentCaste<Position>(100);
-    final emitters = ComponentCaste<ParticleEmitter>(100);
+    final positions = ComponentStorage<Position>(100);
+    final emitters = ComponentStorage<ParticleEmitter>(100);
 
     final entity = 1;
     positions.add(entity, Position.create(100.0, 100.0));
@@ -104,8 +104,8 @@ void main() {
   });
 
   test('ParticleSystem emits particles over time', () {
-    final positions = ComponentCaste<Position>(100);
-    final emitters = ComponentCaste<ParticleEmitter>(100);
+    final positions = ComponentStorage<Position>(100);
+    final emitters = ComponentStorage<ParticleEmitter>(100);
 
     final entity = 1;
     positions.add(entity, Position.create(100.0, 100.0));
@@ -134,8 +134,8 @@ void main() {
         ui.Paint()..color = const ui.Color(0xFFFFFFFF));
     final ui.Image image = await recorder.endRecording().toImage(1, 1);
 
-    final positions = ComponentCaste<Position>(100);
-    final emitters = ComponentCaste<ParticleEmitter>(100);
+    final positions = ComponentStorage<Position>(100);
+    final emitters = ComponentStorage<ParticleEmitter>(100);
 
     final entity = 1;
     positions.add(entity, Position.create(100.0, 100.0));

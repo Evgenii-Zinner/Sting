@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'dart:typed_data';
 import '../ecs/query.dart';
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 import '../components/position.dart';
 import '../components/tilemap.dart';
 import '../components/viewport.dart';
@@ -10,8 +10,8 @@ import '../components/shader_material.dart';
 class TilemapRenderSystem {
   final Image atlas;
   final Query2<Position, Tilemap> query;
-  final ComponentCaste<Viewport>? viewportCaste;
-  final ComponentCaste<ShaderMaterial>? shaderCaste;
+  final ComponentStorage<Viewport>? viewportCaste;
+  final ComponentStorage<ShaderMaterial>? shaderCaste;
   int activeCameraEntity;
 
   double atlasOffsetX;
@@ -31,8 +31,8 @@ class TilemapRenderSystem {
 
   TilemapRenderSystem({
     required this.atlas,
-    required ComponentCaste<Position> positionCaste,
-    required ComponentCaste<Tilemap> tilemapCaste,
+    required ComponentStorage<Position> positionCaste,
+    required ComponentStorage<Tilemap> tilemapCaste,
     this.viewportCaste,
     this.shaderCaste,
     this.activeCameraEntity = -1,
@@ -156,3 +156,4 @@ class TilemapRenderSystem {
     }
   }
 }
+

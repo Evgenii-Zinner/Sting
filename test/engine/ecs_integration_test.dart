@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/swarm.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
 import 'package:sting/engine/components/sprite.dart';
@@ -21,10 +21,10 @@ class MockCanvas extends Fake implements Canvas {
 
 void main() {
   test('ECS Integration: Update logic and render pipeline', () async {
-    final swarm = Swarm();
-    final positionCaste = ComponentCaste<Position>(65535);
-    final velocityCaste = ComponentCaste<Velocity>(65535);
-    final spriteCaste = ComponentCaste<Sprite>(65535);
+    final swarm = EntityManager();
+    final positionCaste = ComponentStorage<Position>(65535);
+    final velocityCaste = ComponentStorage<Velocity>(65535);
+    final spriteCaste = ComponentStorage<Sprite>(65535);
 
     // Create a dummy image
     final Uint8List transparent1x1Png = Uint8List.fromList([

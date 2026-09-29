@@ -4,25 +4,25 @@ import 'package:sting/engine/components/parent.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/rotation.dart';
 import 'package:sting/engine/components/scale.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/transform_system.dart';
 import 'dart:math' as math;
 
 void main() {
   group('TransformSystem', () {
-    late ComponentCaste<Parent> parentCaste;
-    late ComponentCaste<LocalTransform> localTransformCaste;
-    late ComponentCaste<Position> positionCaste;
-    late ComponentCaste<Rotation> rotationCaste;
-    late ComponentCaste<Scale> scaleCaste;
+    late ComponentStorage<Parent> parentCaste;
+    late ComponentStorage<LocalTransform> localTransformCaste;
+    late ComponentStorage<Position> positionCaste;
+    late ComponentStorage<Rotation> rotationCaste;
+    late ComponentStorage<Scale> scaleCaste;
     late TransformSystem system;
 
     setUp(() {
-      parentCaste = ComponentCaste<Parent>(100);
-      localTransformCaste = ComponentCaste<LocalTransform>(100);
-      positionCaste = ComponentCaste<Position>(100);
-      rotationCaste = ComponentCaste<Rotation>(100);
-      scaleCaste = ComponentCaste<Scale>(100);
+      parentCaste = ComponentStorage<Parent>(100);
+      localTransformCaste = ComponentStorage<LocalTransform>(100);
+      positionCaste = ComponentStorage<Position>(100);
+      rotationCaste = ComponentStorage<Rotation>(100);
+      scaleCaste = ComponentStorage<Scale>(100);
 
       system = TransformSystem(
         parentCaste: parentCaste,

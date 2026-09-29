@@ -1,8 +1,8 @@
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 
-/// A query that iterates over a single ComponentCaste.
+/// A query that iterates over a single ComponentStorage.
 class Query1<T> {
-  final ComponentCaste<T> _caste;
+  final ComponentStorage<T> _caste;
 
   Query1(this._caste);
 
@@ -23,8 +23,8 @@ class Query1<T> {
 /// A query that iterates over two ComponentCastes, finding the intersection
 /// of entities that have components in both castes.
 class Query2<T1, T2> {
-  final ComponentCaste<T1> _caste1;
-  final ComponentCaste<T2> _caste2;
+  final ComponentStorage<T1> _caste1;
+  final ComponentStorage<T2> _caste2;
 
   Query2(this._caste1, this._caste2);
 
@@ -66,9 +66,9 @@ class Query2<T1, T2> {
 /// A query that iterates over three ComponentCastes, finding the intersection
 /// of entities that have components in all three castes.
 class Query3<T1, T2, T3> {
-  final ComponentCaste<T1> _caste1;
-  final ComponentCaste<T2> _caste2;
-  final ComponentCaste<T3> _caste3;
+  final ComponentStorage<T1> _caste1;
+  final ComponentStorage<T2> _caste2;
+  final ComponentStorage<T3> _caste3;
 
   Query3(this._caste1, this._caste2, this._caste3);
 

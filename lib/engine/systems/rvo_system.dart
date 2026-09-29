@@ -5,7 +5,7 @@ import 'package:sting/engine/components/circle_collider.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/preferred_velocity.dart';
 import 'package:sting/engine/components/velocity.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
 import 'package:sting/engine/systems/spatial_hash_grid.dart';
 
@@ -13,10 +13,10 @@ import 'package:sting/engine/systems/spatial_hash_grid.dart';
 /// in 2D continuous space to allow multiple agents to navigate without overlapping.
 class RVOSystem {
   final SpatialHashGrid _grid;
-  final ComponentCaste<Position> _positionCaste;
-  final ComponentCaste<Velocity> _velocityCaste;
-  final ComponentCaste<PreferredVelocity> _preferredVelocityCaste;
-  final ComponentCaste<CircleCollider> _circleColliderCaste;
+  final ComponentStorage<Position> _positionCaste;
+  final ComponentStorage<Velocity> _velocityCaste;
+  final ComponentStorage<PreferredVelocity> _preferredVelocityCaste;
+  final ComponentStorage<CircleCollider> _circleColliderCaste;
 
   final double _timeHorizon;
   final double _maxSpeed;
@@ -186,3 +186,4 @@ class RVOSystem {
     });
   }
 }
+

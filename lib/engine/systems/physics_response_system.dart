@@ -6,7 +6,7 @@ import 'package:sting/engine/components/circle_collider.dart';
 import 'package:sting/engine/components/mass.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
 import 'package:sting/engine/math/sat_collision.dart';
 import 'package:sting/engine/systems/spatial_hash_grid.dart';
@@ -15,11 +15,11 @@ import 'package:sting/engine/systems/spatial_hash_grid.dart';
 /// using a broad-phase grid and narrow-phase SAT collision checks.
 class PhysicsResponseSystem {
   final SpatialHashGrid _grid;
-  final ComponentCaste<Position> _positionCaste;
-  final ComponentCaste<Velocity> _velocityCaste;
-  final ComponentCaste<Mass> _massCaste;
-  final ComponentCaste<BoundingBox>? _boundingBoxCaste;
-  final ComponentCaste<CircleCollider>? _circleColliderCaste;
+  final ComponentStorage<Position> _positionCaste;
+  final ComponentStorage<Velocity> _velocityCaste;
+  final ComponentStorage<Mass> _massCaste;
+  final ComponentStorage<BoundingBox>? _boundingBoxCaste;
+  final ComponentStorage<CircleCollider>? _circleColliderCaste;
 
   final SATCollisionResult _result = SATCollisionResult();
 
@@ -39,8 +39,8 @@ class PhysicsResponseSystem {
     this._positionCaste,
     this._velocityCaste,
     this._massCaste, {
-    ComponentCaste<BoundingBox>? boundingBoxCaste,
-    ComponentCaste<CircleCollider>? circleColliderCaste,
+    ComponentStorage<BoundingBox>? boundingBoxCaste,
+    ComponentStorage<CircleCollider>? circleColliderCaste,
     int maxContacts = 1024,
   })  : _boundingBoxCaste = boundingBoxCaste,
         _circleColliderCaste = circleColliderCaste,
@@ -272,3 +272,4 @@ class PhysicsResponseSystem {
     }
   }
 }
+

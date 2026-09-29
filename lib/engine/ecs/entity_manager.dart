@@ -4,7 +4,7 @@ import 'dart:typed_data';
 ///
 /// Ensures zero allocations per frame by pre-allocating fixed-size data structures.
 /// Uses a 16-bit unsigned integer limit (65,535 maximum active entities).
-class Swarm {
+class EntityManager {
   /// Maximum number of entities allowed.
   static const int maxEntities = 65535;
 
@@ -59,16 +59,37 @@ class Swarm {
 
     // Check if the entity is active
     if ((_activeFlags[intIndex] & (1 << bitIndex)) == 0) {
-      return false; // Already destroyed or never created
+      return false;
     }
 
     // Clear the active bit
     _activeFlags[intIndex] &= ~(1 << bitIndex);
 
-    // Push the ID to the recycled stack
+    // Push the ID onto the recycled stack
     _recycledIds[_recycledCount] = id;
     _recycledCount++;
 
     return true;
+  }
+
+  /// Checks if an entity ID is currently active and alive.
+  bool isAlive(int id) {
+    if (id < 0 || id >= maxEntities) {
+      return false;
+    }
+
+    final int intIndex = id ~/ 32;
+    final int bitIndex = id % 32;
+    return (_activeFlags[intIndex] & (1 << bitIndex)) != 0;
+  }
+
+  /// The number of currently active entities.
+  int get activeEntityCount => (_nextId - _recycledCount);
+
+  /// Resets the entity manager, destroying all entities and clearing the recycled stack.
+  void reset() {
+    _nextId = 0;
+    _recycledCount = 0;
+    _activeFlags.fillRange(0, _activeFlags.length, 0);
   }
 }

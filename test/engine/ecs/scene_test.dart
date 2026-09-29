@@ -1,20 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/scene.dart';
-import 'package:sting/engine/ecs/swarm.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
 
 void main() {
   group('Scene', () {
     late Scene scene;
-    late ComponentCaste<Position> positionCaste;
-    late ComponentCaste<Velocity> velocityCaste;
+    late ComponentStorage<Position> positionCaste;
+    late ComponentStorage<Velocity> velocityCaste;
 
     setUp(() {
       scene = Scene();
-      positionCaste = ComponentCaste<Position>(100);
-      velocityCaste = ComponentCaste<Velocity>(100);
+      positionCaste = ComponentStorage<Position>(100);
+      velocityCaste = ComponentStorage<Velocity>(100);
     });
 
     test('can register and retrieve castes', () {
@@ -34,7 +34,7 @@ void main() {
       expect(() => scene.getCaste<Position>('Position'), throwsStateError);
     });
 
-    test('createEntity delegates to Swarm', () {
+    test('createEntity delegates to EntityManager', () {
       final entity1 = scene.createEntity();
       final entity2 = scene.createEntity();
 
@@ -73,7 +73,7 @@ void main() {
       scene.registerCaste<Position>('Position', positionCaste);
 
       expect(scene.destroyEntity(-1), isFalse);
-      expect(scene.destroyEntity(Swarm.maxEntities), isFalse);
+      expect(scene.destroyEntity(EntityManager.maxEntities), isFalse);
       expect(scene.destroyEntity(10), isFalse); // Never created
     });
   });

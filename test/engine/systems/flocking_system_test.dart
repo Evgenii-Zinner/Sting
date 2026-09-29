@@ -2,25 +2,25 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/flocking_agent.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
-import 'package:sting/engine/ecs/swarm.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
 import 'package:sting/engine/systems/flocking_system.dart';
 import 'package:sting/engine/systems/spatial_hash_grid.dart';
 
 void main() {
   group('FlockingSystem', () {
-    late ComponentCaste<Position> positionCaste;
-    late ComponentCaste<Velocity> velocityCaste;
-    late ComponentCaste<FlockingAgent> flockingAgentCaste;
+    late ComponentStorage<Position> positionCaste;
+    late ComponentStorage<Velocity> velocityCaste;
+    late ComponentStorage<FlockingAgent> flockingAgentCaste;
     late SpatialHashGrid spatialHashGrid;
     late FlockingSystem flockingSystem;
-    late Swarm swarm;
+    late EntityManager swarm;
 
     setUp(() {
-      swarm = Swarm();
-      positionCaste = ComponentCaste<Position>(Swarm.maxEntities);
-      velocityCaste = ComponentCaste<Velocity>(Swarm.maxEntities);
-      flockingAgentCaste = ComponentCaste<FlockingAgent>(Swarm.maxEntities);
+      swarm = EntityManager();
+      positionCaste = ComponentStorage<Position>(EntityManager.maxEntities);
+      velocityCaste = ComponentStorage<Velocity>(EntityManager.maxEntities);
+      flockingAgentCaste = ComponentStorage<FlockingAgent>(EntityManager.maxEntities);
       spatialHashGrid = SpatialHashGrid(100.0, 1000);
 
       flockingSystem = FlockingSystem(

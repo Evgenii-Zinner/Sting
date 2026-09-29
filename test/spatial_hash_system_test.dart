@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/position.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
-import 'package:sting/engine/ecs/swarm.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
 import 'package:sting/engine/systems/spatial_hash_grid.dart';
 import 'package:sting/engine/systems/spatial_hash_system.dart';
 
@@ -12,7 +12,7 @@ void main() {
       final grid = SpatialHashGrid(64.0, 1024);
       final system = SpatialHashSystem(grid);
 
-      final positions = ComponentCaste<Position>(Swarm.maxEntities);
+      final positions = ComponentStorage<Position>(EntityManager.maxEntities);
 
       // Entities 1 and 2 in cell (0, 0)
       positions.add(1, Position.create(10.0, 10.0));
@@ -44,7 +44,7 @@ void main() {
       // times and ensure it's fast/doesn't crash.
       final grid = SpatialHashGrid(64.0, 1024);
       final system = SpatialHashSystem(grid);
-      final positions = ComponentCaste<Position>(Swarm.maxEntities);
+      final positions = ComponentStorage<Position>(EntityManager.maxEntities);
 
       for (int i = 0; i < 1000; i++) {
         positions.add(i, Position.create(i * 1.5, i * 1.5));

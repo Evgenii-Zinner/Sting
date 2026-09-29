@@ -2,7 +2,7 @@ import 'dart:math' as math;
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
 import 'package:sting/engine/components/spline_follower.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
 import 'package:sting/engine/math/polyline.dart';
 import 'package:sting/engine/math/spline.dart';
@@ -10,11 +10,11 @@ import 'package:sting/engine/math/spline.dart';
 /// A system that advances entities along a spline or polyline.
 class SplineFollowSystem {
   final Query2<Position, SplineFollower> query;
-  final ComponentCaste<Velocity>? velocityCaste;
+  final ComponentStorage<Velocity>? velocityCaste;
 
   SplineFollowSystem({
-    required ComponentCaste<Position> positionCaste,
-    required ComponentCaste<SplineFollower> splineFollowerCaste,
+    required ComponentStorage<Position> positionCaste,
+    required ComponentStorage<SplineFollower> splineFollowerCaste,
     this.velocityCaste,
   }) : query = Query2<Position, SplineFollower>(positionCaste, splineFollowerCaste);
 
@@ -123,3 +123,4 @@ class SplineFollowSystem {
     });
   }
 }
+

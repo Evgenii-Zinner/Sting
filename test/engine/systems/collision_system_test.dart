@@ -2,8 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/bounding_box.dart';
 import 'package:sting/engine/components/circle_collider.dart';
 import 'package:sting/engine/components/position.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
-import 'package:sting/engine/ecs/swarm.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
 import 'package:sting/engine/systems/collision_system.dart';
 import 'package:sting/engine/systems/spatial_hash_grid.dart';
 import 'package:sting/engine/systems/spatial_hash_system.dart';
@@ -13,17 +13,17 @@ void main() {
   group('CollisionSystem', () {
     late SpatialHashGrid grid;
     late SpatialHashSystem hashSystem;
-    late ComponentCaste<Position> positions;
-    late ComponentCaste<BoundingBox> boxes;
-    late ComponentCaste<CircleCollider> circles;
+    late ComponentStorage<Position> positions;
+    late ComponentStorage<BoundingBox> boxes;
+    late ComponentStorage<CircleCollider> circles;
     late CollisionSystem system;
 
     setUp(() {
       grid = SpatialHashGrid(64.0, 1024);
       hashSystem = SpatialHashSystem(grid);
-      positions = ComponentCaste<Position>(Swarm.maxEntities);
-      boxes = ComponentCaste<BoundingBox>(Swarm.maxEntities);
-      circles = ComponentCaste<CircleCollider>(Swarm.maxEntities);
+      positions = ComponentStorage<Position>(EntityManager.maxEntities);
+      boxes = ComponentStorage<BoundingBox>(EntityManager.maxEntities);
+      circles = ComponentStorage<CircleCollider>(EntityManager.maxEntities);
 
       system = CollisionSystem(
         grid,

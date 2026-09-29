@@ -1,14 +1,14 @@
 import '../components/sprite.dart';
 import '../components/sprite_animation.dart';
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 import '../ecs/query.dart';
 
 class AnimationSystem {
   final Query2<Sprite, SpriteAnimation> query;
 
   AnimationSystem({
-    required ComponentCaste<Sprite> spriteCaste,
-    required ComponentCaste<SpriteAnimation> spriteAnimationCaste,
+    required ComponentStorage<Sprite> spriteCaste,
+    required ComponentStorage<SpriteAnimation> spriteAnimationCaste,
   }) : query =
             Query2<Sprite, SpriteAnimation>(spriteCaste, spriteAnimationCaste);
 
@@ -43,3 +43,4 @@ class AnimationSystem {
     });
   }
 }
+

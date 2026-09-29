@@ -6,27 +6,27 @@ import 'package:sting/engine/components/circle_collider.dart';
 import 'package:sting/engine/components/mass.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/physics_response_system.dart';
 import 'package:sting/engine/systems/spatial_hash_grid.dart';
 
 void main() {
   group('PhysicsResponseSystem', () {
     late SpatialHashGrid grid;
-    late ComponentCaste<Position> positionCaste;
-    late ComponentCaste<Velocity> velocityCaste;
-    late ComponentCaste<Mass> massCaste;
-    late ComponentCaste<BoundingBox> boundingBoxCaste;
-    late ComponentCaste<CircleCollider> circleColliderCaste;
+    late ComponentStorage<Position> positionCaste;
+    late ComponentStorage<Velocity> velocityCaste;
+    late ComponentStorage<Mass> massCaste;
+    late ComponentStorage<BoundingBox> boundingBoxCaste;
+    late ComponentStorage<CircleCollider> circleColliderCaste;
     late PhysicsResponseSystem system;
 
     setUp(() {
       grid = SpatialHashGrid(64, 10);
-      positionCaste = ComponentCaste<Position>(10);
-      velocityCaste = ComponentCaste<Velocity>(10);
-      massCaste = ComponentCaste<Mass>(10);
-      boundingBoxCaste = ComponentCaste<BoundingBox>(10);
-      circleColliderCaste = ComponentCaste<CircleCollider>(10);
+      positionCaste = ComponentStorage<Position>(10);
+      velocityCaste = ComponentStorage<Velocity>(10);
+      massCaste = ComponentStorage<Mass>(10);
+      boundingBoxCaste = ComponentStorage<BoundingBox>(10);
+      circleColliderCaste = ComponentStorage<CircleCollider>(10);
 
       system = PhysicsResponseSystem(
         grid,

@@ -1,9 +1,9 @@
 import 'package:benchmark_harness/benchmark_harness.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
 
 class Query1Benchmark extends BenchmarkBase {
-  late ComponentCaste<double> caste1;
+  late ComponentStorage<double> caste1;
   late Query1<double> query;
   final int count;
   double _sum = 0;
@@ -22,7 +22,7 @@ class Query1Benchmark extends BenchmarkBase {
 
   @override
   void setup() {
-    caste1 = ComponentCaste<double>(count);
+    caste1 = ComponentStorage<double>(count);
     query = Query1<double>(caste1);
     for (int i = 0; i < count; i++) {
       caste1.add(i, i.toDouble());
@@ -31,8 +31,8 @@ class Query1Benchmark extends BenchmarkBase {
 }
 
 class Query2Benchmark extends BenchmarkBase {
-  late ComponentCaste<double> caste1;
-  late ComponentCaste<double> caste2;
+  late ComponentStorage<double> caste1;
+  late ComponentStorage<double> caste2;
   late Query2<double, double> query;
   final int count;
   double _sum = 0;
@@ -51,8 +51,8 @@ class Query2Benchmark extends BenchmarkBase {
 
   @override
   void setup() {
-    caste1 = ComponentCaste<double>(count);
-    caste2 = ComponentCaste<double>(count);
+    caste1 = ComponentStorage<double>(count);
+    caste2 = ComponentStorage<double>(count);
     query = Query2<double, double>(caste1, caste2);
     for (int i = 0; i < count; i++) {
       caste1.add(i, i.toDouble());
@@ -62,9 +62,9 @@ class Query2Benchmark extends BenchmarkBase {
 }
 
 class Query3Benchmark extends BenchmarkBase {
-  late ComponentCaste<double> caste1;
-  late ComponentCaste<double> caste2;
-  late ComponentCaste<double> caste3;
+  late ComponentStorage<double> caste1;
+  late ComponentStorage<double> caste2;
+  late ComponentStorage<double> caste3;
   late Query3<double, double, double> query;
   final int count;
   double _sum = 0;
@@ -83,9 +83,9 @@ class Query3Benchmark extends BenchmarkBase {
 
   @override
   void setup() {
-    caste1 = ComponentCaste<double>(count);
-    caste2 = ComponentCaste<double>(count);
-    caste3 = ComponentCaste<double>(count);
+    caste1 = ComponentStorage<double>(count);
+    caste2 = ComponentStorage<double>(count);
+    caste3 = ComponentStorage<double>(count);
     query = Query3<double, double, double>(caste1, caste2, caste3);
     for (int i = 0; i < count; i++) {
       caste1.add(i, i.toDouble());

@@ -1,5 +1,5 @@
 import 'package:sting/engine/components/game_state.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 
 /// A system to manage high-level game states (Menu, Playing, Paused, GameOver).
 ///
@@ -7,7 +7,7 @@ import 'package:sting/engine/ecs/component_caste.dart';
 /// Provides methods to check the current state and transition between states
 /// without instantiating any objects during the main loop.
 class GameStateSystem {
-  final ComponentCaste<GameState> _gameStateCaste;
+  final ComponentStorage<GameState> _gameStateCaste;
   final int _globalStateEntityId;
 
   /// Creates a [GameStateSystem] referencing a [gameStateCaste] and the ID
@@ -43,3 +43,4 @@ class GameStateSystem {
     return currentState == GameState.statePlaying;
   }
 }
+

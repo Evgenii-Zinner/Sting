@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/swarm.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
 
 void main() {
-  group('Swarm (Entity Manager)', () {
-    late Swarm swarm;
+  group('EntityManager (Entity Manager)', () {
+    late EntityManager swarm;
 
     setUp(() {
-      swarm = Swarm();
+      swarm = EntityManager();
     });
 
     test('creates sequential entity IDs', () {
@@ -37,8 +37,8 @@ void main() {
 
     test('returns false when destroying invalid entity', () {
       expect(swarm.destroyEntity(-1), isFalse);
-      expect(swarm.destroyEntity(Swarm.maxEntities), isFalse);
-      expect(swarm.destroyEntity(Swarm.maxEntities + 1), isFalse);
+      expect(swarm.destroyEntity(EntityManager.maxEntities), isFalse);
+      expect(swarm.destroyEntity(EntityManager.maxEntities + 1), isFalse);
     });
 
     test('returns false when destroying entity that was never created', () {
@@ -48,7 +48,7 @@ void main() {
 
     test('respects max entity limit', () {
       // Create max entities
-      for (int i = 0; i < Swarm.maxEntities; i++) {
+      for (int i = 0; i < EntityManager.maxEntities; i++) {
         expect(swarm.createEntity(), i);
       }
 
@@ -65,15 +65,15 @@ void main() {
 
     test('can destroy and recycle all entities multiple times', () {
       // First pass
-      for (int i = 0; i < Swarm.maxEntities; i++) {
+      for (int i = 0; i < EntityManager.maxEntities; i++) {
         swarm.createEntity();
       }
-      for (int i = 0; i < Swarm.maxEntities; i++) {
+      for (int i = 0; i < EntityManager.maxEntities; i++) {
         expect(swarm.destroyEntity(i), isTrue);
       }
 
       // Second pass
-      for (int i = 0; i < Swarm.maxEntities; i++) {
+      for (int i = 0; i < EntityManager.maxEntities; i++) {
         final id = swarm.createEntity();
         expect(id, isNot(-1));
       }

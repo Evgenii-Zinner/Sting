@@ -1,18 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/camera_trauma.dart';
 import 'package:sting/engine/components/viewport.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/camera_shake_system.dart';
 
 void main() {
   group('CameraShakeSystem Tests', () {
-    late ComponentCaste<CameraTrauma> traumaCaste;
-    late ComponentCaste<Viewport> viewportCaste;
+    late ComponentStorage<CameraTrauma> traumaCaste;
+    late ComponentStorage<Viewport> viewportCaste;
     late CameraShakeSystem system;
 
     setUp(() {
-      traumaCaste = ComponentCaste<CameraTrauma>(10);
-      viewportCaste = ComponentCaste<Viewport>(10);
+      traumaCaste = ComponentStorage<CameraTrauma>(10);
+      viewportCaste = ComponentStorage<Viewport>(10);
       system = CameraShakeSystem(
         cameraTraumaCaste: traumaCaste,
         viewportCaste: viewportCaste,

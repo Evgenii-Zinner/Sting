@@ -1,18 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/sprite.dart';
 import 'package:sting/engine/components/sprite_animation.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/animation_system.dart';
 
 void main() {
   group('AnimationSystem', () {
-    late ComponentCaste<Sprite> spriteCaste;
-    late ComponentCaste<SpriteAnimation> animationCaste;
+    late ComponentStorage<Sprite> spriteCaste;
+    late ComponentStorage<SpriteAnimation> animationCaste;
     late AnimationSystem system;
 
     setUp(() {
-      spriteCaste = ComponentCaste<Sprite>(10);
-      animationCaste = ComponentCaste<SpriteAnimation>(10);
+      spriteCaste = ComponentStorage<Sprite>(10);
+      animationCaste = ComponentStorage<SpriteAnimation>(10);
 
       system = AnimationSystem(
         spriteCaste: spriteCaste,

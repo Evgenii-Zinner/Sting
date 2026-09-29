@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/swarm.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/complex_ui.dart';
 import 'package:sting/engine/systems/complex_ui_render_system.dart';
 
@@ -40,14 +40,14 @@ class MockCanvas extends Fake implements Canvas {
 
 void main() {
   group('ComplexUIRenderSystem', () {
-    late Swarm swarm;
-    late ComponentCaste<ComplexUI> uiCaste;
+    late EntityManager swarm;
+    late ComponentStorage<ComplexUI> uiCaste;
     late ComplexUIRenderSystem system;
     late MockCanvas canvas;
 
     setUp(() {
-      swarm = Swarm();
-      uiCaste = ComponentCaste<ComplexUI>(10);
+      swarm = EntityManager();
+      uiCaste = ComponentStorage<ComplexUI>(10);
       system = ComplexUIRenderSystem(complexUICaste: uiCaste);
       canvas = MockCanvas();
     });

@@ -1,21 +1,21 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/caste.dart';
-import 'package:sting/engine/ecs/swarm.dart';
+import 'package:sting/engine/ecs/sparse_set.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
 
 void main() {
-  group('Caste (Sparse Set)', () {
+  group('SparseSet (Sparse Set)', () {
     test('initializes correctly', () {
-      final caste = Caste(100);
+      final caste = SparseSet(100);
       expect(caste.length, 0);
     });
 
     test('throws if capacity is out of bounds', () {
-      expect(() => Caste(-1), throwsArgumentError);
-      expect(() => Caste(Swarm.maxEntities + 2), throwsArgumentError);
+      expect(() => SparseSet(-1), throwsArgumentError);
+      expect(() => SparseSet(EntityManager.maxEntities + 2), throwsArgumentError);
     });
 
     test('adds and contains entities', () {
-      final caste = Caste(10);
+      final caste = SparseSet(10);
 
       caste.add(5);
       expect(caste.contains(5), isTrue);
@@ -27,7 +27,7 @@ void main() {
     });
 
     test('adding an already existing entity does nothing', () {
-      final caste = Caste(10);
+      final caste = SparseSet(10);
       caste.add(5);
       expect(caste.length, 1);
 
@@ -36,20 +36,20 @@ void main() {
     });
 
     test('throws RangeError when adding invalid entities', () {
-      final caste = Caste(10);
+      final caste = SparseSet(10);
       expect(() => caste.add(-1), throwsRangeError);
-      expect(() => caste.add(Swarm.maxEntities + 1), throwsRangeError);
+      expect(() => caste.add(EntityManager.maxEntities + 1), throwsRangeError);
     });
 
     test('contains returns false for invalid entities', () {
-      final caste = Caste(10);
+      final caste = SparseSet(10);
       expect(caste.contains(-1), isFalse);
-      expect(caste.contains(Swarm.maxEntities + 1), isFalse);
+      expect(caste.contains(EntityManager.maxEntities + 1), isFalse);
     });
 
     test('indexOf returns correct index and -1 for missing/invalid entities',
         () {
-      final caste = Caste(10);
+      final caste = SparseSet(10);
       caste.add(5);
       caste.add(15);
 
@@ -58,11 +58,11 @@ void main() {
 
       expect(caste.indexOf(10), -1); // missing
       expect(caste.indexOf(-1), -1); // invalid
-      expect(caste.indexOf(Swarm.maxEntities + 1), -1); // invalid
+      expect(caste.indexOf(EntityManager.maxEntities + 1), -1); // invalid
     });
 
     test('throws StateError when adding beyond capacity', () {
-      final caste = Caste(2);
+      final caste = SparseSet(2);
       caste.add(1);
       caste.add(2);
 
@@ -70,7 +70,7 @@ void main() {
     });
 
     test('removes entities correctly', () {
-      final caste = Caste(10);
+      final caste = SparseSet(10);
       caste.add(10);
       caste.add(20);
       caste.add(30);
@@ -85,7 +85,7 @@ void main() {
     });
 
     test('removing non-existent entity returns false', () {
-      final caste = Caste(10);
+      final caste = SparseSet(10);
       caste.add(5);
 
       expect(caste.remove(10), isFalse);
@@ -93,7 +93,7 @@ void main() {
     });
 
     test('elementAt returns correct entities and throws on invalid index', () {
-      final caste = Caste(10);
+      final caste = SparseSet(10);
       caste.add(5);
       caste.add(15);
 
@@ -105,7 +105,7 @@ void main() {
     });
 
     test('clear resets the set in O(1)', () {
-      final caste = Caste(10);
+      final caste = SparseSet(10);
       caste.add(1);
       caste.add(2);
       caste.add(3);
@@ -123,7 +123,7 @@ void main() {
     });
 
     test('Briggs & Torczon validation ignores dirty memory after clear', () {
-      final caste = Caste(10);
+      final caste = SparseSet(10);
       caste.add(5); // index 0
       caste.clear();
 

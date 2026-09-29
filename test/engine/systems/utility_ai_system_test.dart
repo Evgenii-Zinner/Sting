@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/ecs/scene.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/utility_ai.dart';
 import 'package:sting/engine/systems/utility_ai_system.dart';
 
@@ -11,7 +11,7 @@ void main() {
 
     setUp(() {
       scene = Scene();
-      scene.registerCaste<UtilityAI>('UtilityAI', ComponentCaste<UtilityAI>(10));
+      scene.registerCaste<UtilityAI>('UtilityAI', ComponentStorage<UtilityAI>(10));
       system = UtilityAISystem(scene);
     });
 

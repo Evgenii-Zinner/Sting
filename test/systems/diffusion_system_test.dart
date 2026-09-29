@@ -1,15 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/grid_diffusion.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/diffusion_system.dart';
 
 void main() {
   group('DiffusionSystem', () {
-    late ComponentCaste<GridDiffusion> diffusionCaste;
+    late ComponentStorage<GridDiffusion> diffusionCaste;
     late DiffusionSystem system;
 
     setUp(() {
-      diffusionCaste = ComponentCaste<GridDiffusion>(10);
+      diffusionCaste = ComponentStorage<GridDiffusion>(10);
       system = DiffusionSystem(diffusionCaste: diffusionCaste);
     });
 

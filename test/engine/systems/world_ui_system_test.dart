@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/viewport.dart';
 import 'package:sting/engine/components/world_ui.dart';
@@ -8,9 +8,9 @@ import 'package:sting/engine/systems/world_ui_system.dart';
 
 void main() {
   test('WorldUISystem updates target UI position relative to viewport', () {
-    final positionCaste = ComponentCaste<Position>(10);
-    final worldUiCaste = ComponentCaste<WorldUI>(10);
-    final complexUiCaste = ComponentCaste<ComplexUI>(10);
+    final positionCaste = ComponentStorage<Position>(10);
+    final worldUiCaste = ComponentStorage<WorldUI>(10);
+    final complexUiCaste = ComponentStorage<ComplexUI>(10);
 
     final system = WorldUISystem(
       positionCaste: positionCaste,

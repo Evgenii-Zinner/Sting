@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/ui_bounding_box.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/input_system.dart';
 import 'package:sting/engine/systems/ui_system.dart';
 import 'package:sting/engine/renderer.dart';
@@ -9,12 +9,12 @@ import 'package:sting/engine/renderer.dart';
 void main() {
   group('UISystem', () {
     late InputSystem inputSystem;
-    late ComponentCaste<UIBoundingBox> uiBoxes;
+    late ComponentStorage<UIBoundingBox> uiBoxes;
     late UISystem uiSystem;
 
     setUp(() {
       inputSystem = InputSystem(hook: false);
-      uiBoxes = ComponentCaste<UIBoundingBox>(100);
+      uiBoxes = ComponentStorage<UIBoundingBox>(100);
       uiSystem = UISystem(uiBoxes, inputSystem);
     });
 

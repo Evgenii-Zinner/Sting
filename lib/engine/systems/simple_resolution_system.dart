@@ -3,19 +3,19 @@ import 'dart:math';
 import 'package:sting/engine/components/bounding_box.dart';
 import 'package:sting/engine/components/circle_collider.dart';
 import 'package:sting/engine/components/position.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 
 /// A system that resolves collisions by moving entities apart without adding jitter.
 /// Does not use velocity or mass, just simple positional separation.
 class SimpleResolutionSystem {
-  final ComponentCaste<Position> _positionCaste;
-  final ComponentCaste<BoundingBox>? _boundingBoxCaste;
-  final ComponentCaste<CircleCollider>? _circleColliderCaste;
+  final ComponentStorage<Position> _positionCaste;
+  final ComponentStorage<BoundingBox>? _boundingBoxCaste;
+  final ComponentStorage<CircleCollider>? _circleColliderCaste;
 
   SimpleResolutionSystem(
     this._positionCaste, {
-    ComponentCaste<BoundingBox>? boundingBoxCaste,
-    ComponentCaste<CircleCollider>? circleColliderCaste,
+    ComponentStorage<BoundingBox>? boundingBoxCaste,
+    ComponentStorage<CircleCollider>? circleColliderCaste,
   })  : _boundingBoxCaste = boundingBoxCaste,
         _circleColliderCaste = circleColliderCaste;
 
@@ -207,3 +207,4 @@ class SimpleResolutionSystem {
     }
   }
 }
+

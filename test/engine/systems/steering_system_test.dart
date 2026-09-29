@@ -2,15 +2,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
 import 'package:sting/engine/components/steering.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/steering_system.dart';
 
 void main() {
   group('SteeringSystem', () {
     test('Seek behavior steers towards target', () {
-      final positionCaste = ComponentCaste<Position>(10);
-      final velocityCaste = ComponentCaste<Velocity>(10);
-      final steeringCaste = ComponentCaste<Steering>(10);
+      final positionCaste = ComponentStorage<Position>(10);
+      final velocityCaste = ComponentStorage<Velocity>(10);
+      final steeringCaste = ComponentStorage<Steering>(10);
 
       final system = SteeringSystem(
         positionCaste: positionCaste,
@@ -43,9 +43,9 @@ void main() {
     });
 
     test('Flee behavior steers away from target', () {
-      final positionCaste = ComponentCaste<Position>(10);
-      final velocityCaste = ComponentCaste<Velocity>(10);
-      final steeringCaste = ComponentCaste<Steering>(10);
+      final positionCaste = ComponentStorage<Position>(10);
+      final velocityCaste = ComponentStorage<Velocity>(10);
+      final steeringCaste = ComponentStorage<Steering>(10);
 
       final system = SteeringSystem(
         positionCaste: positionCaste,
@@ -78,9 +78,9 @@ void main() {
     });
 
     test('Arrive behavior slows down when inside deceleration radius', () {
-      final positionCaste = ComponentCaste<Position>(10);
-      final velocityCaste = ComponentCaste<Velocity>(10);
-      final steeringCaste = ComponentCaste<Steering>(10);
+      final positionCaste = ComponentStorage<Position>(10);
+      final velocityCaste = ComponentStorage<Velocity>(10);
+      final steeringCaste = ComponentStorage<Steering>(10);
 
       final system = SteeringSystem(
         positionCaste: positionCaste,
@@ -116,9 +116,9 @@ void main() {
     });
 
     test('zero allocations per tick', () {
-      final positionCaste = ComponentCaste<Position>(100);
-      final velocityCaste = ComponentCaste<Velocity>(100);
-      final steeringCaste = ComponentCaste<Steering>(100);
+      final positionCaste = ComponentStorage<Position>(100);
+      final velocityCaste = ComponentStorage<Velocity>(100);
+      final steeringCaste = ComponentStorage<Steering>(100);
 
       for (var i = 0; i < 100; i++) {
         positionCaste.add(i, Position.create(i.toDouble(), i.toDouble()));

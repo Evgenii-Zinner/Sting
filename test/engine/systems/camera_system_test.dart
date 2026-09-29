@@ -1,21 +1,21 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/swarm.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/viewport.dart';
 import 'package:sting/engine/systems/camera_system.dart';
 
 void main() {
   group('CameraSystem', () {
-    late Swarm swarm;
-    late ComponentCaste<Position> positionCaste;
-    late ComponentCaste<Viewport> viewportCaste;
+    late EntityManager swarm;
+    late ComponentStorage<Position> positionCaste;
+    late ComponentStorage<Viewport> viewportCaste;
     late CameraSystem system;
 
     setUp(() {
-      swarm = Swarm();
-      positionCaste = ComponentCaste<Position>(10);
-      viewportCaste = ComponentCaste<Viewport>(10);
+      swarm = EntityManager();
+      positionCaste = ComponentStorage<Position>(10);
+      viewportCaste = ComponentStorage<Viewport>(10);
       system = CameraSystem(
         positionCaste: positionCaste,
         viewportCaste: viewportCaste,

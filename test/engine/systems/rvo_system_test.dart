@@ -3,25 +3,25 @@ import 'package:sting/engine/components/circle_collider.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/preferred_velocity.dart';
 import 'package:sting/engine/components/velocity.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/rvo_system.dart';
 import 'package:sting/engine/systems/spatial_hash_grid.dart';
 
 void main() {
   group('RVOSystem Tests', () {
     late SpatialHashGrid grid;
-    late ComponentCaste<Position> positionCaste;
-    late ComponentCaste<Velocity> velocityCaste;
-    late ComponentCaste<PreferredVelocity> preferredVelocityCaste;
-    late ComponentCaste<CircleCollider> circleColliderCaste;
+    late ComponentStorage<Position> positionCaste;
+    late ComponentStorage<Velocity> velocityCaste;
+    late ComponentStorage<PreferredVelocity> preferredVelocityCaste;
+    late ComponentStorage<CircleCollider> circleColliderCaste;
     late RVOSystem system;
 
     setUp(() {
       grid = SpatialHashGrid(100.0, 100);
-      positionCaste = ComponentCaste<Position>(10);
-      velocityCaste = ComponentCaste<Velocity>(10);
-      preferredVelocityCaste = ComponentCaste<PreferredVelocity>(10);
-      circleColliderCaste = ComponentCaste<CircleCollider>(10);
+      positionCaste = ComponentStorage<Position>(10);
+      velocityCaste = ComponentStorage<Velocity>(10);
+      preferredVelocityCaste = ComponentStorage<PreferredVelocity>(10);
+      circleColliderCaste = ComponentStorage<CircleCollider>(10);
 
       system = RVOSystem(
         grid,

@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/audio_emitter.dart';
 import 'package:sting/engine/components/audio_listener.dart';
 import 'package:sting/engine/components/position.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
 import 'package:sting/engine/systems/audio_spatial_system.dart';
 
@@ -71,18 +71,18 @@ void main() {
   });
 
   group('AudioSpatialSystem', () {
-    late ComponentCaste<Position> positionCaste;
-    late ComponentCaste<AudioListener> listenerCaste;
-    late ComponentCaste<AudioEmitter> emitterCaste;
+    late ComponentStorage<Position> positionCaste;
+    late ComponentStorage<AudioListener> listenerCaste;
+    late ComponentStorage<AudioEmitter> emitterCaste;
     late Query2<Position, AudioListener> listenerQuery;
     late Query2<Position, AudioEmitter> emitterQuery;
     late MockAudioManager audioManager;
     late AudioSpatialSystem system;
 
     setUp(() {
-      positionCaste = ComponentCaste<Position>(10);
-      listenerCaste = ComponentCaste<AudioListener>(10);
-      emitterCaste = ComponentCaste<AudioEmitter>(10);
+      positionCaste = ComponentStorage<Position>(10);
+      listenerCaste = ComponentStorage<AudioListener>(10);
+      emitterCaste = ComponentStorage<AudioEmitter>(10);
 
       listenerQuery = Query2(positionCaste, listenerCaste);
       emitterQuery = Query2(positionCaste, emitterCaste);

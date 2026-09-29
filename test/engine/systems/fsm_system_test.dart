@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/entity_fsm.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/fsm_system.dart';
 
 void main() {
@@ -54,10 +54,10 @@ void main() {
   });
 
   group('FSMSystem', () {
-    late ComponentCaste<EntityFSM> fsmCaste;
+    late ComponentStorage<EntityFSM> fsmCaste;
 
     setUp(() {
-      fsmCaste = ComponentCaste<EntityFSM>(100);
+      fsmCaste = ComponentStorage<EntityFSM>(100);
     });
 
     test('updates stateTimer', () {

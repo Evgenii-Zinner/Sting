@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/swarm.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/light.dart';
 import 'package:sting/engine/components/bounding_box.dart';
@@ -38,19 +38,19 @@ class MockCanvas extends Fake implements Canvas {
 
 void main() {
   group('LightRenderSystem', () {
-    late Swarm swarm;
-    late ComponentCaste<Position> positionCaste;
-    late ComponentCaste<Light> lightCaste;
-    late ComponentCaste<BoundingBox> boundingBoxCaste;
-    late ComponentCaste<ShadowCaster> shadowCasterCaste;
+    late EntityManager swarm;
+    late ComponentStorage<Position> positionCaste;
+    late ComponentStorage<Light> lightCaste;
+    late ComponentStorage<BoundingBox> boundingBoxCaste;
+    late ComponentStorage<ShadowCaster> shadowCasterCaste;
     late LightRenderSystem system;
 
     setUp(() {
-      swarm = Swarm();
-      positionCaste = ComponentCaste<Position>(10);
-      lightCaste = ComponentCaste<Light>(10);
-      boundingBoxCaste = ComponentCaste<BoundingBox>(10);
-      shadowCasterCaste = ComponentCaste<ShadowCaster>(10);
+      swarm = EntityManager();
+      positionCaste = ComponentStorage<Position>(10);
+      lightCaste = ComponentStorage<Light>(10);
+      boundingBoxCaste = ComponentStorage<BoundingBox>(10);
+      shadowCasterCaste = ComponentStorage<ShadowCaster>(10);
 
       system = LightRenderSystem(
         positionCaste: positionCaste,

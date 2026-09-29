@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/viewport.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 
 void main() {
   group('Viewport Component', () {
@@ -30,8 +30,8 @@ void main() {
       expect(viewport.zoom, 0.5);
     });
 
-    test('works with ComponentCaste', () {
-      final caste = ComponentCaste<Viewport>(10);
+    test('works with ComponentStorage', () {
+      final caste = ComponentStorage<Viewport>(10);
       final viewport = Viewport.create(100, 200, 1.5);
 
       caste.add(1, viewport);

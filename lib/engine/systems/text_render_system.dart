@@ -1,6 +1,6 @@
 import 'dart:ui';
 import '../ecs/query.dart';
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 import '../components/text_render.dart';
 
 /// Renders [TextRender] components directly to the canvas using dart:ui.
@@ -13,7 +13,7 @@ class TextRenderSystem {
 
   /// Creates a new [TextRenderSystem].
   TextRenderSystem({
-    required ComponentCaste<TextRender> textRenderCaste,
+    required ComponentStorage<TextRender> textRenderCaste,
   }) : query = Query1<TextRender>(textRenderCaste);
 
   /// Renders all text components to the [canvas].
@@ -42,3 +42,4 @@ class TextRenderSystem {
     });
   }
 }
+

@@ -1,18 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/text_render.dart';
 import 'package:sting/engine/systems/text_render_system.dart';
 import 'dart:ui';
 
 void main() {
   group('TextRenderSystem', () {
-    late ComponentCaste<TextRender> textRenderCaste;
+    late ComponentStorage<TextRender> textRenderCaste;
     late TextRenderSystem textRenderSystem;
     late PictureRecorder recorder;
     late Canvas canvas;
 
     setUp(() {
-      textRenderCaste = ComponentCaste<TextRender>(100);
+      textRenderCaste = ComponentStorage<TextRender>(100);
       textRenderSystem = TextRenderSystem(textRenderCaste: textRenderCaste);
       recorder = PictureRecorder();
       canvas = Canvas(recorder);

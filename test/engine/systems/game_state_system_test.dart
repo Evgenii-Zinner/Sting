@@ -1,16 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/game_state.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/game_state_system.dart';
 
 void main() {
   group('GameStateSystem', () {
-    late ComponentCaste<GameState> gameStateCaste;
+    late ComponentStorage<GameState> gameStateCaste;
     late GameStateSystem system;
     const globalEntityId = 0;
 
     setUp(() {
-      gameStateCaste = ComponentCaste<GameState>(10);
+      gameStateCaste = ComponentStorage<GameState>(10);
       system = GameStateSystem(gameStateCaste, globalEntityId);
     });
 
@@ -20,7 +20,7 @@ void main() {
     });
 
     test('does not overwrite existing state on initialization', () {
-      final existingCaste = ComponentCaste<GameState>(10);
+      final existingCaste = ComponentStorage<GameState>(10);
       existingCaste.add(
           globalEntityId, GameState.create(GameState.statePlaying));
 

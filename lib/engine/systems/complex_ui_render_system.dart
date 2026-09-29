@@ -1,6 +1,6 @@
 import 'dart:ui';
 import '../ecs/query.dart';
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 import '../components/complex_ui.dart';
 
 /// Renders [ComplexUI] components to the canvas using dart:ui.
@@ -13,7 +13,7 @@ class ComplexUIRenderSystem {
 
   /// Creates a new [ComplexUIRenderSystem].
   ComplexUIRenderSystem({
-    required ComponentCaste<ComplexUI> complexUICaste,
+    required ComponentStorage<ComplexUI> complexUICaste,
   }) : query = Query1<ComplexUI>(complexUICaste);
 
   /// Renders all complex UI components to the [canvas].
@@ -87,3 +87,4 @@ class ComplexUIRenderSystem {
     });
   }
 }
+

@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/swarm.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/sprite.dart';
 import 'package:sting/engine/components/viewport.dart';
@@ -11,10 +11,10 @@ import 'package:sting/engine/systems/sprite_render_system.dart';
 
 void main() {
   test('SpriteRenderSystem should call drawRawAtlas correctly without allocations', () async {
-    final swarm = Swarm();
-    final positionCaste = ComponentCaste<Position>(65535);
-    final spriteCaste = ComponentCaste<Sprite>(65535);
-    final shaderCaste = ComponentCaste<ShaderMaterial>(65535);
+    final swarm = EntityManager();
+    final positionCaste = ComponentStorage<Position>(65535);
+    final spriteCaste = ComponentStorage<Sprite>(65535);
+    final shaderCaste = ComponentStorage<ShaderMaterial>(65535);
 
     final Uint8List transparent1x1Png = Uint8List.fromList([
       0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52,
@@ -58,10 +58,10 @@ void main() {
   });
 
   test('SpriteRenderSystem should apply viewport transformations correctly', () async {
-    final swarm = Swarm();
-    final positionCaste = ComponentCaste<Position>(65535);
-    final spriteCaste = ComponentCaste<Sprite>(65535);
-    final viewportCaste = ComponentCaste<Viewport>(65535);
+    final swarm = EntityManager();
+    final positionCaste = ComponentStorage<Position>(65535);
+    final spriteCaste = ComponentStorage<Sprite>(65535);
+    final viewportCaste = ComponentStorage<Viewport>(65535);
 
     final Uint8List transparent1x1Png = Uint8List.fromList([
       0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52,
@@ -107,10 +107,10 @@ void main() {
   });
 
   test('SpriteRenderSystem processes ShaderMaterial correctly without throwing', () async {
-    final swarm = Swarm();
-    final positionCaste = ComponentCaste<Position>(65535);
-    final spriteCaste = ComponentCaste<Sprite>(65535);
-    final shaderCaste = ComponentCaste<ShaderMaterial>(65535);
+    final swarm = EntityManager();
+    final positionCaste = ComponentStorage<Position>(65535);
+    final spriteCaste = ComponentStorage<Sprite>(65535);
+    final shaderCaste = ComponentStorage<ShaderMaterial>(65535);
 
     final Uint8List transparent1x1Png = Uint8List.fromList([
       0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52,

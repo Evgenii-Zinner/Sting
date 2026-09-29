@@ -1,15 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/tween.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/tween_system.dart';
 
 void main() {
   group('TweenSystem', () {
-    late ComponentCaste<Tween> tweenCaste;
+    late ComponentStorage<Tween> tweenCaste;
     late TweenSystem tweenSystem;
 
     setUp(() {
-      tweenCaste = ComponentCaste<Tween>(10);
+      tweenCaste = ComponentStorage<Tween>(10);
       tweenSystem = TweenSystem(tweenCaste: tweenCaste);
     });
 

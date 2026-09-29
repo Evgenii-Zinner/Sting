@@ -2,15 +2,15 @@ import 'dart:ui';
 import 'dart:typed_data';
 import 'dart:math';
 
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 import '../components/position.dart';
 import '../components/particle_emitter.dart';
 
 /// A system that manages particle lifespans, physics updates, and rendering.
 /// Ensures zero per-frame object allocations.
 class ParticleSystem {
-  final ComponentCaste<Position> positions;
-  final ComponentCaste<ParticleEmitter> emitters;
+  final ComponentStorage<Position> positions;
+  final ComponentStorage<ParticleEmitter> emitters;
   final Random _random = Random();
 
   // Pre-allocated buffers for Canvas.drawRawAtlas
@@ -213,3 +213,4 @@ class ParticleSystem {
     }
   }
 }
+

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/utility_ai.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 
 void main() {
   group('UtilityAI', () {
@@ -47,8 +47,8 @@ void main() {
       expect(ai.damping[1], closeTo(0.1, 1e-6));
     });
 
-    test('works with Caste', () {
-      final caste = ComponentCaste<UtilityAI>(10);
+    test('works with SparseSet', () {
+      final caste = ComponentStorage<UtilityAI>(10);
       final ai = UtilityAI.create(3, 99, 10.0, 20.0, 1);
       ai.tension[0] = 0.9;
       ai.damping[0] = 0.05;

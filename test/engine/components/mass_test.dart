@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/mass.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 
 void main() {
   group('Mass Component', () {
@@ -42,8 +42,8 @@ void main() {
       expect(mass.data[3], closeTo(0.4, 1e-6));
     });
 
-    test('works with ComponentCaste', () {
-      final caste = ComponentCaste<Mass>(100);
+    test('works with ComponentStorage', () {
+      final caste = ComponentStorage<Mass>(100);
       final mass = Mass.create(5.0);
 
       caste.add(1, mass);

@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
 
 void main() {
   group('Query1', () {
     test('forEach iterates over all components', () {
-      final caste = ComponentCaste<String>(100);
+      final caste = ComponentStorage<String>(100);
       caste.add(1, 'A');
       caste.add(2, 'B');
       caste.add(3, 'C');
@@ -21,7 +21,7 @@ void main() {
     });
 
     test('forEach handles empty caste', () {
-      final caste = ComponentCaste<String>(100);
+      final caste = ComponentStorage<String>(100);
       final query = Query1(caste);
 
       int count = 0;
@@ -35,8 +35,8 @@ void main() {
 
   group('Query2', () {
     test('forEach finds intersections correctly', () {
-      final caste1 = ComponentCaste<String>(100);
-      final caste2 = ComponentCaste<int>(100);
+      final caste1 = ComponentStorage<String>(100);
+      final caste2 = ComponentStorage<int>(100);
 
       // Entity 1 is in both
       caste1.add(1, 'A');
@@ -65,8 +65,8 @@ void main() {
     });
 
     test('forEach handles no intersections', () {
-      final caste1 = ComponentCaste<String>(100);
-      final caste2 = ComponentCaste<int>(100);
+      final caste1 = ComponentStorage<String>(100);
+      final caste2 = ComponentStorage<int>(100);
 
       caste1.add(1, 'A');
       caste2.add(2, 20);
@@ -82,8 +82,8 @@ void main() {
     });
 
     test('forEach handles empty castes', () {
-      final caste1 = ComponentCaste<String>(100);
-      final caste2 = ComponentCaste<int>(100);
+      final caste1 = ComponentStorage<String>(100);
+      final caste2 = ComponentStorage<int>(100);
 
       final query = Query2(caste1, caste2);
 
@@ -96,8 +96,8 @@ void main() {
     });
 
     test('forEach performs correctly when caste2 is smaller than caste1', () {
-      final caste1 = ComponentCaste<String>(100);
-      final caste2 = ComponentCaste<int>(100);
+      final caste1 = ComponentStorage<String>(100);
+      final caste2 = ComponentStorage<int>(100);
 
       caste1.add(1, 'A');
       caste1.add(2, 'B');
@@ -122,9 +122,9 @@ void main() {
 
   group('Query3', () {
     test('forEach finds intersections correctly across three castes', () {
-      final caste1 = ComponentCaste<String>(100);
-      final caste2 = ComponentCaste<int>(100);
-      final caste3 = ComponentCaste<double>(100);
+      final caste1 = ComponentStorage<String>(100);
+      final caste2 = ComponentStorage<int>(100);
+      final caste3 = ComponentStorage<double>(100);
 
       // Entity 1 is in all three
       caste1.add(1, 'A');
@@ -156,9 +156,9 @@ void main() {
     });
 
     test('forEach handles no intersections across three castes', () {
-      final caste1 = ComponentCaste<String>(100);
-      final caste2 = ComponentCaste<int>(100);
-      final caste3 = ComponentCaste<double>(100);
+      final caste1 = ComponentStorage<String>(100);
+      final caste2 = ComponentStorage<int>(100);
+      final caste3 = ComponentStorage<double>(100);
 
       caste1.add(1, 'A');
       caste2.add(2, 20);
@@ -175,9 +175,9 @@ void main() {
     });
 
     test('forEach handles empty castes across three castes', () {
-      final caste1 = ComponentCaste<String>(100);
-      final caste2 = ComponentCaste<int>(100);
-      final caste3 = ComponentCaste<double>(100);
+      final caste1 = ComponentStorage<String>(100);
+      final caste2 = ComponentStorage<int>(100);
+      final caste3 = ComponentStorage<double>(100);
 
       final query = Query3(caste1, caste2, caste3);
 

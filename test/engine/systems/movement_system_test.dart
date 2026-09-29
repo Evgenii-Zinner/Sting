@@ -2,14 +2,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
 import 'package:sting/engine/components/mass.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/movement_system.dart';
 
 void main() {
   group('MovementSystem', () {
     test('updates position based on velocity and dt', () {
-      final positionCaste = ComponentCaste<Position>(10);
-      final velocityCaste = ComponentCaste<Velocity>(10);
+      final positionCaste = ComponentStorage<Position>(10);
+      final velocityCaste = ComponentStorage<Velocity>(10);
 
       final system = MovementSystem(
         positionCaste: positionCaste,
@@ -44,9 +44,9 @@ void main() {
     });
 
     test('skips entities with mass component if massCaste is provided', () {
-      final positionCaste = ComponentCaste<Position>(10);
-      final velocityCaste = ComponentCaste<Velocity>(10);
-      final massCaste = ComponentCaste<Mass>(10);
+      final positionCaste = ComponentStorage<Position>(10);
+      final velocityCaste = ComponentStorage<Velocity>(10);
+      final massCaste = ComponentStorage<Mass>(10);
 
       final system = MovementSystem(
         positionCaste: positionCaste,
@@ -77,8 +77,8 @@ void main() {
     test('zero allocations per tick', () {
       // In Dart, verifying zero allocations accurately in tests is difficult,
       // but we can at least verify no exceptions occur and execution completes.
-      final positionCaste = ComponentCaste<Position>(100);
-      final velocityCaste = ComponentCaste<Velocity>(100);
+      final positionCaste = ComponentStorage<Position>(100);
+      final velocityCaste = ComponentStorage<Velocity>(100);
 
       for (var i = 0; i < 100; i++) {
         positionCaste.add(i, Position.create(i.toDouble(), i.toDouble()));

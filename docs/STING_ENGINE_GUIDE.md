@@ -110,11 +110,11 @@ Instead of `runApp()`, we hook into `PlatformDispatcher`.
 
 ```dart
 import 'dart:ui';
-import 'package:sting/engine/ecs/swarm.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
 import 'package:sting/engine/time.dart';
 
 void main() {
-  final swarm = Swarm();
+  final entities = EntityManager();
   final time = Time();
 
   PlatformDispatcher.instance.onBeginFrame = (Duration timeStamp) {
@@ -135,13 +135,13 @@ void main() {
 }
 ```
 
-### Step 2: Define Components and Castes
+### Step 2: Define Components and Storages
 We need a `Position` and `Velocity`. We will simulate a simple component setup.
 
 ```dart
 import 'dart:typed_data';
-import 'package:sting/engine/ecs/caste.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/sparse_set.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 
 // Using Extension Types for zero-allocation
 extension type Position(Float32List _data) {
@@ -160,25 +160,19 @@ extension type Velocity(Float32List _data) {
 ```
 
 ### Step 3: Setup ECS Data
-Initialize the Swarm and Castes in your `main()`.
+Initialize the `EntityManager` and `ComponentStorage`s in your `main()`.
 
 ```dart
-final swarm = Swarm();
+final entities = EntityManager();
 final maxEntities = 100;
 
-final posCaste = Caste(maxEntities);
-final posData = ComponentCaste<Position>(posCaste, List.generate(maxEntities, (_) => Position.init(0, 0)));
-
-final velCaste = Caste(maxEntities);
-final velData = ComponentCaste<Velocity>(velCaste, List.generate(maxEntities, (_) => Velocity.init(0, 0)));
+final posStorage = ComponentStorage<Position>(maxEntities);
+final velStorage = ComponentStorage<Velocity>(maxEntities);
 
 // Spawn our hero entity
-int player = swarm.createEntity();
-posCaste.add(player);
-posData.set(player, Position.init(100, 100));
-
-velCaste.add(player);
-velData.set(player, Velocity.init(50, 50)); // Move 50 pixels per second
+int player = entities.createEntity();
+posStorage.add(player, Position.init(100, 100));
+velStorage.add(player, Velocity.init(50, 50)); // Move 50 pixels per second
 ```
 
 ### Step 4: Create Systems

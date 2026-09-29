@@ -1,16 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
-import 'package:sting/engine/ecs/swarm.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
 
 void main() {
-  group('ComponentCaste', () {
+  group('ComponentStorage', () {
     test('initializes correctly', () {
-      final caste = ComponentCaste<String>(100);
+      final caste = ComponentStorage<String>(100);
       expect(caste.length, 0);
     });
 
     test('adds and gets components', () {
-      final caste = ComponentCaste<String>(10);
+      final caste = ComponentStorage<String>(10);
 
       caste.add(5, 'Player');
       expect(caste.length, 1);
@@ -22,7 +22,7 @@ void main() {
     });
 
     test('adding component to existing entity overwrites it', () {
-      final caste = ComponentCaste<String>(10);
+      final caste = ComponentStorage<String>(10);
       caste.add(5, 'Player');
       expect(caste.get(5), 'Player');
 
@@ -32,16 +32,16 @@ void main() {
     });
 
     test('getting component for invalid or missing entity returns null', () {
-      final caste = ComponentCaste<String>(10);
+      final caste = ComponentStorage<String>(10);
       caste.add(5, 'Player');
 
       expect(caste.get(10), isNull);
       expect(caste.get(-1), isNull);
-      expect(caste.get(Swarm.maxEntities + 1), isNull);
+      expect(caste.get(EntityManager.maxEntities + 1), isNull);
     });
 
     test('removes components and keeps dense array in sync', () {
-      final caste = ComponentCaste<String>(10);
+      final caste = ComponentStorage<String>(10);
       caste.add(10, 'A'); // index 0
       caste.add(20, 'B'); // index 1
       caste.add(30, 'C'); // index 2
@@ -60,7 +60,7 @@ void main() {
     });
 
     test('removing non-existent entity returns false', () {
-      final caste = ComponentCaste<String>(10);
+      final caste = ComponentStorage<String>(10);
       caste.add(5, 'Player');
 
       expect(caste.remove(10), isFalse);
@@ -68,7 +68,7 @@ void main() {
     });
 
     test('clears the caste properly', () {
-      final caste = ComponentCaste<String>(10);
+      final caste = ComponentStorage<String>(10);
       caste.add(1, 'A');
       caste.add(2, 'B');
 
@@ -80,7 +80,7 @@ void main() {
 
     test('getComponentAt and elementAt throws RangeError for invalid index',
         () {
-      final caste = ComponentCaste<String>(10);
+      final caste = ComponentStorage<String>(10);
       caste.add(5, 'Player');
 
       expect(() => caste.getComponentAt(-1), throwsRangeError);

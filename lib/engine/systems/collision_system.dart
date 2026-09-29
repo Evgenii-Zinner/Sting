@@ -1,7 +1,7 @@
 import 'package:sting/engine/components/bounding_box.dart';
 import 'package:sting/engine/components/circle_collider.dart';
 import 'package:sting/engine/components/position.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
 import 'package:sting/engine/math/intersection.dart';
 import 'package:sting/engine/systems/spatial_hash_grid.dart';
@@ -13,16 +13,16 @@ typedef CollisionCallback = void Function(int entityA, int entityB);
 /// spatial hash grid for broad-phase culling.
 class CollisionSystem {
   final SpatialHashGrid _grid;
-  final ComponentCaste<Position> _positionCaste;
-  final ComponentCaste<BoundingBox>? _boundingBoxCaste;
-  final ComponentCaste<CircleCollider>? _circleColliderCaste;
+  final ComponentStorage<Position> _positionCaste;
+  final ComponentStorage<BoundingBox>? _boundingBoxCaste;
+  final ComponentStorage<CircleCollider>? _circleColliderCaste;
 
   /// Creates a new CollisionSystem.
   CollisionSystem(
     this._grid,
     this._positionCaste, {
-    ComponentCaste<BoundingBox>? boundingBoxCaste,
-    ComponentCaste<CircleCollider>? circleColliderCaste,
+    ComponentStorage<BoundingBox>? boundingBoxCaste,
+    ComponentStorage<CircleCollider>? circleColliderCaste,
   })  : _boundingBoxCaste = boundingBoxCaste,
         _circleColliderCaste = circleColliderCaste;
 
@@ -141,3 +141,4 @@ class CollisionSystem {
     });
   }
 }
+

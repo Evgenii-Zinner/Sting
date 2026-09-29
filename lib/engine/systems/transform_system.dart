@@ -5,21 +5,21 @@ import 'package:sting/engine/components/parent.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/rotation.dart';
 import 'package:sting/engine/components/scale.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
-import 'package:sting/engine/ecs/swarm.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
 import 'package:sting/engine/ecs/query.dart';
 
 class TransformSystem {
-  final ComponentCaste<Parent> parentCaste;
-  final ComponentCaste<LocalTransform> localTransformCaste;
-  final ComponentCaste<Position> positionCaste;
-  final ComponentCaste<Rotation>? rotationCaste;
-  final ComponentCaste<Scale>? scaleCaste;
+  final ComponentStorage<Parent> parentCaste;
+  final ComponentStorage<LocalTransform> localTransformCaste;
+  final ComponentStorage<Position> positionCaste;
+  final ComponentStorage<Rotation>? rotationCaste;
+  final ComponentStorage<Scale>? scaleCaste;
 
   // Pre-allocated array to track resolved state during the update pass.
   // We use bits in a Uint32List for zero-allocation state tracking.
-  final Uint32List _resolvedFlags = Uint32List((Swarm.maxEntities + 1) ~/ 32 + 1);
-  final Uint32List _processingFlags = Uint32List((Swarm.maxEntities + 1) ~/ 32 + 1);
+  final Uint32List _resolvedFlags = Uint32List((EntityManager.maxEntities + 1) ~/ 32 + 1);
+  final Uint32List _processingFlags = Uint32List((EntityManager.maxEntities + 1) ~/ 32 + 1);
 
   late final Query2<LocalTransform, Parent> _query;
 
@@ -134,3 +134,4 @@ class TransformSystem {
     _processingFlags[intIndex] &= ~(1 << bitIndex);
   }
 }
+

@@ -1,18 +1,18 @@
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
 import 'package:sting/engine/components/mass.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
 
 /// A system that updates entities' Positions based on their Velocities and delta time.
 class MovementSystem {
   final Query2<Position, Velocity> query;
-  final ComponentCaste<Mass>? massCaste;
+  final ComponentStorage<Mass>? massCaste;
 
   /// Creates a MovementSystem querying entities with both Position and Velocity.
   MovementSystem({
-    required ComponentCaste<Position> positionCaste,
-    required ComponentCaste<Velocity> velocityCaste,
+    required ComponentStorage<Position> positionCaste,
+    required ComponentStorage<Velocity> velocityCaste,
     this.massCaste,
   }) : query = Query2<Position, Velocity>(positionCaste, velocityCaste);
 
@@ -34,3 +34,4 @@ class MovementSystem {
     });
   }
 }
+

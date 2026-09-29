@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/position.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 
 void main() {
   group('Position Component', () {
@@ -20,8 +20,8 @@ void main() {
       expect(pos.y, 100.0);
     });
 
-    test('can be stored in ComponentCaste without issues', () {
-      final caste = ComponentCaste<Position>(10);
+    test('can be stored in ComponentStorage without issues', () {
+      final caste = ComponentStorage<Position>(10);
 
       final pos1 = Position.create(1, 2);
       final pos2 = Position.create(3, 4);

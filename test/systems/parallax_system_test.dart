@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/parallax.dart';
 import 'package:sting/engine/components/viewport.dart';
@@ -7,15 +7,15 @@ import 'package:sting/engine/systems/parallax_system.dart';
 
 void main() {
   group('ParallaxSystem', () {
-    late ComponentCaste<Position> positionCaste;
-    late ComponentCaste<Parallax> parallaxCaste;
-    late ComponentCaste<Viewport> viewportCaste;
+    late ComponentStorage<Position> positionCaste;
+    late ComponentStorage<Parallax> parallaxCaste;
+    late ComponentStorage<Viewport> viewportCaste;
     late ParallaxSystem system;
 
     setUp(() {
-      positionCaste = ComponentCaste<Position>(10);
-      parallaxCaste = ComponentCaste<Parallax>(10);
-      viewportCaste = ComponentCaste<Viewport>(10);
+      positionCaste = ComponentStorage<Position>(10);
+      parallaxCaste = ComponentStorage<Parallax>(10);
+      viewportCaste = ComponentStorage<Viewport>(10);
 
       system = ParallaxSystem(
         positionCaste: positionCaste,

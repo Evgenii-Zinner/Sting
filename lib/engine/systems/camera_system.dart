@@ -1,10 +1,10 @@
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 import '../components/position.dart';
 import '../components/viewport.dart';
 
 class CameraSystem {
-  final ComponentCaste<Position> positionCaste;
-  final ComponentCaste<Viewport> viewportCaste;
+  final ComponentStorage<Position> positionCaste;
+  final ComponentStorage<Viewport> viewportCaste;
 
   double screenWidth = 800.0;
   double screenHeight = 600.0;
@@ -34,3 +34,4 @@ class CameraSystem {
         targetPosition.y - (screenHeight / 2.0) / cameraViewport.zoom;
   }
 }
+

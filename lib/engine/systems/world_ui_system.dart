@@ -1,4 +1,4 @@
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 import '../components/position.dart';
 import '../components/viewport.dart';
 import '../components/world_ui.dart';
@@ -7,9 +7,9 @@ import '../components/complex_ui.dart';
 /// Translates entity world coordinates to viewport screen-space coordinates,
 /// updating target UI elements (like health bars) without per-frame allocations.
 class WorldUISystem {
-  final ComponentCaste<Position> positionCaste;
-  final ComponentCaste<WorldUI> worldUiCaste;
-  final ComponentCaste<ComplexUI> complexUiCaste;
+  final ComponentStorage<Position> positionCaste;
+  final ComponentStorage<WorldUI> worldUiCaste;
+  final ComponentStorage<ComplexUI> complexUiCaste;
 
   WorldUISystem({
     required this.positionCaste,
@@ -51,3 +51,4 @@ class WorldUISystem {
     }
   }
 }
+

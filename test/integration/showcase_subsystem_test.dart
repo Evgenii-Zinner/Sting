@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/scene.dart';
 
 import 'package:sting/engine/components/position.dart';
@@ -37,12 +37,12 @@ void main() {
   test('Integration: Subsystem Interaction (Diffusion -> AI -> Pathfinding -> Shader)', () async {
     final scene = Scene();
 
-    scene.registerCaste<Position>('Position', ComponentCaste<Position>(10));
-    scene.registerCaste<HexTilemap>('HexTilemap', ComponentCaste<HexTilemap>(10));
-    scene.registerCaste<MovementQueue>('MovementQueue', ComponentCaste<MovementQueue>(10));
-    scene.registerCaste<UtilityAI>('UtilityAI', ComponentCaste<UtilityAI>(10));
-    scene.registerCaste<GridDiffusion>('GridDiffusion', ComponentCaste<GridDiffusion>(10));
-    scene.registerCaste<ShaderMaterial>('ShaderMaterial', ComponentCaste<ShaderMaterial>(10));
+    scene.registerCaste<Position>('Position', ComponentStorage<Position>(10));
+    scene.registerCaste<HexTilemap>('HexTilemap', ComponentStorage<HexTilemap>(10));
+    scene.registerCaste<MovementQueue>('MovementQueue', ComponentStorage<MovementQueue>(10));
+    scene.registerCaste<UtilityAI>('UtilityAI', ComponentStorage<UtilityAI>(10));
+    scene.registerCaste<GridDiffusion>('GridDiffusion', ComponentStorage<GridDiffusion>(10));
+    scene.registerCaste<ShaderMaterial>('ShaderMaterial', ComponentStorage<ShaderMaterial>(10));
 
     final entity = scene.createEntity();
 

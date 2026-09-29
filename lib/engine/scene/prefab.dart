@@ -11,7 +11,7 @@ import 'package:sting/engine/ecs/scene.dart';
 class Prefab {
   /// Spawns a standard enemy entity with [Position], [Velocity], [BoundingBox], and [Sprite] components.
   ///
-  /// The [scene] must have the respective `ComponentCaste`s registered.
+  /// The [scene] must have the respective `ComponentStorage`s registered.
   /// Returns the spawned entity ID, or -1 if the entity limit is reached.
   static int spawnStandardEnemy(
     Scene scene,

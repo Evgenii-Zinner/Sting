@@ -1,5 +1,5 @@
 import '../ecs/query.dart';
-import '../ecs/component_caste.dart';
+import '../ecs/component_storage.dart';
 import '../components/position.dart';
 import '../components/viewport.dart';
 import '../components/parallax.dart';
@@ -8,12 +8,12 @@ import '../components/parallax.dart';
 /// based on their `Parallax` configuration and the current camera's `Viewport`.
 class ParallaxSystem {
   final Query2<Position, Parallax> query;
-  final ComponentCaste<Viewport>? viewportCaste;
+  final ComponentStorage<Viewport>? viewportCaste;
   int activeCameraEntity;
 
   ParallaxSystem({
-    required ComponentCaste<Position> positionCaste,
-    required ComponentCaste<Parallax> parallaxCaste,
+    required ComponentStorage<Position> positionCaste,
+    required ComponentStorage<Parallax> parallaxCaste,
     this.viewportCaste,
     this.activeCameraEntity = -1,
   }) : query = Query2<Position, Parallax>(positionCaste, parallaxCaste);
@@ -43,3 +43,4 @@ class ParallaxSystem {
     });
   }
 }
+

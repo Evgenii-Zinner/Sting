@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/systems/spatial_hash_grid.dart';
-import 'package:sting/engine/ecs/swarm.dart';
+import 'package:sting/engine/ecs/entity_manager.dart';
 
 void main() {
   group('SpatialHashGrid', () {
@@ -79,7 +79,7 @@ void main() {
     test('throws RangeError on invalid entity ID', () {
       final grid = SpatialHashGrid(64.0, 1024);
       expect(() => grid.insertPoint(-1, 0.0, 0.0), throwsRangeError);
-      expect(() => grid.insertPoint(Swarm.maxEntities, 0.0, 0.0), throwsRangeError);
+      expect(() => grid.insertPoint(EntityManager.maxEntities, 0.0, 0.0), throwsRangeError);
     });
 
     test('queryAABB accurate broad-phase collision candidates', () {

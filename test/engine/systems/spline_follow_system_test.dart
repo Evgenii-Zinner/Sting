@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/velocity.dart';
 import 'package:sting/engine/components/spline_follower.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/spline_follow_system.dart';
 
 void main() {
@@ -53,15 +53,15 @@ void main() {
   });
 
   group('SplineFollowSystem', () {
-    late ComponentCaste<Position> positionCaste;
-    late ComponentCaste<SplineFollower> followerCaste;
-    late ComponentCaste<Velocity> velocityCaste;
+    late ComponentStorage<Position> positionCaste;
+    late ComponentStorage<SplineFollower> followerCaste;
+    late ComponentStorage<Velocity> velocityCaste;
     late SplineFollowSystem system;
 
     setUp(() {
-      positionCaste = ComponentCaste<Position>(10);
-      followerCaste = ComponentCaste<SplineFollower>(10);
-      velocityCaste = ComponentCaste<Velocity>(10);
+      positionCaste = ComponentStorage<Position>(10);
+      followerCaste = ComponentStorage<SplineFollower>(10);
+      velocityCaste = ComponentStorage<Velocity>(10);
 
       system = SplineFollowSystem(
         positionCaste: positionCaste,

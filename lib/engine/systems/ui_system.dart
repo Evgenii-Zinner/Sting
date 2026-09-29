@@ -1,13 +1,13 @@
 import 'dart:ui';
 import 'package:sting/engine/components/ui_bounding_box.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/input_system.dart';
 import 'package:sting/engine/renderer.dart';
 
 /// Checks if pointers intersect with UI bounding boxes and updates their state,
 /// avoiding allocations per frame by routing pointer IDs directly to components.
 class UISystem {
-  final ComponentCaste<UIBoundingBox> _uiBoxes;
+  final ComponentStorage<UIBoundingBox> _uiBoxes;
   final InputSystem _inputSystem;
   final Renderer? _renderer;
 
@@ -54,3 +54,4 @@ class UISystem {
     }
   }
 }
+

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/prefab.dart';
 import 'package:sting/engine/ecs/scene.dart';
 
@@ -7,7 +7,7 @@ void main() {
   group('Prefab', () {
     test('spawn creates an entity and calls initializer', () {
       final scene = Scene();
-      final caste = ComponentCaste<String>(100);
+      final caste = ComponentStorage<String>(100);
       scene.registerCaste('StringCaste', caste);
 
       int initializedEntity = -1;

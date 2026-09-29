@@ -1,7 +1,7 @@
 import 'package:benchmark_harness/benchmark_harness.dart';
 import 'package:sting/engine/ecs/scene.dart';
 import 'package:sting/engine/ecs/query.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 
 // Create a dummy component and system that fits the engine
 class DummyComponent {
@@ -36,7 +36,7 @@ class SystemDispatchBenchmark extends BenchmarkBase {
   @override
   void setup() {
     final scene = Scene();
-    final caste = ComponentCaste<DummyComponent>(10);
+    final caste = ComponentStorage<DummyComponent>(10);
     scene.registerCaste('dummy', caste);
     final query = Query1<DummyComponent>(caste);
 

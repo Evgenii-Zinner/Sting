@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/viewport.dart';
 import 'package:sting/engine/components/camera_follow.dart';
@@ -7,9 +7,9 @@ import 'package:sting/engine/systems/camera_follow_system.dart';
 
 void main() {
   group('CameraFollowSystem', () {
-    late ComponentCaste<Position> positionCaste;
-    late ComponentCaste<Viewport> viewportCaste;
-    late ComponentCaste<CameraFollow> cameraFollowCaste;
+    late ComponentStorage<Position> positionCaste;
+    late ComponentStorage<Viewport> viewportCaste;
+    late ComponentStorage<CameraFollow> cameraFollowCaste;
     late CameraFollowSystem system;
 
     const int targetEntityId = 1;
@@ -18,9 +18,9 @@ void main() {
     const int cameraNoPositionEntityId = 4;
 
     setUp(() {
-      positionCaste = ComponentCaste<Position>(10);
-      viewportCaste = ComponentCaste<Viewport>(10);
-      cameraFollowCaste = ComponentCaste<CameraFollow>(10);
+      positionCaste = ComponentStorage<Position>(10);
+      viewportCaste = ComponentStorage<Viewport>(10);
+      cameraFollowCaste = ComponentStorage<CameraFollow>(10);
 
       system = CameraFollowSystem(
         positionCaste: positionCaste,

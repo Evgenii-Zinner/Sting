@@ -1,10 +1,10 @@
 import 'package:sting/engine/components/entity_fsm.dart';
-import 'package:sting/engine/ecs/component_caste.dart';
+import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
 
 /// A system that manages state machine transitions and timers.
 class FSMSystem {
-  final ComponentCaste<EntityFSM> fsmCaste;
+  final ComponentStorage<EntityFSM> fsmCaste;
 
   /// Optional rule executed every frame to check if a state should transition.
   /// If it returns a state ID != -1 (or different state), changeState is called.
@@ -59,3 +59,4 @@ class FSMSystem {
     });
   }
 }
+
