@@ -13,7 +13,7 @@ void main() {
       system = DiffusionSystem(diffusionCaste: diffusionCaste);
     });
 
-    double _calculateTotalMass(GridDiffusion grid) {
+    double calculateTotalMass(GridDiffusion grid) {
       double total = 0.0;
       for (int i = 0; i < grid.length; i++) {
         total += grid.getValueAt(i);
@@ -31,7 +31,7 @@ void main() {
       grid.setValue(1, 1, 9.0);
       diffusionCaste.add(1, grid);
 
-      final initialMass = _calculateTotalMass(grid);
+      final initialMass = calculateTotalMass(grid);
       expect(initialMass, 9.0);
 
       system.update();
@@ -57,7 +57,7 @@ void main() {
       expect(grid.getValue(0, 0), closeTo(0.0, 0.001));
 
       // Mass conservation check (adiabatic boundary)
-      final finalMass = _calculateTotalMass(grid);
+      final finalMass = calculateTotalMass(grid);
       expect(finalMass, closeTo(initialMass, 0.001));
     });
 
@@ -71,7 +71,7 @@ void main() {
       grid.setValue(1, 1, 6.0);
       diffusionCaste.add(1, grid);
 
-      final initialMass = _calculateTotalMass(grid);
+      final initialMass = calculateTotalMass(grid);
       expect(initialMass, 6.0);
 
       system.update();
@@ -98,7 +98,7 @@ void main() {
       expect(grid.getValue(2, 2), closeTo(0.0, 0.001));
 
       // Mass conservation check
-      final finalMass = _calculateTotalMass(grid);
+      final finalMass = calculateTotalMass(grid);
       expect(finalMass, closeTo(initialMass, 0.001));
     });
 
@@ -129,7 +129,7 @@ void main() {
       expect(grid.getValue(0, 1), closeTo(2.5, 0.001));
 
       // Mass conservation check
-      final finalMass = _calculateTotalMass(grid);
+      final finalMass = calculateTotalMass(grid);
       expect(finalMass, closeTo(10.0, 0.001));
     });
   });

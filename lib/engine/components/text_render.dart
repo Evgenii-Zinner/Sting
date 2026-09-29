@@ -14,7 +14,7 @@ class TextRender {
   double _fontSize;
 
   bool _isDirty = true;
-  Paragraph? _cachedParagraph;
+  Paragraph? cachedParagraph;
   Offset _cachedOffset;
 
   /// Creates a new [TextRender] component.
@@ -82,14 +82,6 @@ class TextRender {
   /// Clears the dirty flag. Should be called by the rendering system after rebuilding.
   void clearDirty() {
     _isDirty = false;
-  }
-
-  /// Gets the cached paragraph.
-  Paragraph? get cachedParagraph => _cachedParagraph;
-
-  /// Sets the cached paragraph.
-  set cachedParagraph(Paragraph? value) {
-    _cachedParagraph = value;
   }
 
   /// Gets the cached offset.

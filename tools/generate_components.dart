@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'dart:convert';
 import 'dart:io';
 
@@ -130,10 +131,15 @@ void _generateByteDataMethods(String name, List<dynamic> fields, StringBuffer bu
     }
 
     int size = 4;
-    if (fieldTypeStr.contains('64')) size = 8;
-    else if (fieldTypeStr.contains('32')) size = 4;
-    else if (fieldTypeStr.contains('16')) size = 2;
-    else if (fieldTypeStr.contains('8')) size = 1;
+    if (fieldTypeStr.contains('64')) {
+      size = 8;
+    } else if (fieldTypeStr.contains('32')) {
+      size = 4;
+    } else if (fieldTypeStr.contains('16')) {
+      size = 2;
+    } else if (fieldTypeStr.contains('8')) {
+      size = 1;
+    }
 
     currentOffset += size;
   }

@@ -18,9 +18,9 @@ class ComplexUI {
   double _borderRadius;
 
   bool _isDirty = true;
-  Paragraph? _cachedParagraph;
-  Path? _cachedPath;
-  Paint? _cachedPaint;
+  Paragraph? cachedParagraph;
+  Path? cachedPath;
+  Paint? cachedPaint;
   Offset _cachedOffset;
 
   /// Creates a new [ComplexUI] component.
@@ -137,30 +137,6 @@ class ComplexUI {
   /// Clears the dirty flag. Should be called by the rendering system after rebuilding.
   void clearDirty() {
     _isDirty = false;
-  }
-
-  /// Gets the cached paragraph.
-  Paragraph? get cachedParagraph => _cachedParagraph;
-
-  /// Sets the cached paragraph.
-  set cachedParagraph(Paragraph? value) {
-    _cachedParagraph = value;
-  }
-
-  /// Gets the cached path.
-  Path? get cachedPath => _cachedPath;
-
-  /// Sets the cached path.
-  set cachedPath(Path? value) {
-    _cachedPath = value;
-  }
-
-  /// Gets the cached paint.
-  Paint? get cachedPaint => _cachedPaint;
-
-  /// Sets the cached paint.
-  set cachedPaint(Paint? value) {
-    _cachedPaint = value;
   }
 
   /// Gets the cached offset.

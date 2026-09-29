@@ -11,7 +11,7 @@ void main() {
       expect(tilemap.isFlatTopped, equals(1));
 
       final diameter = 2 * 2 + 1; // 5
-      expect(tilemap.diameter, equals(5));
+      expect(tilemap.diameter, equals(diameter));
       expect(tilemap.length, equals(25));
 
       // Underlying data should have length 2 + 25 = 27

@@ -99,8 +99,6 @@ class NavMeshPathfinder {
   late final _NavMinHeap _openSet;
 
   // Buffers for Funnel algorithm
-  final Int32List _portalLeft;
-  final Int32List _portalRight;
   final Float32List _portalLeftX;
   final Float32List _portalLeftY;
   final Float32List _portalRightX;
@@ -116,8 +114,6 @@ class NavMeshPathfinder {
         fScore = Float32List(maxPolygons),
         cameFrom = Int32List(maxPolygons),
         nodeState = Uint8List(maxPolygons),
-        _portalLeft = Int32List(maxPathSegments),
-        _portalRight = Int32List(maxPathSegments),
         _portalLeftX = Float32List(maxPathSegments),
         _portalLeftY = Float32List(maxPathSegments),
         _portalRightX = Float32List(maxPathSegments),
@@ -262,7 +258,6 @@ class NavMeshPathfinder {
 
       if (sharedEdgeIdx1 != -1 && sharedEdgeIdx2 != -1) {
          final int aNext = (sharedEdgeIdx1 + 1) % poly1.vertexCount;
-         final int bNext = (sharedEdgeIdx2 + 1) % poly2.vertexCount;
 
          final double px1 = poly1.verticesX[sharedEdgeIdx1];
          final double py1 = poly1.verticesY[sharedEdgeIdx1];
