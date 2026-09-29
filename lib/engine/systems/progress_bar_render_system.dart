@@ -75,16 +75,16 @@ class ProgressBarRenderSystem {
 
       // Ensure colors are updated correctly from the component data without re-allocating if unchanged
       final bgCol = bar.backgroundColorHex.toInt();
-      if (_bgPaint.color.value != bgCol) _bgPaint.color = Color(bgCol);
+      if (_bgPaint.color.toARGB32() != bgCol) _bgPaint.color = Color(bgCol);
 
       final ghostCol = bar.ghostColorHex.toInt();
-      if (_ghostPaint.color.value != ghostCol) _ghostPaint.color = Color(ghostCol);
+      if (_ghostPaint.color.toARGB32() != ghostCol) _ghostPaint.color = Color(ghostCol);
 
       final fillCol = bar.fillColorHex.toInt();
-      if (_fillPaint.color.value != fillCol) _fillPaint.color = Color(fillCol);
+      if (_fillPaint.color.toARGB32() != fillCol) _fillPaint.color = Color(fillCol);
 
       final borderCol = bar.borderColorHex.toInt();
-      if (_borderPaint.color.value != borderCol) _borderPaint.color = Color(borderCol);
+      if (_borderPaint.color.toARGB32() != borderCol) _borderPaint.color = Color(borderCol);
 
       _borderPaint.strokeWidth = bar.borderWidth;
 
