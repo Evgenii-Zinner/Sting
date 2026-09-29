@@ -5,7 +5,6 @@ import 'package:sting/engine/components/slope_modifier.dart';
 import 'package:sting/engine/components/height_map.dart';
 import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/systems/slope_physics_system.dart';
-import 'dart:typed_data';
 
 void main() {
   group('SlopePhysicsSystem', () {
