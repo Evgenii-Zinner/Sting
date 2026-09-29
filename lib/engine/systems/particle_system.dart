@@ -34,6 +34,25 @@ class ParticleSystem {
         _rectBuffer = Float32List(maxTotalParticles * 4), // l, t, r, b
         _colorBuffer = Int32List(maxTotalParticles);
 
+  int _lerpColor(int startColor, int endColor, double t) {
+    int a1 = (startColor >> 24) & 0xFF;
+    int r1 = (startColor >> 16) & 0xFF;
+    int g1 = (startColor >> 8) & 0xFF;
+    int b1 = startColor & 0xFF;
+
+    int a2 = (endColor >> 24) & 0xFF;
+    int r2 = (endColor >> 16) & 0xFF;
+    int g2 = (endColor >> 8) & 0xFF;
+    int b2 = endColor & 0xFF;
+
+    int a = (a1 + (a2 - a1) * t).round();
+    int r = (r1 + (r2 - r1) * t).round();
+    int g = (g1 + (g2 - g1) * t).round();
+    int b = (b1 + (b2 - b1) * t).round();
+
+    return (a << 24) | (r << 16) | (g << 8) | b;
+  }
+
   /// Updates particle lifetimes, physics, and emissions.
   void update(double dt) {
     for (int i = 0; i < emitters.length; i++) {
@@ -42,6 +61,13 @@ class ParticleSystem {
       if (pos == null) continue;
 
       final emitter = emitters.get(entity)!;
+
+      int startColor = emitter.startColor;
+      int endColor = emitter.endColor;
+      double startScale = emitter.startScale;
+      double midScale = emitter.midScale;
+      double endScale = emitter.endScale;
+      double midScaleRatio = emitter.midScaleRatio;
 
       // Update existing particles
       int active = emitter.activeParticles;
@@ -59,6 +85,7 @@ class ParticleSystem {
             emitter.setParticleLife(p, emitter.getParticleLife(active));
             emitter.setParticleMaxLife(p, emitter.getParticleMaxLife(active));
             emitter.setParticleColor(p, emitter.getParticleColor(active));
+            emitter.setParticleScale(p, emitter.getParticleScale(active));
           }
           p--;
           continue;
@@ -73,6 +100,27 @@ class ParticleSystem {
         emitter.setParticleX(p, x + dx * dt);
         emitter.setParticleY(p, y + dy * dt);
         emitter.setParticleLife(p, life);
+
+        double maxLife = emitter.getParticleMaxLife(p);
+        double lifeRatio = maxLife > 0 ? 1.0 - (life / maxLife) : 1.0;
+
+        // Ensure lifeRatio is clamped
+        if (lifeRatio < 0.0) lifeRatio = 0.0;
+        if (lifeRatio > 1.0) lifeRatio = 1.0;
+
+        // Interpolate Color
+        emitter.setParticleColor(p, _lerpColor(startColor, endColor, lifeRatio));
+
+        // Interpolate Scale
+        double currentScale;
+        if (lifeRatio < midScaleRatio) {
+          double t = midScaleRatio > 0.0 ? lifeRatio / midScaleRatio : 1.0;
+          currentScale = startScale + (midScale - startScale) * t;
+        } else {
+          double t = midScaleRatio < 1.0 ? (lifeRatio - midScaleRatio) / (1.0 - midScaleRatio) : 1.0;
+          currentScale = midScale + (endScale - midScale) * t;
+        }
+        emitter.setParticleScale(p, currentScale);
       }
 
       // Emit new particles
@@ -94,7 +142,8 @@ class ParticleSystem {
 
           emitter.setParticleLife(active, 1.0);
           emitter.setParticleMaxLife(active, 1.0);
-          emitter.setParticleColor(active, 0xFFFFFFFF);
+          emitter.setParticleColor(active, startColor);
+          emitter.setParticleScale(active, startScale);
 
           active++;
         }
@@ -124,9 +173,10 @@ class ParticleSystem {
         }
 
         final idx = totalParticlesToDraw * 4;
+        final scale = emitter.getParticleScale(p);
 
         // Transform: scos, ssin, tx, ty
-        _transformBuffer[idx + 0] = 1.0; // scale X * cos(0)
+        _transformBuffer[idx + 0] = scale; // scale X * cos(0)
         _transformBuffer[idx + 1] = 0.0; // scale Y * sin(0)
         _transformBuffer[idx + 2] = emitter.getParticleX(p);
         _transformBuffer[idx + 3] = emitter.getParticleY(p);
