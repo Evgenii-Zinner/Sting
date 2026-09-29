@@ -16,6 +16,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^6.0.0
   image: ^4.9.1
+  benchmark_harness: ^2.4.0
 
 flutter:
   shaders:
