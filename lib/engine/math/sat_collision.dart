@@ -272,3 +272,124 @@ void testPolygonCircle(
   outResult.normalX = bestNormalX;
   outResult.normalY = bestNormalY;
 }
+
+void testAABBAABB(
+    double xA, double yA, double wA, double hA,
+    double xB, double yB, double wB, double hB,
+    SATCollisionResult outResult) {
+
+  double centerAx = xA + wA / 2;
+  double centerAy = yA + hA / 2;
+  double centerBx = xB + wB / 2;
+  double centerBy = yB + hB / 2;
+
+  double halfAWidth = wA / 2;
+  double halfAHeight = hA / 2;
+  double halfBWidth = wB / 2;
+  double halfBHeight = hB / 2;
+
+  double dx = centerBx - centerAx;
+  double dy = centerBy - centerAy;
+
+  double overlapX = halfAWidth + halfBWidth - dx.abs();
+  double overlapY = halfAHeight + halfBHeight - dy.abs();
+
+  if (overlapX > 0 && overlapY > 0) {
+    outResult.intersects = true;
+    if (overlapX < overlapY) {
+      outResult.depth = overlapX;
+      outResult.normalX = dx < 0 ? -1.0 : 1.0;
+      outResult.normalY = 0.0;
+    } else {
+      outResult.depth = overlapY;
+      outResult.normalX = 0.0;
+      outResult.normalY = dy < 0 ? -1.0 : 1.0;
+    }
+  } else {
+    outResult.intersects = false;
+  }
+}
+
+void testCircleCircle(
+    double cxA, double cyA, double radiusA,
+    double cxB, double cyB, double radiusB,
+    SATCollisionResult outResult) {
+
+  double dx = cxB - cxA;
+  double dy = cyB - cyA;
+  double distSq = dx * dx + dy * dy;
+  double radiiSum = radiusA + radiusB;
+
+  if (distSq < radiiSum * radiiSum) {
+    outResult.intersects = true;
+    double dist = math.sqrt(distSq);
+
+    if (dist == 0.0) {
+      outResult.depth = radiiSum;
+      outResult.normalX = 1.0;
+      outResult.normalY = 0.0;
+    } else {
+      outResult.depth = radiiSum - dist;
+      outResult.normalX = dx / dist;
+      outResult.normalY = dy / dist;
+    }
+  } else {
+    outResult.intersects = false;
+  }
+}
+
+void testAABBCircle(
+    double xA, double yA, double wA, double hA,
+    double cxB, double cyB, double radiusB,
+    SATCollisionResult outResult) {
+
+  // Find closest point on AABB to circle center
+  double closestX = cxB;
+  if (closestX < xA) {
+    closestX = xA;
+  } else if (closestX > xA + wA) {
+    closestX = xA + wA;
+  }
+
+  double closestY = cyB;
+  if (closestY < yA) {
+    closestY = yA;
+  } else if (closestY > yA + hA) {
+    closestY = yA + hA;
+  }
+
+  double dx = cxB - closestX;
+  double dy = cyB - closestY;
+  double distSq = dx * dx + dy * dy;
+
+  if (distSq == 0) {
+    // Center is inside AABB
+    outResult.intersects = true;
+
+    double distToLeft = cxB - xA;
+    double distToRight = (xA + wA) - cxB;
+    double distToTop = cyB - yA;
+    double distToBottom = (yA + hA) - cyB;
+
+    double minX = math.min(distToLeft, distToRight);
+    double minY = math.min(distToTop, distToBottom);
+
+    if (minX < minY) {
+      outResult.depth = minX + radiusB;
+      outResult.normalX = distToLeft < distToRight ? -1.0 : 1.0;
+      outResult.normalY = 0.0;
+    } else {
+      outResult.depth = minY + radiusB;
+      outResult.normalX = 0.0;
+      outResult.normalY = distToTop < distToBottom ? -1.0 : 1.0;
+    }
+  } else if (distSq < radiusB * radiusB) {
+    outResult.intersects = true;
+    double dist = math.sqrt(distSq);
+    outResult.depth = radiusB - dist;
+    outResult.normalX = dx / dist;
+    outResult.normalY = dy / dist;
+  } else {
+    outResult.intersects = false;
+  }
+}
