@@ -1,0 +1,7 @@
+{
+  "name": "Parent",
+  "type": "Int32List",
+  "fields": [
+    {"name": "entityId"}
+  ]
+}

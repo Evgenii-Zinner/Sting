@@ -1,0 +1,8 @@
+{
+  "name": "Scale",
+  "type": "Float32List",
+  "fields": [
+    {"name": "x"},
+    {"name": "y"}
+  ]
+}

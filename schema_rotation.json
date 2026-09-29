@@ -1,0 +1,7 @@
+{
+  "name": "Rotation",
+  "type": "Float32List",
+  "fields": [
+    {"name": "radians"}
+  ]
+}
