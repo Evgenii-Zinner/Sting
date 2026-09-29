@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:typed_data';
 import 'dart:ui';
-import 'dart:convert';
 
 class _DecodeRequest {
   final String filePath;
@@ -82,5 +83,13 @@ class AssetLoader {
 
   static Future<FragmentProgram> loadShader(String assetKey) async {
     return FragmentProgram.fromAsset(assetKey);
+  }
+
+  static Future<Uint8List> loadBytes(String filePath) async {
+    return File(filePath).readAsBytes();
+  }
+
+  static Future<String> loadText(String filePath) async {
+    return File(filePath).readAsString();
   }
 }

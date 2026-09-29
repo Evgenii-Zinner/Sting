@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'dart:ui';
 
 class AssetLoader {
@@ -28,5 +29,15 @@ class AssetLoader {
 
   static Future<FragmentProgram> loadShader(String assetKey) async {
     return FragmentProgram.fromAsset(assetKey);
+  }
+
+  static Future<Uint8List> loadBytes(String filePath) {
+    throw UnsupportedError(
+        'loadBytes is not supported on Web. Provide embedded bytes directly.');
+  }
+
+  static Future<String> loadText(String filePath) {
+    throw UnsupportedError(
+        'loadText is not supported on Web. Provide embedded text directly.');
   }
 }
