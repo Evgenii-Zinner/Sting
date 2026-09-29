@@ -3,12 +3,14 @@ import 'dart:io';
 
 void main(List<String> args) {
   if (args.isEmpty) {
+    // ignore: avoid_print
     print('Usage: dart tools/generate_components.dart <schema.json> [output.dart]');
     exit(1);
   }
 
   final schemaFile = File(args[0]);
   if (!schemaFile.existsSync()) {
+    // ignore: avoid_print
     print('Error: Schema file not found.');
     exit(1);
   }
@@ -30,8 +32,10 @@ void main(List<String> args) {
 
   if (args.length > 1) {
     File(args[1]).writeAsStringSync(buffer.toString());
+    // ignore: avoid_print
     print('Wrote to ${args[1]}');
   } else {
+    // ignore: avoid_print
     print(buffer.toString());
   }
 }
@@ -130,10 +134,15 @@ void _generateByteDataMethods(String name, List<dynamic> fields, StringBuffer bu
     }
 
     int size = 4;
-    if (fieldTypeStr.contains('64')) size = 8;
-    else if (fieldTypeStr.contains('32')) size = 4;
-    else if (fieldTypeStr.contains('16')) size = 2;
-    else if (fieldTypeStr.contains('8')) size = 1;
+    if (fieldTypeStr.contains('64')) {
+      size = 8;
+    } else if (fieldTypeStr.contains('32')) {
+      size = 4;
+    } else if (fieldTypeStr.contains('16')) {
+      size = 2;
+    } else if (fieldTypeStr.contains('8')) {
+      size = 1;
+    }
 
     currentOffset += size;
   }

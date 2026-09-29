@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/steering.dart';
-import 'dart:typed_data';
 
 void main() {
   group('Steering Component', () {

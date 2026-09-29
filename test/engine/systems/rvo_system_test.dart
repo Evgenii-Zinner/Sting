@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/circle_collider.dart';
 import 'package:sting/engine/components/position.dart';

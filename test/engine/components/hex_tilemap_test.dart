@@ -10,7 +10,6 @@ void main() {
       expect(tilemap.radius, equals(2));
       expect(tilemap.isFlatTopped, equals(1));
 
-      final diameter = 2 * 2 + 1; // 5
       expect(tilemap.diameter, equals(5));
       expect(tilemap.length, equals(25));
 

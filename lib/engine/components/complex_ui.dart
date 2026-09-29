@@ -7,8 +7,12 @@ import 'dart:ui';
 /// allocations per frame constraint, it caches the [Paragraph], [Path], [Paint] and [Offset].
 /// These are only rebuilt when state changes (indicated by [isDirty]).
 class ComplexUI {
-  double _x;
-  double _y;
+  /// The x-coordinate on the screen.
+  double x;
+
+  /// The y-coordinate on the screen.
+  double y;
+
   double _width;
   double _height;
   int _backgroundColor;
@@ -18,15 +22,22 @@ class ComplexUI {
   double _borderRadius;
 
   bool _isDirty = true;
-  Paragraph? _cachedParagraph;
-  Path? _cachedPath;
-  Paint? _cachedPaint;
+
+  /// Gets the cached paragraph.
+  Paragraph? cachedParagraph;
+
+  /// Gets the cached path.
+  Path? cachedPath;
+
+  /// Gets the cached paint.
+  Paint? cachedPaint;
+
   Offset _cachedOffset;
 
   /// Creates a new [ComplexUI] component.
   ComplexUI({
-    double x = 0,
-    double y = 0,
+    this.x = 0,
+    this.y = 0,
     double width = 100,
     double height = 50,
     int backgroundColor = 0xFF888888,
@@ -34,9 +45,7 @@ class ComplexUI {
     int textColor = 0xFFFFFFFF,
     double fontSize = 14.0,
     double borderRadius = 0.0,
-  })  : _x = x,
-        _y = y,
-        _width = width,
+  })  : _width = width,
         _height = height,
         _backgroundColor = backgroundColor,
         _text = text,
@@ -45,26 +54,10 @@ class ComplexUI {
         _borderRadius = borderRadius,
         _cachedOffset = Offset(0, 0);
 
-  /// The x-coordinate on the screen.
-  double get x => _x;
-  set x(double value) {
-    if (_x != value) {
-      _x = value;
-    }
-  }
-
-  /// The y-coordinate on the screen.
-  double get y => _y;
-  set y(double value) {
-    if (_y != value) {
-      _y = value;
-    }
-  }
-
   /// Sets the cached text offset specifically for text rendering (centered).
-  void updateCachedOffset(double x, double y) {
-    if (_cachedOffset.dx != x || _cachedOffset.dy != y) {
-      _cachedOffset = Offset(x, y);
+  void updateCachedOffset(double updateX, double updateY) {
+    if (_cachedOffset.dx != updateX || _cachedOffset.dy != updateY) {
+      _cachedOffset = Offset(updateX, updateY);
     }
   }
 
@@ -137,30 +130,6 @@ class ComplexUI {
   /// Clears the dirty flag. Should be called by the rendering system after rebuilding.
   void clearDirty() {
     _isDirty = false;
-  }
-
-  /// Gets the cached paragraph.
-  Paragraph? get cachedParagraph => _cachedParagraph;
-
-  /// Sets the cached paragraph.
-  set cachedParagraph(Paragraph? value) {
-    _cachedParagraph = value;
-  }
-
-  /// Gets the cached path.
-  Path? get cachedPath => _cachedPath;
-
-  /// Sets the cached path.
-  set cachedPath(Path? value) {
-    _cachedPath = value;
-  }
-
-  /// Gets the cached paint.
-  Paint? get cachedPaint => _cachedPaint;
-
-  /// Sets the cached paint.
-  set cachedPaint(Paint? value) {
-    _cachedPaint = value;
   }
 
   /// Gets the cached offset.

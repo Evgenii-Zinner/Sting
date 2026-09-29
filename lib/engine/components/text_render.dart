@@ -14,7 +14,6 @@ class TextRender {
   double _fontSize;
 
   bool _isDirty = true;
-  Paragraph? _cachedParagraph;
   Offset _cachedOffset;
 
   /// Creates a new [TextRender] component.
@@ -85,12 +84,7 @@ class TextRender {
   }
 
   /// Gets the cached paragraph.
-  Paragraph? get cachedParagraph => _cachedParagraph;
-
-  /// Sets the cached paragraph.
-  set cachedParagraph(Paragraph? value) {
-    _cachedParagraph = value;
-  }
+  Paragraph? cachedParagraph;
 
   /// Gets the cached offset.
   Offset get cachedOffset => _cachedOffset;

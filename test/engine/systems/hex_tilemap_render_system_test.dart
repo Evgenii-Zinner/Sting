@@ -5,7 +5,6 @@ import 'package:sting/engine/ecs/swarm.dart';
 import 'package:sting/engine/ecs/component_caste.dart';
 import 'package:sting/engine/components/position.dart';
 import 'package:sting/engine/components/hex_tilemap.dart';
-import 'package:sting/engine/components/viewport.dart';
 import 'package:sting/engine/components/shader_material.dart';
 import 'package:sting/engine/systems/hex_tilemap_render_system.dart';
 
