@@ -93,6 +93,9 @@ class SpatialHashGrid {
     _insertNode(entity, cellIndex);
   }
 
+  /// Backward-compatible alias for [insertPoint].
+  void insert(int entity, double x, double y) => insertPoint(entity, x, y);
+
   /// Inserts an entity into the grid based on its Axis-Aligned Bounding Box.
   void insertAABB(int entity, double minX, double minY, double maxX, double maxY, [int layer = 1]) {
     if (entity < 0 || entity >= Swarm.maxEntities) {
