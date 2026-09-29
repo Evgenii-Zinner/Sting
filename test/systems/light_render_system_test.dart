@@ -106,7 +106,7 @@ void main() {
       boundingBoxCaste.add(shadowEntity, BoundingBox.create(20, 20));
       shadowCasterCaste.add(shadowEntity, ShadowCaster.create());
 
-      grid.insert(shadowEntity, 120, 90);
+      grid.insertPoint(shadowEntity, 120, 90);
 
       final canvas = MockCanvas();
       system.render(canvas, const Size(800, 600));

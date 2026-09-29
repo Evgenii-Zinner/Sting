@@ -7,9 +7,9 @@ void main() {
     test('inserts and queries point', () {
       final grid = SpatialHashGrid(64.0, 1024);
 
-      grid.insert(1, 10.0, 10.0);
-      grid.insert(2, 20.0, 20.0);
-      grid.insert(3, 100.0, 100.0); // Different cell
+      grid.insertPoint(1, 10.0, 10.0);
+      grid.insertPoint(2, 20.0, 20.0);
+      grid.insertPoint(3, 100.0, 100.0); // Different cell
 
       final found = <int>[];
       grid.queryPoint(15.0, 15.0, (entity) {
@@ -24,7 +24,7 @@ void main() {
     test('clears grid', () {
       final grid = SpatialHashGrid(64.0, 1024);
 
-      grid.insert(1, 10.0, 10.0);
+      grid.insertPoint(1, 10.0, 10.0);
       grid.clear();
 
       final found = <int>[];
@@ -39,13 +39,13 @@ void main() {
       final grid = SpatialHashGrid(64.0, 1024);
 
       // Cell (0, 0)
-      grid.insert(1, 10.0, 10.0);
+      grid.insertPoint(1, 10.0, 10.0);
       // Cell (1, 0)
-      grid.insert(2, 70.0, 10.0);
+      grid.insertPoint(2, 70.0, 10.0);
       // Cell (0, 1)
-      grid.insert(3, 10.0, 70.0);
+      grid.insertPoint(3, 10.0, 70.0);
       // Cell (2, 2)
-      grid.insert(4, 150.0, 150.0);
+      grid.insertPoint(4, 150.0, 150.0);
 
       final found = <int>[];
       grid.queryAABB(0.0, 0.0, 100.0, 100.0, (entity) {
@@ -64,8 +64,8 @@ void main() {
       final grid = SpatialHashGrid(64.0, 1024);
 
       // Cell (-1, -1) -> hash of (-1, -1)
-      grid.insert(5, -10.0, -10.0);
-      grid.insert(6, -20.0, -20.0);
+      grid.insertPoint(5, -10.0, -10.0);
+      grid.insertPoint(6, -20.0, -20.0);
 
       final found = <int>[];
       grid.queryPoint(-15.0, -15.0, (entity) {
@@ -78,8 +78,8 @@ void main() {
 
     test('throws RangeError on invalid entity ID', () {
       final grid = SpatialHashGrid(64.0, 1024);
-      expect(() => grid.insert(-1, 0.0, 0.0), throwsRangeError);
-      expect(() => grid.insert(Swarm.maxEntities, 0.0, 0.0), throwsRangeError);
+      expect(() => grid.insertPoint(-1, 0.0, 0.0), throwsRangeError);
+      expect(() => grid.insertPoint(Swarm.maxEntities, 0.0, 0.0), throwsRangeError);
     });
 
     test('queryAABB accurate broad-phase collision candidates', () {
@@ -89,16 +89,16 @@ void main() {
       // Cells: (1, 1), (2, 1), (1, 2), (2, 2)
 
       // Inside candidate
-      grid.insert(1, 110.0, 110.0);
+      grid.insertPoint(1, 110.0, 110.0);
 
       // Touching boundary candidate
-      grid.insert(2, 90.0, 90.0);
+      grid.insertPoint(2, 90.0, 90.0);
 
       // Inside cell but outside exact rect candidate (still broad-phase candidate)
-      grid.insert(3, 70.0, 70.0);
+      grid.insertPoint(3, 70.0, 70.0);
 
       // Far away, not a candidate
-      grid.insert(4, 300.0, 300.0);
+      grid.insertPoint(4, 300.0, 300.0);
 
       final found = <int>[];
       grid.queryAABB(100.0, 100.0, 30.0, 30.0, (entity) {
@@ -116,6 +116,105 @@ void main() {
       expect(found, containsAll([1, 2, 3]));
       expect(found.length, 3);
       expect(found.contains(4), isFalse);
+    });
+
+    test('insertAABB adds entity to multiple cells and query deduplicates', () {
+      final grid = SpatialHashGrid(64.0, 1024);
+
+      // Entity bounds from 10 to 100, spans cell (0,0) and (1,1)
+      grid.insertAABB(1, 10.0, 10.0, 100.0, 100.0);
+
+      // Verify it's in cell (0,0)
+      final foundIn00 = <int>[];
+      grid.queryPoint(15.0, 15.0, (entity) {
+        foundIn00.add(entity);
+      });
+      expect(foundIn00, contains(1));
+
+      // Verify it's in cell (1,1)
+      final foundIn11 = <int>[];
+      grid.queryPoint(80.0, 80.0, (entity) {
+        foundIn11.add(entity);
+      });
+      expect(foundIn11, contains(1));
+
+      // Query whole area, should only yield entity 1 once due to deduplication
+      final foundAABB = <int>[];
+      grid.queryAABB(0.0, 0.0, 128.0, 128.0, (entity) {
+        foundAABB.add(entity);
+        return true;
+      });
+      expect(foundAABB, [1]);
+    });
+
+    test('query layer mask filtering', () {
+      final grid = SpatialHashGrid(64.0, 1024);
+
+      // Layer 1
+      grid.insertPoint(1, 10.0, 10.0, 1);
+      // Layer 2
+      grid.insertPoint(2, 10.0, 10.0, 2);
+      // Layer 3 (1 | 2)
+      grid.insertPoint(3, 10.0, 10.0, 3);
+      // Layer 4
+      grid.insertPoint(4, 10.0, 10.0, 4);
+
+      // Query only layer 1
+      final foundLayer1 = <int>[];
+      grid.queryPoint(10.0, 10.0, (entity) {
+        foundLayer1.add(entity);
+      }, 1);
+      expect(foundLayer1, containsAll([1, 3]));
+      expect(foundLayer1.length, 2);
+
+      // Query only layer 2
+      final foundLayer2 = <int>[];
+      grid.queryPoint(10.0, 10.0, (entity) {
+        foundLayer2.add(entity);
+      }, 2);
+      expect(foundLayer2, containsAll([2, 3]));
+      expect(foundLayer2.length, 2);
+
+      // Query layer 4
+      final foundLayer4 = <int>[];
+      grid.queryPoint(10.0, 10.0, (entity) {
+        foundLayer4.add(entity);
+      }, 4);
+      expect(foundLayer4, [4]);
+
+      // Query layer 1 & 4 (mask = 5)
+      final foundLayer1_4 = <int>[];
+      grid.queryPoint(10.0, 10.0, (entity) {
+        foundLayer1_4.add(entity);
+      }, 5);
+      expect(foundLayer1_4, containsAll([1, 3, 4]));
+      expect(foundLayer1_4.length, 3);
+    });
+
+    test('queryRadius broad-phase coverage', () {
+      final grid = SpatialHashGrid(64.0, 1024);
+
+      // Center is at (100, 100). Radius 30.
+      // Bounds: (70, 70) to (130, 130).
+
+      // Inside circle
+      grid.insertPoint(1, 100.0, 100.0);
+
+      // Inside bounding box, outside circle (broad-phase will still catch it)
+      grid.insertPoint(2, 70.0, 70.0);
+
+      // Outside bounding box
+      grid.insertPoint(3, 10.0, 10.0);
+
+      final found = <int>[];
+      grid.queryRadius(100.0, 100.0, 30.0, (entity) {
+        found.add(entity);
+        return true;
+      });
+
+      expect(found, containsAll([1, 2]));
+      expect(found.length, 2);
+      expect(found.contains(3), isFalse);
     });
   });
 }
