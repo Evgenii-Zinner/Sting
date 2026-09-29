@@ -1,0 +1,42 @@
+[
+  {
+    "name": "UIWindow",
+    "type": "Float32List",
+    "description": "Zero-allocation UI Window component.",
+    "fields": [
+      { "name": "x" },
+      { "name": "y" },
+      { "name": "width" },
+      { "name": "height" },
+      { "name": "titleBarHeight" },
+      { "name": "backgroundColorHex" },
+      { "name": "titleBarColorHex" },
+      { "name": "borderColorHex" },
+      { "name": "borderWidth" },
+      { "name": "borderRadius" },
+      { "name": "isDragging" },
+      { "name": "dragOffsetX" },
+      { "name": "dragOffsetY" },
+      { "name": "isVisible" }
+    ]
+  },
+  {
+    "name": "UIButton",
+    "type": "Float32List",
+    "description": "Zero-allocation UI Button component.",
+    "fields": [
+      { "name": "relativeX" },
+      { "name": "relativeY" },
+      { "name": "width" },
+      { "name": "height" },
+      { "name": "state" },
+      { "name": "normalColorHex" },
+      { "name": "hoverColorHex" },
+      { "name": "pressedColorHex" },
+      { "name": "borderColorHex" },
+      { "name": "borderWidth" },
+      { "name": "borderRadius" },
+      { "name": "wasClicked" }
+    ]
+  }
+]
