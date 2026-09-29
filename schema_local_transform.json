@@ -1,0 +1,11 @@
+{
+  "name": "LocalTransform",
+  "type": "Float32List",
+  "fields": [
+    {"name": "lx"},
+    {"name": "ly"},
+    {"name": "localRotation"},
+    {"name": "localScaleX"},
+    {"name": "localScaleY"}
+  ]
+}
