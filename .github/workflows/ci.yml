@@ -28,3 +28,6 @@ jobs:
 
       - name: Run unit & subsystem tests
         run: flutter test
+
+      - name: Run benchmarks
+        run: dart run benchmark/run_all.dart
