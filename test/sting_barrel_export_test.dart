@@ -1,0 +1,114 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:sting/sting.dart';
+
+void main() {
+  group('Barrel file exports - Core ECS', () {
+    test('Scene', () => expect(Scene, isNotNull));
+    test('EntityManager', () => expect(EntityManager, isNotNull));
+    test('ComponentStorage', () => expect(ComponentStorage, isNotNull));
+    test('SparseSet', () => expect(SparseSet, isNotNull));
+    test('Query1', () => expect(Query1, isNotNull));
+    test('Query2', () => expect(Query2, isNotNull));
+    test('Query3', () => expect(Query3, isNotNull));
+    test('EntityPool', () => expect(EntityPool, isNotNull));
+    test('Prefab', () => expect(Prefab, isNotNull));
+  });
+
+  group('Barrel file exports - Math & Utilities', () {
+    test('Fixed64', () => expect(Fixed64, isNotNull));
+    test('HexMath', () => expect(HexMath, isNotNull));
+    test('IsometricMath', () => expect(IsometricMath, isNotNull));
+    test('NavMesh', () => expect(NavMesh, isNotNull));
+    test('NavMeshPathfinder', () => expect(NavMeshPathfinder, isNotNull));
+    test('PolylineMath', () => expect(PolylineMath, isNotNull));
+    test('QuadTree2D', () => expect(QuadTree2D, isNotNull));
+    test('BarnesHutTree', () => expect(BarnesHutTree, isNotNull));
+    test('Raycast2D', () => expect(Raycast2D, isNotNull));
+    test('SATCollisionResult', () => expect(SATCollisionResult, isNotNull));
+    test('SegmentMath', () => expect(SegmentMath, isNotNull));
+    test('SplineMath', () => expect(SplineMath, isNotNull));
+    test('Easing', () => expect(Easing, isNotNull));
+  });
+
+  group('Barrel file exports - Components', () {
+    test('Position', () => expect(Position, isNotNull));
+    test('Velocity', () => expect(Velocity, isNotNull));
+    test('Rotation', () => expect(Rotation, isNotNull));
+    test('Scale', () => expect(Scale, isNotNull));
+    test('Sprite', () => expect(Sprite, isNotNull));
+    test('SpriteAnimation', () => expect(SpriteAnimation, isNotNull));
+    test('CameraFollow', () => expect(CameraFollow, isNotNull));
+    test('CameraTrauma', () => expect(CameraTrauma, isNotNull));
+    test('Tilemap', () => expect(Tilemap, isNotNull));
+    test('HexTilemap', () => expect(HexTilemap, isNotNull));
+    test('Light', () => expect(Light, isNotNull));
+    test('ShadowCaster', () => expect(ShadowCaster, isNotNull));
+    test('ShaderMaterial', () => expect(ShaderMaterial, isNotNull));
+    test('UtilityAI', () => expect(UtilityAI, isNotNull));
+    test('Steering', () => expect(Steering, isNotNull));
+    test('FlockingAgent', () => expect(FlockingAgent, isNotNull));
+    test('EntityFSM', () => expect(EntityFSM, isNotNull));
+    test('Tween', () => expect(Tween, isNotNull));
+    test('GridDiffusion', () => expect(GridDiffusion, isNotNull));
+    test('HeightMap', () => expect(HeightMap, isNotNull));
+    test('SlopeModifier', () => expect(SlopeModifier, isNotNull));
+    test('RadarDisplay', () => expect(RadarDisplay, isNotNull));
+    test('DiscoveryGrid', () => expect(DiscoveryGrid, isNotNull));
+    test('GroundTrailField', () => expect(GroundTrailField, isNotNull));
+    test('CapsuleCorridor', () => expect(CapsuleCorridor, isNotNull));
+    test('UIWindow', () => expect(UIWindow, isNotNull));
+    test('UIButton', () => expect(UIButton, isNotNull));
+    test('ProgressBar', () => expect(ProgressBar, isNotNull));
+    test('RadialDial', () => expect(RadialDial, isNotNull));
+    test('ComplexUI', () => expect(ComplexUI, isNotNull));
+    test('TextRender', () => expect(TextRender, isNotNull));
+    test('NormalMapMaterial', () => expect(NormalMapMaterial, isNotNull));
+  });
+
+  group('Barrel file exports - Systems', () {
+    test('AnimatedSpriteEventSystem', () => expect(AnimatedSpriteEventSystem, isNotNull));
+    test('AnimationSystem', () => expect(AnimationSystem, isNotNull));
+    test('AudioManager', () => expect(AudioManager, isNotNull));
+    test('CameraFollowSystem', () => expect(CameraFollowSystem, isNotNull));
+    test('CameraShakeSystem', () => expect(CameraShakeSystem, isNotNull));
+    test('CameraSystem', () => expect(CameraSystem, isNotNull));
+    test('CapsuleCorridorSystem', () => expect(CapsuleCorridorSystem, isNotNull));
+    test('CollisionSystem', () => expect(CollisionSystem, isNotNull));
+    test('ComplexUIRenderSystem', () => expect(ComplexUIRenderSystem, isNotNull));
+    test('DiffusionSystem', () => expect(DiffusionSystem, isNotNull));
+    test('FloatingTextSystem', () => expect(FloatingTextSystem, isNotNull));
+    test('FlockingSystem', () => expect(FlockingSystem, isNotNull));
+    test('FogOfWarSystem', () => expect(FogOfWarSystem, isNotNull));
+    test('FSMSystem', () => expect(FSMSystem, isNotNull));
+    test('GameStateSystem', () => expect(GameStateSystem, isNotNull));
+    test('GravitySystem', () => expect(GravitySystem, isNotNull));
+    test('GroundTrailSystem', () => expect(GroundTrailSystem, isNotNull));
+    test('HexTilemapRenderSystem', () => expect(HexTilemapRenderSystem, isNotNull));
+    test('GameAction', () => expect(GameAction, isNotNull));
+    test('InputSystem', () => expect(InputSystem, isNotNull));
+    test('LightRenderSystem', () => expect(LightRenderSystem, isNotNull));
+    test('MovementSystem', () => expect(MovementSystem, isNotNull));
+    test('ParallaxSystem', () => expect(ParallaxSystem, isNotNull));
+    test('ParticleSystem', () => expect(ParticleSystem, isNotNull));
+    test('PhysicsResponseSystem', () => expect(PhysicsResponseSystem, isNotNull));
+    test('ProgressBarRenderSystem', () => expect(ProgressBarRenderSystem, isNotNull));
+    test('RadarSystem', () => expect(RadarSystem, isNotNull));
+    test('RadialDialSystem', () => expect(RadialDialSystem, isNotNull));
+    test('RVOSystem', () => expect(RVOSystem, isNotNull));
+    test('SimpleResolutionSystem', () => expect(SimpleResolutionSystem, isNotNull));
+    test('SlopePhysicsSystem', () => expect(SlopePhysicsSystem, isNotNull));
+    test('SpatialHashSystem', () => expect(SpatialHashSystem, isNotNull));
+    test('SplineFollowSystem', () => expect(SplineFollowSystem, isNotNull));
+    test('SpriteRenderSystem', () => expect(SpriteRenderSystem, isNotNull));
+    test('SteeringSystem', () => expect(SteeringSystem, isNotNull));
+    test('TextRenderSystem', () => expect(TextRenderSystem, isNotNull));
+    test('TilemapRenderSystem', () => expect(TilemapRenderSystem, isNotNull));
+    test('TransformSystem', () => expect(TransformSystem, isNotNull));
+    test('TweenSystem', () => expect(TweenSystem, isNotNull));
+    test('UISystem', () => expect(UISystem, isNotNull));
+    test('UIWindowSystem', () => expect(UIWindowSystem, isNotNull));
+    test('UtilityAISystem', () => expect(UtilityAISystem, isNotNull));
+    test('VirtualJoypadSystem', () => expect(VirtualJoypadSystem, isNotNull));
+    test('WorldUISystem', () => expect(WorldUISystem, isNotNull));
+  });
+}
