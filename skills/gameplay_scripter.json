@@ -7,7 +7,7 @@
   "constraints": [
     "Must strictly adhere to zero per-frame allocation rules.",
     "Must strictly use existing engine APIs; DO NOT modify core engine files inside `lib/` to add missing features. If a feature is missing, flag it for an engine developer.",
-    "All game-specific logic must reside in the `showcase/` or game-specific directories, maintaining separation from core engine logic."
+    "All game-specific logic must reside in game-specific application directories or example packages, maintaining separation from core engine logic."
   ],
   "context": "Focuses on prototyping game experiences, wave spawning, weapon behavior, and game state flow utilizing the DOD engine structure."
 }

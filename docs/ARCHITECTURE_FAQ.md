@@ -49,56 +49,24 @@ Welcome to the Sting Engine Architecture FAQ. Please review these questions and 
 * Do not spend time generating dummy images for exact pixel verification unless explicitly required.
 * Document any testing limitations related to rendering in the `shared_memories/rendering_limitations.json` file.
 
-## Phase 1 Completions
+## Core Subsystems Overview
 
-* **ECS Architecture:** `Swarm` (Entity manager) and `Caste` (Component sparse set) operate without per-frame allocations, utilizing Briggs & Torczon validation and contiguous array layout.
-* **Query Engine:** Callbacks are used over returning iterables to process multi-component interactions (`Query1`, `Query2`) to prevent allocations.
-* **Rendering:** `SpriteRenderSystem` directly packages internal flat arrays via `.sublistView()` into `Canvas.drawRawAtlas`. No Flutter AssetBundle is needed, loading relies on dart:io raw images.
-* **Physics (Broad Phase):** `SpatialHashGrid` limits bounds checking iterations safely with a 1D internal index hash from 2D coordinates.
-
-## Phase 2 Completions
-
-* **Game Loop & Time:** Uses `PlatformDispatcher.instance.onBeginFrame` to calculate a capped `dt` safely without Flutter Tickers.
-* **Input System:** Uses `PlatformDispatcher.instance.onPointerDataPacket` mapped directly to `Float32List`/`Int32List` arrays for zero-allocation multi-touch tracking.
-* **Kinematics:** Eulerian integration via `MovementSystem` querying `Position` and `Velocity` components directly over arrays.
+* **ECS Architecture:** `EntityManager` and `ComponentStorage` operate without per-frame allocations, utilizing Briggs & Torczon validation and contiguous array layout.
+* **Query Engine:** Callback queries (`Query1`, `Query2`, `Query3`) process multi-component interactions directly over dense arrays without instantiating `Iterable` objects.
+* **Rendering Subsystem:** `SpriteRenderSystem` packages internal flat arrays via `.sublistView()` directly into `Canvas.drawRawAtlas`. Texture loading relies on pure `dart:ui` raw images.
+* **Broad-Phase Physics:** `SpatialHashGrid` limits bounds checking iterations safely with a 1D internal index hash from 2D coordinates.
 * **Narrow-Phase Physics:** Accurate AABB and Circle intersections that accept primitive unboxed floats and heavily rely on `entityA >= entityB` early exits to eliminate duplicate checks.
+* **Kinematics & Motion:** Eulerian and Verlet integration via `MovementSystem` querying `Position` and `Velocity` components directly over arrays.
+* **Collision Resolution:** Positional separation (`SimpleResolutionSystem`) provides callbacks that hook into `CollisionSystem` for immediate reaction to overlapping queries.
+* **Sprite Animations:** Managed via `SpriteAnimation` component and `AnimationSystem` updating sprite source rects over time.
+* **Camera System:** Zero-allocation `Viewport` component backed by `Float32List` with a `CameraSystem` that properly transforms canvas rendering offsets.
+* **Tilemap System:** High-throughput 2D tilemaps drawn using `Tilemap` component and `TilemapRenderSystem` using flat typed arrays.
+* **Particle System:** Data-oriented particle emitter utilizing flat `Float32List`/`Int32List` arrays to drive massive particle counts without allocations.
+* **Audio Dispatcher:** Flat queue (`Int32List`) ring-buffer audio event dispatcher supporting volume, pitch, and looping parameters without creating event objects.
+* **Game State Management:** High-level game states (Menu, Playing, Paused, GameOver) managed via global state flags, enabling clean state transitions and selective subsystem pausing.
+* **Asset Management & Streaming:** Chunk-based memory manager streaming asset data via background isolates, transferring raw pixel buffers to avoid main-thread blocking.
 
-## Phase 3 Completions
-
-* **Sprite Animations:** Managed via `SpriteAnimation` component and `AnimationSystem` updating Sprite source rects over time.
-* **Physics Resolution Integration:** Simple positional separation (`SimpleResolutionSystem`) provides callbacks that are hooked into the `CollisionSystem`. The resolution acts in immediate response to overlapping queries, removing the need for a massive unified "Physics System". Continuous Collision Detection (CCD) is intentionally omitted under the YAGNI principle for this iteration.
-* **Scene Management / Spawning:** Implemented zero-allocation `Prefab` factories for clean entity assembly.
-
-## Phase 4 Completions
-
-* **Camera System:** Implemented a zero-allocation `Viewport` component using `Float32List` and a `CameraSystem` that properly transforms canvas rendering offsets to simulate a follow camera.
-* **Basic UI Rendering:** Added `TextRender` component and `TextRenderSystem` which directly draws to `Canvas` using `dart:ui.ParagraphBuilder` while caching layouts strictly on state change to avoid per-frame allocations.
-
-## Phase 5 Completions
-
-* **Tilemap System:** Added support for drawing efficient tilemaps using `Tilemap` component and `TilemapRenderSystem` using flat arrays (`Int32List`).
-* **Particle System:** Implemented a Data-Oriented particle emitter utilizing flat TypedData arrays to drive massive particle counts strictly avoiding per-frame allocations.
-
-## Phase 6 Completions
-
-* **Audio System:** Implemented an event-driven audio dispatcher built around flat queues (`Int32List`) without instantiating `SoundEvent` objects per frame. Note: Low-level audio is mocked using a static `AudioBindings` class due to the lack of an actual audio package.
-* **Advanced UI Rendering Framework:** Extended UI beyond simple text to interactive elements using screen-space AABB collisions via `UICaste` and layered rendering via cached `ParagraphBuilder` and `Path` objects.
-* **Asset Management and Streaming:** Built a chunk-based memory manager for streaming asset data via background isolates, using `TransferableTypedData` to pass raw pixels to the main thread for image construction (`decodeImageFromPixels`) to avoid blocking.
-
-## Phase 7 Completions
-
-* **Audio System Enhancements:** Upgraded the `Int32List` audio event queue to support additional playback parameters like volume, pitch, and loop using integer encoding.
-* **Game State Management:** Implemented high-level game states (Menu, Playing, Paused, GameOver) utilizing a global state component and system, ensuring smooth state transitions and selective logic pausing without GC allocations.
-
-## Phase 8 Details (Prototype Assembly / Showcase)
-Phase 8 is currently in progress. The focus is on assembling a Bullet Haven MVP game showcase using the fully mature engine APIs. The engine core is considered feature-complete for MVP game development, and no internal modifications to the core `lib/` source code are permitted—only application-level logic built on top (e.g., inside `showcase/`). If an engine feature is discovered to be missing, it must be flagged for an engine developer rather than modifying the core during scripting. All placeholder assets are procedurally generated to avoid manual art dependencies.
-
-## Prototype Assembly
-
-### Q: Why did the showcase render as a black screen with just UI initially?
-**A:** The `TilemapRenderSystem` and `AnimationSystem` were not properly wired into the `BulletHavenGame` systems list and update loops. Since no tilemap was rendered for the background, and `AnimationSystem` wasn't updating `Sprite` source rects (which default to 0x0 on creation), nothing but the screen-space UI bounding boxes appeared. Wiring the systems into the `dt` update loop and the `onRender` canvas callback resolves this.
-
-## Post-Phase 8 Modular Subsystems & Advanced Features
+## Extended Subsystems & Modular Features
 
 ### 1. HeightMap & Continuous Terrain Queries
 * **Component:** `HeightMap` (`lib/engine/components/height_map.dart`) backed by a flat `Float32List`.

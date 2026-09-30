@@ -43,9 +43,39 @@ If you are asked to implement something that violates these rules, push back or 
 For common architectural questions, naming conventions (like `EntityManager`, `SparseSet`, `ComponentStorage`, and legacy `Swarm`/`Caste` themes), rendering APIs, and details about existing features, strictly consult the FAQ document at `docs/ARCHITECTURE_FAQ.md`. Please review this file thoroughly before asking the user basic architectural or implementation questions.
 
 ## 7. Engine Maturity
-As of Phase 8, the core engine (ECS, Batch Rendering, Physics, UI, Assets, Game State) is considered feature-complete for MVP game development. When building games or prototype layers on top of Sting, agents must purely utilize the engine's public APIs and architectural patterns (e.g., Components as Extension Types on Flat Arrays, Systems for Logic) without modifying the internal engine implementation.
+The core engine (ECS, Batch Rendering, Physics, UI, Assets, Game State, Spatial Partitioning, Lighting, Particle FX, and Extended Subsystems) is production-ready and feature-complete. When building games or application layers on top of Sting, agents must purely utilize the engine's public APIs and architectural patterns (e.g., Components as Extension Types on Flat Arrays, Systems for Logic) without modifying the internal engine implementation.
 
-## Post-Phase 8 Showcase Learnings
+## 8. Architectural Learnings & Guidelines
 * **Background Tile Jittering**: Ensure positional math directly applied to canvas transforms is scaled and explicitly rounded before translation using `(viewport.x * scale).roundToDouble() / scale`. This prevents sub-pixel offset shimmering during camera tracking.
 * **Typing Component Replacements**: Changing high-level definitions (like replacing `Experience` with `PlayerStats`) inherently requires full trace replacements of property accessors (e.g. `currentExp` -> `exp`) inside rendering UI systems and narrow-phase collision callbacks. Avoid superficial string replacements.
-* **Web and Frontend Checks**: Since `pubspec.yaml` requires additional web configurations to utilize Playwright frontend rendering verification inside isolated systems without headful browsers, focus directly on unit and rendering subsystem checks.
+* **Subsystem Testing**: Focus directly on unit and rendering subsystem checks via pure `flutter test`.
+
+## 9. Jules Autonomous Agent Dispatch (REST API)
+To delegate tasks to Google Jules without relying on manual browser interactions or the CLI (which lacks auto-PR and session management capabilities), AI contributors must use the Jules REST API:
+
+- **Endpoint**: `https://jules.googleapis.com/v1alpha/sessions`
+- **Authentication**: Header `x-goog-api-key: $env:JULES_API_KEY`
+- **Starting a Task (`AUTO_CREATE_PR`)**:
+  ```powershell
+  $headers = @{ 'x-goog-api-key' = $env:JULES_API_KEY }
+  $body = @{
+    prompt = "Detailed prompt following AGENTS.md zero-allocation & TDD rules"
+    sourceContext = @{
+      source = "sources/github/Evgenii-Zinner/Sting"
+      githubRepoContext = @{ startingBranch = "main" }
+    }
+    automationMode = "AUTO_CREATE_PR"
+  } | ConvertTo-Json -Depth 5
+
+  $session = Invoke-RestMethod -Uri "https://jules.googleapis.com/v1alpha/sessions" -Method Post -Headers $headers -ContentType "application/json" -Body $body
+  ```
+- **Checking Session Status**:
+  ```powershell
+  $resp = Invoke-RestMethod -Uri "https://jules.googleapis.com/v1alpha/sessions/$sessionId" -Headers $headers -Method Get
+  # Inspect $resp.state ('IN_PROGRESS', 'COMPLETED', etc.) and $resp.outputs.pullRequest.url
+  ```
+- **Cleaning up / Deleting Sessions**:
+  ```powershell
+  Invoke-RestMethod -Uri "https://jules.googleapis.com/v1alpha/sessions/$sessionId" -Headers $headers -Method Delete
+  ```
+- **Rule**: Do not use `jules.exe` CLI for automated dispatch, as it does not support `AUTO_CREATE_PR` or session deletion.
