@@ -26,7 +26,7 @@ A bare-metal, high-performance 2D Entity Component System (ECS) game engine for 
 * **Hierarchical State Machine**: Global game loop state management (Menu, Playing, Paused, GameOver).
 * **Audio Dispatcher**: Ring-buffered flat audio event queue processed in bulk without per-frame event allocations.
 
-### Modular Systems (Post-Phase 8)
+### Extended Subsystems
 * **Terrain & Slope Kinematics (`SlopePhysicsSystem`, `HeightMap`)**: 2D heightmap elevation grid with bilinear sub-tile interpolation and directional slope modifiers affecting velocity and friction.
 * **Tactical Radar & Minimap (`RadarSystem`, `RadarDisplay`)**: Zero-allocation viewport/world-space radar projecting dynamic blips, sweep lines, and orientation indicators.
 * **Dynamic Fog of War (`FogOfWarSystem`, `DiscoveryGrid`)**: Flat-array visibility and exploration grid supporting circular vision cones, explored shroud, and unexplored mask overlays.
@@ -49,7 +49,6 @@ A bare-metal, high-performance 2D Entity Component System (ECS) game engine for 
 
 * `docs/` — Architectural documentation, engine guides, and memory limits.
 * `lib/` — Engine source code (`core/`, `components/`, `systems/`, `rendering/`, `ui/`, `logistics/`).
-* `showcase/` — Showcase prototypes demonstrating engine capabilities.
 * `test/` — Comprehensive test suite (100% test coverage enforced).
 * `shared_memories/` — Shared memory knowledge base tracking architectural decisions and avoided pitfalls.
 

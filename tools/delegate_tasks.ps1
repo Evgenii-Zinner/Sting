@@ -18,7 +18,7 @@ Task: Clean up remaining warnings, dead fields, and linter issues:
 3. In tools/: Remove obsolete showcase asset scripts (embed_assets.dart, embed_starsystem_assets.dart, generate_assets.dart, generate_combined_atlas.dart, generate_starsystem_assets.dart). Delete questions.md if present.
 4. In tools/generate_components.dart: Wrap flow control statements in curly braces.
 5. In lib/engine/components/complex_ui.dart and lib/engine/components/text_render.dart: Remove redundant unnecessary_getters_setters.
-6. In test/integration/showcase_subsystem_test.dart: Rename to test/integration/engine_subsystem_test.dart and remove unused import of swarm.dart.
+6. In test/integration/engine_subsystem_test.dart: Clean up unused imports.
 7. Clean up unused imports and variables in test/engine/components/hex_tilemap_test.dart (unused diameter), steering_test.dart, utility_ai_test.dart, hex_tilemap_render_system_test.dart, rvo_system_test.dart, and diffusion_system_test.dart (no_leading_underscores_for_local_identifiers).
 
 Verify:

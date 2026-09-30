@@ -53,7 +53,7 @@ To support massive entity counts (e.g., tens of thousands of particles, bullets,
 ### 3.4.4 Game State Management
 * **Implementation**: A global state management system utilizes ECS concepts with a singleton entity / state flags to manage high-level game loops (Menu, Playing, Paused, GameOver). Logic systems selectively update based on the current state.
 
-### 3.5 Post-Phase 8 Modular Systems
+### 3.5 Extended Subsystems
 
 ### 3.5.1 Terrain Elevation & Slope Kinematics
 * **Implementation**: `HeightMap` stores 2.5D topographic elevation data in a contiguous 1D `Float32List`. Sub-tile world coordinates query elevation and surface normal gradient vectors via bilinear interpolation. The `SlopePhysicsSystem` reads entity `Position` and `Velocity`, applying directional acceleration, gravity assist, and uphill/downhill friction modifiers based on the entity's `SlopeModifier` component without runtime allocations.
@@ -77,7 +77,7 @@ To support massive entity counts (e.g., tens of thousands of particles, bullets,
   * **Sci-Fi Radial Intent Dial (`RadialDial`)**: Screen-space radial action selector with angular sector highlighting and intent selection using unboxed primitive trigonometry (`atan2`, distance checks).
 
 ## 5. Future Architectural Enhancements (Planned Features)
-While Phases 1 through 12 have implemented all core foundational features required for game prototypes and physics showcases, future phases (Phase 13+) are planned to introduce highly-requested features commonly found in popular engines (like Godot, Bevy, and Defold), provided they adhere strictly to our zero-allocation constraints:
+While the engine currently implements all core foundational and extended subsystems, future architectural enhancements are planned to introduce highly-requested features commonly found in modern 2D engines (like Godot, Bevy, and Defold), provided they adhere strictly to our zero-allocation constraints:
 * **Parallax Scrolling System**: A layered background system implementing efficient multi-speed offset updates strictly via flat arrays and integrated cleanly into the `Renderer`.
 * **Auto-Detect Input Mapping & Control Schemes**: An abstraction layer mapping raw physical input (keys, pointers, touch, physical gamepads) to abstract game actions, automatically adapting to the target platform and available inputs without per-frame allocations.
 * **Virtual Joypad UI**: An integrated on-screen joystick solution mapped to `ComplexUI` bounds for multi-touch vector normalization, aimed specifically at mobile and touch-enabled devices.

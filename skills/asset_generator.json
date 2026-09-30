@@ -8,5 +8,5 @@
     "Scripts should be standalone and execute outside the main engine lifecycle.",
     "Output resolution and structure must accommodate engine constraints, particularly concerning sprite sheet layouts and batch rendering assumptions."
   ],
-  "context": "Focuses on providing necessary placeholder graphical content for showcase/MVP assembly without manual artistry."
+  "context": "Focuses on providing necessary placeholder graphical content for engine demos and assembly without manual artistry."
 }
