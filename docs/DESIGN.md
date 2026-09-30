@@ -53,6 +53,29 @@ To support massive entity counts (e.g., tens of thousands of particles, bullets,
 ### 3.4.4 Game State Management
 * **Implementation**: A global state management system utilizes ECS concepts with a singleton entity / state flags to manage high-level game loops (Menu, Playing, Paused, GameOver). Logic systems selectively update based on the current state.
 
+### 3.5 Post-Phase 8 Modular Systems
+
+### 3.5.1 Terrain Elevation & Slope Kinematics
+* **Implementation**: `HeightMap` stores 2.5D topographic elevation data in a contiguous 1D `Float32List`. Sub-tile world coordinates query elevation and surface normal gradient vectors via bilinear interpolation. The `SlopePhysicsSystem` reads entity `Position` and `Velocity`, applying directional acceleration, gravity assist, and uphill/downhill friction modifiers based on the entity's `SlopeModifier` component without runtime allocations.
+
+### 3.5.2 Tactical Radar & Minimap System
+* **Implementation**: `RadarDisplay` and `RadarSystem` project entities from world space to radar screen space using pre-calculated scale ratios and center offsets. Radar sweeps are rendered using scalar angular progression, and blips are drawn using zero-allocation entity queries with 32-bit ARGB packed colors.
+
+### 3.5.3 Dynamic Fog of War
+* **Implementation**: `DiscoveryGrid` tracks unexplored, shrouded/explored, and currently visible tiles via compact 1D `Uint8List` byte arrays. `FogOfWarSystem` projects observer entity vision cones onto the grid using radius-squared comparisons, clearing shroud and masking unexplored sectors without generating vector clipping paths.
+
+### 3.5.4 Ground Trail & Desire Paths
+* **Implementation**: `GroundTrailField` records movement heatmaps across a 2D scalar grid (`Float32List`). Entities deposit footstep intensity that decays smoothly over time via an exponential decay pass (`intensity -= decayRate * dt`), visualizing natural desire paths across terrains and corridors.
+
+### 3.5.5 Capsule Corridor Logistics
+* **Implementation**: `CapsuleCorridor` connects logistics node networks via flat numerical node indices. The `LogisticsSystem` transports cargo capsules along corridors with configurable capacities, transfer speeds, and directional flow (unidirectional or bidirectional) using normalized progression scalars `t in [0.0, 1.0]`.
+
+### 3.5.6 Interactive UI Suite
+* **Implementation**:
+  * **Draggable Windows & Buttons (`UIWindow`, `UIButton`)**: Zero-allocation window docking, drag-handling via pointer tracking, and hierarchical button hit-testing.
+  * **Progress Bar Component (`ProgressBar`)**: Render system for health, energy, and reload indicators with cached `RRect` bounds.
+  * **Sci-Fi Radial Intent Dial (`RadialDial`)**: Screen-space radial action selector with angular sector highlighting and intent selection using unboxed primitive trigonometry (`atan2`, distance checks).
+
 ## 5. Future Architectural Enhancements (Planned Features)
 While Phases 1 through 12 have implemented all core foundational features required for game prototypes and physics showcases, future phases (Phase 13+) are planned to introduce highly-requested features commonly found in popular engines (like Godot, Bevy, and Defold), provided they adhere strictly to our zero-allocation constraints:
 * **Parallax Scrolling System**: A layered background system implementing efficient multi-speed offset updates strictly via flat arrays and integrated cleanly into the `Renderer`.

@@ -1,13 +1,41 @@
 {
-  "topic": "UI Rendering Component Constraints",
-  "context": "UI components like TextRender need to store Strings and dart:ui Paragraphs, which cannot be flatly packed into Float32List or ByteData like other ECS components.",
-  "avoided_paths": [
-    "Building Paragraphs every frame, which causes massive GC allocations and violates performance constraints.",
-    "Attempting to map strings into flat integer arrays, which adds excessive complexity."
-  ],
+  "topic": "UI Rendering & Interactive Elements",
+  "last_updated": "2026-09-30",
   "decisions": [
-    "Allow standard Dart classes for UI components requiring object references.",
-    "Enforce caching of render objects (Paragraph, Offset) directly on the component.",
-    "Use a dirty flag to conditionally rebuild objects only when component properties (text, color, size, etc.) change, preserving zero allocations during static rendering frames."
-  ]
+    {
+      "decision": "Enforce caching of render objects (Paragraph, Offset, RRect, Path) directly on UI components with dirty flags.",
+      "reasoning": "Rebuilding Paragraphs, Paths, or RRect structures each frame causes heavy GC thrashing and frame drops. Dirty flags restrict allocations strictly to state transitions."
+    },
+    {
+      "decision": "Store ARGB color hex values using standard Dart 32-bit integers (`int`) or `Uint32List` views rather than passing through Float32List.",
+      "reasoning": "Standard 32-bit ARGB values (e.g. 0xFF00FF00) exceed the 24-bit mantissa precision of IEEE 754 32-bit floats, which corrupts high-byte alpha/red channel bits if packed as float."
+    },
+    {
+      "decision": "Manage interactive window dragging (`UIWindow`) via flat state fields (`isDragging`, `dragOffsetX`, `dragOffsetY`, `activePointerId`).",
+      "reasoning": "Tracks pointer delta movements natively without requiring touch gesture recognizer objects or heap allocations during drag operations."
+    },
+    {
+      "decision": "Compute radial sector intent selection (`RadialDial`) using unboxed primitive trigonometry (`atan2`, distance squared).",
+      "reasoning": "Bypasses vector instantiation (`Vector2`, `Offset`) while identifying selected action wedges instantly in O(1) time."
+    },
+    {
+      "decision": "Allow standard Dart classes for complex UI components requiring non-primitive object references.",
+      "reasoning": "Text rendering and nested UI layouts require Strings and canvas path geometries, which cannot be cleanly mapped to flat scalar buffers."
+    }
+  ],
+  "avoided_paths": [
+    {
+      "path": "Building dart:ui Paragraphs and Path objects inside the render loop every frame.",
+      "failure_reason": "Causes massive GC allocations, violating zero-allocation runtime constraints."
+    },
+    {
+      "path": "Packing 32-bit ARGB color integers into Float32List arrays.",
+      "failure_reason": "Float32 mantissa truncation distorts color values and transparency."
+    },
+    {
+      "path": "Using Flutter framework gesture detectors and widgets for UI interactions.",
+      "failure_reason": "Direct engine binding to raw dart:ui precludes any dependency on package:flutter/widgets.dart."
+    }
+  ],
+  "context": "Interactive UI components (UIWindow, UIButton, ProgressBar, RadialDial, TextRender) must remain strictly responsive and zero-allocation per frame during active manipulation."
 }

@@ -9,13 +9,13 @@ To maintain architectural integrity, you must execute tasks with high technical 
 ## 🔄 Execution Workflow
 
 ### 1. Initialize & Context Alignment
-* **Read Guidelines**: Read [AGENTS.md](file:///C:/Users/Evgenii/Documents/Projects/ez_games/sting/AGENTS.md) to understand core coding, testing, and performance rules.
-* **Scan Shared Memories**: Read all relevant files in the [shared_memories/](file:///C:/Users/Evgenii/Documents/Projects/ez_games/sting/shared_memories) directory to learn about platform quirks, rendering constraints, and past architectural decisions.
-* **Consult Architecture FAQ**: Review [docs/ARCHITECTURE_FAQ.md](file:///C:/Users/Evgenii/Documents/Projects/ez_games/sting/docs/ARCHITECTURE_FAQ.md) for details on naming conventions, existing systems (`Swarm`, `Caste`), and standard rendering APIs.
-* **Check the Backlog**: Read [BACKLOG.md](file:///C:/Users/Evgenii/Documents/Projects/ez_games/sting/BACKLOG.md) and pick the **highest priority uncompleted task** (from top to bottom). Do not skip tasks unless explicitly instructed.
+* **Read Guidelines**: Read `AGENTS.md` to understand core coding, testing, and performance rules.
+* **Scan Shared Memories**: Read all relevant files in the `shared_memories/` directory to learn about platform quirks, rendering constraints, and past architectural decisions.
+* **Consult Architecture FAQ**: Review `docs/ARCHITECTURE_FAQ.md` for details on naming conventions, existing systems (`EntityManager`, `SparseSet`, `ComponentStorage`), and standard rendering APIs.
+* **Check the Backlog**: Read `BACKLOG.md` and pick the **highest priority uncompleted task** (from top to bottom). Do not skip tasks unless explicitly instructed.
 
 ### 2. Assume Your Assigned Role
-* Look up the "Role Needed" and "Skill" JSON file in [skills/](file:///C:/Users/Evgenii/Documents/Projects/ez_games/sting/skills) specified by the backlog task (e.g., `skills/ecs_core_engineer.json`).
+* Look up the "Role Needed" and "Skill" JSON file in `skills/` specified by the backlog task (e.g., `skills/ecs_core_engineer.json`).
 * Adopt that role's specific constraints, mental models, and performance targets. Do not invent roles outside those defined in `skills/`.
 
 ### 3. Implementation & Test-Driven Development (TDD)
@@ -30,7 +30,7 @@ To maintain architectural integrity, you must execute tasks with high technical 
 ### 4. Escalate Ambiguities & Blockers
 If you encounter architectural conflicts, ambiguous requirements, or critical design trade-offs:
 * **Do not make assumptions** that might break engine consistency.
-* Append your inquiry to [questions.md](file:///C:/Users/Evgenii/Documents/Projects/ez_games/sting/questions.md) using the following format:
+* Append your inquiry to `questions.md` using the following format:
   ```markdown
   [Task ID / Name] - Inquiry by [Your Assigned Role]
   Context: [Brief description of the implementation hurdle]
@@ -39,9 +39,10 @@ If you encounter architectural conflicts, ambiguous requirements, or critical de
   ```
 * If a blocker prevents further execution, finalize your turn with only this record.
 
-### 5. Finalize & Update Status
-* Update [BACKLOG.md](file:///C:/Users/Evgenii/Documents/Projects/ez_games/sting/BACKLOG.md) to mark the completed task as done (`[x]`).
-* If you made major architectural decisions, encountered significant Dart platform quirks, or designed new reusable patterns, document them by creating or updating the appropriate JSON file in [shared_memories/](file:///C:/Users/Evgenii/Documents/Projects/ez_games/sting/shared_memories) following `shared_memories/schema.json`.
+### 5. Finalize & Update Status & Documentation
+* Update `BACKLOG.md` to mark the completed task as done (`[x]`).
+* **Update Engine Documentation**: Document new components and systems in `docs/ARCHITECTURE_FAQ.md` and `docs/STING_ENGINE_GUIDE.md` with usage instructions and data layouts.
+* **Update Shared Memories**: If you made major architectural decisions, encountered significant Dart platform quirks, or designed new reusable patterns, document them by creating or updating the appropriate JSON file in `shared_memories/` following `shared_memories/schema.json`.
 
 ---
 

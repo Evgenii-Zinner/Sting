@@ -81,8 +81,9 @@ extension type const Fixed64(int rawValue) {
   }
 
   Fixed64 sqrt() {
-    if (rawValue < 0)
+    if (rawValue < 0) {
       throw ArgumentError('Cannot calculate square root of a negative number');
+    }
     if (rawValue == 0) return Fixed64.zero;
 
     // Use Newton-Raphson method with fixed-point math to avoid BigInt allocation

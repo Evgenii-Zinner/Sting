@@ -172,8 +172,9 @@ class PhysicsResponseSystem {
       final massA = _massCaste.get(entityA);
       final massB = _massCaste.get(entityB);
 
-      if (posA == null || posB == null || massA == null || massB == null)
+      if (posA == null || posB == null || massA == null || massB == null) {
         continue;
+      }
 
       final invMassA = massA.inverseMass;
       final invMassB = massB.inverseMass;
