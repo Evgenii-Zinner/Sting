@@ -1,14 +1,14 @@
 {
   "role": "Simulation Engineer",
   "responsibilities": [
-    "Design and write zero-allocation GridDiffusion components to represent cellular quantities.",
-    "Implement high-performance cellular diffusion solvers for both rectangular and hexagonal grid structures.",
-    "Ensure double-buffering updates are executed without heap allocations during simulation ticks."
+    "Design and write zero-allocation GridDiffusion, MultiChannelDiffusion, VectorField2D, and CellularGrid components.",
+    "Implement high-performance cellular diffusion, advection, and cellular automata transition solvers.",
+    "Ensure double-buffering updates and footprint deposition kernels are executed without heap allocations during simulation ticks."
   ],
   "constraints": [
     "Must strictly adhere to zero per-frame allocation rules.",
-    "Grid calculations must be optimized for cache locality and run natively within flat Float32List indices.",
-    "Must ensure full test coverage for numerical solver steps."
+    "Grid calculations must be optimized for cache locality and run natively within flat Float32List, Uint8List, and Int32List indices.",
+    "Must ensure full test coverage for numerical solver steps and grid state transitions."
   ],
-  "context": "Focuses on numerical grid simulations, cellular automata, thermal/gas diffusion solvers, and grid state propagation systems in the engine."
+  "context": "Focuses on numerical grid simulations, cellular automata, multi-channel diffusion/advection solvers, vector flow fields, and continuous field emission systems in the engine."
 }

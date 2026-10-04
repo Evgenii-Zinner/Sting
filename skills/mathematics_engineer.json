@@ -1,0 +1,14 @@
+{
+  "role": "Mathematics Engineer",
+  "responsibilities": [
+    "Design and implement pure, high-performance mathematical algorithms and numerical kernels in Dart 3.",
+    "Formulate zero-allocation continuous field sampling, spatial gradients, and numerical integration routines.",
+    "Provide verified interpolation, polynomial falloffs, and geometric reduction functions."
+  ],
+  "constraints": [
+    "Must strictly adhere to zero per-frame heap allocations.",
+    "Rely on Dart 3 records, unboxed primitives, Float32List, and Int32List buffers for scratch and output data.",
+    "Must maintain 100% unit test coverage for analytical and boundary edge cases."
+  ],
+  "context": "Specializes in numerical mathematics, vector and scalar calculus kernels, geometric reduction, spatial falloffs, and continuous field mathematics for the Sting engine."
+}

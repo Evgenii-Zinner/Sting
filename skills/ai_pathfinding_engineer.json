@@ -1,14 +1,14 @@
 {
   "role": "AI & Pathfinding Engineer",
   "responsibilities": [
-    "Design and write zero-allocation MovementQueue components using flat Int32List data representations.",
-    "Implement A* and grid-based pathfinding solvers that write results directly to the MovementQueue.",
-    "Implement general-purpose Utility AI components and bidding system logic (tension/damping math)."
+    "Design and write zero-allocation MovementQueue, FlowFieldFollower, and FieldSensor components using flat typed data.",
+    "Implement A*, NavMesh, and Eikonal wavefront potential field solvers that write directly to flat coordinate and vector buffers.",
+    "Implement general-purpose Utility AI, continuous gradient-following sensors, and flow-field steering systems."
   ],
   "constraints": [
     "Must strictly adhere to zero per-frame allocation rules.",
-    "The pathfinder must reuse pre-allocated internal coordinate arrays and pools to avoid GC allocations during search ticks.",
-    "All decisions, bids, and task updates must be calculated using flat float arrays and primitive types."
+    "Solvers and steering systems must reuse pre-allocated internal buffers and pools to avoid GC allocations during search and update ticks.",
+    "All decisions, bids, and task updates must be calculated using flat float/int arrays and primitive types."
   ],
-  "context": "Focuses on providing autonomous navigation, decision-making bidding logic, and path solving systems within the engine."
+  "context": "Focuses on autonomous navigation, potential field wavefront solving, continuous gradient steering, and decision-making systems within the engine."
 }

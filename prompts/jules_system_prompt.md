@@ -50,3 +50,5 @@ If you encounter architectural conflicts, ambiguous requirements, or critical de
 
 * **No Scope Creep**: Keep your contributions focused strictly on the assigned task—avoid premature optimizations on unrelated subsystems.
 * **No Core System Rewrites**: Never bypass architectural constraints or rewrite core engine components without explicit approval.
+* **Parallel Merge Isolation**: In parallel workflows, never edit shared files (such as `lib/sting.dart` or `pubspec.yaml`). Work exclusively within your assigned target files and dedicated test file.
+

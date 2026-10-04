@@ -51,31 +51,39 @@ The core engine (ECS, Batch Rendering, Physics, UI, Assets, Game State, Spatial 
 * **Subsystem Testing**: Focus directly on unit and rendering subsystem checks via pure `flutter test`.
 
 ## 9. Jules Autonomous Agent Dispatch (REST API)
-To delegate tasks to Google Jules without relying on manual browser interactions or the CLI (which lacks auto-PR and session management capabilities), AI contributors must use the Jules REST API:
+To delegate tasks to Google Jules without relying on manual browser interactions or the legacy CLI, AI contributors and orchestrators must use the Jules REST API:
 
 - **Endpoint**: `https://jules.googleapis.com/v1alpha/sessions`
-- **Authentication**: Header `x-goog-api-key: $env:JULES_API_KEY`
+- **Authentication**: Header `x-goog-api-key: $JULES_API_KEY`
 - **Starting a Task (`AUTO_CREATE_PR`)**:
-  ```powershell
-  $headers = @{ 'x-goog-api-key' = $env:JULES_API_KEY }
-  $body = @{
-    prompt = "Detailed prompt following AGENTS.md zero-allocation & TDD rules"
-    sourceContext = @{
-      source = "sources/github/Evgenii-Zinner/Sting"
-      githubRepoContext = @{ startingBranch = "main" }
-    }
-    automationMode = "AUTO_CREATE_PR"
-  } | ConvertTo-Json -Depth 5
-
-  $session = Invoke-RestMethod -Uri "https://jules.googleapis.com/v1alpha/sessions" -Method Post -Headers $headers -ContentType "application/json" -Body $body
+  ```bash
+  curl -X POST "https://jules.googleapis.com/v1alpha/sessions" \
+    -H "x-goog-api-key: $JULES_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "prompt": "Detailed prompt following AGENTS.md zero-allocation & TDD rules",
+      "sourceContext": {
+        "source": "sources/github/Evgenii-Zinner/Sting",
+        "githubRepoContext": { "startingBranch": "main" }
+      },
+      "automationMode": "AUTO_CREATE_PR",
+      "requirePlanApproval": false
+    }'
   ```
 - **Checking Session Status**:
-  ```powershell
-  $resp = Invoke-RestMethod -Uri "https://jules.googleapis.com/v1alpha/sessions/$sessionId" -Headers $headers -Method Get
-  # Inspect $resp.state ('IN_PROGRESS', 'COMPLETED', etc.) and $resp.outputs.pullRequest.url
+  ```bash
+  curl -H "x-goog-api-key: $JULES_API_KEY" \
+    "https://jules.googleapis.com/v1alpha/sessions/$SESSION_ID"
   ```
 - **Cleaning up / Deleting Sessions**:
-  ```powershell
-  Invoke-RestMethod -Uri "https://jules.googleapis.com/v1alpha/sessions/$sessionId" -Headers $headers -Method Delete
+  ```bash
+  curl -X DELETE -H "x-goog-api-key: $JULES_API_KEY" \
+    "https://jules.googleapis.com/v1alpha/sessions/$SESSION_ID"
   ```
-- **Rule**: Do not use `jules.exe` CLI for automated dispatch, as it does not support `AUTO_CREATE_PR` or session deletion.
+
+## 10. Parallel Task Isolation & Zero File Intersection
+When multiple AI agents are dispatched simultaneously:
+- **Zero File Intersection**: Tasks must have strictly disjoint file sets to avoid git merge conflicts across parallel PRs.
+- **No Shared File Modifications**: Never edit shared barrel exports (e.g. `lib/sting.dart`), manifest files (`pubspec.yaml`), or global trackers in parallel tasks unless explicitly designated as a dedicated chore.
+- **Dedicated Test Suites**: Every new module must include its own dedicated test file (e.g. `test/engine/.../<name>_test.dart`) rather than appending to shared subsystem tests.
+
