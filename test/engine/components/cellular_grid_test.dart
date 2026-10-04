@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sting/engine/components/cellular_grid.dart';
-import 'dart:typed_data';
 
 void main() {
   group('CellularGrid Component', () {
