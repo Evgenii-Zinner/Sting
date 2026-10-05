@@ -51,10 +51,16 @@ class ScalarFieldSampler {
       cx = cx % cols;
       cy = cy % rows;
     } else if (clamp) {
-      if (cx < 0) cx = 0;
-      else if (cx >= cols) cx = cols - 1;
-      if (cy < 0) cy = 0;
-      else if (cy >= rows) cy = rows - 1;
+      if (cx < 0) {
+        cx = 0;
+      } else if (cx >= cols) {
+        cx = cols - 1;
+      }
+      if (cy < 0) {
+        cy = 0;
+      } else if (cy >= rows) {
+        cy = rows - 1;
+      }
     } else {
       if (cx < 0 || cx >= cols || cy < 0 || cy >= rows) {
         return defaultValue;
