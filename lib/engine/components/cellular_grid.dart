@@ -109,20 +109,24 @@ extension type CellularGrid(Uint8List data) {
     } else {
       // Von Neumann (4 directions: up, down, left, right)
       if (row - 1 >= 0) {
-        if (data[bufferOffset + (row - 1) * currentCols + col] == targetState)
+        if (data[bufferOffset + (row - 1) * currentCols + col] == targetState) {
           count++;
+        }
       }
       if (row + 1 < currentRows) {
-        if (data[bufferOffset + (row + 1) * currentCols + col] == targetState)
+        if (data[bufferOffset + (row + 1) * currentCols + col] == targetState) {
           count++;
+        }
       }
       if (col - 1 >= 0) {
-        if (data[bufferOffset + row * currentCols + (col - 1)] == targetState)
+        if (data[bufferOffset + row * currentCols + (col - 1)] == targetState) {
           count++;
+        }
       }
       if (col + 1 < currentCols) {
-        if (data[bufferOffset + row * currentCols + (col + 1)] == targetState)
+        if (data[bufferOffset + row * currentCols + (col + 1)] == targetState) {
           count++;
+        }
       }
     }
     return count;
