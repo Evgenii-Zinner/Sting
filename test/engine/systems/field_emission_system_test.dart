@@ -48,13 +48,15 @@ void main() {
 
     test('Inactive emitter does not splat', () {
       positions.add(1, Position.create(5.0, 5.0)); // Cell 0,0 center is 5,5
-      emitters.add(1, FieldEmitter.create(
-        targetChannel: 0,
-        emissionRate: 10.0,
-        radius: 5.0,
-        falloffType: 2, // Flat
-        isActive: false,
-      ));
+      emitters.add(
+          1,
+          FieldEmitter.create(
+            targetChannel: 0,
+            emissionRate: 10.0,
+            radius: 5.0,
+            falloffType: 2, // Flat
+            isActive: false,
+          ));
 
       system.update(1.0);
 
@@ -62,13 +64,15 @@ void main() {
     });
 
     test('Emitter without position does not splat', () {
-      emitters.add(1, FieldEmitter.create(
-        targetChannel: 0,
-        emissionRate: 10.0,
-        radius: 5.0,
-        falloffType: 2, // Flat
-        isActive: true,
-      ));
+      emitters.add(
+          1,
+          FieldEmitter.create(
+            targetChannel: 0,
+            emissionRate: 10.0,
+            radius: 5.0,
+            falloffType: 2, // Flat
+            isActive: true,
+          ));
 
       system.update(1.0);
 
@@ -77,13 +81,15 @@ void main() {
 
     test('Flat falloff splats evenly within radius', () {
       positions.add(1, Position.create(15.0, 15.0)); // Cell 1,1
-      emitters.add(1, FieldEmitter.create(
-        targetChannel: 0,
-        emissionRate: 10.0,
-        radius: 12.0, // Should hit 1,1 heavily and reach neighbors
-        falloffType: 2, // Flat
-        isActive: true,
-      ));
+      emitters.add(
+          1,
+          FieldEmitter.create(
+            targetChannel: 0,
+            emissionRate: 10.0,
+            radius: 12.0, // Should hit 1,1 heavily and reach neighbors
+            falloffType: 2, // Flat
+            isActive: true,
+          ));
 
       system.update(0.5); // dt = 0.5, total = 5.0
 
@@ -100,13 +106,15 @@ void main() {
     test('Bilinear falloff splats proportionally based on distance', () {
       // Cell 2,2 center is 25,25
       positions.add(1, Position.create(25.0, 25.0));
-      emitters.add(1, FieldEmitter.create(
-        targetChannel: 0,
-        emissionRate: 20.0,
-        radius: 20.0,
-        falloffType: 0, // Bilinear
-        isActive: true,
-      ));
+      emitters.add(
+          1,
+          FieldEmitter.create(
+            targetChannel: 0,
+            emissionRate: 20.0,
+            radius: 20.0,
+            falloffType: 0, // Bilinear
+            isActive: true,
+          ));
 
       system.update(1.0); // dt = 1.0, base = 20.0
 
@@ -125,13 +133,15 @@ void main() {
 
     test('Gaussian falloff splats based on exp curve', () {
       positions.add(1, Position.create(25.0, 25.0)); // Cell 2,2
-      emitters.add(1, FieldEmitter.create(
-        targetChannel: 0,
-        emissionRate: 100.0,
-        radius: 20.0,
-        falloffType: 1, // Gaussian
-        isActive: true,
-      ));
+      emitters.add(
+          1,
+          FieldEmitter.create(
+            targetChannel: 0,
+            emissionRate: 100.0,
+            radius: 20.0,
+            falloffType: 1, // Gaussian
+            isActive: true,
+          ));
 
       system.update(1.0);
 
@@ -144,20 +154,24 @@ void main() {
 
     test('Multiple entities on different channels', () {
       positions.add(1, Position.create(5.0, 5.0));
-      emitters.add(1, FieldEmitter.create(
-        targetChannel: 0,
-        emissionRate: 10.0,
-        radius: 5.0,
-        falloffType: 2,
-      ));
+      emitters.add(
+          1,
+          FieldEmitter.create(
+            targetChannel: 0,
+            emissionRate: 10.0,
+            radius: 5.0,
+            falloffType: 2,
+          ));
 
       positions.add(2, Position.create(15.0, 15.0));
-      emitters.add(2, FieldEmitter.create(
-        targetChannel: 1,
-        emissionRate: 20.0,
-        radius: 5.0,
-        falloffType: 2,
-      ));
+      emitters.add(
+          2,
+          FieldEmitter.create(
+            targetChannel: 1,
+            emissionRate: 20.0,
+            radius: 5.0,
+            falloffType: 2,
+          ));
 
       system.update(1.0);
 
@@ -170,12 +184,14 @@ void main() {
 
     test('Zero dt does nothing', () {
       positions.add(1, Position.create(5.0, 5.0));
-      emitters.add(1, FieldEmitter.create(
-        targetChannel: 0,
-        emissionRate: 10.0,
-        radius: 5.0,
-        falloffType: 2,
-      ));
+      emitters.add(
+          1,
+          FieldEmitter.create(
+            targetChannel: 0,
+            emissionRate: 10.0,
+            radius: 5.0,
+            falloffType: 2,
+          ));
 
       system.update(0.0);
 
@@ -184,12 +200,14 @@ void main() {
 
     test('Zero radius does nothing', () {
       positions.add(1, Position.create(5.0, 5.0));
-      emitters.add(1, FieldEmitter.create(
-        targetChannel: 0,
-        emissionRate: 10.0,
-        radius: 0.0,
-        falloffType: 2,
-      ));
+      emitters.add(
+          1,
+          FieldEmitter.create(
+            targetChannel: 0,
+            emissionRate: 10.0,
+            radius: 0.0,
+            falloffType: 2,
+          ));
 
       system.update(1.0);
 

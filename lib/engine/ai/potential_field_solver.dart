@@ -8,8 +8,8 @@ class PotentialFieldSolver {
   static const double _infinity = 9999999.0;
 
   PotentialFieldSolver(int capacity)
-    : _capacity = capacity,
-      _queue = Int32List(capacity);
+      : _capacity = capacity,
+        _queue = Int32List(capacity);
 
   void solveWavefront(
     Float32List potentialGrid,
@@ -37,13 +37,13 @@ class PotentialFieldSolver {
     }
 
     final int dx0 = -1, dy0 = -1;
-    final int dx1 =  0, dy1 = -1;
-    final int dx2 =  1, dy2 = -1;
-    final int dx3 = -1, dy3 =  0;
-    final int dx4 =  1, dy4 =  0;
-    final int dx5 = -1, dy5 =  1;
-    final int dx6 =  0, dy6 =  1;
-    final int dx7 =  1, dy7 =  1;
+    final int dx1 = 0, dy1 = -1;
+    final int dx2 = 1, dy2 = -1;
+    final int dx3 = -1, dy3 = 0;
+    final int dx4 = 1, dy4 = 0;
+    final int dx5 = -1, dy5 = 1;
+    final int dx6 = 0, dy6 = 1;
+    final int dx7 = 1, dy7 = 1;
 
     final double cost0 = 1.41421356;
     final double cost1 = 1.0;
@@ -63,12 +63,14 @@ class PotentialFieldSolver {
       double currPot = potentialGrid[curr];
 
       // Neighbor 0
-      int nx = cx + dx0; int ny = cy + dy0;
+      int nx = cx + dx0;
+      int ny = cy + dy0;
       if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
         int nIdx = ny * cols + nx;
         int cellCost = costOrObstacleGrid[nIdx];
         if (cellCost < 255) {
-          double newPot = currPot + cost0 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
+          double newPot =
+              currPot + cost0 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
           if (newPot < potentialGrid[nIdx]) {
             potentialGrid[nIdx] = newPot;
             _queue[tail] = nIdx;
@@ -79,12 +81,14 @@ class PotentialFieldSolver {
       }
 
       // Neighbor 1
-      nx = cx + dx1; ny = cy + dy1;
+      nx = cx + dx1;
+      ny = cy + dy1;
       if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
         int nIdx = ny * cols + nx;
         int cellCost = costOrObstacleGrid[nIdx];
         if (cellCost < 255) {
-          double newPot = currPot + cost1 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
+          double newPot =
+              currPot + cost1 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
           if (newPot < potentialGrid[nIdx]) {
             potentialGrid[nIdx] = newPot;
             _queue[tail] = nIdx;
@@ -95,12 +99,14 @@ class PotentialFieldSolver {
       }
 
       // Neighbor 2
-      nx = cx + dx2; ny = cy + dy2;
+      nx = cx + dx2;
+      ny = cy + dy2;
       if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
         int nIdx = ny * cols + nx;
         int cellCost = costOrObstacleGrid[nIdx];
         if (cellCost < 255) {
-          double newPot = currPot + cost2 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
+          double newPot =
+              currPot + cost2 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
           if (newPot < potentialGrid[nIdx]) {
             potentialGrid[nIdx] = newPot;
             _queue[tail] = nIdx;
@@ -111,12 +117,14 @@ class PotentialFieldSolver {
       }
 
       // Neighbor 3
-      nx = cx + dx3; ny = cy + dy3;
+      nx = cx + dx3;
+      ny = cy + dy3;
       if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
         int nIdx = ny * cols + nx;
         int cellCost = costOrObstacleGrid[nIdx];
         if (cellCost < 255) {
-          double newPot = currPot + cost3 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
+          double newPot =
+              currPot + cost3 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
           if (newPot < potentialGrid[nIdx]) {
             potentialGrid[nIdx] = newPot;
             _queue[tail] = nIdx;
@@ -127,12 +135,14 @@ class PotentialFieldSolver {
       }
 
       // Neighbor 4
-      nx = cx + dx4; ny = cy + dy4;
+      nx = cx + dx4;
+      ny = cy + dy4;
       if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
         int nIdx = ny * cols + nx;
         int cellCost = costOrObstacleGrid[nIdx];
         if (cellCost < 255) {
-          double newPot = currPot + cost4 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
+          double newPot =
+              currPot + cost4 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
           if (newPot < potentialGrid[nIdx]) {
             potentialGrid[nIdx] = newPot;
             _queue[tail] = nIdx;
@@ -143,12 +153,14 @@ class PotentialFieldSolver {
       }
 
       // Neighbor 5
-      nx = cx + dx5; ny = cy + dy5;
+      nx = cx + dx5;
+      ny = cy + dy5;
       if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
         int nIdx = ny * cols + nx;
         int cellCost = costOrObstacleGrid[nIdx];
         if (cellCost < 255) {
-          double newPot = currPot + cost5 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
+          double newPot =
+              currPot + cost5 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
           if (newPot < potentialGrid[nIdx]) {
             potentialGrid[nIdx] = newPot;
             _queue[tail] = nIdx;
@@ -159,12 +171,14 @@ class PotentialFieldSolver {
       }
 
       // Neighbor 6
-      nx = cx + dx6; ny = cy + dy6;
+      nx = cx + dx6;
+      ny = cy + dy6;
       if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
         int nIdx = ny * cols + nx;
         int cellCost = costOrObstacleGrid[nIdx];
         if (cellCost < 255) {
-          double newPot = currPot + cost6 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
+          double newPot =
+              currPot + cost6 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
           if (newPot < potentialGrid[nIdx]) {
             potentialGrid[nIdx] = newPot;
             _queue[tail] = nIdx;
@@ -175,12 +189,14 @@ class PotentialFieldSolver {
       }
 
       // Neighbor 7
-      nx = cx + dx7; ny = cy + dy7;
+      nx = cx + dx7;
+      ny = cy + dy7;
       if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
         int nIdx = ny * cols + nx;
         int cellCost = costOrObstacleGrid[nIdx];
         if (cellCost < 255) {
-          double newPot = currPot + cost7 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
+          double newPot =
+              currPot + cost7 * (cellCost == 0 ? 1.0 : cellCost.toDouble());
           if (newPot < potentialGrid[nIdx]) {
             potentialGrid[nIdx] = newPot;
             _queue[tail] = nIdx;
@@ -192,7 +208,8 @@ class PotentialFieldSolver {
     }
   }
 
-  void deriveFlowVectors(Float32List potentialGrid, Float32List outVectorGrid, int cols, int rows) {
+  void deriveFlowVectors(Float32List potentialGrid, Float32List outVectorGrid,
+      int cols, int rows) {
     int numCells = cols * rows;
     for (int i = 0; i < numCells; i++) {
       int cx = i % cols;

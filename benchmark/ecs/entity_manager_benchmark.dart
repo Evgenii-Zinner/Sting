@@ -78,9 +78,12 @@ class EntityManagerBenchmark {
 void main() {
   final count = 10000;
   // ignore: avoid_print
-  print('SwarmSpawning($count): ${EntityManagerBenchmark.measureSpawning(count)} us.');
+  print(
+      'SwarmSpawning($count): ${EntityManagerBenchmark.measureSpawning(count)} us.');
   // ignore: avoid_print
-  print('ComponentAddition($count): ${EntityManagerBenchmark.measureComponentAddition(count)} us.');
+  print(
+      'ComponentAddition($count): ${EntityManagerBenchmark.measureComponentAddition(count)} us.');
   // ignore: avoid_print
-  print('ComponentRemoval($count): ${EntityManagerBenchmark.measureComponentRemoval(count)} us.');
+  print(
+      'ComponentRemoval($count): ${EntityManagerBenchmark.measureComponentRemoval(count)} us.');
 }

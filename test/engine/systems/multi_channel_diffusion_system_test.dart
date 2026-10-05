@@ -19,7 +19,8 @@ void main() {
     });
 
     test('Zero allocation during update', () {
-      final grid = MultiChannelGrid.create(columns: 5, rows: 5, channelCount: 2);
+      final grid =
+          MultiChannelGrid.create(columns: 5, rows: 5, channelCount: 2);
       grid.setDiffusionRate(0, 1.0);
       grid.setDiffusionRate(1, 0.5);
       gridStorage.add(entityId, grid);
@@ -38,7 +39,8 @@ void main() {
     });
 
     test('Independent diffusion rates per channel', () {
-      final grid = MultiChannelGrid.create(columns: 3, rows: 1, channelCount: 2);
+      final grid =
+          MultiChannelGrid.create(columns: 3, rows: 1, channelCount: 2);
       // Setup channel 0 (fast diffusion)
       grid.setDiffusionRate(0, 1.0);
       grid.setValue(1, 0, 0, 100.0); // Center
@@ -68,7 +70,8 @@ void main() {
     });
 
     test('Conservation of total mass/heat with reflection mode', () {
-      final grid = MultiChannelGrid.create(columns: 3, rows: 3, channelCount: 1);
+      final grid =
+          MultiChannelGrid.create(columns: 3, rows: 3, channelCount: 1);
       grid.setDiffusionRate(0, 1.0);
       grid.setBoundaryMode(0, 0.0); // Reflection (zero-flux)
 
@@ -90,18 +93,21 @@ void main() {
 
       system.update();
 
-      expect(getTotalHeat(), closeTo(90.0, 0.001), reason: 'Heat should be conserved');
+      expect(getTotalHeat(), closeTo(90.0, 0.001),
+          reason: 'Heat should be conserved');
 
       // Do multiple updates
       for (int i = 0; i < 10; i++) {
         system.update();
       }
 
-      expect(getTotalHeat(), closeTo(90.0, 0.001), reason: 'Heat should be conserved after multiple updates');
+      expect(getTotalHeat(), closeTo(90.0, 0.001),
+          reason: 'Heat should be conserved after multiple updates');
     });
 
     test('Mass/heat absorption at boundaries with absorption mode', () {
-      final grid = MultiChannelGrid.create(columns: 3, rows: 3, channelCount: 1);
+      final grid =
+          MultiChannelGrid.create(columns: 3, rows: 3, channelCount: 1);
       grid.setDiffusionRate(0, 1.0);
       grid.setBoundaryMode(0, 1.0); // Absorption
 
@@ -138,11 +144,13 @@ void main() {
       // On second step, heat at (0,1) diffuses to (-1,1) which is missing.
       system.update();
 
-      expect(getTotalHeat(), lessThan(90.0), reason: 'Heat should be lost at boundaries');
+      expect(getTotalHeat(), lessThan(90.0),
+          reason: 'Heat should be lost at boundaries');
     });
 
     test('Decay rate reduces mass per channel', () {
-      final grid = MultiChannelGrid.create(columns: 1, rows: 1, channelCount: 2);
+      final grid =
+          MultiChannelGrid.create(columns: 1, rows: 1, channelCount: 2);
 
       // Channel 0: no decay
       grid.setDecayRate(0, 0.0);
@@ -161,7 +169,8 @@ void main() {
     });
 
     test('Boundary limits handled properly for get/set Value', () {
-      final grid = MultiChannelGrid.create(columns: 2, rows: 2, channelCount: 1);
+      final grid =
+          MultiChannelGrid.create(columns: 2, rows: 2, channelCount: 1);
 
       // Reading out of bounds returns 0.0
       expect(grid.getValue(-1, 0, 0), equals(0.0));
@@ -184,7 +193,8 @@ void main() {
     });
 
     test('Can write and read inactive buffers explicitly', () {
-      final grid = MultiChannelGrid.create(columns: 1, rows: 1, channelCount: 1);
+      final grid =
+          MultiChannelGrid.create(columns: 1, rows: 1, channelCount: 1);
       grid.setWriteValue(0, 0, 0, 42.0);
 
       expect(grid.getValue(0, 0, 0), equals(0.0));

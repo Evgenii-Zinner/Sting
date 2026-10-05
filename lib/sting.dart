@@ -1,4 +1,3 @@
-
 // Core ECS
 export 'engine/ecs/scene.dart';
 export 'engine/ecs/entity_manager.dart';

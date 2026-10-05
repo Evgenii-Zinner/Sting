@@ -6,7 +6,8 @@ class SpatialResonance {
   /// [distanceSq]: The squared distance from the center.
   /// [radiusSq]: The squared radius representing the falloff extent.
   /// [peakValue]: The maximum value at distance 0.
-  static double gaussianFalloff(double distanceSq, double radiusSq, double peakValue) {
+  static double gaussianFalloff(
+      double distanceSq, double radiusSq, double peakValue) {
     if (radiusSq <= 0.0) {
       return distanceSq <= 0.0 ? peakValue : 0.0;
     }
@@ -17,7 +18,8 @@ class SpatialResonance {
   /// [distanceSq]: The squared distance from the center.
   /// [softeningFactor]: A small value added to the denominator to prevent division by zero and cap the maximum value.
   /// [intensity]: The base intensity of the source.
-  static double inverseSquareFalloff(double distanceSq, double softeningFactor, double intensity) {
+  static double inverseSquareFalloff(
+      double distanceSq, double softeningFactor, double intensity) {
     double denom = distanceSq + softeningFactor;
     if (denom == 0.0) {
       if (intensity == 0.0) return 0.0;
@@ -28,7 +30,8 @@ class SpatialResonance {
 
   /// Evaluates a smoothstep falloff function.
   /// Returns 1.0 within [innerRadius] and smoothly interpolates to 0.0 at [outerRadius].
-  static double smoothstepFalloff(double distance, double innerRadius, double outerRadius) {
+  static double smoothstepFalloff(
+      double distance, double innerRadius, double outerRadius) {
     if (outerRadius <= innerRadius) {
       return distance <= innerRadius ? 1.0 : 0.0;
     }
@@ -56,7 +59,8 @@ class SpatialResonance {
 
   /// Batch evaluates Gaussian falloff over arrays of squared distances.
   /// Writes results into [outBuffer] with zero allocations.
-  static void evaluateArrayFalloff(Float32List outBuffer, Float32List distSqBuffer, int count, double radiusSq, double peakValue) {
+  static void evaluateArrayFalloff(Float32List outBuffer,
+      Float32List distSqBuffer, int count, double radiusSq, double peakValue) {
     if (radiusSq <= 0.0) {
       for (int i = 0; i < count; i++) {
         outBuffer[i] = distSqBuffer[i] <= 0.0 ? peakValue : 0.0;

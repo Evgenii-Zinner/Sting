@@ -111,14 +111,34 @@ void main() {
       final lut = Uint8List(27);
       // Rules:
       // 0 state (empty) + >=1 active neighbor (liquid or solid) -> liquid
-      lut[1] = 1; lut[2] = 1; lut[3] = 1; lut[4] = 1;
-      lut[5] = 1; lut[6] = 1; lut[7] = 1; lut[8] = 1;
+      lut[1] = 1;
+      lut[2] = 1;
+      lut[3] = 1;
+      lut[4] = 1;
+      lut[5] = 1;
+      lut[6] = 1;
+      lut[7] = 1;
+      lut[8] = 1;
       // 1 state (liquid) + >=4 active neighbors -> solid
-      lut[9 + 0] = 1; lut[9 + 1] = 1; lut[9 + 2] = 1; lut[9 + 3] = 1;
-      lut[9 + 4] = 2; lut[9 + 5] = 2; lut[9 + 6] = 2; lut[9 + 7] = 2; lut[9 + 8] = 2;
+      lut[9 + 0] = 1;
+      lut[9 + 1] = 1;
+      lut[9 + 2] = 1;
+      lut[9 + 3] = 1;
+      lut[9 + 4] = 2;
+      lut[9 + 5] = 2;
+      lut[9 + 6] = 2;
+      lut[9 + 7] = 2;
+      lut[9 + 8] = 2;
       // 2 state (solid) -> always solid
-      lut[18 + 0] = 2; lut[18 + 1] = 2; lut[18 + 2] = 2; lut[18 + 3] = 2;
-      lut[18 + 4] = 2; lut[18 + 5] = 2; lut[18 + 6] = 2; lut[18 + 7] = 2; lut[18 + 8] = 2;
+      lut[18 + 0] = 2;
+      lut[18 + 1] = 2;
+      lut[18 + 2] = 2;
+      lut[18 + 3] = 2;
+      lut[18 + 4] = 2;
+      lut[18 + 5] = 2;
+      lut[18 + 6] = 2;
+      lut[18 + 7] = 2;
+      lut[18 + 8] = 2;
 
       // Step 1: center liquid has 0 active neighbors -> stays liquid. (wait, 0 active neighbors, so it should be liquid!)
       // Actually let's just use grid2

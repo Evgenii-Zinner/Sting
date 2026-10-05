@@ -79,8 +79,10 @@ class CellularSimulationSystem {
     final int inactiveOffset = grid.getBufferOffset(1 - grid.activeBuffer);
 
     // Copy top and bottom rows unchanged
-    gridData.setRange(inactiveOffset, inactiveOffset + w, gridData, activeOffset);
-    gridData.setRange(inactiveOffset + (h - 1) * w, inactiveOffset + h * w, gridData, activeOffset + (h - 1) * w);
+    gridData.setRange(
+        inactiveOffset, inactiveOffset + w, gridData, activeOffset);
+    gridData.setRange(inactiveOffset + (h - 1) * w, inactiveOffset + h * w,
+        gridData, activeOffset + (h - 1) * w);
 
     // Iterate internal cells to avoid boundary checking
     for (int r = 1; r < h - 1; r++) {
@@ -116,7 +118,8 @@ class CellularSimulationSystem {
         }
 
         final int lutIndex = (currentState * 9) + activeNeighbors;
-        final int nextState = lutIndex < lut.length ? lut[lutIndex] : currentState;
+        final int nextState =
+            lutIndex < lut.length ? lut[lutIndex] : currentState;
 
         gridData[writeRowOffset + c] = nextState;
       }

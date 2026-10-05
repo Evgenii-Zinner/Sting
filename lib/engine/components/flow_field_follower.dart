@@ -17,16 +17,19 @@ extension type FlowFieldFollower(Float32List data) {
 
   /// Gets the alignment weight (0.0 to 1.0) towards the flow vector.
   double get alignmentWeight => data[0];
+
   /// Sets the alignment weight.
   set alignmentWeight(double value) => data[0] = value;
 
   /// Gets the max speed of the follower.
   double get maxSpeed => data[1];
+
   /// Sets the max speed.
   set maxSpeed(double value) => data[1] = value;
 
   /// Gets the lookahead distance along the current velocity vector to sample the field.
   double get lookaheadDistance => data[2];
+
   /// Sets the lookahead distance.
   set lookaheadDistance(double value) => data[2] = value;
 }

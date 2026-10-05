@@ -23,14 +23,16 @@ extension type MultiChannelDiffusion(Float32List data) {
     required int channelCount,
     List<double>? diffusionRates,
   }) {
-    final list = Float32List(4 + channelCount + 2 * (columns * rows * channelCount));
+    final list =
+        Float32List(4 + channelCount + 2 * (columns * rows * channelCount));
     list[0] = columns.toDouble();
     list[1] = rows.toDouble();
     list[2] = channelCount.toDouble();
     list[3] = 0.0;
 
     if (diffusionRates != null) {
-      assert(diffusionRates.length == channelCount, 'Must provide diffusion rate for each channel');
+      assert(diffusionRates.length == channelCount,
+          'Must provide diffusion rate for each channel');
       for (int i = 0; i < channelCount; i++) {
         list[4 + i] = diffusionRates[i];
       }
@@ -85,7 +87,12 @@ extension type MultiChannelDiffusion(Float32List data) {
 
   /// Gets the value at the specified column, row, and channel in the currently *active* buffer.
   double getValue(int col, int row, int channel) {
-    if (col < 0 || col >= columns || row < 0 || row >= rows || channel < 0 || channel >= channelCount) {
+    if (col < 0 ||
+        col >= columns ||
+        row < 0 ||
+        row >= rows ||
+        channel < 0 ||
+        channel >= channelCount) {
       return 0.0;
     }
     return data[_getBufferOffset(activeBuffer) + _getIndex(col, row, channel)];
@@ -94,10 +101,16 @@ extension type MultiChannelDiffusion(Float32List data) {
   /// Sets the value at the specified column, row, and channel in the currently *inactive* buffer.
   /// Writing to the inactive buffer prevents reading torn state during the current frame's simulation.
   void setValue(int col, int row, int channel, double value) {
-    if (col < 0 || col >= columns || row < 0 || row >= rows || channel < 0 || channel >= channelCount) {
+    if (col < 0 ||
+        col >= columns ||
+        row < 0 ||
+        row >= rows ||
+        channel < 0 ||
+        channel >= channelCount) {
       return;
     }
-    data[_getBufferOffset(1 - activeBuffer) + _getIndex(col, row, channel)] = value;
+    data[_getBufferOffset(1 - activeBuffer) + _getIndex(col, row, channel)] =
+        value;
   }
 
   /// Swaps the active buffer, making the previously written data the active state.

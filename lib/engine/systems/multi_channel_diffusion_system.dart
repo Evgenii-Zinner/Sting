@@ -26,7 +26,8 @@ extension type MultiChannelGrid(Float32List data) {
   }) : this(_createBuffer(columns, rows, channelCount));
 
   static Float32List _createBuffer(int columns, int rows, int channelCount) {
-    final buffer = Float32List(4 + 3 * channelCount + 2 * (columns * rows * channelCount));
+    final buffer =
+        Float32List(4 + 3 * channelCount + 2 * (columns * rows * channelCount));
     buffer[0] = columns.toDouble();
     buffer[1] = rows.toDouble();
     buffer[2] = channelCount.toDouble();
@@ -105,7 +106,8 @@ extension type MultiChannelGrid(Float32List data) {
       return 0.0;
     }
     int inactiveBuffer = 1 - activeBuffer;
-    return data[_getBufferOffset(inactiveBuffer) + _getIndex(col, row, channel)];
+    return data[
+        _getBufferOffset(inactiveBuffer) + _getIndex(col, row, channel)];
   }
 
   void setWriteValue(int col, int row, int channel, double value) {
@@ -113,16 +115,17 @@ extension type MultiChannelGrid(Float32List data) {
       return;
     }
     int inactiveBuffer = 1 - activeBuffer;
-    data[_getBufferOffset(inactiveBuffer) + _getIndex(col, row, channel)] = value;
+    data[_getBufferOffset(inactiveBuffer) + _getIndex(col, row, channel)] =
+        value;
   }
 
   double getValueAt(int index) {
-      return data[_getBufferOffset(activeBuffer) + index];
+    return data[_getBufferOffset(activeBuffer) + index];
   }
 
   void setWriteValueAt(int index, double value) {
-      int inactiveBuffer = 1 - activeBuffer;
-      data[_getBufferOffset(inactiveBuffer) + index] = value;
+    int inactiveBuffer = 1 - activeBuffer;
+    data[_getBufferOffset(inactiveBuffer) + index] = value;
   }
 
   void swapBuffers() {
@@ -145,7 +148,8 @@ class MultiChannelDiffusionSystem {
       final int cols = grid.columns;
       final int rows = grid.rows;
       final int channels = grid.channelCount;
-      final int inactiveBufferOffset = grid._getBufferOffset(1 - grid.activeBuffer);
+      final int inactiveBufferOffset =
+          grid._getBufferOffset(1 - grid.activeBuffer);
 
       for (int channel = 0; channel < channels; channel++) {
         final double rate = grid.getDiffusionRate(channel);
@@ -186,8 +190,8 @@ class MultiChannelDiffusionSystem {
             double effectiveSum = sumNeighbors;
 
             if (!isAbsorption) {
-                // Reflection (zero-flux) boundary
-                effectiveSum += missingNeighbors * cellValue;
+              // Reflection (zero-flux) boundary
+              effectiveSum += missingNeighbors * cellValue;
             }
 
             final double averageNeighbor = effectiveSum / 4.0;

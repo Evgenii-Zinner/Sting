@@ -17,8 +17,7 @@ class DebugMetricsOverlaySystem {
   ui.Paragraph? _fpsParagraph;
   ui.Paragraph? _systemsParagraph;
 
-  final ui.Paint _bgPaint = ui.Paint()
-    ..color = const ui.Color(0xAA000000);
+  final ui.Paint _bgPaint = ui.Paint()..color = const ui.Color(0xAA000000);
 
   final ui.Rect _bgRect = const ui.Rect.fromLTWH(0, 0, 300.0, 400.0);
 
@@ -60,7 +59,8 @@ class DebugMetricsOverlaySystem {
 
   void _updateParagraphs() {
     final double dtMs = _dtHistoryAverageMs();
-    final String fpsText = 'FPS: ${profiler.averageFps.toStringAsFixed(1)} (${dtMs.toStringAsFixed(2)} ms)\n'
+    final String fpsText =
+        'FPS: ${profiler.averageFps.toStringAsFixed(1)} (${dtMs.toStringAsFixed(2)} ms)\n'
         'Entities: ${profiler.activeEntityCount}\n'
         'Storages: ${profiler.componentStorageCount}';
 
@@ -109,7 +109,7 @@ class DebugMetricsOverlaySystem {
 
   double _dtHistoryAverageMs() {
     if (profiler.averageFps > 0.0) {
-       return (1.0 / profiler.averageFps) * 1000.0;
+      return (1.0 / profiler.averageFps) * 1000.0;
     }
     return 0.0;
   }

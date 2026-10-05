@@ -14,7 +14,8 @@ void main() {
       // Simulate some profiler data
       profiler.startSystem('SystemA');
       profiler.stopSystem('SystemA');
-      profiler.recordFrame(0.016, activeEntityCount: 42, componentStorageCount: 5);
+      profiler.recordFrame(0.016,
+          activeEntityCount: 42, componentStorageCount: 5);
 
       final system = DebugMetricsOverlaySystem(
         profiler: profiler,

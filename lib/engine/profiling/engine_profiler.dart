@@ -43,7 +43,8 @@ class EngineProfiler {
   }
 
   /// Records the end of a frame, updating frame tracking metrics.
-  void recordFrame(double dt, {int activeEntityCount = 0, int componentStorageCount = 0}) {
+  void recordFrame(double dt,
+      {int activeEntityCount = 0, int componentStorageCount = 0}) {
     _dtHistory[_frameIndex] = dt;
     _activeEntityCount = activeEntityCount;
     _componentStorageCount = componentStorageCount;

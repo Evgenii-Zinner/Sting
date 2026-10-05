@@ -40,7 +40,9 @@ void main() {
       expect(diffusion.getDiffusionRate(1), closeTo(0.5, 0.0001));
     });
 
-    test('getValue and setValue operate on correct offset and buffer (double buffered)', () {
+    test(
+        'getValue and setValue operate on correct offset and buffer (double buffered)',
+        () {
       final diffusion = MultiChannelDiffusion.create(
         columns: 2,
         rows: 2,
@@ -102,7 +104,9 @@ void main() {
       expect(diffusion.getValue(0, 0, 0), 20.0);
     });
 
-    test('Bounds validation returns 0.0 on invalid reads and ignores invalid writes', () {
+    test(
+        'Bounds validation returns 0.0 on invalid reads and ignores invalid writes',
+        () {
       final diffusion = MultiChannelDiffusion.create(
         columns: 5,
         rows: 5,

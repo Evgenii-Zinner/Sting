@@ -32,7 +32,8 @@ void main() {
       );
     });
 
-    test('gradient climbing towards high-heat cells with positive sensitivity', () {
+    test('gradient climbing towards high-heat cells with positive sensitivity',
+        () {
       // Create a field with a hot spot at (1,1) in a 3x3 grid, cellSize = 10
       // So (10, 10) is the hot spot.
       final field = GroundTrailField.create(
@@ -53,11 +54,13 @@ void main() {
       velocityCaste.add(1, Velocity.create(0.0, 0.0));
 
       // targetChannel = 42
-      sensorCaste.add(1, FieldSensor.create(
-        targetChannel: 42,
-        sensitivity: 10.0,
-        sensorRadius: 1.0,
-      ));
+      sensorCaste.add(
+          1,
+          FieldSensor.create(
+            targetChannel: 42,
+            sensitivity: 10.0,
+            sensorRadius: 1.0,
+          ));
 
       system.update(1.0);
 
@@ -88,11 +91,13 @@ void main() {
       positionCaste.add(1, Position.create(5.0, 10.0));
       velocityCaste.add(1, Velocity.create(0.0, 0.0));
 
-      sensorCaste.add(1, FieldSensor.create(
-        targetChannel: 42,
-        sensitivity: -10.0, // Negative sensitivity means avoid
-        sensorRadius: 1.0,
-      ));
+      sensorCaste.add(
+          1,
+          FieldSensor.create(
+            targetChannel: 42,
+            sensitivity: -10.0, // Negative sensitivity means avoid
+            sensorRadius: 1.0,
+          ));
 
       system.update(1.0);
 
@@ -121,11 +126,13 @@ void main() {
       positionCaste.add(1, Position.create(5.0, 10.0));
       preferredVelocityCaste.add(1, PreferredVelocity.create(0.0, 0.0));
 
-      sensorCaste.add(1, FieldSensor.create(
-        targetChannel: 42,
-        sensitivity: 10.0,
-        sensorRadius: 1.0,
-      ));
+      sensorCaste.add(
+          1,
+          FieldSensor.create(
+            targetChannel: 42,
+            sensitivity: 10.0,
+            sensorRadius: 1.0,
+          ));
 
       system.update(1.0);
 

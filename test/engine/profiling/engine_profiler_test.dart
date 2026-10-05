@@ -65,7 +65,8 @@ void main() {
         for (int i = 0; i < 1000; i++) {
           profiler.startSystem('DummySystem');
           profiler.stopSystem('DummySystem');
-          profiler.recordFrame(0.016, activeEntityCount: 10, componentStorageCount: 5);
+          profiler.recordFrame(0.016,
+              activeEntityCount: 10, componentStorageCount: 5);
         }
       }, isNot(throwsException));
 

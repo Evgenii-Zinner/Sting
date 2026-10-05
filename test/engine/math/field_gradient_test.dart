@@ -30,7 +30,8 @@ void main() {
         }
       }
 
-      final result = FieldGradient.computeGradient(grid, cols, rows, 1.5, 1.5, epsilon: 0.5);
+      final result = FieldGradient.computeGradient(grid, cols, rows, 1.5, 1.5,
+          epsilon: 0.5);
       expect(result.dx, closeTo(2.0, 0.0001));
       expect(result.dy, closeTo(0.0, 0.0001));
       expect(result.magnitude, closeTo(2.0, 0.0001));
@@ -47,7 +48,8 @@ void main() {
         }
       }
 
-      final result = FieldGradient.computeGradient(grid, cols, rows, 1.5, 1.5, epsilon: 0.5);
+      final result = FieldGradient.computeGradient(grid, cols, rows, 1.5, 1.5,
+          epsilon: 0.5);
       expect(result.dx, closeTo(0.0, 0.0001));
       expect(result.dy, closeTo(-3.0, 0.0001));
       expect(result.magnitude, closeTo(3.0, 0.0001));
@@ -69,8 +71,10 @@ void main() {
       // At x=1.5, y=1.0, value is 2.5
       // At x=2.0 (clamped), y=1.0, value is 3.0
       // dx = (3.0 - 2.5) / 2 = 0.25
-      final result = FieldGradient.computeGradient(grid, cols, rows, 2.5, 1.0, epsilon: 1.0);
-      expect(result.dx, closeTo(0.25, 0.0001)); // It gets clamped, so gradient is shallower
+      final result = FieldGradient.computeGradient(grid, cols, rows, 2.5, 1.0,
+          epsilon: 1.0);
+      expect(result.dx,
+          closeTo(0.25, 0.0001)); // It gets clamped, so gradient is shallower
     });
 
     test('radial peak (distance field)', () {
@@ -80,13 +84,15 @@ void main() {
       // F(x,y) = (x-2)^2 + (y-2)^2
       for (int y = 0; y < rows; y++) {
         for (int x = 0; x < cols; x++) {
-          grid[y * cols + x] = math.pow(x - 2, 2).toDouble() + math.pow(y - 2, 2).toDouble();
+          grid[y * cols + x] =
+              math.pow(x - 2, 2).toDouble() + math.pow(y - 2, 2).toDouble();
         }
       }
 
       // at (1, 1), center is (2,2). Grad of x^2 + y^2 is 2x, 2y. Here it's 2(x-2), 2(y-2)
       // at (1,1): dx = -2, dy = -2
-      final result = FieldGradient.computeGradient(grid, cols, rows, 1.0, 1.0, epsilon: 0.5);
+      final result = FieldGradient.computeGradient(grid, cols, rows, 1.0, 1.0,
+          epsilon: 0.5);
       expect(result.dx, closeTo(-2.0, 0.0001));
       expect(result.dy, closeTo(-2.0, 0.0001));
       expect(result.magnitude, closeTo(math.sqrt(8), 0.0001));
@@ -100,13 +106,15 @@ void main() {
       // center at 2,2 => F(x,y) = (x-2)^2 - (y-2)^2
       for (int y = 0; y < rows; y++) {
         for (int x = 0; x < cols; x++) {
-          grid[y * cols + x] = math.pow(x - 2, 2).toDouble() - math.pow(y - 2, 2).toDouble();
+          grid[y * cols + x] =
+              math.pow(x - 2, 2).toDouble() - math.pow(y - 2, 2).toDouble();
         }
       }
 
       // Grad = 2(x-2), -2(y-2)
       // at (3, 1), dx = 2(1) = 2, dy = -2(-1) = 2
-      final result = FieldGradient.computeGradient(grid, cols, rows, 3.0, 1.0, epsilon: 0.5);
+      final result = FieldGradient.computeGradient(grid, cols, rows, 3.0, 1.0,
+          epsilon: 0.5);
       expect(result.dx, closeTo(2.0, 0.0001));
       expect(result.dy, closeTo(2.0, 0.0001));
     });
@@ -123,16 +131,23 @@ void main() {
       }
 
       // Gradient should be (3, 4), magnitude = 5
-      final resultUnnormalized = FieldGradient.computeGradient(grid, cols, rows, 1.5, 1.5, epsilon: 0.5);
+      final resultUnnormalized = FieldGradient.computeGradient(
+          grid, cols, rows, 1.5, 1.5,
+          epsilon: 0.5);
       expect(resultUnnormalized.dx, closeTo(3.0, 0.0001));
       expect(resultUnnormalized.dy, closeTo(4.0, 0.0001));
       expect(resultUnnormalized.magnitude, closeTo(5.0, 0.0001));
 
       // With normalization, dx = 3/5 = 0.6, dy = 4/5 = 0.8
-      final resultNormalized = FieldGradient.computeGradient(grid, cols, rows, 1.5, 1.5, epsilon: 0.5, normalize: true);
+      final resultNormalized = FieldGradient.computeGradient(
+          grid, cols, rows, 1.5, 1.5,
+          epsilon: 0.5, normalize: true);
       expect(resultNormalized.dx, closeTo(0.6, 0.0001));
       expect(resultNormalized.dy, closeTo(0.8, 0.0001));
-      expect(resultNormalized.magnitude, closeTo(5.0, 0.0001)); // Note magnitude returned is the original magnitude before normalization
+      expect(
+          resultNormalized.magnitude,
+          closeTo(5.0,
+              0.0001)); // Note magnitude returned is the original magnitude before normalization
     });
 
     test('normalization on zero gradient', () {
@@ -140,7 +155,9 @@ void main() {
       final rows = 3;
       final grid = Float32List(cols * rows);
       // F(x,y) = 0
-      final resultNormalized = FieldGradient.computeGradient(grid, cols, rows, 1.0, 1.0, normalize: true);
+      final resultNormalized = FieldGradient.computeGradient(
+          grid, cols, rows, 1.0, 1.0,
+          normalize: true);
 
       expect(resultNormalized.dx, closeTo(0.0, 0.0001));
       expect(resultNormalized.dy, closeTo(0.0, 0.0001));

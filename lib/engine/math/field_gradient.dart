@@ -29,7 +29,8 @@ class FieldGradient {
     double dy = (bottom - top) / (2 * epsilon); // y axis down convention
 
     final double magnitudeSquared = dx * dx + dy * dy;
-    final double magnitude = magnitudeSquared > 0 ? math.sqrt(magnitudeSquared) : 0.0;
+    final double magnitude =
+        magnitudeSquared > 0 ? math.sqrt(magnitudeSquared) : 0.0;
 
     if (normalize && magnitude > 0) {
       dx /= magnitude;
@@ -40,7 +41,8 @@ class FieldGradient {
   }
 
   /// Bilinear interpolation sampler with boundary clamping.
-  static double _sample(Float32List grid, int cols, int rows, double x, double y) {
+  static double _sample(
+      Float32List grid, int cols, int rows, double x, double y) {
     // Clamp to valid grid coordinates
     final double cx = x.clamp(0.0, (cols - 1).toDouble());
     final double cy = y.clamp(0.0, (rows - 1).toDouble());

@@ -88,11 +88,13 @@ void main() {
       expect(sample.$2, closeTo(10.0, 0.0001));
 
       // Interpolated points
-      sample = field.sampleBilinearVector(5.0, 0.0); // Halfway between (0,0) and (1,0)
+      sample = field.sampleBilinearVector(
+          5.0, 0.0); // Halfway between (0,0) and (1,0)
       expect(sample.$1, closeTo(5.0, 0.0001));
       expect(sample.$2, closeTo(0.0, 0.0001));
 
-      sample = field.sampleBilinearVector(0.0, 5.0); // Halfway between (0,0) and (0,1)
+      sample = field.sampleBilinearVector(
+          0.0, 5.0); // Halfway between (0,0) and (0,1)
       expect(sample.$1, closeTo(0.0, 0.0001));
       expect(sample.$2, closeTo(5.0, 0.0001));
 

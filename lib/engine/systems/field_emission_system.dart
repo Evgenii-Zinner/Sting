@@ -60,8 +60,10 @@ class FieldEmissionSystem {
       for (int row = minRow; row <= maxRow; row++) {
         for (int col = minCol; col <= maxCol; col++) {
           // World position of the cell's center
-          final double cellWorldX = field.originX + col * cellSize + cellSize * 0.5;
-          final double cellWorldY = field.originY + row * cellSize + cellSize * 0.5;
+          final double cellWorldX =
+              field.originX + col * cellSize + cellSize * 0.5;
+          final double cellWorldY =
+              field.originY + row * cellSize + cellSize * 0.5;
 
           final double dx = pos.x - cellWorldX;
           final double dy = pos.y - cellWorldY;

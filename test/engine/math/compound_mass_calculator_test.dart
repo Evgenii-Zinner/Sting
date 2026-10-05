@@ -9,21 +9,24 @@ void main() {
       final positionsX = Float32List.fromList([-5.0, 5.0]);
       final positionsY = Float32List.fromList([0.0, 0.0]);
 
-      final (totalMass, comX, comY) = CompoundMassCalculator.calculateCenterOfMass(
-          masses, positionsX, positionsY, 2);
+      final (totalMass, comX, comY) =
+          CompoundMassCalculator.calculateCenterOfMass(
+              masses, positionsX, positionsY, 2);
 
       expect(totalMass, closeTo(20.0, 1e-5));
       expect(comX, closeTo(0.0, 1e-5));
       expect(comY, closeTo(0.0, 1e-5));
     });
 
-    test('calculateCenterOfMass calculates correctly for asymmetric bodies', () {
+    test('calculateCenterOfMass calculates correctly for asymmetric bodies',
+        () {
       final masses = Float32List.fromList([10.0, 30.0]);
       final positionsX = Float32List.fromList([-5.0, 5.0]);
       final positionsY = Float32List.fromList([2.0, -2.0]);
 
-      final (totalMass, comX, comY) = CompoundMassCalculator.calculateCenterOfMass(
-          masses, positionsX, positionsY, 2);
+      final (totalMass, comX, comY) =
+          CompoundMassCalculator.calculateCenterOfMass(
+              masses, positionsX, positionsY, 2);
 
       expect(totalMass, closeTo(40.0, 1e-5));
       // comX = (10 * -5 + 30 * 5) / 40 = 100 / 40 = 2.5
@@ -37,15 +40,18 @@ void main() {
       final positionsX = Float32List.fromList([-5.0, 5.0]);
       final positionsY = Float32List.fromList([0.0, 0.0]);
 
-      final (totalMass, comX, comY) = CompoundMassCalculator.calculateCenterOfMass(
-          masses, positionsX, positionsY, 2);
+      final (totalMass, comX, comY) =
+          CompoundMassCalculator.calculateCenterOfMass(
+              masses, positionsX, positionsY, 2);
 
       expect(totalMass, 0.0);
       expect(comX, 0.0);
       expect(comY, 0.0);
     });
 
-    test('calculateMomentOfInertia2D calculates correctly using Parallel Axis Theorem', () {
+    test(
+        'calculateMomentOfInertia2D calculates correctly using Parallel Axis Theorem',
+        () {
       final masses = Float32List.fromList([10.0, 10.0]);
       final positionsX = Float32List.fromList([-5.0, 5.0]);
       final positionsY = Float32List.fromList([0.0, 0.0]);

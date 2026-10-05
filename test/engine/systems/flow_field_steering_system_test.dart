@@ -123,7 +123,8 @@ void main() {
     test('Samples at lookahead distance based on velocity', () {
       final entity = scene.createEntity();
       positions.add(entity, Position.create(10, 20));
-      velocities.add(entity, Velocity.create(30, 40)); // speed = 50, direction = (0.6, 0.8)
+      velocities.add(entity,
+          Velocity.create(30, 40)); // speed = 50, direction = (0.6, 0.8)
       followers.add(
         entity,
         FlowFieldFollower.create(

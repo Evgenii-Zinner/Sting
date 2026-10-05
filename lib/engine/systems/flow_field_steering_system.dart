@@ -40,7 +40,8 @@ class FlowFieldSteeringSystem {
       double lookY = position.y;
 
       // Determine lookahead position based on current velocity
-      final double velSq = velocity.dx * velocity.dx + velocity.dy * velocity.dy;
+      final double velSq =
+          velocity.dx * velocity.dx + velocity.dy * velocity.dy;
       if (velSq > 0.0001) {
         final double speed = sqrt(velSq);
         lookX += (velocity.dx / speed) * follower.lookaheadDistance;
@@ -77,7 +78,8 @@ class FlowFieldSteeringSystem {
       velocity.dy += (desiredVy - velocity.dy) * weight;
 
       // Clamp velocity to maxSpeed
-      final double finalVelSq = velocity.dx * velocity.dx + velocity.dy * velocity.dy;
+      final double finalVelSq =
+          velocity.dx * velocity.dx + velocity.dy * velocity.dy;
       if (finalVelSq > follower.maxSpeed * follower.maxSpeed) {
         final double finalSpeed = sqrt(finalVelSq);
         velocity.dx = (velocity.dx / finalSpeed) * follower.maxSpeed;

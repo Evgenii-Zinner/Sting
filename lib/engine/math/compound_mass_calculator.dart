@@ -5,7 +5,10 @@ class CompoundMassCalculator {
   /// Returns a Dart 3 record containing the total mass, and the X and Y coordinates of the center of mass.
   /// Achieves zero heap allocations.
   static (double totalMass, double comX, double comY) calculateCenterOfMass(
-      Float32List masses, Float32List positionsX, Float32List positionsY, int count) {
+      Float32List masses,
+      Float32List positionsX,
+      Float32List positionsY,
+      int count) {
     double totalMass = 0.0;
     double weightedX = 0.0;
     double weightedY = 0.0;

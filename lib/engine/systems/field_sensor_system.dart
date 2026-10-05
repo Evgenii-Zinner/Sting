@@ -42,7 +42,8 @@ class FieldSensorSystem {
     _prefVelQuery.forEach(_processPreferredVelocity);
   }
 
-  void _processVelocity(int entity, Position pos, FieldSensor sensor, Velocity vel) {
+  void _processVelocity(
+      int entity, Position pos, FieldSensor sensor, Velocity vel) {
     final field = fieldCaste.get(sensor.targetChannel);
     if (field == null) return;
 
@@ -68,7 +69,8 @@ class FieldSensorSystem {
     vel.dy += gy * sens * _currentDt;
   }
 
-  void _processPreferredVelocity(int entity, Position pos, FieldSensor sensor, PreferredVelocity prefVel) {
+  void _processPreferredVelocity(
+      int entity, Position pos, FieldSensor sensor, PreferredVelocity prefVel) {
     final field = fieldCaste.get(sensor.targetChannel);
     if (field == null) return;
 

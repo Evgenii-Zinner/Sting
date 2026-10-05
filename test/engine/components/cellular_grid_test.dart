@@ -20,11 +20,13 @@ void main() {
 
       grid.setState(2, 2, 1); // write to active buffer
       expect(grid.getState(2, 2), equals(1));
-      expect(grid.getNextBufferState(2, 2), equals(0)); // next buffer should be untouched
+      expect(grid.getNextBufferState(2, 2),
+          equals(0)); // next buffer should be untouched
 
       grid.setNextBufferState(2, 2, 2); // write to inactive buffer
       expect(grid.getNextBufferState(2, 2), equals(2));
-      expect(grid.getState(2, 2), equals(1)); // active buffer should be untouched
+      expect(
+          grid.getState(2, 2), equals(1)); // active buffer should be untouched
     });
 
     test('swapBuffers toggles active buffer', () {
@@ -39,7 +41,8 @@ void main() {
       grid.swapBuffers();
 
       expect(grid.activeBuffer, equals(1));
-      expect(grid.getState(1, 1), equals(20)); // now reads from what was next buffer
+      expect(grid.getState(1, 1),
+          equals(20)); // now reads from what was next buffer
 
       grid.swapBuffers();
       expect(grid.activeBuffer, equals(0));
