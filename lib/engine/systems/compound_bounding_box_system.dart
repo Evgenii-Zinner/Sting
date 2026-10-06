@@ -52,15 +52,18 @@ class CompoundBoundingBoxSystem {
 
       // Apply back to the root's bounding box with symmetric expansion
       // so it encapsulates asymmetric children while centered on pos
-      final double maxOffsetX = math.max(pos.x - compoundBox.minX, compoundBox.maxX - pos.x);
-      final double maxOffsetY = math.max(pos.y - compoundBox.minY, compoundBox.maxY - pos.y);
+      final double maxOffsetX =
+          math.max(pos.x - compoundBox.minX, compoundBox.maxX - pos.x);
+      final double maxOffsetY =
+          math.max(pos.y - compoundBox.minY, compoundBox.maxY - pos.y);
 
       boundingBox.width = maxOffsetX * 2;
       boundingBox.height = maxOffsetY * 2;
     }
   }
 
-  void _traverseChildren(int parentEntity, CompoundBoundingBox rootCompoundBox, double parentWorldX, double parentWorldY) {
+  void _traverseChildren(int parentEntity, CompoundBoundingBox rootCompoundBox,
+      double parentWorldX, double parentWorldY) {
     final length = parentCaste.length;
     for (int i = 0; i < length; i++) {
       final childEntity = parentCaste.elementAt(i);
@@ -98,7 +101,8 @@ class CompoundBoundingBoxSystem {
         }
 
         // Recursively traverse for multi-generation children
-        _traverseChildren(childEntity, rootCompoundBox, childWorldX, childWorldY);
+        _traverseChildren(
+            childEntity, rootCompoundBox, childWorldX, childWorldY);
       }
     }
   }

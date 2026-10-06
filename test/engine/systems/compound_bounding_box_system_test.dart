@@ -58,12 +58,14 @@ void main() {
     test('Root with 1 child computes union bounds symmetrically', () {
       final root = entityManager.createEntity();
       compoundBoxCaste.add(root, CompoundBoundingBox.create());
-      boundingBoxCaste.add(root, BoundingBox.create(10, 10)); // bounds: x(95,105), y(95,105)
+      boundingBoxCaste.add(
+          root, BoundingBox.create(10, 10)); // bounds: x(95,105), y(95,105)
       positionCaste.add(root, Position.create(100, 100));
 
       final child = entityManager.createEntity();
       parentCaste.add(child, Parent.create(root));
-      boundingBoxCaste.add(child, BoundingBox.create(20, 20)); // bounds: x(140,160), y(140,160)
+      boundingBoxCaste.add(
+          child, BoundingBox.create(20, 20)); // bounds: x(140,160), y(140,160)
       positionCaste.add(child, Position.create(150, 150));
 
       system.update();
@@ -81,20 +83,25 @@ void main() {
       expect(rootBox.height, 120);
     });
 
-    test('Root with multiple generations expands and shrinks using LocalTransform', () {
+    test(
+        'Root with multiple generations expands and shrinks using LocalTransform',
+        () {
       final root = entityManager.createEntity();
       compoundBoxCaste.add(root, CompoundBoundingBox.create());
-      boundingBoxCaste.add(root, BoundingBox.create(10, 10)); // bounds: x(-5,5), y(-5,5)
+      boundingBoxCaste.add(
+          root, BoundingBox.create(10, 10)); // bounds: x(-5,5), y(-5,5)
       positionCaste.add(root, Position.create(0, 0));
 
       final child1 = entityManager.createEntity();
       parentCaste.add(child1, Parent.create(root));
-      boundingBoxCaste.add(child1, BoundingBox.create(10, 10)); // bounds: x(5,15), y(5,15)
+      boundingBoxCaste.add(
+          child1, BoundingBox.create(10, 10)); // bounds: x(5,15), y(5,15)
       positionCaste.add(child1, Position.create(10, 10));
 
       final child2 = entityManager.createEntity(); // child of child1
       parentCaste.add(child2, Parent.create(child1));
-      boundingBoxCaste.add(child2, BoundingBox.create(20, 20)); // bounds: x(10,30), y(10,30)
+      boundingBoxCaste.add(
+          child2, BoundingBox.create(20, 20)); // bounds: x(10,30), y(10,30)
       // Use LocalTransform to test position fallback
       localTransformCaste.add(child2, LocalTransform.create(10, 10, 0, 1, 1));
 
