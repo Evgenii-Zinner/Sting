@@ -47,8 +47,14 @@ extension type BarycentricTriangle(Float32List _data) {
     data[4] = weightA;
     data[5] = weightB;
     data[6] = weightC;
-    data[7] = puckX;
-    data[8] = puckY;
+    double px = puckX;
+    double py = puckY;
+    if (px == 0.0 && py == 0.0) {
+      px = centerX;
+      py = centerY;
+    }
+    data[7] = px;
+    data[8] = py;
     data[9] = 0.0; // isDragging
     data[10] = cornerAColorHex;
     data[11] = cornerBColorHex;

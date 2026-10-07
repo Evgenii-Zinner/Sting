@@ -12,11 +12,21 @@ class BarycentricTriangleSystem {
   // Pre-allocated for zero-allocation rendering
   final Paint _strokePaint;
   final Paint _puckPaint;
+  final Paint _backdropPaint;
+  final Paint _guidePaint;
+  final Paint _ringPaint;
+  final Paint _cornerPaint;
+  final Paint _auraPaint;
   final Path _trianglePath;
 
   BarycentricTriangleSystem(this._triangles)
       : _strokePaint = Paint()..style = PaintingStyle.stroke,
         _puckPaint = Paint()..style = PaintingStyle.fill,
+        _backdropPaint = Paint()..style = PaintingStyle.fill,
+        _guidePaint = Paint()..style = PaintingStyle.stroke..strokeWidth = 1.0,
+        _ringPaint = Paint()..style = PaintingStyle.stroke..strokeWidth = 2.0,
+        _cornerPaint = Paint()..style = PaintingStyle.fill,
+        _auraPaint = Paint()..style = PaintingStyle.fill,
         _trianglePath = Path();
 
   /// Checks if a pointer down event hits a triangle, marking it as dragging.
@@ -222,18 +232,71 @@ class BarycentricTriangleSystem {
       _trianglePath.lineTo(cAbsX, cAbsY);
       _trianglePath.close();
 
-      // Render Stroke/Fill
-      _strokePaint.strokeWidth = tri.strokeWidth;
+      // 1. Dark translucent backdrop panel
+      _backdropPaint.color = const Color(0xCC090C14);
+      canvas.drawPath(_trianglePath, _backdropPaint);
 
-      // Basic flat style rendering, gradient logic could be added using shaders if needed,
-      // but sticking to stroke for zero allocation for now
-      _strokePaint.color = const Color(0xFFFFFFFF); // White for boundary
+      // 2. Render Stroke Boundary
+      _strokePaint.strokeWidth = tri.strokeWidth;
+      _strokePaint.color = const Color(0xAAFFFFFF);
       canvas.drawPath(_trianglePath, _strokePaint);
 
-      // Render Puck
+      // Ensure puck position is valid (fallback to centroid if unset)
+      if (tri.puckX == 0.0 && tri.puckY == 0.0) {
+        tri.puckX = tri.weightA * aAbsX + tri.weightB * bAbsX + tri.weightC * cAbsX;
+        tri.puckY = tri.weightA * aAbsY + tri.weightB * bAbsY + tri.weightC * cAbsY;
+      }
+
+      // 3. Subtle guide lines connecting vertices to puck
+      _guidePaint.color = Color(tri.cornerAColorHex.toInt()).withValues(alpha: 0.35);
+      canvas.drawLine(Offset(aAbsX, aAbsY), Offset(tri.puckX, tri.puckY), _guidePaint);
+      _guidePaint.color = Color(tri.cornerBColorHex.toInt()).withValues(alpha: 0.35);
+      canvas.drawLine(Offset(bAbsX, bAbsY), Offset(tri.puckX, tri.puckY), _guidePaint);
+      _guidePaint.color = Color(tri.cornerCColorHex.toInt()).withValues(alpha: 0.35);
+      canvas.drawLine(Offset(cAbsX, cAbsY), Offset(tri.puckX, tri.puckY), _guidePaint);
+
+      // 4. Render Corner Vertex Dots
+      _cornerPaint.color = Color(tri.cornerAColorHex.toInt());
+      canvas.drawCircle(Offset(aAbsX, aAbsY), 6.0, _cornerPaint);
+      _cornerPaint.color = Color(tri.cornerBColorHex.toInt());
+      canvas.drawCircle(Offset(bAbsX, bAbsY), 6.0, _cornerPaint);
+      _cornerPaint.color = Color(tri.cornerCColorHex.toInt());
+      canvas.drawCircle(Offset(cAbsX, cAbsY), 6.0, _cornerPaint);
+
+      // 5. Render Selected Dot Marker (Puck)
+      // Glow / Aura
+      final double auraRadius = tri.isDragging > 0.0 ? 16.0 : 12.0;
+      final double auraAlpha = tri.isDragging > 0.0 ? 0.55 : 0.30;
+      _auraPaint.color = Color(tri.puckColorHex.toInt()).withValues(alpha: auraAlpha);
+      canvas.drawCircle(Offset(tri.puckX, tri.puckY), auraRadius, _auraPaint);
+
+      // Outer crisp ring
+      _ringPaint.color = const Color(0xFFFFFFFF);
+      canvas.drawCircle(Offset(tri.puckX, tri.puckY), 9.0, _ringPaint);
+
+      // Inner selected dot core
       _puckPaint.color = Color(tri.puckColorHex.toInt());
-      canvas.drawCircle(
-          Offset(tri.puckX, tri.puckY), 8.0, _puckPaint); // 8.0 radius puck
+      canvas.drawCircle(Offset(tri.puckX, tri.puckY), 5.5, _puckPaint);
+
+      // 6. Corner Labels with Percentages
+      _renderLabel(canvas, 'BUILD ${(tri.weightA * 100).round()}%', aAbsX, aAbsY - 20.0,
+          Color(tri.cornerAColorHex.toInt()));
+      _renderLabel(canvas, 'HEAT ${(tri.weightB * 100).round()}%', bAbsX + 15.0, bAbsY + 8.0,
+          Color(tri.cornerBColorHex.toInt()));
+      _renderLabel(canvas, 'GATHER ${(tri.weightC * 100).round()}%', cAbsX - 15.0, cAbsY + 8.0,
+          Color(tri.cornerCColorHex.toInt()));
     }
+  }
+
+  void _renderLabel(Canvas canvas, String text, double cx, double cy, Color color) {
+    final builder = ParagraphBuilder(ParagraphStyle(
+      textAlign: TextAlign.center,
+      fontSize: 11.0,
+      fontWeight: FontWeight.bold,
+    ))
+      ..pushStyle(TextStyle(color: color))
+      ..addText(text);
+    final p = builder.build()..layout(const ParagraphConstraints(width: 120.0));
+    canvas.drawParagraph(p, Offset(cx - 60.0, cy));
   }
 }
