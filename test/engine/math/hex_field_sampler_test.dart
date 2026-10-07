@@ -39,8 +39,7 @@ void main() {
       grid[3 * cols + 2] = 10.0;
 
       // Sample slightly right (q: 3, r: 2) -> col: 3, row: 2 + (3-1)/2 = 3
-      final (rightX, rightY) = HexMath.flatGridToWorld(3, 2, hexSize);
-      // Wait, let's just populate a generic gradient
+      // Let's just populate a generic gradient
 
       // Let's create a known gradient on the grid
       for (int r = 0; r < rows; r++) {
