@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
-import '../../../lib/engine/components/network_graph.dart';
-import '../../../lib/engine/systems/collective_resource_pool_system.dart';
+import 'package:sting/engine/components/network_graph.dart';
+import 'package:sting/engine/systems/collective_resource_pool_system.dart';
 
 void main() {
   group('CollectiveResourcePoolSystem', () {
