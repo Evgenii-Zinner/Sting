@@ -64,7 +64,8 @@ void main() {
     test('renders absolute meshes in batched mode', () {
       final system = HexEdgeRenderSystem(hexEdgeMeshCaste: meshCaste);
 
-      final mesh = HexEdgeMesh.create(maxEdges: 5, isFlatTopped: true, hexSize: 10.0);
+      final mesh =
+          HexEdgeMesh.create(maxEdges: 5, isFlatTopped: true, hexSize: 10.0);
 
       // Batch 1: Red lines, width 1.0
       mesh.addEdge(0, 0, 1, 0, 0xFFFF0000, 1.0);
@@ -96,7 +97,8 @@ void main() {
         positionCaste: positionCaste,
       );
 
-      final mesh = HexEdgeMesh.create(maxEdges: 1, isFlatTopped: false, hexSize: 10.0);
+      final mesh =
+          HexEdgeMesh.create(maxEdges: 1, isFlatTopped: false, hexSize: 10.0);
       mesh.addEdge(0, 0, 1, 0, 0xFFFFFFFF, 1.0);
 
       meshCaste.add(2, mesh);
@@ -129,7 +131,8 @@ void main() {
       final viewport = Viewport.create(10.0, 20.0, 2.0, 0.0);
       viewportCaste.add(3, viewport);
 
-      final mesh = HexEdgeMesh.create(maxEdges: 1, isFlatTopped: true, hexSize: 10.0);
+      final mesh =
+          HexEdgeMesh.create(maxEdges: 1, isFlatTopped: true, hexSize: 10.0);
       mesh.addEdge(0, 0, 1, 0, 0xFFFFFFFF, 1.0);
       meshCaste.add(4, mesh);
 
@@ -147,7 +150,8 @@ void main() {
 
     test('does not throw exceptions when meshes are empty', () {
       final system = HexEdgeRenderSystem(hexEdgeMeshCaste: meshCaste);
-      final mesh = HexEdgeMesh.create(maxEdges: 5, isFlatTopped: true, hexSize: 10.0);
+      final mesh =
+          HexEdgeMesh.create(maxEdges: 5, isFlatTopped: true, hexSize: 10.0);
       // Don't add edges
       meshCaste.add(1, mesh);
 

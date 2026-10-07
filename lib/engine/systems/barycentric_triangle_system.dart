@@ -8,7 +8,7 @@ import 'package:sting/engine/ecs/component_storage.dart';
 /// Ensures zero per-frame heap allocations during update and event loop.
 class BarycentricTriangleSystem {
   final ComponentStorage<BarycentricTriangle> _triangles;
-  
+
   // Pre-allocated for zero-allocation rendering
   final Paint _strokePaint;
   final Paint _puckPaint;
@@ -31,7 +31,7 @@ class BarycentricTriangleSystem {
       final dx = px - tri.centerX;
       final dy = py - tri.centerY;
       final distSq = dx * dx + dy * dy;
-      
+
       // Allow hit within a reasonable bounding circle of the triangle.
       final radiusSq = tri.radius * tri.radius;
 
@@ -83,7 +83,7 @@ class BarycentricTriangleSystem {
     final rot = tri.rotation;
     final cosRot = cos(rot);
     final sinRot = sin(rot);
-    
+
     // Rotate relative to center
     double rotAx = aX * cosRot - aY * sinRot;
     double rotAy = aX * sinRot + aY * cosRot;
@@ -91,7 +91,7 @@ class BarycentricTriangleSystem {
     double rotBy = bX * sinRot + bY * cosRot;
     double rotCx = cX * cosRot - cY * sinRot;
     double rotCy = cX * sinRot + cY * cosRot;
-    
+
     // Absolute positions
     final aAbsX = tri.centerX + rotAx;
     final aAbsY = tri.centerY + rotAy;
@@ -101,24 +101,34 @@ class BarycentricTriangleSystem {
     final cAbsY = tri.centerY + rotCy;
 
     // Barycentric coordinates
-    final det = (bAbsY - cAbsY) * (aAbsX - cAbsX) + (cAbsX - bAbsX) * (aAbsY - cAbsY);
-    
-    double wA = ((bAbsY - cAbsY) * (px - cAbsX) + (cAbsX - bAbsX) * (py - cAbsY)) / det;
-    double wB = ((cAbsY - aAbsY) * (px - cAbsX) + (aAbsX - cAbsX) * (py - cAbsY)) / det;
+    final det =
+        (bAbsY - cAbsY) * (aAbsX - cAbsX) + (cAbsX - bAbsX) * (aAbsY - cAbsY);
+
+    double wA =
+        ((bAbsY - cAbsY) * (px - cAbsX) + (cAbsX - bAbsX) * (py - cAbsY)) / det;
+    double wB =
+        ((cAbsY - aAbsY) * (px - cAbsX) + (aAbsX - cAbsX) * (py - cAbsY)) / det;
     double wC = 1.0 - wA - wB;
 
     // Clamping logic to equilateral boundary
     if (wA < 0.0 && wB < 0.0) {
-        wC = 1.0; wA = 0.0; wB = 0.0;
+      wC = 1.0;
+      wA = 0.0;
+      wB = 0.0;
     } else if (wB < 0.0 && wC < 0.0) {
-        wA = 1.0; wB = 0.0; wC = 0.0;
+      wA = 1.0;
+      wB = 0.0;
+      wC = 0.0;
     } else if (wC < 0.0 && wA < 0.0) {
-        wB = 1.0; wC = 0.0; wA = 0.0;
+      wB = 1.0;
+      wC = 0.0;
+      wA = 0.0;
     } else if (wA < 0.0) {
       wA = 0.0;
       final bcX = cAbsX - bAbsX;
       final bcY = cAbsY - bAbsY;
-      final t = ((px - bAbsX) * bcX + (py - bAbsY) * bcY) / (bcX * bcX + bcY * bcY);
+      final t =
+          ((px - bAbsX) * bcX + (py - bAbsY) * bcY) / (bcX * bcX + bcY * bcY);
       final tClamped = max(0.0, min(1.0, t));
       wC = tClamped;
       wB = 1.0 - wC;
@@ -126,7 +136,8 @@ class BarycentricTriangleSystem {
       wB = 0.0;
       final caX = aAbsX - cAbsX;
       final caY = aAbsY - cAbsY;
-      final t = ((px - cAbsX) * caX + (py - cAbsY) * caY) / (caX * caX + caY * caY);
+      final t =
+          ((px - cAbsX) * caX + (py - cAbsY) * caY) / (caX * caX + caY * caY);
       final tClamped = max(0.0, min(1.0, t));
       wA = tClamped;
       wC = 1.0 - tClamped;
@@ -134,7 +145,8 @@ class BarycentricTriangleSystem {
       wC = 0.0;
       final abX = bAbsX - aAbsX;
       final abY = bAbsY - aAbsY;
-      final t = ((px - aAbsX) * abX + (py - aAbsY) * abY) / (abX * abX + abY * abY);
+      final t =
+          ((px - aAbsX) * abX + (py - aAbsY) * abY) / (abX * abX + abY * abY);
       final tClamped = max(0.0, min(1.0, t));
       wB = tClamped;
       wA = 1.0 - tClamped;
@@ -148,13 +160,13 @@ class BarycentricTriangleSystem {
     // And ensure they sum to exactly 1.0 if not already (might be off due to float division).
     double sum = wA + wB + wC;
     if (sum > 0.0) {
-        wA /= sum;
-        wB /= sum;
-        wC /= sum;
+      wA /= sum;
+      wB /= sum;
+      wC /= sum;
     } else {
-        wA = 0.3333333;
-        wB = 0.3333333;
-        wC = 0.3333333;
+      wA = 0.3333333;
+      wB = 0.3333333;
+      wC = 0.3333333;
     }
 
     tri.weightA = wA;
@@ -187,14 +199,14 @@ class BarycentricTriangleSystem {
       final rot = tri.rotation;
       final cosRot = cos(rot);
       final sinRot = sin(rot);
-      
+
       double rotAx = aX * cosRot - aY * sinRot;
       double rotAy = aX * sinRot + aY * cosRot;
       double rotBx = bX * cosRot - bY * sinRot;
       double rotBy = bX * sinRot + bY * cosRot;
       double rotCx = cX * cosRot - cY * sinRot;
       double rotCy = cX * sinRot + cY * cosRot;
-      
+
       // Absolute positions
       final aAbsX = tri.centerX + rotAx;
       final aAbsY = tri.centerY + rotAy;
@@ -212,15 +224,16 @@ class BarycentricTriangleSystem {
 
       // Render Stroke/Fill
       _strokePaint.strokeWidth = tri.strokeWidth;
-      
-      // Basic flat style rendering, gradient logic could be added using shaders if needed, 
+
+      // Basic flat style rendering, gradient logic could be added using shaders if needed,
       // but sticking to stroke for zero allocation for now
       _strokePaint.color = const Color(0xFFFFFFFF); // White for boundary
       canvas.drawPath(_trianglePath, _strokePaint);
 
       // Render Puck
       _puckPaint.color = Color(tri.puckColorHex.toInt());
-      canvas.drawCircle(Offset(tri.puckX, tri.puckY), 8.0, _puckPaint); // 8.0 radius puck
+      canvas.drawCircle(
+          Offset(tri.puckX, tri.puckY), 8.0, _puckPaint); // 8.0 radius puck
     }
   }
 }

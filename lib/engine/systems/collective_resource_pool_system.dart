@@ -34,7 +34,8 @@ class CollectiveResourcePoolSystem {
 
     if (partitionGraph) {
       if (scratchParent == null || scratchRank == null) {
-        throw ArgumentError("scratchParent and scratchRank must be provided if partitionGraph is true.");
+        throw ArgumentError(
+            "scratchParent and scratchRank must be provided if partitionGraph is true.");
       }
       graph.partition(scratchParent, scratchRank);
     }

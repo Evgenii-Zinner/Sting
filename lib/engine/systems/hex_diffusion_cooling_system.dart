@@ -110,8 +110,10 @@ class HexDiffusionCoolingSystem {
 
           // Thermodynamics update:
           // Delta T = (T_neighbors_avg - T) * diffusionRate - (T - T_ambient) * coolingRate * dt
-          final double diffusionDelta = (averageNeighbor - cellValue) * diffRate;
-          final double coolingDelta = (cellValue - ambientBaseline) * coolingRate * dt;
+          final double diffusionDelta =
+              (averageNeighbor - cellValue) * diffRate;
+          final double coolingDelta =
+              (cellValue - ambientBaseline) * coolingRate * dt;
 
           final double newValue = cellValue + diffusionDelta - coolingDelta;
 

@@ -16,7 +16,7 @@ void main() {
       expect(tri.centerY, 200.0);
       expect(tri.radius, 50.0);
       expect(tri.rotation, 0.0);
-      
+
       // Default weights should be equal (1/3)
       expect(tri.weightA, closeTo(0.3333333, 0.0001));
       expect(tri.weightB, closeTo(0.3333333, 0.0001));
@@ -25,14 +25,14 @@ void main() {
       expect(tri.puckX, 0.0);
       expect(tri.puckY, 0.0);
       expect(tri.isDragging, 0.0);
-      
+
       expect(tri.cornerAColorHex, 4294901760.0);
       expect(tri.cornerBColorHex, 4278255360.0);
       // 32-bit floats drop some precision. The initial value is 4278190335 (0xFF0000FF).
       // Due to 24-bit mantissa, it will be 4278190336.0
       expect(tri.cornerCColorHex, 4278190336.0);
       expect(tri.puckColorHex, 4294967296.0);
-      
+
       expect(tri.strokeWidth, 2.0);
     });
 

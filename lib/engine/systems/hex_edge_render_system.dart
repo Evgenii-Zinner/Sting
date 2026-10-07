@@ -28,7 +28,8 @@ class HexEdgeRenderSystem {
   })  : querySingle = Query1<HexEdgeMesh>(hexEdgeMeshCaste),
         queryPositional = positionCaste != null
             ? Query2<Position, HexEdgeMesh>(positionCaste, hexEdgeMeshCaste)
-            : Query2<Position, HexEdgeMesh>(ComponentStorage<Position>(0), hexEdgeMeshCaste),
+            : Query2<Position, HexEdgeMesh>(
+                ComponentStorage<Position>(0), hexEdgeMeshCaste),
         _points = Float32List(maxPointsPerBatch * 4),
         _paint = Paint()
           ..isAntiAlias = true
@@ -81,8 +82,8 @@ class HexEdgeRenderSystem {
         // If paint attributes change or batch is full, flush
         if (pointsInBatch > 0 &&
             (color != currentBatchColor ||
-             width != currentBatchWidth ||
-             (pointsInBatch + 1) * 4 > _points.length)) {
+                width != currentBatchWidth ||
+                (pointsInBatch + 1) * 4 > _points.length)) {
           flushBatch();
         }
 

@@ -151,7 +151,9 @@ void main() {
       expect(outLevels[1], 0.0);
     });
 
-    test('Throws ArgumentError if partitionGraph is true but scratch buffers are missing', () {
+    test(
+        'Throws ArgumentError if partitionGraph is true but scratch buffers are missing',
+        () {
       final graph = NetworkGraph.create(maxNodes: 5, maxEdges: 5);
       final injections = Float32List(5);
       final losses = Float32List(5);

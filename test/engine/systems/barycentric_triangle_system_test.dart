@@ -24,7 +24,8 @@ void main() {
     });
 
     test('Hit testing inside radius', () {
-      final hitInside = system.handlePointerDown(100.0, 100.0); // Exactly center
+      final hitInside =
+          system.handlePointerDown(100.0, 100.0); // Exactly center
       expect(hitInside, isTrue);
       expect(tri.isDragging, 1.0);
 
@@ -39,10 +40,11 @@ void main() {
       expect(tri.isDragging, 0.0);
     });
 
-    test('Barycentric weights sum to 1 and within limits (Inside Triangle)', () {
+    test('Barycentric weights sum to 1 and within limits (Inside Triangle)',
+        () {
       // Down on center
       system.handlePointerDown(100.0, 100.0);
-      
+
       expect(tri.weightA + tri.weightB + tri.weightC, closeTo(1.0, 0.0001));
       expect(tri.weightA, closeTo(0.3333333, 0.0001));
       expect(tri.weightB, closeTo(0.3333333, 0.0001));
@@ -61,11 +63,11 @@ void main() {
 
       // Puck position should clamp to corner A absolute
       expect(tri.puckX, closeTo(100.0, 0.0001));
-      expect(tri.puckY, closeTo(0.0, 0.0001)); 
+      expect(tri.puckY, closeTo(0.0, 0.0001));
     });
 
     test('Barycentric clamping to Corner B', () {
-      // Corner B is at (radius * cos(pi/6), radius * sin(pi/6)) 
+      // Corner B is at (radius * cos(pi/6), radius * sin(pi/6))
       // (100 + 86.602, 100 + 50) = (186.602, 150)
       system.handlePointerDown(100.0, 100.0); // Grab inside
       system.handlePointerMove(250.0, 200.0); // Drag way outside bottom right
@@ -76,7 +78,7 @@ void main() {
       expect(tri.weightC, closeTo(0.0, 0.0001));
 
       expect(tri.puckX, closeTo(100.0 + 100.0 * cos(pi / 6), 0.0001));
-      expect(tri.puckY, closeTo(100.0 + 100.0 * sin(pi / 6), 0.0001)); 
+      expect(tri.puckY, closeTo(100.0 + 100.0 * sin(pi / 6), 0.0001));
     });
 
     test('Barycentric clamping to Corner C', () {
@@ -91,7 +93,7 @@ void main() {
       expect(tri.weightC, closeTo(1.0, 0.0001));
 
       expect(tri.puckX, closeTo(100.0 - 100.0 * cos(pi / 6), 0.0001));
-      expect(tri.puckY, closeTo(100.0 + 100.0 * sin(pi / 6), 0.0001)); 
+      expect(tri.puckY, closeTo(100.0 + 100.0 * sin(pi / 6), 0.0001));
     });
 
     test('Barycentric clamping to Edge BC', () {
@@ -106,15 +108,15 @@ void main() {
       expect(tri.weightC, closeTo(0.5, 0.0001)); // Centered horizontally
 
       expect(tri.puckX, closeTo(100.0, 0.0001));
-      expect(tri.puckY, closeTo(150.0, 0.0001)); 
+      expect(tri.puckY, closeTo(150.0, 0.0001));
     });
 
     test('Barycentric clamping to Edge CA', () {
       // Edge CA goes from C (-86.602, 150) to A (100, 0)
       // Point (0, 75) is outside Edge CA.
       system.handlePointerDown(100.0, 100.0); // Grab inside
-      system.handlePointerMove(0.0, 75.0); 
-      
+      system.handlePointerMove(0.0, 75.0);
+
       expect(tri.weightA + tri.weightB + tri.weightC, closeTo(1.0, 0.0001));
       expect(tri.weightB, closeTo(0.0, 0.0001));
       expect(tri.weightA, closeTo(0.336324, 0.0001));
@@ -125,8 +127,8 @@ void main() {
       // Edge AB goes from A (100, 0) to B (186.602, 150)
       // Point (200, 75) is outside Edge AB.
       system.handlePointerDown(100.0, 100.0); // Grab inside
-      system.handlePointerMove(200.0, 75.0); 
-      
+      system.handlePointerMove(200.0, 75.0);
+
       expect(tri.weightA + tri.weightB + tri.weightC, closeTo(1.0, 0.0001));
       expect(tri.weightC, closeTo(0.0, 0.0001));
       expect(tri.weightA, closeTo(0.336324, 0.0001));
@@ -138,7 +140,7 @@ void main() {
       expect(tri.isDragging, 1.0);
 
       system.handlePointerMove(100.0, 0.0); // Drag up to Corner A
-      
+
       expect(tri.weightA, closeTo(1.0, 0.0001));
       expect(tri.puckY, closeTo(0.0, 0.0001));
     });
@@ -146,7 +148,7 @@ void main() {
     test('Pointer move does not update if not dragging', () {
       // Triangle weights start at 1/3
       expect(tri.weightA, closeTo(0.3333333, 0.0001));
-      
+
       system.handlePointerMove(100.0, 0.0); // Move pointer without down event
 
       // Should remain unchanged

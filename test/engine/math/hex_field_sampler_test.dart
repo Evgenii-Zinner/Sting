@@ -28,7 +28,8 @@ void main() {
     });
 
     test('returns 0.0 for out of bounds sampling', () {
-      final sampled = HexFieldSampler.sample(grid, cols, rows, -100.0, -100.0, hexSize);
+      final sampled =
+          HexFieldSampler.sample(grid, cols, rows, -100.0, -100.0, hexSize);
       expect(sampled, 0.0);
     });
 
@@ -44,11 +45,13 @@ void main() {
       // Let's create a known gradient on the grid
       for (int r = 0; r < rows; r++) {
         for (int c = 0; c < cols; c++) {
-          grid[r * cols + c] = c * 10.0 + r * 5.0; // Gradient increases right and down
+          grid[r * cols + c] =
+              c * 10.0 + r * 5.0; // Gradient increases right and down
         }
       }
 
-      final gradient = HexFieldSampler.computeGradient(grid, cols, rows, x, y, hexSize);
+      final gradient =
+          HexFieldSampler.computeGradient(grid, cols, rows, x, y, hexSize);
 
       // Expect dx to be positive
       expect(gradient.dx, greaterThan(0.0));
@@ -64,7 +67,8 @@ void main() {
         grid[i] = 15.0;
       }
 
-      final gradient = HexFieldSampler.computeGradient(grid, cols, rows, x, y, hexSize);
+      final gradient =
+          HexFieldSampler.computeGradient(grid, cols, rows, x, y, hexSize);
 
       expect(gradient.dx, 0.0);
       expect(gradient.dy, 0.0);

@@ -64,7 +64,8 @@ extension type HexEdgeMesh(Float32List data) {
     data[offset + 5] = width;
 
     // Use Uint32List view to store color without float precision loss
-    final uint32View = data.buffer.asUint32List(data.offsetInBytes, data.length);
+    final uint32View =
+        data.buffer.asUint32List(data.offsetInBytes, data.length);
     uint32View[offset + 4] = color;
 
     data[1] = (count + 1).toDouble();
@@ -75,11 +76,13 @@ extension type HexEdgeMesh(Float32List data) {
   /// Returns (q1, r1, q2, r2, color, width).
   (int, int, int, int, int, double) getEdge(int index) {
     if (index < 0 || index >= edgeCount) {
-      throw RangeError.index(index, this, 'index', 'Index out of range', edgeCount);
+      throw RangeError.index(
+          index, this, 'index', 'Index out of range', edgeCount);
     }
 
     final offset = _headerSize + index * _edgeStride;
-    final uint32View = data.buffer.asUint32List(data.offsetInBytes, data.length);
+    final uint32View =
+        data.buffer.asUint32List(data.offsetInBytes, data.length);
 
     return (
       data[offset].toInt(),
