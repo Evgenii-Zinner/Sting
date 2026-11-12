@@ -1,16 +1,21 @@
 import 'dart:typed_data';
 import 'dart:math' as math;
 
+/// High-performance wavefront propagation solver for grid-based potential fields and flow field steering.
+///
+/// Computes Euclidean distance / obstacle cost waves across a 2D grid using a zero-allocation ring buffer.
 class PotentialFieldSolver {
   final Int32List _queue;
   final int _capacity;
 
   static const double _infinity = 9999999.0;
 
+  /// Creates a [PotentialFieldSolver] with ring buffer space for up to [capacity] cells.
   PotentialFieldSolver(int capacity)
       : _capacity = capacity,
         _queue = Int32List(capacity);
 
+  /// Propagates a wavefront from [goalCells] across [potentialGrid] taking [costOrObstacleGrid] into account.
   void solveWavefront(
     Float32List potentialGrid,
     Uint8List costOrObstacleGrid,
@@ -208,6 +213,7 @@ class PotentialFieldSolver {
     }
   }
 
+  /// Computes normalized downhill flow vectors for each cell in [potentialGrid] and writes them to [outVectorGrid].
   void deriveFlowVectors(Float32List potentialGrid, Float32List outVectorGrid,
       int cols, int rows) {
     int numCells = cols * rows;

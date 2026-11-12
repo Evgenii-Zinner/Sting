@@ -21,18 +21,23 @@ extension type FlockingAgent(Float32List data) {
           ..[3] = cohesionWeight
           ..[4] = maxForce);
 
+  /// Sensing radius within which nearby flock mates are detected.
   double get neighborRadius => data[0];
   set neighborRadius(double value) => data[0] = value;
 
+  /// Weight multiplier for crowd avoidance / separation force.
   double get separationWeight => data[1];
   set separationWeight(double value) => data[1] = value;
 
+  /// Weight multiplier for velocity matching / alignment force.
   double get alignmentWeight => data[2];
   set alignmentWeight(double value) => data[2] = value;
 
+  /// Weight multiplier for center-of-mass attraction / cohesion force.
   double get cohesionWeight => data[3];
   set cohesionWeight(double value) => data[3] = value;
 
+  /// Maximum steering force magnitude allowed.
   double get maxForce => data[4];
   set maxForce(double value) => data[4] = value;
 }

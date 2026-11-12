@@ -15,10 +15,12 @@ class UtilityAISystem {
   /// The score bonus added to the currently active task to prevent oscillation.
   static const double hysteresisBonus = 0.1;
 
+  /// Creates a new [UtilityAISystem] targeting the provided [_scene].
   UtilityAISystem(this._scene) {
     _query = Query1<UtilityAI>(_scene.getCaste<UtilityAI>('UtilityAI'));
   }
 
+  /// Evaluates tension and damping scores across all considerations and selects the highest-scoring task.
   void update(double dt) {
     _query.forEach((entity, ai) {
       final numConsiderations = ai.numConsiderations;

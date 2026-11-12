@@ -23,15 +23,19 @@ extension type EntityFSM(ByteData data) {
           ..setFloat32(8, stateTimer, Endian.host)
           ..setInt32(12, flags, Endian.host));
 
+  /// Active finite state machine state ID.
   int get currentState => data.getInt32(0, Endian.host);
   set currentState(int value) => data.setInt32(0, value, Endian.host);
 
+  /// State ID preceding the most recent state change.
   int get previousState => data.getInt32(4, Endian.host);
   set previousState(int value) => data.setInt32(4, value, Endian.host);
 
+  /// Time elapsed in seconds since entering [currentState].
   double get stateTimer => data.getFloat32(8, Endian.host);
   set stateTimer(double value) => data.setFloat32(8, value, Endian.host);
 
+  /// Bitmask flags for state-specific condition tracking.
   int get flags => data.getInt32(12, Endian.host);
   set flags(int value) => data.setInt32(12, value, Endian.host);
 

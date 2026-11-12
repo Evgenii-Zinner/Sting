@@ -25,25 +25,27 @@ extension type Steering(Float32List data) {
           ..[4] = behavior
           ..[5] = decelerationRadius);
 
+  /// World target X coordinate to steer towards or away from.
   double get targetX => data[0];
   set targetX(double value) => data[0] = value;
 
+  /// World target Y coordinate to steer towards or away from.
   double get targetY => data[1];
   set targetY(double value) => data[1] = value;
 
+  /// Maximum linear movement speed.
   double get maxSpeed => data[2];
   set maxSpeed(double value) => data[2] = value;
 
+  /// Maximum steering force steering impulses can apply.
   double get maxForce => data[3];
   set maxForce(double value) => data[3] = value;
 
-  /// Behavior type:
-  /// 0.0 = Seek
-  /// 1.0 = Flee
-  /// 2.0 = Arrive
+  /// Behavior type: 0.0 = Seek, 1.0 = Flee, 2.0 = Arrive.
   double get behavior => data[4];
   set behavior(double value) => data[4] = value;
 
+  /// Distance threshold where the agent starts decelerating when using Arrive.
   double get decelerationRadius => data[5];
   set decelerationRadius(double value) => data[5] = value;
 

@@ -37,7 +37,6 @@ export 'engine/math/field_splatting.dart';
 export 'engine/math/intersection.dart';
 export 'engine/math/tilemap_collider_extractor.dart';
 export 'engine/ai/potential_field_solver.dart';
-export 'engine/ai/steering_behaviors.dart';
 
 // Audio
 export 'engine/audio/audio_backend.dart';

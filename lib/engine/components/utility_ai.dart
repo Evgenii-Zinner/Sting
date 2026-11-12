@@ -18,15 +18,19 @@ extension type UtilityAI(ByteData data) {
           ..setFloat32(8, targetX, Endian.host)
           ..setFloat32(12, targetY, Endian.host));
 
+  /// Active task ID currently executing.
   int get activeTaskId => data.getInt32(0, Endian.host);
   set activeTaskId(int value) => data.setInt32(0, value, Endian.host);
 
+  /// Target entity ID associated with current task, or -1 if none.
   int get targetEntityId => data.getInt32(4, Endian.host);
   set targetEntityId(int value) => data.setInt32(4, value, Endian.host);
 
+  /// Target X location for spatial tasks.
   double get targetX => data.getFloat32(8, Endian.host);
   set targetX(double value) => data.setFloat32(8, value, Endian.host);
 
+  /// Target Y location for spatial tasks.
   double get targetY => data.getFloat32(12, Endian.host);
   set targetY(double value) => data.setFloat32(12, value, Endian.host);
 
