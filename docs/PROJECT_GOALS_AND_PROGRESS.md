@@ -99,6 +99,15 @@
 * **Complete Property DartDoc Coverage**:
   - Every property across `BarycentricTriangle`, `RadialDial`, `UIWindow`, `UIButton`, `UIBoundingBox`, `ProgressBar`, `FloatingText`, `AudioListener`, and `AudioEmitter` documented according to Effective Dart guidelines.
 
+### H. AI, Kinematics & Clean Architecture Audit
+* **Dead Stub Pruning (YAGNI)**:
+  - Removed empty zero-byte stub `lib/engine/ai/steering_behaviors.dart` and its export in `lib/sting.dart`. All steering algorithms cleanly reside in `lib/engine/components/steering.dart` and `lib/engine/systems/steering_system.dart`.
+* **Complete Kinematics & AI DartDoc Coverage**:
+  - Added full doc coverage across `PotentialFieldSolver`, `UtilityAISystem`, `UtilityAI`, `EntityFSM`, `Steering`, and `FlockingAgent`.
+* **Full Test Suite & Analyzer Cleanliness**:
+  - 100% test pass rate across all 843 test cases (unit, system, integration, and performance regression suites).
+  - 0 analyzer warnings, 0 DartDoc warnings, and 0 errors across all 169 public libraries.
+
 ---
 
 ## 3. Subsystem Implementation Inventory
