@@ -25,7 +25,7 @@ class TilemapColliderExtractor {
   final Float32List _tempCoord = Float32List(2);
 
   /// Creates a new extractor with an internal visited buffer sized for
-  /// a grid of [columns] x [rows].
+  /// a grid of `columns` x `rows`.
   TilemapColliderExtractor(this._columns, this._rows)
       : _visited = Uint8List(_columns * _rows);
 

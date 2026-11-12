@@ -2,95 +2,13 @@ import 'dart:typed_data';
 import 'dart:math' as math;
 import '../components/movement_queue.dart';
 import '../math/hex_math.dart';
+import '../math/indexed_min_heap.dart';
 
 /// The grid layout type for pathfinding evaluation.
 enum PathfindingGridType {
   rectangular,
   rectangular8Way,
   hexagonal,
-}
-
-/// A zero-allocation MinHeap priority queue backed by typed arrays.
-class _MinHeap {
-  final Int32List data;
-  final Float32List fScore;
-  final Int32List indices;
-  int size = 0;
-
-  _MinHeap(int capacity, this.fScore)
-      : data = Int32List(capacity),
-        indices = Int32List(capacity) {
-    indices.fillRange(0, capacity, -1);
-  }
-
-  void clear() {
-    for (int i = 0; i < size; i++) {
-      indices[data[i]] = -1;
-    }
-    size = 0;
-  }
-
-  bool get isEmpty => size == 0;
-
-  void push(int node) {
-    int i = size++;
-    while (i > 0) {
-      final int parent = (i - 1) >> 1;
-      final int pNode = data[parent];
-      if (fScore[pNode] <= fScore[node]) break;
-      data[i] = pNode;
-      indices[pNode] = i;
-      i = parent;
-    }
-    data[i] = node;
-    indices[node] = i;
-  }
-
-  int pop() {
-    if (size == 0) return -1;
-    final int root = data[0];
-    indices[root] = -1;
-    size--;
-    if (size > 0) {
-      final int lastNode = data[size];
-      int i = 0;
-      while (true) {
-        final int left = (i << 1) + 1;
-        final int right = left + 1;
-        if (left >= size) break;
-
-        int smallest = left;
-        if (right < size && fScore[data[right]] < fScore[data[left]]) {
-          smallest = right;
-        }
-
-        final int sNode = data[smallest];
-        if (fScore[lastNode] <= fScore[sNode]) break;
-        data[i] = sNode;
-        indices[sNode] = i;
-        i = smallest;
-      }
-      data[i] = lastNode;
-      indices[lastNode] = i;
-    }
-    return root;
-  }
-
-  void decreaseKey(int node) {
-    int i = indices[node];
-    if (i == -1) return; // Not in heap
-
-    while (i > 0) {
-      final int parent = (i - 1) >> 1;
-      final int pNode = data[parent];
-      if (fScore[pNode] <= fScore[node]) break;
-      data[i] = pNode;
-      indices[pNode] = i;
-      i = parent;
-    }
-    data[i] = node;
-    indices[node] = i;
-  }
 }
 
 /// A zero-allocation A* grid pathfinder.
@@ -102,7 +20,7 @@ class GridPathfinder {
   final Int32List cameFrom;
   final Uint8List nodeState; // 0 = unvisited, 1 = open, 2 = closed
   final Int32List _pathBuffer;
-  late final _MinHeap _openSet;
+  late final IndexedMinHeap _openSet;
 
   GridPathfinder(this.maxNodes)
       : gScore = Float32List(maxNodes),
@@ -110,7 +28,7 @@ class GridPathfinder {
         cameFrom = Int32List(maxNodes),
         nodeState = Uint8List(maxNodes),
         _pathBuffer = Int32List(maxNodes) {
-    _openSet = _MinHeap(maxNodes, fScore);
+    _openSet = IndexedMinHeap(maxNodes, fScore);
   }
 
   /// Finds a path and writes it directly to the provided [queue].

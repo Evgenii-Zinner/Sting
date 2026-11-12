@@ -28,6 +28,7 @@ export 'engine/math/scalar_field_sampler.dart';
 export 'engine/math/segment.dart';
 export 'engine/math/spatial_resonance.dart';
 export 'engine/math/spline.dart';
+export 'engine/math/indexed_min_heap.dart';
 export 'engine/math/stockpile_balance_calculator.dart';
 export 'engine/math/compound_mass_calculator.dart';
 export 'engine/math/easing.dart';

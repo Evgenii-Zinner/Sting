@@ -154,7 +154,7 @@ void main() {
     });
   });
 
-  group('_MinHeap (via GridPathfinder)', () {
+  group('IndexedMinHeap (via GridPathfinder)', () {
     test('handles pathfinding that requires heap updates', () {
       final pathfinder = GridPathfinder(100);
       final queue = MovementQueue.create(100);

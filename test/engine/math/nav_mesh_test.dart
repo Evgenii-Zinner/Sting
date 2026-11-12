@@ -166,7 +166,7 @@ void main() {
     });
   });
 
-  group('_NavMinHeap (via NavMeshPathfinder)', () {
+  group('IndexedMinHeap (via NavMeshPathfinder)', () {
     test('handles pathfinding that requires heap updates', () {
       final heapMesh = NavMesh();
       // 4 polys arranged in a square

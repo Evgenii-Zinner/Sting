@@ -4,7 +4,7 @@ import 'dart:typed_data';
 /// Zero-allocation mathematical utilities for 2D polylines.
 ///
 /// A polyline is represented by a flat [Float32List] where coordinates
-/// are stored sequentially as [x0, y0, x1, y1, ...].
+/// are stored sequentially as `[x0, y0, x1, y1, ...]`.
 class PolylineMath {
   /// Calculates the total length of the polyline.
   static double length(Float32List points) {

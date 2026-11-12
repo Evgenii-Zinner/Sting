@@ -102,7 +102,7 @@ class QuadTree2D {
   }
 
   /// Queries the quadtree for entities overlapping the specified AABB.
-  /// Returns the number of entities found, which is capped at [outEntities.length].
+  /// Returns the number of entities found, which is capped at `outEntities.length`.
   int queryAABB(
     double minX,
     double minY,

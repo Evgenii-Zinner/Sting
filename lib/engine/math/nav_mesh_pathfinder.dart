@@ -1,89 +1,7 @@
 import 'dart:typed_data';
 import 'dart:math' as math;
 import 'nav_mesh.dart';
-
-/// A zero-allocation MinHeap priority queue for A* over NavMesh polygons.
-class _NavMinHeap {
-  final Int32List data;
-  final Float32List fScore;
-  final Int32List indices;
-  int size = 0;
-
-  _NavMinHeap(int capacity, this.fScore)
-      : data = Int32List(capacity),
-        indices = Int32List(capacity) {
-    indices.fillRange(0, capacity, -1);
-  }
-
-  void clear() {
-    for (int i = 0; i < size; i++) {
-      indices[data[i]] = -1;
-    }
-    size = 0;
-  }
-
-  bool get isEmpty => size == 0;
-
-  void push(int node) {
-    int i = size++;
-    while (i > 0) {
-      final int parent = (i - 1) >> 1;
-      final int pNode = data[parent];
-      if (fScore[pNode] <= fScore[node]) break;
-      data[i] = pNode;
-      indices[pNode] = i;
-      i = parent;
-    }
-    data[i] = node;
-    indices[node] = i;
-  }
-
-  int pop() {
-    if (size == 0) return -1;
-    final int root = data[0];
-    indices[root] = -1;
-    size--;
-    if (size > 0) {
-      final int lastNode = data[size];
-      int i = 0;
-      while (true) {
-        final int left = (i << 1) + 1;
-        final int right = left + 1;
-        if (left >= size) break;
-
-        int smallest = left;
-        if (right < size && fScore[data[right]] < fScore[data[left]]) {
-          smallest = right;
-        }
-
-        final int sNode = data[smallest];
-        if (fScore[lastNode] <= fScore[sNode]) break;
-        data[i] = sNode;
-        indices[sNode] = i;
-        i = smallest;
-      }
-      data[i] = lastNode;
-      indices[lastNode] = i;
-    }
-    return root;
-  }
-
-  void decreaseKey(int node) {
-    int i = indices[node];
-    if (i == -1) return; // Not in heap
-
-    while (i > 0) {
-      final int parent = (i - 1) >> 1;
-      final int pNode = data[parent];
-      if (fScore[pNode] <= fScore[node]) break;
-      data[i] = pNode;
-      indices[pNode] = i;
-      i = parent;
-    }
-    data[i] = node;
-    indices[node] = i;
-  }
-}
+import 'indexed_min_heap.dart';
 
 /// A zero-allocation pathfinder operating on a `NavMesh`.
 class NavMeshPathfinder {
@@ -96,7 +14,7 @@ class NavMeshPathfinder {
   final Int32List cameFrom;
   final Uint8List nodeState; // 0 = unvisited, 1 = open, 2 = closed
 
-  late final _NavMinHeap _openSet;
+  late final IndexedMinHeap _openSet;
 
   // Buffers for Funnel algorithm
   final Float32List _portalLeftX;
@@ -121,7 +39,7 @@ class NavMeshPathfinder {
         _polyPath = Int32List(maxPolygons),
         outPathX = Float32List(maxPathSegments),
         outPathY = Float32List(maxPathSegments) {
-    _openSet = _NavMinHeap(maxPolygons, fScore);
+    _openSet = IndexedMinHeap(maxPolygons, fScore);
   }
 
   /// Finds a smooth path from (startX, startY) to (targetX, targetY).
