@@ -91,6 +91,14 @@
   - Unified `IndexedMinHeap` in `lib/engine/math/indexed_min_heap.dart` replacing duplicate internal heaps.
   - Cleaned all `hide` clauses from `lib/sting.dart`. All 170 public libraries compile with 0 analyzer issues and 0 DartDoc warnings.
 
+### G. UI & Audio Zero-Allocation Hardening
+* **Radar View Optimization**:
+  - `RadarDisplay` exposes a cached `uint32View` getter and `RadarSystem._renderRadar` reads ARGB colors directly from it, eliminating repeated `asUint32List` view allocations per radar display per frame.
+* **Subpixel Snapping in UI**:
+  - `ProgressBarRenderSystem` world-space positioning unified with canonical `Viewport.snapToPixel`.
+* **Complete Property DartDoc Coverage**:
+  - Every property across `BarycentricTriangle`, `RadialDial`, `UIWindow`, `UIButton`, `UIBoundingBox`, `ProgressBar`, `FloatingText`, `AudioListener`, and `AudioEmitter` documented according to Effective Dart guidelines.
+
 ---
 
 ## 3. Subsystem Implementation Inventory
