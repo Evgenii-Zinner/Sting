@@ -65,48 +65,63 @@ extension type BarycentricTriangle(Float32List _data) {
     return BarycentricTriangle(data);
   }
 
+  /// Center X coordinate on the screen.
   double get centerX => _data[0];
   set centerX(double value) => _data[0] = value;
 
+  /// Center Y coordinate on the screen.
   double get centerY => _data[1];
   set centerY(double value) => _data[1] = value;
 
+  /// Distance from center to vertices.
   double get radius => _data[2];
   set radius(double value) => _data[2] = value;
 
+  /// Rotation angle of the triangle in radians.
   double get rotation => _data[3];
   set rotation(double value) => _data[3] = value;
 
+  /// Normalized weight of top vertex A (0.0 to 1.0).
   double get weightA => _data[4];
   set weightA(double value) => _data[4] = value;
 
+  /// Normalized weight of bottom-right vertex B (0.0 to 1.0).
   double get weightB => _data[5];
   set weightB(double value) => _data[5] = value;
 
+  /// Normalized weight of bottom-left vertex C (0.0 to 1.0).
   double get weightC => _data[6];
   set weightC(double value) => _data[6] = value;
 
+  /// Current handle/puck X position in screen space.
   double get puckX => _data[7];
   set puckX(double value) => _data[7] = value;
 
+  /// Current handle/puck Y position in screen space.
   double get puckY => _data[8];
   set puckY(double value) => _data[8] = value;
 
+  /// Whether the puck is actively being dragged (1.0 = true, 0.0 = false).
   double get isDragging => _data[9];
   set isDragging(double value) => _data[9] = value;
 
+  /// 32-bit ARGB float color of vertex A.
   double get cornerAColorHex => _data[10];
   set cornerAColorHex(double value) => _data[10] = value;
 
+  /// 32-bit ARGB float color of vertex B.
   double get cornerBColorHex => _data[11];
   set cornerBColorHex(double value) => _data[11] = value;
 
+  /// 32-bit ARGB float color of vertex C.
   double get cornerCColorHex => _data[12];
   set cornerCColorHex(double value) => _data[12] = value;
 
+  /// 32-bit ARGB float color of draggable puck handle.
   double get puckColorHex => _data[13];
   set puckColorHex(double value) => _data[13] = value;
 
+  /// Border outline stroke width.
   double get strokeWidth => _data[14];
   set strokeWidth(double value) => _data[14] = value;
 }

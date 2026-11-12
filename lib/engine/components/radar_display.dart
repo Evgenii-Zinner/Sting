@@ -60,21 +60,20 @@ extension type RadarDisplay(Float32List data) {
   double get sweepAngle => data[5];
   set sweepAngle(double value) => data[5] = value;
 
+  /// Returns a Uint32List view of the underlying buffer for fast ARGB color access.
+  Uint32List get uint32View => data.buffer.asUint32List(data.offsetInBytes, 10);
+
   /// Gets the background color in ARGB hex.
-  int get backgroundColorHex =>
-      data.buffer.asUint32List(data.offsetInBytes, 10)[6];
-  set backgroundColorHex(int value) =>
-      data.buffer.asUint32List(data.offsetInBytes, 10)[6] = value;
+  int get backgroundColorHex => uint32View[6];
+  set backgroundColorHex(int value) => uint32View[6] = value;
 
   /// Gets the radar grid/rings color in ARGB hex.
-  int get radarColorHex => data.buffer.asUint32List(data.offsetInBytes, 10)[7];
-  set radarColorHex(int value) =>
-      data.buffer.asUint32List(data.offsetInBytes, 10)[7] = value;
+  int get radarColorHex => uint32View[7];
+  set radarColorHex(int value) => uint32View[7] = value;
 
   /// Gets the blip (entity pip) color in ARGB hex.
-  int get blipColorHex => data.buffer.asUint32List(data.offsetInBytes, 10)[8];
-  set blipColorHex(int value) =>
-      data.buffer.asUint32List(data.offsetInBytes, 10)[8] = value;
+  int get blipColorHex => uint32View[8];
+  set blipColorHex(int value) => uint32View[8] = value;
 
   /// Gets whether the radar is circular (1.0) or square (0.0).
   double get isCircular => data[9];

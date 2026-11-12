@@ -2,8 +2,7 @@ import 'dart:typed_data';
 import 'package:sting/engine/audio/audio_event_queue.dart';
 import 'package:sting/engine/audio/audio_bindings.dart';
 
-/// The AudioSystem processes audio events from an AudioEventQueue
-/// and tracks active audio playback.
+/// Processes audio playback events from [AudioEventQueue] and tracks active audio channels.
 class AudioSystem {
   final AudioEventQueue _queue;
 
@@ -11,11 +10,14 @@ class AudioSystem {
   final Int32List _activeSounds;
   int _activeCount = 0;
 
+  /// Creates a new [AudioSystem] monitoring [_queue].
   AudioSystem(this._queue, {int maxActiveSounds = 64})
       : _activeSounds = Int32List(maxActiveSounds * 2);
 
+  /// Number of actively playing audio instances.
   int get activeSoundCount => _activeCount;
 
+  /// Flushes pending audio events from the event queue and issues playback requests.
   void update() {
     _queue.process((
       int soundId,

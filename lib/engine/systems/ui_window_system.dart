@@ -3,8 +3,15 @@ import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/components/ui_window.dart';
 import 'package:sting/engine/components/ui_button.dart';
 
+/// Manages interactive draggable windows ([UIWindow]) and buttons ([UIButton]).
+///
+/// Handles hit-testing, dragging with viewport boundary clamping, hover/pressed state updates,
+/// and batched rendering with zero per-frame heap allocations.
 class UIWindowSystem {
+  /// Storage of window components.
   final ComponentStorage<UIWindow> windows;
+
+  /// Storage of button components.
   final ComponentStorage<UIButton> buttons;
 
   final Paint _windowBgPaint = Paint()..style = PaintingStyle.fill;
@@ -15,8 +22,12 @@ class UIWindowSystem {
 
   int _draggedWindow = -1;
 
+  /// Creates a new [UIWindowSystem].
   UIWindowSystem(this.windows, this.buttons);
 
+  /// Handles pointer down events at `(px, py)`.
+  ///
+  /// Returns `true` if a window title bar or button was clicked.
   bool handlePointerDown(double px, double py) {
     bool handled = false;
 

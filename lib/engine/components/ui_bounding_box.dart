@@ -24,18 +24,23 @@ extension type UIBoundingBox(Float32List _data) {
     return UIBoundingBox(data);
   }
 
+  /// Screen-space X coordinate of the top-left corner.
   double get x => _data[0];
   set x(double value) => _data[0] = value;
 
+  /// Screen-space Y coordinate of the top-left corner.
   double get y => _data[1];
   set y(double value) => _data[1] = value;
 
+  /// Width of the bounding box.
   double get width => _data[2];
   set width(double value) => _data[2] = value;
 
+  /// Height of the bounding box.
   double get height => _data[3];
   set height(double value) => _data[3] = value;
 
+  /// Active pointer ID interacting with this box, or -1.0 if none.
   double get pointerId => _data[4];
   set pointerId(double value) => _data[4] = value;
 }

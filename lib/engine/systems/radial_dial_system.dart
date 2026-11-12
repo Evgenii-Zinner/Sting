@@ -11,6 +11,7 @@ class RadialDialSystem {
   final Paint _fillPaint;
   final Paint _handlePaint;
 
+  /// Creates a new [RadialDialSystem].
   RadialDialSystem(this._dials)
       : _trackPaint = Paint()..style = PaintingStyle.stroke,
         _fillPaint = Paint()..style = PaintingStyle.stroke,

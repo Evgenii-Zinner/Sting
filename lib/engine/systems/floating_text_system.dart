@@ -4,11 +4,16 @@ import '../ecs/component_storage.dart';
 import '../components/floating_text.dart';
 import '../components/viewport.dart';
 
-/// A system that manages the update and rendering of FloatingText components.
+/// A system that manages the update and rendering of [FloatingText] components.
 /// Ensures zero per-frame object allocations.
 class FloatingTextSystem {
+  /// Storage of floating text components.
   final ComponentStorage<FloatingText> floatingTextCaste;
+
+  /// Storage of camera viewports for screen-space projection.
   final ComponentStorage<Viewport> viewportCaste;
+
+  /// Downward gravitational drift acceleration.
   final double gravity;
 
   final Query1<FloatingText> _textQuery;

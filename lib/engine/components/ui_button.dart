@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 /// Zero-allocation UI Button component.
 extension type UIButton(Float32List data) {
+  /// Creates a new [UIButton] component.
   UIButton.create({
     required double relativeX,
     required double relativeY,
@@ -29,39 +30,51 @@ extension type UIButton(Float32List data) {
           ..[10] = borderRadius
           ..[11] = wasClicked);
 
+  /// Horizontal position relative to screen or parent window.
   double get relativeX => data[0];
   set relativeX(double value) => data[0] = value;
 
+  /// Vertical position relative to screen or parent window.
   double get relativeY => data[1];
   set relativeY(double value) => data[1] = value;
 
+  /// Button width.
   double get width => data[2];
   set width(double value) => data[2] = value;
 
+  /// Button height.
   double get height => data[3];
   set height(double value) => data[3] = value;
 
+  /// Interaction state: 0 = Normal, 1 = Hover, 2 = Pressed, 3 = Disabled.
   double get state => data[4];
   set state(double value) => data[4] = value;
 
+  /// Normal background color hex.
   double get normalColorHex => data[5];
   set normalColorHex(double value) => data[5] = value;
 
+  /// Hovered background color hex.
   double get hoverColorHex => data[6];
   set hoverColorHex(double value) => data[6] = value;
 
+  /// Pressed background color hex.
   double get pressedColorHex => data[7];
   set pressedColorHex(double value) => data[7] = value;
 
+  /// Border outline color hex.
   double get borderColorHex => data[8];
   set borderColorHex(double value) => data[8] = value;
 
+  /// Border outline stroke width.
   double get borderWidth => data[9];
   set borderWidth(double value) => data[9] = value;
 
+  /// Corner radius for rounded corners.
   double get borderRadius => data[10];
   set borderRadius(double value) => data[10] = value;
 
+  /// Whether a click event was triggered (1.0 = true, 0.0 = false).
   double get wasClicked => data[11];
   set wasClicked(double value) => data[11] = value;
 }

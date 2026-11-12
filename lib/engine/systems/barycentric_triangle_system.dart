@@ -19,6 +19,7 @@ class BarycentricTriangleSystem {
   final Paint _auraPaint;
   final Path _trianglePath;
 
+  /// Creates a new [BarycentricTriangleSystem].
   BarycentricTriangleSystem(this._triangles)
       : _strokePaint = Paint()..style = PaintingStyle.stroke,
         _puckPaint = Paint()..style = PaintingStyle.fill,

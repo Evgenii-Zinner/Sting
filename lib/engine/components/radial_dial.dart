@@ -54,47 +54,62 @@ extension type RadialDial(Float32List _data) {
     return RadialDial(data);
   }
 
+  /// Center X coordinate on the screen.
   double get centerX => _data[0];
   set centerX(double value) => _data[0] = value;
 
+  /// Center Y coordinate on the screen.
   double get centerY => _data[1];
   set centerY(double value) => _data[1] = value;
 
+  /// Outer radius of the arc track.
   double get outerRadius => _data[2];
   set outerRadius(double value) => _data[2] = value;
 
+  /// Inner radius of the arc track.
   double get innerRadius => _data[3];
   set innerRadius(double value) => _data[3] = value;
 
+  /// Normalized dial value (0.0 to 1.0).
   double get currentValue => _data[4];
   set currentValue(double value) => _data[4] = value;
 
+  /// Minimum mapped value corresponding to 0.0.
   double get minValue => _data[5];
   set minValue(double value) => _data[5] = value;
 
+  /// Maximum mapped value corresponding to 1.0.
   double get maxValue => _data[6];
   set maxValue(double value) => _data[6] = value;
 
+  /// Start angle of the circular arc in radians.
   double get startAngle => _data[7];
   set startAngle(double value) => _data[7] = value;
 
+  /// End angle of the circular arc in radians.
   double get endAngle => _data[8];
   set endAngle(double value) => _data[8] = value;
 
+  /// Background track color hex.
   double get trackColorHex => _data[9];
   set trackColorHex(double value) => _data[9] = value;
 
+  /// Active fill progress arc color hex.
   double get fillColorHex => _data[10];
   set fillColorHex(double value) => _data[10] = value;
 
+  /// Circular handle indicator color hex.
   double get handleColorHex => _data[11];
   set handleColorHex(double value) => _data[11] = value;
 
+  /// Whether the dial handle is actively being dragged (1.0 = true, 0.0 = false).
   double get isDragging => _data[12];
   set isDragging(double value) => _data[12] = value;
 
+  /// Number of discrete segment notches (0.0 for continuous).
   double get segments => _data[13];
   set segments(double value) => _data[13] = value;
 
+  /// Current value mapped linearly to the [minValue] .. [maxValue] range.
   double get scaledValue => minValue + currentValue * (maxValue - minValue);
 }

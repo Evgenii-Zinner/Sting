@@ -67,12 +67,17 @@ class RadarSystem {
     RadarDisplay radar,
     Query1<Position> blipsQuery,
   ) {
-    // Configure paints
-    _bgPaint.color = Color(radar.backgroundColorHex);
-    _gridPaint.color = Color(radar.radarColorHex);
-    _blipPaint.color = Color(radar.blipColorHex);
+    // Configure paints using cached view to avoid per-getter view allocations
+    final uint32 = radar.uint32View;
+    final int bgCol = uint32[6];
+    final int radarCol = uint32[7];
+    final int blipCol = uint32[8];
+
+    _bgPaint.color = Color(bgCol);
+    _gridPaint.color = Color(radarCol);
+    _blipPaint.color = Color(blipCol);
     _sweepPaint.color =
-        Color(radar.radarColorHex).withAlpha(128); // semi-transparent sweep
+        Color(radarCol).withAlpha(128); // semi-transparent sweep
 
     final sx = radar.screenX;
     final sy = radar.screenY;

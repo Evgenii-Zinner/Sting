@@ -21,10 +21,16 @@ abstract class AudioManager {
 ///
 /// It relies on an external [AudioManager] to apply the computed values.
 class AudioSpatialSystem {
+  /// The audio manager driver receiving volume and pan updates.
   final AudioManager audioManager;
+
+  /// Query for listener entities with position.
   final Query2<Position, AudioListener> listenerQuery;
+
+  /// Query for emitter entities with position.
   final Query2<Position, AudioEmitter> emitterQuery;
 
+  /// Creates a new [AudioSpatialSystem].
   AudioSpatialSystem({
     required this.audioManager,
     required this.listenerQuery,

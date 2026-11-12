@@ -12,9 +12,11 @@ extension type AudioListener(Float32List data) {
           ..[0] = hearingRange
           ..[1] = masterVolume);
 
+  /// Maximum radius within which sounds can be heard.
   double get hearingRange => data[0];
   set hearingRange(double value) => data[0] = value;
 
+  /// Global master volume multiplier.
   double get masterVolume => data[1];
   set masterVolume(double value) => data[1] = value;
 }

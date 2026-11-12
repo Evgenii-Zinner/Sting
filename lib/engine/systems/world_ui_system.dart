@@ -7,10 +7,16 @@ import '../components/complex_ui.dart';
 /// Translates entity world coordinates to viewport screen-space coordinates,
 /// updating target UI elements (like health bars) without per-frame allocations.
 class WorldUISystem {
+  /// Storage of entity world positions.
   final ComponentStorage<Position> positionCaste;
+
+  /// Storage of world UI connector components.
   final ComponentStorage<WorldUI> worldUiCaste;
+
+  /// Storage of target screen UI components to receive updated positions.
   final ComponentStorage<ComplexUI> complexUiCaste;
 
+  /// Creates a new [WorldUISystem].
   WorldUISystem({
     required this.positionCaste,
     required this.worldUiCaste,

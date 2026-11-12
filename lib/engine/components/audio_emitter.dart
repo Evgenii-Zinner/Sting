@@ -30,24 +30,31 @@ extension type AudioEmitter(ByteData data) {
           ..setInt32(20, isLooping ? 1 : 0, Endian.host)
           ..setInt32(24, isPlaying ? 1 : 0, Endian.host));
 
+  /// Unique numeric identifier for the sound sample or track.
   int get soundId => data.getInt32(0, Endian.host);
   set soundId(int value) => data.setInt32(0, value, Endian.host);
 
+  /// Maximum distance in pixels at which sound drops to silence.
   double get maxDistance => data.getFloat32(4, Endian.host);
   set maxDistance(double value) => data.setFloat32(4, value, Endian.host);
 
+  /// Reference distance for inverse attenuation calculation.
   double get referenceDistance => data.getFloat32(8, Endian.host);
   set referenceDistance(double value) => data.setFloat32(8, value, Endian.host);
 
+  /// Base playback volume multiplier (0.0 to 1.0).
   double get volume => data.getFloat32(12, Endian.host);
   set volume(double value) => data.setFloat32(12, value, Endian.host);
 
+  /// Attenuation rolloff steepness.
   double get rolloffFactor => data.getFloat32(16, Endian.host);
   set rolloffFactor(double value) => data.setFloat32(16, value, Endian.host);
 
+  /// Whether playback automatically repeats upon finishing.
   bool get isLooping => data.getInt32(20, Endian.host) != 0;
   set isLooping(bool value) => data.setInt32(20, value ? 1 : 0, Endian.host);
 
+  /// Whether sound is actively being emitted.
   bool get isPlaying => data.getInt32(24, Endian.host) != 0;
   set isPlaying(bool value) => data.setInt32(24, value ? 1 : 0, Endian.host);
 }

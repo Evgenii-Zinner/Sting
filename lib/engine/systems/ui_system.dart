@@ -11,6 +11,7 @@ class UISystem {
   final InputSystem _inputSystem;
   final Renderer? _renderer;
 
+  /// Creates a new [UISystem].
   UISystem(this._uiBoxes, this._inputSystem, [this._renderer]);
 
   /// Updates UI states based on current input.

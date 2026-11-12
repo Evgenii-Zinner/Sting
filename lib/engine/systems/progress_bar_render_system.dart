@@ -6,10 +6,15 @@ import 'package:sting/engine/components/viewport.dart';
 import 'package:sting/engine/ecs/component_storage.dart';
 import 'package:sting/engine/ecs/query.dart';
 
-/// Renders ProgressBar components and smoothly updates their visual state.
+/// Renders [ProgressBar] components and smoothly updates their visual state.
 class ProgressBarRenderSystem {
+  /// Storage of progress bar components.
   final ComponentStorage<ProgressBar> progressBars;
+
+  /// Optional storage of entity world positions.
   final ComponentStorage<Position>? positions;
+
+  /// Optional storage of camera viewports for world-space projection.
   final ComponentStorage<Viewport>? viewports;
 
   final Paint _bgPaint = Paint()..style = PaintingStyle.fill;
@@ -20,6 +25,7 @@ class ProgressBarRenderSystem {
     ..style = PaintingStyle.stroke
     ..color = const Color(0xFF000000);
 
+  /// Creates a new [ProgressBarRenderSystem].
   ProgressBarRenderSystem(
     this.progressBars, {
     this.positions,
@@ -63,10 +69,10 @@ class ProgressBarRenderSystem {
           if (viewport != null) {
             final scale = viewport.zoom;
             // Prevent sub-pixel jitter
-            renderX = ((renderX - viewport.x) * scale).roundToDouble() / scale +
-                viewport.x;
-            renderY = ((renderY - viewport.y) * scale).roundToDouble() / scale +
-                viewport.y;
+            renderX =
+                Viewport.snapToPixel(renderX - viewport.x, scale) + viewport.x;
+            renderY =
+                Viewport.snapToPixel(renderY - viewport.y, scale) + viewport.y;
           }
         }
       }
