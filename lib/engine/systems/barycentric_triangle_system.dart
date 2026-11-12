@@ -23,8 +23,12 @@ class BarycentricTriangleSystem {
       : _strokePaint = Paint()..style = PaintingStyle.stroke,
         _puckPaint = Paint()..style = PaintingStyle.fill,
         _backdropPaint = Paint()..style = PaintingStyle.fill,
-        _guidePaint = Paint()..style = PaintingStyle.stroke..strokeWidth = 1.0,
-        _ringPaint = Paint()..style = PaintingStyle.stroke..strokeWidth = 2.0,
+        _guidePaint = Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.0,
+        _ringPaint = Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2.0,
         _cornerPaint = Paint()..style = PaintingStyle.fill,
         _auraPaint = Paint()..style = PaintingStyle.fill,
         _trianglePath = Path();
@@ -243,17 +247,25 @@ class BarycentricTriangleSystem {
 
       // Ensure puck position is valid (fallback to centroid if unset)
       if (tri.puckX == 0.0 && tri.puckY == 0.0) {
-        tri.puckX = tri.weightA * aAbsX + tri.weightB * bAbsX + tri.weightC * cAbsX;
-        tri.puckY = tri.weightA * aAbsY + tri.weightB * bAbsY + tri.weightC * cAbsY;
+        tri.puckX =
+            tri.weightA * aAbsX + tri.weightB * bAbsX + tri.weightC * cAbsX;
+        tri.puckY =
+            tri.weightA * aAbsY + tri.weightB * bAbsY + tri.weightC * cAbsY;
       }
 
       // 3. Subtle guide lines connecting vertices to puck
-      _guidePaint.color = Color(tri.cornerAColorHex.toInt()).withValues(alpha: 0.35);
-      canvas.drawLine(Offset(aAbsX, aAbsY), Offset(tri.puckX, tri.puckY), _guidePaint);
-      _guidePaint.color = Color(tri.cornerBColorHex.toInt()).withValues(alpha: 0.35);
-      canvas.drawLine(Offset(bAbsX, bAbsY), Offset(tri.puckX, tri.puckY), _guidePaint);
-      _guidePaint.color = Color(tri.cornerCColorHex.toInt()).withValues(alpha: 0.35);
-      canvas.drawLine(Offset(cAbsX, cAbsY), Offset(tri.puckX, tri.puckY), _guidePaint);
+      _guidePaint.color =
+          Color(tri.cornerAColorHex.toInt()).withValues(alpha: 0.35);
+      canvas.drawLine(
+          Offset(aAbsX, aAbsY), Offset(tri.puckX, tri.puckY), _guidePaint);
+      _guidePaint.color =
+          Color(tri.cornerBColorHex.toInt()).withValues(alpha: 0.35);
+      canvas.drawLine(
+          Offset(bAbsX, bAbsY), Offset(tri.puckX, tri.puckY), _guidePaint);
+      _guidePaint.color =
+          Color(tri.cornerCColorHex.toInt()).withValues(alpha: 0.35);
+      canvas.drawLine(
+          Offset(cAbsX, cAbsY), Offset(tri.puckX, tri.puckY), _guidePaint);
 
       // 4. Render Corner Vertex Dots
       _cornerPaint.color = Color(tri.cornerAColorHex.toInt());
@@ -267,7 +279,8 @@ class BarycentricTriangleSystem {
       // Glow / Aura
       final double auraRadius = tri.isDragging > 0.0 ? 16.0 : 12.0;
       final double auraAlpha = tri.isDragging > 0.0 ? 0.55 : 0.30;
-      _auraPaint.color = Color(tri.puckColorHex.toInt()).withValues(alpha: auraAlpha);
+      _auraPaint.color =
+          Color(tri.puckColorHex.toInt()).withValues(alpha: auraAlpha);
       canvas.drawCircle(Offset(tri.puckX, tri.puckY), auraRadius, _auraPaint);
 
       // Outer crisp ring
@@ -279,16 +292,17 @@ class BarycentricTriangleSystem {
       canvas.drawCircle(Offset(tri.puckX, tri.puckY), 5.5, _puckPaint);
 
       // 6. Corner Labels with Percentages
-      _renderLabel(canvas, 'BUILD ${(tri.weightA * 100).round()}%', aAbsX, aAbsY - 20.0,
-          Color(tri.cornerAColorHex.toInt()));
-      _renderLabel(canvas, 'HEAT ${(tri.weightB * 100).round()}%', bAbsX + 15.0, bAbsY + 8.0,
-          Color(tri.cornerBColorHex.toInt()));
-      _renderLabel(canvas, 'GATHER ${(tri.weightC * 100).round()}%', cAbsX - 15.0, cAbsY + 8.0,
-          Color(tri.cornerCColorHex.toInt()));
+      _renderLabel(canvas, 'BUILD ${(tri.weightA * 100).round()}%', aAbsX,
+          aAbsY - 20.0, Color(tri.cornerAColorHex.toInt()));
+      _renderLabel(canvas, 'HEAT ${(tri.weightB * 100).round()}%', bAbsX + 15.0,
+          bAbsY + 8.0, Color(tri.cornerBColorHex.toInt()));
+      _renderLabel(canvas, 'GATHER ${(tri.weightC * 100).round()}%',
+          cAbsX - 15.0, cAbsY + 8.0, Color(tri.cornerCColorHex.toInt()));
     }
   }
 
-  void _renderLabel(Canvas canvas, String text, double cx, double cy, Color color) {
+  void _renderLabel(
+      Canvas canvas, String text, double cx, double cy, Color color) {
     final builder = ParagraphBuilder(ParagraphStyle(
       textAlign: TextAlign.center,
       fontSize: 11.0,
