@@ -3,13 +3,13 @@ import 'dart:typed_data';
 /// A generic flat graph data structure represented as an ECS component or data struct.
 /// It uses a contiguous typed array (Int32List) to store nodes and adjacency edges.
 /// Layout:
-///   [0] = maxNodes
-///   [1] = maxEdges
-///   [2] = nodeCount
-///   [3] = edgeCount
-///   [4 ... 4+maxNodes-1] = node array (stores component ID per node)
-///   [4+maxNodes ... 4+maxNodes+(maxEdges*2)-1] = edge array (pairs of node indices)
-///   [scratch] = component size tracker or scratch buffer for partitioning
+///   `0` = maxNodes
+///   `1` = maxEdges
+///   `2` = nodeCount
+///   `3` = edgeCount
+///   `4 ... 4+maxNodes-1` = node array (stores component ID per node)
+///   `4+maxNodes ... 4+maxNodes+(maxEdges*2)-1` = edge array (pairs of node indices)
+///   `scratch` = component size tracker or scratch buffer for partitioning
 extension type NetworkGraph(Int32List data) {
   static const int _headerSize = 4;
 

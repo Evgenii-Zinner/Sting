@@ -10,8 +10,8 @@ class GameStateSystem {
   final ComponentStorage<GameState> _gameStateCaste;
   final int _globalStateEntityId;
 
-  /// Creates a [GameStateSystem] referencing a [gameStateCaste] and the ID
-  /// of the entity holding the global state [globalStateEntityId].
+  /// Creates a [GameStateSystem] referencing a [_gameStateCaste] and the ID
+  /// of the entity holding the global state [_globalStateEntityId].
   GameStateSystem(this._gameStateCaste, this._globalStateEntityId) {
     if (_gameStateCaste.get(_globalStateEntityId) == null) {
       // Ensure the global state entity has the component.

@@ -40,7 +40,7 @@ extension type GroundTrailField(Float32List _data) {
     return _data[7 + row * columns.toInt() + col];
   }
 
-  /// Sets the value at the given discrete cell coordinates, clamped to [0.0, maxIntensity].
+  /// Sets the value at the given discrete cell coordinates, clamped to `[0.0, maxIntensity]`.
   void setValue(int col, int row, double value) {
     if (col < 0 || col >= columns || row < 0 || row >= rows) return;
     if (value < 0.0) value = 0.0;
@@ -48,7 +48,7 @@ extension type GroundTrailField(Float32List _data) {
     _data[7 + row * columns.toInt() + col] = value;
   }
 
-  /// Adds to the value at the given discrete cell coordinates, clamped to [0.0, maxIntensity].
+  /// Adds to the value at the given discrete cell coordinates, clamped to `[0.0, maxIntensity]`.
   void addValue(int col, int row, double delta) {
     if (col < 0 || col >= columns || row < 0 || row >= rows) return;
     int index = 7 + row * columns.toInt() + col;

@@ -10,7 +10,7 @@ import 'dart:typed_data';
 /// - Index 3: direction (float) - 1.0 (forward) or -1.0 (backward).
 /// - Index 4: alignRotation (float cast to int) - 1: true, 0: false.
 /// - Index 5: type (float cast to int) - 0: Polyline, 1: QuadraticBezier, 2: CubicBezier, 3: Hermite.
-/// - Index 6+: Points data [x0, y0, x1, y1, ...]
+/// - Index 6+: Points data `[x0, y0, x1, y1, ...]`
 extension type SplineFollower(Float32List data) {
   /// Creates a new SplineFollower component.
   SplineFollower.create({

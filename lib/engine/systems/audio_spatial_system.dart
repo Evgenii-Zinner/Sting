@@ -8,11 +8,11 @@ import 'package:sting/engine/ecs/query.dart';
 /// integration with different audio backends (e.g., SoLoud).
 abstract class AudioManager {
   /// Sets the volume of the sound identified by [soundId].
-  /// Volume is typically in the range [0.0, 1.0].
+  /// Volume is typically in the range `[0.0, 1.0]`.
   void setVolume(int soundId, double volume);
 
   /// Sets the pan of the sound identified by [soundId].
-  /// Pan is typically in the range [-1.0, 1.0].
+  /// Pan is typically in the range `[-1.0, 1.0]`.
   void setPan(int soundId, double pan);
 }
 
