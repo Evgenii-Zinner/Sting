@@ -47,7 +47,7 @@ Welcome to the Sting Engine Architecture FAQ. Please review these questions and 
 **A:** Testing raw `dart:ui` logic (like Canvas drawing) can be difficult to verify visually in automated tests.
 * The priority is to test that the execution completes without throwing exceptions or generating errors.
 * Do not spend time generating dummy images for exact pixel verification unless explicitly required.
-* Document any testing limitations related to rendering in the `shared_memories/rendering_limitations.json` file.
+* Document any testing limitations related to rendering in `docs/PROJECT_GOALS_AND_PROGRESS.md`.
 
 ## Core Subsystems Overview
 

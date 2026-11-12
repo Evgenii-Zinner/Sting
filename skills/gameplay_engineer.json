@@ -11,7 +11,7 @@
     "Always use TDD. Create tests validating state transitions and logic behavior."
   ],
   "knowledge_base": [
-    "shared_memories/ecs_storage.json",
+    "docs/PROJECT_GOALS_AND_PROGRESS.md",
     "docs/ARCHITECTURE_FAQ.md"
   ]
 }

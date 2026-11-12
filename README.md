@@ -29,26 +29,29 @@ A bare-metal, high-performance 2D Entity Component System (ECS) game engine for 
 ### Extended Subsystems
 * **Terrain & Slope Kinematics (`SlopePhysicsSystem`, `HeightMap`)**: 2D heightmap elevation grid with bilinear sub-tile interpolation and directional slope modifiers affecting velocity and friction.
 * **Tactical Radar & Minimap (`RadarSystem`, `RadarDisplay`)**: Zero-allocation viewport/world-space radar projecting dynamic blips, sweep lines, and orientation indicators.
-* **Dynamic Fog of War (`FogOfWarSystem`, `DiscoveryGrid`)**: Flat-array visibility and exploration grid supporting circular vision cones, explored shroud, and unexplored mask overlays.
-* **Ground Trail & Desire Paths (`GroundTrailField`)**: Persistent trail heatmaps where moving entities deposit footstep intensity that decays over time, dynamically visualizing popular path routes.
-* **Capsule Corridor Logistics (`CapsuleCorridor`, `LogisticsSystem`)**: Node-to-node logistics routes supporting bidirectional transit, capacity constraints, and directional flow speeds.
+* **Hex Thermodynamics & Field Diffusion (`GridDiffusion`, `HexDiffusionCoolingSystem`, `HexFieldSampler`)**: Contiguous hex diffusion modeling with ambient baseline and dissipation cooling.
+* **Topological Logistics & Collective Pooling (`NetworkGraph`, `CollectiveResourcePoolSystem`, `StockpileBalanceCalculator`)**: Flat graph partitioning via $O(N)$ Union-Find with resource pooling and hauler balance calculations.
+* **Ground Trail & Desire Paths (`GroundTrailField`, `GroundTrailSystem`)**: Persistent trail heatmaps where moving entities deposit footstep intensity that decays over time, dynamically visualizing popular routes.
 * **Interactive UI Suite**:
-  * **Draggable Windows & Buttons (`UIWindow`, `UIButton`)**: Zero-allocation window docking, drag-handling, and hierarchical button click detection.
-  * **Progress Bar Component (`ProgressBar`)**: Render system for health, energy, and reload bars with cached `RRect` bounds.
-  * **Sci-Fi Radial Intent Dial (`RadialDial`)**: Screen-space radial action selector with interactive sector highlighting and intent selection.
+  * **3-Axis Priority Triangle (`BarycentricTriangle`, `BarycentricTriangleSystem`)**: Tri-axial normalized priority controller with boundary clamping.
+  * **Draggable Windows & Buttons (`UIWindow`, `UIButton`, `UIWindowSystem`)**: Zero-allocation window docking, drag-handling, and hierarchical button click detection.
+  * **Progress Bar Component (`ProgressBar`, `ProgressBarRenderSystem`)**: Multi-style health, energy, and trailing damage ghost bars.
+  * **Sci-Fi Radial Intent Dial (`RadialDial`, `RadialDialSystem`)**: Screen-space radial action selector with interactive sector highlighting.
+* **Pluggable Audio Engine (`AudioBackend`, `PluggableAudioManager`, `AudioSpatialSystem`)**: Decoupled driver architecture with spatial inverse-distance rolloff and stereo panning.
+* **Hex Edge & Frontier Renderer (`HexEdgeMesh`, `HexEdgeRenderSystem`)**: High-throughput batched line drawing for borders, magistral spines, and territory outlines.
 
 ## Documentation
 
-* [Sting Engine Comprehensive Guide](file:///docs/STING_ENGINE_GUIDE.md) — Complete architectural overview, subsystem details, and concrete code examples.
-* [Architecture FAQ](file:///docs/ARCHITECTURE_FAQ.md) — Common architectural patterns, terminology evolutions, and FAQ.
-* [Memory Limits & Architecture Guide](file:///docs/MEMORY_LIMITS.md) — Zero-allocation constraints, pre-allocation guidelines, and cache sizing.
-* [Engine Design Document](file:///docs/DESIGN.md) — Foundational design specification and future roadmap.
-* [Contributor Guidelines](file:///AGENTS.md) — Workflow instructions and zero-allocation TDD rules for contributors and AI agents.
+* [Project Goals & Implementation Progress](docs/PROJECT_GOALS_AND_PROGRESS.md) — Master inventory of subsystems, architectural decisions, and milestone roadmap.
+* [Sting Engine Comprehensive Guide](docs/STING_ENGINE_GUIDE.md) — Complete architectural overview, subsystem details, and concrete code examples.
+* [Architecture FAQ](docs/ARCHITECTURE_FAQ.md) — Common architectural patterns, terminology evolutions, and FAQ.
+* [Memory Limits & Architecture Guide](docs/MEMORY_LIMITS.md) — Zero-allocation constraints, pre-allocation guidelines, and cache sizing.
+* [Engine Design Document](docs/DESIGN.md) — Foundational design specification and system designs.
+* [Contributor Guidelines](AGENTS.md) — Workflow instructions and zero-allocation TDD rules for contributors and AI agents.
 
 ## Project Structure
 
-* `docs/` — Architectural documentation, engine guides, and memory limits.
-* `lib/` — Engine source code (`core/`, `components/`, `systems/`, `rendering/`, `ui/`, `logistics/`).
-* `test/` — Comprehensive test suite (100% test coverage enforced).
-* `shared_memories/` — Shared memory knowledge base tracking architectural decisions and avoided pitfalls.
+* `docs/` — Architectural documentation, engine guides, progress tracking, and memory limits.
+* `lib/engine/` — Engine source code (`ecs/`, `components/`, `systems/`, `math/`, `audio/`, `ai/`, `assets/`, `profiling/`).
+* `test/` — Comprehensive test suite (100% test coverage enforced, 843 passing tests).
 
