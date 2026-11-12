@@ -8,7 +8,7 @@
 
 ## 1. Project Vision & Core Philosophy
 
-**Sting** is a bare-metal, high-performance 2D Data-Oriented ECS game engine implemented in Dart using pure `dart:ui`. It is engineered specifically for complex, high-density simulation games (autonomous swarms, frozen planet logistics, flat-top hex thermodynamics, indirect god-games like *Crystal Cinders*).
+**Sting** is a bare-metal, high-performance 2D Data-Oriented ECS game engine implemented in Dart using pure `dart:ui`. It is engineered specifically for complex, high-density simulation games (autonomous swarms, colony logistics, flat-top hex thermodynamics, and indirect god-games).
 
 ### Non-Negotiable Core Tenets
 
@@ -153,11 +153,16 @@
 ### Milestone 4: Pluggable Audio & Advanced UI Controls
 - [x] Decouple engine from `flutter_soloud`; introduce `AudioBackend` & `PluggableAudioManager`.
 - [x] 3-axis `BarycentricTriangle` component & `BarycentricTriangleSystem` with boundary clamping.
+- [x] Sci-Fi `RadialDial`, draggable `UIWindow`, `UIButton`, and `ProgressBar` render systems.
 
-### Milestone 5: Game Layer Scaffolding (*Crystal Cinders*) [ACTIVE]
-- [ ] Central barrel export synchronization in `lib/sting.dart`.
-- [ ] Game scene integration connecting Hex Thermodynamics, Magistral Network Graphs, and Swarm Hauler entities.
-- [ ] Macro-control hookups linking `BarycentricTriangle` priorities (Build / Heat / Gather) to autonomous agent behavior trees.
+### Milestone 5: Engine Packaging, Reusability & Release Readiness (v0.2.0) [ACTIVE]
+- [x] Central barrel export synchronization in `lib/sting.dart` (zero `hide` workarounds, zero name collisions).
+- [x] Complete DartDoc coverage across all 169 public libraries (0 errors, 0 warnings).
+- [x] Static analysis cleanliness (0 issues via `flutter analyze`).
+- [x] 100% test pass rate across all 843 test cases (unit, system, integration, and performance regression suites).
+- [ ] Standalone engine integration example (`example/`) demonstrating how external games import and configure Sting.
+- [ ] Engine CI/CD automated test workflow.
+- [ ] Version tagging, changelog generation, and v0.2.0 release packaging.
 
 ---
 
