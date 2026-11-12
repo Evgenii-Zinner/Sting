@@ -160,8 +160,9 @@
 - [x] Complete DartDoc coverage across all 169 public libraries (0 errors, 0 warnings).
 - [x] Static analysis cleanliness (0 issues via `flutter analyze`).
 - [x] 100% test pass rate across all 843 test cases (unit, system, integration, and performance regression suites).
+- [x] Continuous Integration workflow (`.github/workflows/ci.yml`) with automated analyze, test, and benchmark verification.
+- [x] ECS and Spatial Partitioning benchmark verification (`dart run benchmark/run_all.dart` 100% PASS within budgets).
 - [ ] Standalone engine integration example (`example/`) demonstrating how external games import and configure Sting.
-- [ ] Engine CI/CD automated test workflow.
 - [ ] Version tagging, changelog generation, and v0.2.0 release packaging.
 
 ---
