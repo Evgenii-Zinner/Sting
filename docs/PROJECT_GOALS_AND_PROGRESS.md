@@ -78,6 +78,19 @@
   - `CollectiveResourcePoolSystem` aggregates resource inputs and line losses across disjoint subnetworks.
   - `StockpileBalanceCalculator` computes $O(N)$ averages and deficits/surpluses to guide hauler logistics.
 
+### F. DRY & Zero-Allocation Rendering Unification
+* **Unified Camera & Pixel-Grid Snapping**:
+  - `Viewport.applyCamera` and `Viewport.snapToPixel` unify viewport transformations across `SpriteRenderSystem`, `TilemapRenderSystem`, `HexTilemapRenderSystem`, `HexEdgeRenderSystem`, and `LightRenderSystem`.
+  - Canonical formula `(val * scale).roundToDouble() / scale` prevents fractional camera jitter and sprite texture shimmering.
+* **Hex Mesh Zero-Allocation Iteration**:
+  - `HexEdgeMesh` exposes a cached `uint32View` to `HexEdgeRenderSystem` avoiding repeated `asUint32List` view allocations per edge in hot render loops.
+  - Pre-allocated `_processedEntities` set in `HexEdgeRenderSystem` eliminates per-frame heap allocations.
+* **Component Deduplication & Symbol Cleanup**:
+  - Unified duplicate `CellularGrid` into `lib/engine/components/cellular_grid.dart`.
+  - Disambiguated enum collisions: `TilemapGridType` vs `PathfindingGridType`.
+  - Unified `IndexedMinHeap` in `lib/engine/math/indexed_min_heap.dart` replacing duplicate internal heaps.
+  - Cleaned all `hide` clauses from `lib/sting.dart`. All 170 public libraries compile with 0 analyzer issues and 0 DartDoc warnings.
+
 ---
 
 ## 3. Subsystem Implementation Inventory
