@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sting/engine/components/cellular_grid.dart';
 import 'package:sting/engine/systems/cellular_simulation_system.dart';
 
 void main() {
@@ -11,7 +12,7 @@ void main() {
     });
 
     test('Game of Life - Blinker (Moore)', () {
-      final grid = CellularGrid.create(width: 5, height: 5);
+      final grid = CellularGrid.fromDimensions(width: 5, height: 5);
 
       // Setup blinker in the middle (horizontal)
       grid.setValue(1, 2, 1);
@@ -49,7 +50,7 @@ void main() {
     });
 
     test('Game of Life - Glider (Moore)', () {
-      final grid = CellularGrid.create(width: 5, height: 5);
+      final grid = CellularGrid.fromDimensions(width: 5, height: 5);
 
       // Setup glider
       // . . . . .
@@ -80,7 +81,7 @@ void main() {
       // . . . . 1 (cut off by bounds in small grid, actually 0 at boundary)
       // But let's check one step instead.
 
-      final grid2 = CellularGrid.create(width: 5, height: 5);
+      final grid2 = CellularGrid.fromDimensions(width: 5, height: 5);
       grid2.setValue(2, 1, 1);
       grid2.setValue(3, 2, 1);
       grid2.setValue(1, 3, 1);
@@ -104,7 +105,7 @@ void main() {
 
     test('3-State Solidification (Moore)', () {
       // 0 = empty, 1 = liquid, 2 = solid
-      final grid = CellularGrid.create(width: 5, height: 5);
+      final grid = CellularGrid.fromDimensions(width: 5, height: 5);
 
       grid.setValue(2, 2, 1); // Center is liquid
 
@@ -142,7 +143,7 @@ void main() {
 
       // Step 1: center liquid has 0 active neighbors -> stays liquid. (wait, 0 active neighbors, so it should be liquid!)
       // Actually let's just use grid2
-      final grid2 = CellularGrid.create(width: 5, height: 5);
+      final grid2 = CellularGrid.fromDimensions(width: 5, height: 5);
       grid2.setValue(2, 2, 1); // liquid
 
       // Step 1: center liquid has 0 active neighbors -> stays liquid.
@@ -160,7 +161,7 @@ void main() {
     });
 
     test('Von Neumann neighborhood', () {
-      final grid = CellularGrid.create(width: 5, height: 5);
+      final grid = CellularGrid.fromDimensions(width: 5, height: 5);
 
       // Cross pattern
       grid.setValue(2, 1, 1);
@@ -191,7 +192,7 @@ void main() {
       expect(grid.getValue(2, 2), 1); // Uses the 4-neighbor rule
 
       // Reset and test Moore
-      final grid2 = CellularGrid.create(width: 5, height: 5);
+      final grid2 = CellularGrid.fromDimensions(width: 5, height: 5);
       grid2.setValue(2, 1, 1);
       grid2.setValue(1, 2, 1);
       grid2.setValue(2, 2, 1);
@@ -208,7 +209,7 @@ void main() {
     });
 
     test('Skips tiny grid', () {
-      final grid = CellularGrid.create(width: 2, height: 2);
+      final grid = CellularGrid.fromDimensions(width: 2, height: 2);
       final lut = Uint8List(18);
 
       grid.setValue(0, 0, 1);

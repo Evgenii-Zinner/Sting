@@ -34,7 +34,7 @@ export 'engine/math/easing.dart';
 export 'engine/math/field_gradient.dart';
 export 'engine/math/field_splatting.dart';
 export 'engine/math/intersection.dart';
-export 'engine/math/tilemap_collider_extractor.dart' hide GridType;
+export 'engine/math/tilemap_collider_extractor.dart';
 export 'engine/ai/potential_field_solver.dart';
 export 'engine/ai/steering_behaviors.dart';
 
@@ -118,7 +118,7 @@ export 'engine/systems/camera_follow_system.dart';
 export 'engine/systems/camera_shake_system.dart';
 export 'engine/systems/camera_system.dart';
 export 'engine/systems/capsule_corridor_system.dart';
-export 'engine/systems/cellular_simulation_system.dart' hide CellularGrid;
+export 'engine/systems/cellular_simulation_system.dart';
 export 'engine/systems/collective_resource_pool_system.dart';
 export 'engine/systems/collision_system.dart';
 export 'engine/systems/complex_ui_render_system.dart';

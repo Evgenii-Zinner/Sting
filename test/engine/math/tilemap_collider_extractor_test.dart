@@ -81,7 +81,7 @@ void main() {
       bool isSolid(int x, int y) => x < 2 && y < 2;
 
       final count = extractor.extractPolygons(
-          GridType.orthogonal, 10.0, 10.0, isSolid, outBuffer);
+          TilemapGridType.orthogonal, 10.0, 10.0, isSolid, outBuffer);
 
       expect(count, 8);
       // Top-left, Top-right, Bottom-right, Bottom-left
@@ -97,7 +97,7 @@ void main() {
       bool isSolid(int x, int y) => x < 2 && y < 2;
 
       final count = extractor.extractPolygons(
-          GridType.isometricDiamond, 20.0, 10.0, isSolid, outBuffer);
+          TilemapGridType.isometricDiamond, 20.0, 10.0, isSolid, outBuffer);
 
       expect(count, 8);
       // Using IsometricMath.isoToWorldDiamond
@@ -116,8 +116,8 @@ void main() {
       bool isSolid(int x, int y) => true;
 
       expect(
-          () => extractor.extractPolygons(
-              GridType.isometricStaggered, 10.0, 10.0, isSolid, outBuffer),
+          () => extractor.extractPolygons(TilemapGridType.isometricStaggered,
+              10.0, 10.0, isSolid, outBuffer),
           throwsArgumentError);
     });
 
@@ -128,7 +128,7 @@ void main() {
       bool isSolid(int x, int y) => x == 0 && y == 0;
 
       final count = extractor.extractPolygons(
-          GridType.orthogonal, 10.0, 10.0, isSolid, outBuffer);
+          TilemapGridType.orthogonal, 10.0, 10.0, isSolid, outBuffer);
 
       expect(count, 0); // Didn't write anything
     });

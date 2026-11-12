@@ -4,7 +4,7 @@ import '../components/movement_queue.dart';
 import '../math/hex_math.dart';
 
 /// The grid layout type for pathfinding evaluation.
-enum GridType {
+enum PathfindingGridType {
   rectangular,
   rectangular8Way,
   hexagonal,
@@ -122,7 +122,7 @@ class GridPathfinder {
     Int32List costGrid,
     int columns,
     int rows,
-    GridType type,
+    PathfindingGridType type,
     MovementQueue queue,
   ) {
     if (start < 0 || start >= maxNodes || target < 0 || target >= maxNodes) {
@@ -174,10 +174,11 @@ class GridPathfinder {
     Int32List costGrid,
     int columns,
     int rows,
-    GridType type,
+    PathfindingGridType type,
   ) {
-    if (type == GridType.rectangular || type == GridType.rectangular8Way) {
-      final int dirCount = type == GridType.rectangular ? 4 : 8;
+    if (type == PathfindingGridType.rectangular ||
+        type == PathfindingGridType.rectangular8Way) {
+      final int dirCount = type == PathfindingGridType.rectangular ? 4 : 8;
       for (int i = 0; i < dirCount; i++) {
         final int nx = cx + _rectDx[i];
         final int ny = cy + _rectDy[i];
@@ -185,7 +186,7 @@ class GridPathfinder {
           final int neighbor = nx + ny * columns;
           if (costGrid[neighbor] <= 0) continue;
 
-          if (type == GridType.rectangular8Way && i >= 4) {
+          if (type == PathfindingGridType.rectangular8Way && i >= 4) {
             // Prevent corner cutting
             final int corner1 = nx + cy * columns;
             final int corner2 = cx + ny * columns;
@@ -196,7 +197,7 @@ class GridPathfinder {
           _evaluateNeighbor(current, neighbor, stepCost, target, columns, type);
         }
       }
-    } else if (type == GridType.hexagonal) {
+    } else if (type == PathfindingGridType.hexagonal) {
       for (int i = 0; i < 6; i++) {
         final int nx = cx + HexMath.neighborDq(i);
         final int ny = cy + HexMath.neighborDr(i);
@@ -217,7 +218,7 @@ class GridPathfinder {
     double stepCost,
     int target,
     int columns,
-    GridType type,
+    PathfindingGridType type,
   ) {
     if (nodeState[neighbor] == 2) return;
 
@@ -237,16 +238,16 @@ class GridPathfinder {
     }
   }
 
-  double _heuristic(int a, int b, int columns, GridType type) {
+  double _heuristic(int a, int b, int columns, PathfindingGridType type) {
     final int ax = a % columns;
     final int ay = a ~/ columns;
     final int bx = b % columns;
     final int by = b ~/ columns;
 
-    if (type == GridType.rectangular) {
+    if (type == PathfindingGridType.rectangular) {
       return (ax - bx).abs().toDouble() +
           (ay - by).abs().toDouble(); // Manhattan
-    } else if (type == GridType.rectangular8Way) {
+    } else if (type == PathfindingGridType.rectangular8Way) {
       final double dx = (ax - bx).abs().toDouble();
       final double dy = (ay - by).abs().toDouble();
       return math.max(dx, dy) +

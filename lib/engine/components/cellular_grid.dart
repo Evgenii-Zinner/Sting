@@ -13,7 +13,7 @@ import 'dart:typed_data';
 /// Followed by Buffer A (cols * rows bytes) and Buffer B (cols * rows bytes).
 extension type CellularGrid(Uint8List data) {
   /// Creates a new double-buffered CellularGrid.
-  CellularGrid.create(int cols, int rows, int cellSize)
+  CellularGrid.create(int cols, int rows, [int cellSize = 1])
       : this(Uint8List(8 + 2 * (cols * rows))
           ..[0] = cols & 0xFF
           ..[1] = (cols >> 8) & 0xFF
@@ -22,19 +22,38 @@ extension type CellularGrid(Uint8List data) {
           ..[4] = 0
           ..[5] = cellSize);
 
-  /// Number of columns in the grid.
+  /// Creates a CellularGrid using named parameters.
+  CellularGrid.fromDimensions({
+    required int width,
+    required int height,
+    int cellSize = 1,
+  }) : this.create(width, height, cellSize);
+
+  /// Number of columns in the grid (alias for width).
   int get cols => data[0] | (data[1] << 8);
   set cols(int value) {
     data[0] = value & 0xFF;
     data[1] = (value >> 8) & 0xFF;
   }
 
-  /// Number of rows in the grid.
+  /// Width of the grid (alias for cols).
+  int get width => cols;
+
+  /// Number of rows in the grid (alias for height).
   int get rows => data[2] | (data[3] << 8);
   set rows(int value) {
     data[2] = value & 0xFF;
     data[3] = (value >> 8) & 0xFF;
   }
+
+  /// Height of the grid (alias for rows).
+  int get height => rows;
+
+  /// Total number of cells in the grid.
+  int get length => cols * rows;
+
+  /// Gets the offset in the `data` array for the given buffer (0 or 1).
+  int getBufferOffset(int bufferIndex) => 8 + bufferIndex * length;
 
   /// The currently active buffer index (0 or 1).
   int get activeBuffer => data[4];
@@ -59,12 +78,18 @@ extension type CellularGrid(Uint8List data) {
     return data[idx];
   }
 
+  /// Gets the value at the specified column and row in the active buffer (alias for getState).
+  int getValue(int col, int row) => getState(col, row);
+
   /// Sets the state of the cell at ([col], [row]) in the active buffer.
   void setState(int col, int row, int state) {
     final idx = _toIndex(col, row, activeBuffer);
     if (idx == -1) return;
     data[idx] = state;
   }
+
+  /// Sets the value at the specified column and row in the active buffer (alias for setState).
+  void setValue(int col, int row, int value) => setState(col, row, value);
 
   /// Gets the state of the cell at ([col], [row]) in the inactive (next) buffer.
   int getNextBufferState(int col, int row) {

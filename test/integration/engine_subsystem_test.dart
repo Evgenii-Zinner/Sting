@@ -117,7 +117,7 @@ void main() {
       costGrid,
       5,
       5,
-      GridType.rectangular,
+      PathfindingGridType.rectangular,
       scene.getCaste<MovementQueue>('MovementQueue').get(entity)!,
     );
     expect(found, isTrue);

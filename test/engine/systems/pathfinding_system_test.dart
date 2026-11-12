@@ -30,7 +30,7 @@ void main() {
       costGrid[18] = 0; // X
 
       final success = pathfinder.findPath(
-          0, 24, costGrid, 5, 5, GridType.rectangular, queue);
+          0, 24, costGrid, 5, 5, PathfindingGridType.rectangular, queue);
 
       expect(success, isTrue);
       expect(queue.isEmpty, isFalse);
@@ -64,7 +64,7 @@ void main() {
       costGrid[4] = 0; // X
 
       final success = pathfinder.findPath(
-          0, 8, costGrid, 3, 3, GridType.rectangular8Way, queue);
+          0, 8, costGrid, 3, 3, PathfindingGridType.rectangular8Way, queue);
 
       expect(success, isTrue);
       expect(queue.isEmpty, isFalse);
@@ -85,8 +85,8 @@ void main() {
       // 3x3 grid
       final costGrid = Int32List(9)..fillRange(0, 9, 1);
 
-      final success =
-          pathfinder.findPath(0, 8, costGrid, 3, 3, GridType.hexagonal, queue);
+      final success = pathfinder.findPath(
+          0, 8, costGrid, 3, 3, PathfindingGridType.hexagonal, queue);
 
       expect(success, isTrue);
 
@@ -109,7 +109,7 @@ void main() {
       costGrid[7] = 0;
 
       final success = pathfinder.findPath(
-          0, 2, costGrid, 3, 3, GridType.rectangular, queue);
+          0, 2, costGrid, 3, 3, PathfindingGridType.rectangular, queue);
 
       expect(success, isFalse);
       expect(queue.isEmpty, isTrue);
@@ -120,11 +120,11 @@ void main() {
 
       expect(
           pathfinder.findPath(
-              -1, 8, costGrid, 3, 3, GridType.rectangular, queue),
+              -1, 8, costGrid, 3, 3, PathfindingGridType.rectangular, queue),
           isFalse);
       expect(
           pathfinder.findPath(
-              0, 100, costGrid, 3, 3, GridType.rectangular, queue),
+              0, 100, costGrid, 3, 3, PathfindingGridType.rectangular, queue),
           isFalse);
     });
 
@@ -133,7 +133,7 @@ void main() {
       // capacity is 100, we try to use a 10x20 grid
       expect(
           pathfinder.findPath(
-              0, 199, costGrid, 10, 20, GridType.rectangular, queue),
+              0, 199, costGrid, 10, 20, PathfindingGridType.rectangular, queue),
           isFalse);
     });
 
@@ -142,14 +142,14 @@ void main() {
       costGrid[0] = 0; // S is obstacle
       expect(
           pathfinder.findPath(
-              0, 8, costGrid, 3, 3, GridType.rectangular, queue),
+              0, 8, costGrid, 3, 3, PathfindingGridType.rectangular, queue),
           isFalse);
 
       costGrid[0] = 1;
       costGrid[8] = 0; // T is obstacle
       expect(
           pathfinder.findPath(
-              0, 8, costGrid, 3, 3, GridType.rectangular, queue),
+              0, 8, costGrid, 3, 3, PathfindingGridType.rectangular, queue),
           isFalse);
     });
   });
@@ -170,7 +170,8 @@ void main() {
       costGrid[3] = 1; // C is cheap
       costGrid[4] = 1; // D is cheap
 
-      pathfinder.findPath(0, 8, costGrid, 3, 3, GridType.rectangular, queue);
+      pathfinder.findPath(
+          0, 8, costGrid, 3, 3, PathfindingGridType.rectangular, queue);
 
       final path = <int>[];
       while (!queue.isEmpty) {

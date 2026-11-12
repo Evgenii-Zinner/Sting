@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:sting/engine/math/isometric_math.dart';
 
 /// The type of grid the tilemap uses.
-enum GridType {
+enum TilemapGridType {
   /// A standard square or rectangular orthogonal grid.
   orthogonal,
 
@@ -102,13 +102,17 @@ class TilemapColliderExtractor {
   /// representing the 4 vertices (clockwise or counter-clockwise depending on grid mapping):
   /// `[x0, y0, x1, y1, x2, y2, x3, y3, ...]`.
   ///
-  /// Supports [GridType.orthogonal] and [GridType.isometricDiamond].
-  /// Throws [ArgumentError] if [GridType.isometricStaggered] is provided.
+  /// Supports [TilemapGridType.orthogonal] and [TilemapGridType.isometricDiamond].
+  /// Throws [ArgumentError] if [TilemapGridType.isometricStaggered] is provided.
   ///
   /// Returns the total number of floats written to the buffer.
-  int extractPolygons(GridType gridType, double tileWidth, double tileHeight,
-      bool Function(int x, int y) isSolid, Float32List outBuffer) {
-    if (gridType == GridType.isometricStaggered) {
+  int extractPolygons(
+      TilemapGridType gridType,
+      double tileWidth,
+      double tileHeight,
+      bool Function(int x, int y) isSolid,
+      Float32List outBuffer) {
+    if (gridType == TilemapGridType.isometricStaggered) {
       throw ArgumentError(
           'Polygon extraction not supported for Staggered isometric grids.');
     }
@@ -156,7 +160,7 @@ class TilemapColliderExtractor {
         }
 
         if (floatsWritten + 8 <= outBuffer.length) {
-          if (gridType == GridType.orthogonal) {
+          if (gridType == TilemapGridType.orthogonal) {
             // Top-left
             outBuffer[floatsWritten++] = x * tileWidth;
             outBuffer[floatsWritten++] = y * tileHeight;
@@ -169,7 +173,7 @@ class TilemapColliderExtractor {
             // Bottom-left
             outBuffer[floatsWritten++] = x * tileWidth;
             outBuffer[floatsWritten++] = (y + h) * tileHeight;
-          } else if (gridType == GridType.isometricDiamond) {
+          } else if (gridType == TilemapGridType.isometricDiamond) {
             // Isometric diamond vertices need to be converted to world space.
             // The 4 corners of the merged block (col, row) in grid space are:
             // Top: (x, y)
