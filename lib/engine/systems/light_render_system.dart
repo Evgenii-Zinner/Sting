@@ -10,18 +10,29 @@ import '../components/shadow_caster.dart';
 import '../components/viewport.dart';
 import 'spatial_hash_grid.dart';
 
+/// Renders 2D dynamic lights with 1D shadow mapping and ambient darkness.
+///
+/// Uses pre-allocated depth buffers, ray trigonometric tables, and spatial hash broadphase
+/// to achieve zero per-frame heap allocations.
 class LightRenderSystem {
   final Query2<Position, Light> _lightQuery;
   final ComponentStorage<Position> _positionCaste;
   final ComponentStorage<BoundingBox> _boundingBoxCaste;
   final ComponentStorage<ShadowCaster> _shadowCasterCaste;
+
+  /// Optional storage for camera viewports.
   final ComponentStorage<Viewport>? viewportCaste;
 
+  /// Optional spatial hash grid for accelerating shadow caster queries.
   SpatialHashGrid? spatialHashGrid;
+
+  /// Entity ID of the active camera, or -1 if no camera is active.
   int activeCameraEntity;
 
-  // Ambient light settings
+  /// Base color of the darkness layer covering unlit areas.
   Color ambientColor;
+
+  /// Whether to render the ambient darkness layer before drawing light masks.
   bool renderAmbient;
 
   // Pre-allocated objects to prevent per-frame allocations
@@ -29,7 +40,7 @@ class LightRenderSystem {
   final Paint _ambientPaint;
   final Path _shadowPath;
 
-  // Number of rays to cast for shadow polygon (resolution of the light)
+  /// Number of rays to cast for shadow polygon resolution.
   final int rayCount;
 
   // Pre-allocated array to store shadow casters in range of the current light
@@ -42,6 +53,7 @@ class LightRenderSystem {
   late final double _invTwoPiRayCount;
   static const double _twoPi = math.pi * 2.0;
 
+  /// Creates a new [LightRenderSystem].
   LightRenderSystem({
     required ComponentStorage<Position> positionCaste,
     required ComponentStorage<Light> lightCaste,
@@ -76,6 +88,7 @@ class LightRenderSystem {
     }
   }
 
+  /// Renders ambient darkness and all active lights onto [canvas].
   void render(Canvas canvas, Size size, [double scale = 1.0]) {
     double offsetX = 0.0;
     double offsetY = 0.0;
@@ -87,8 +100,8 @@ class LightRenderSystem {
       if (viewport != null) {
         hasViewport = true;
         zoom = viewport.zoom;
-        offsetX = (viewport.x * scale).roundToDouble() / scale;
-        offsetY = (viewport.y * scale).roundToDouble() / scale;
+        offsetX = Viewport.snapToPixel(viewport.x, scale);
+        offsetY = Viewport.snapToPixel(viewport.y, scale);
 
         canvas.save();
         canvas.scale(zoom, zoom);

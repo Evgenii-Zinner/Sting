@@ -7,11 +7,25 @@ import '../components/sprite.dart';
 import '../components/viewport.dart';
 import '../components/shader_material.dart';
 
+/// Renders 2D sprites using high-performance batched drawing via [Canvas.drawRawAtlas].
+///
+/// Ensures zero per-frame heap allocations by reusing pre-allocated transform, rect,
+/// and color buffers. Automatically handles camera viewport transformations,
+/// pixel grid snapping, and custom fragment shaders.
 class SpriteRenderSystem {
+  /// The shared texture atlas containing sprite frames.
   final Image atlas;
+
+  /// Query for entities having both [Position] and [Sprite].
   final Query2<Position, Sprite> query;
+
+  /// Optional storage for camera viewports.
   final ComponentStorage<Viewport>? viewportCaste;
+
+  /// Optional storage for per-entity shader materials.
   final ComponentStorage<ShaderMaterial>? shaderCaste;
+
+  /// Entity ID of the active camera, or -1 if no camera is active.
   int activeCameraEntity;
 
   // Pre-allocated arrays for drawAtlas to prevent per-frame allocations.
@@ -22,6 +36,7 @@ class SpriteRenderSystem {
   final Int32List _colors;
   final Paint _paint;
 
+  /// Creates a new [SpriteRenderSystem].
   SpriteRenderSystem({
     required this.atlas,
     required ComponentStorage<Position> positionCaste,
@@ -38,22 +53,14 @@ class SpriteRenderSystem {
           ..filterQuality = FilterQuality.none
           ..isAntiAlias = false;
 
+  /// Renders all sprites to the [canvas] at the specified subpixel [scale].
   void render(Canvas canvas, [double scale = 1.0]) {
     _paint.shader = null;
     int count = 0;
 
-    bool hasViewport = false;
-    if (activeCameraEntity != -1 && viewportCaste != null) {
-      final viewport = viewportCaste!.get(activeCameraEntity);
-      if (viewport != null) {
-        hasViewport = true;
-        canvas.save();
-        canvas.scale(viewport.zoom, viewport.zoom);
-        final double snappedVx = (viewport.x * scale).roundToDouble() / scale;
-        final double snappedVy = (viewport.y * scale).roundToDouble() / scale;
-        canvas.translate(-snappedVx, -snappedVy);
-      }
-    }
+    final hasViewport =
+        Viewport.applyCamera(canvas, activeCameraEntity, viewportCaste, scale);
+
     FragmentShader? currentShader;
     ShaderMaterial? currentMaterial;
 
@@ -97,8 +104,8 @@ class SpriteRenderSystem {
       _transforms[transformIndex] = sprite.transformScos;
       _transforms[transformIndex + 1] = sprite.transformSsin;
       // Snap position to physical pixel grid to eliminate texture shimmering while allowing smooth sub-logical movement
-      final double snappedX = (position.x * scale).roundToDouble() / scale;
-      final double snappedY = (position.y * scale).roundToDouble() / scale;
+      final double snappedX = Viewport.snapToPixel(position.x, scale);
+      final double snappedY = Viewport.snapToPixel(position.y, scale);
       _transforms[transformIndex + 2] = snappedX + sprite.transformTx;
       _transforms[transformIndex + 3] = snappedY + sprite.transformTy;
 

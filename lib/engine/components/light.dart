@@ -12,6 +12,7 @@ import 'dart:typed_data';
 extension type Light(Float32List _data) implements Float32List {
   static const int componentSize = 6;
 
+  /// Creates a new [Light] component with the given visual parameters.
   Light.create({
     required double radius,
     double intensity = 1.0,
@@ -28,21 +29,27 @@ extension type Light(Float32List _data) implements Float32List {
     this.active = active;
   }
 
+  /// The radius of the light falloff in pixels.
   double get radius => _data[0];
   set radius(double value) => _data[0] = value;
 
+  /// The intensity of the light from 0.0 to 1.0.
   double get intensity => _data[1];
   set intensity(double value) => _data[1] = value;
 
+  /// Red color channel intensity (0.0 to 1.0).
   double get r => _data[2];
   set r(double value) => _data[2] = value;
 
+  /// Green color channel intensity (0.0 to 1.0).
   double get g => _data[3];
   set g(double value) => _data[3] = value;
 
+  /// Blue color channel intensity (0.0 to 1.0).
   double get b => _data[4];
   set b(double value) => _data[4] = value;
 
+  /// Whether this light source is actively illuminating.
   bool get active => _data[5] > 0.0;
   set active(bool value) => _data[5] = value ? 1.0 : 0.0;
 }

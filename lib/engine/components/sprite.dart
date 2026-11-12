@@ -21,34 +21,43 @@ extension type Sprite(ByteData data) {
 
   // --- Rect ---
 
+  /// Source rectangle left edge in atlas coordinates.
   double get rectLeft => data.getFloat32(0, Endian.host);
   set rectLeft(double value) => data.setFloat32(0, value, Endian.host);
 
+  /// Source rectangle top edge in atlas coordinates.
   double get rectTop => data.getFloat32(4, Endian.host);
   set rectTop(double value) => data.setFloat32(4, value, Endian.host);
 
+  /// Source rectangle right edge in atlas coordinates.
   double get rectRight => data.getFloat32(8, Endian.host);
   set rectRight(double value) => data.setFloat32(8, value, Endian.host);
 
+  /// Source rectangle bottom edge in atlas coordinates.
   double get rectBottom => data.getFloat32(12, Endian.host);
   set rectBottom(double value) => data.setFloat32(12, value, Endian.host);
 
   // --- RSTransform ---
 
+  /// Scale multiplied by cosine of rotation angle.
   double get transformScos => data.getFloat32(16, Endian.host);
   set transformScos(double value) => data.setFloat32(16, value, Endian.host);
 
+  /// Scale multiplied by sine of rotation angle.
   double get transformSsin => data.getFloat32(20, Endian.host);
   set transformSsin(double value) => data.setFloat32(20, value, Endian.host);
 
+  /// Horizontal translation / origin anchor offset.
   double get transformTx => data.getFloat32(24, Endian.host);
   set transformTx(double value) => data.setFloat32(24, value, Endian.host);
 
+  /// Vertical translation / origin anchor offset.
   double get transformTy => data.getFloat32(28, Endian.host);
   set transformTy(double value) => data.setFloat32(28, value, Endian.host);
 
   // --- Color ---
 
+  /// 32-bit ARGB tint color.
   int get color => data.getUint32(32, Endian.host);
   set color(int value) => data.setUint32(32, value, Endian.host);
 }

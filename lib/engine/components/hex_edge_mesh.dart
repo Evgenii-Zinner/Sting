@@ -72,16 +72,23 @@ extension type HexEdgeMesh(Float32List data) {
     return true;
   }
 
+  /// Returns a Uint32List view of the underlying buffer for fast ARGB color access.
+  Uint32List get uint32View =>
+      data.buffer.asUint32List(data.offsetInBytes, data.length);
+
   /// Retrieves an edge at the specified index.
   /// Returns (q1, r1, q2, r2, color, width).
-  (int, int, int, int, int, double) getEdge(int index) {
+  ///
+  /// Pass [cachedUint32View] to prevent view reallocations in hot iteration loops.
+  (int, int, int, int, int, double) getEdge(int index,
+      [Uint32List? cachedUint32View]) {
     if (index < 0 || index >= edgeCount) {
       throw RangeError.index(
           index, this, 'index', 'Index out of range', edgeCount);
     }
 
     final offset = _headerSize + index * _edgeStride;
-    final uint32View =
+    final view = cachedUint32View ??
         data.buffer.asUint32List(data.offsetInBytes, data.length);
 
     return (
@@ -89,7 +96,7 @@ extension type HexEdgeMesh(Float32List data) {
       data[offset + 1].toInt(),
       data[offset + 2].toInt(),
       data[offset + 3].toInt(),
-      uint32View[offset + 4],
+      view[offset + 4],
       data[offset + 5]
     );
   }

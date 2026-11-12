@@ -7,10 +7,21 @@ import '../components/viewport.dart';
 import '../components/hex_edge_mesh.dart';
 import '../math/hex_math.dart';
 
+/// Renders hexagonal edge meshes ([HexEdgeMesh]) using batch line drawing.
+///
+/// Supports world-positioned meshes (paired with [Position]) and absolute meshes.
+/// Batches line drawing using [Canvas.drawRawPoints] with zero heap allocations per frame.
 class HexEdgeRenderSystem {
+  /// Query for entities having only [HexEdgeMesh].
   final Query1<HexEdgeMesh> querySingle;
+
+  /// Query for entities having both [Position] and [HexEdgeMesh].
   final Query2<Position, HexEdgeMesh> queryPositional;
+
+  /// Optional storage for camera viewports.
   final ComponentStorage<Viewport>? viewportCaste;
+
+  /// Entity ID of the active camera, or -1 if no camera is active.
   int activeCameraEntity;
 
   final Paint _paint;
@@ -19,6 +30,10 @@ class HexEdgeRenderSystem {
   // Each segment needs 2 points (x, y) = 4 floats.
   final Float32List _points;
 
+  // Pre-allocated set to track entities across queries without per-frame allocations.
+  final Set<int> _processedEntities = <int>{};
+
+  /// Creates a new [HexEdgeRenderSystem].
   HexEdgeRenderSystem({
     required ComponentStorage<HexEdgeMesh> hexEdgeMeshCaste,
     ComponentStorage<Position>? positionCaste,
@@ -36,22 +51,10 @@ class HexEdgeRenderSystem {
           ..strokeCap = StrokeCap.round
           ..style = PaintingStyle.stroke;
 
+  /// Renders all edge meshes to the [canvas] at the specified subpixel [scale].
   void render(Canvas canvas, [double scale = 1.0]) {
-    bool hasViewport = false;
-    double snappedVx = 0.0;
-    double snappedVy = 0.0;
-
-    if (activeCameraEntity != -1 && viewportCaste != null) {
-      final viewport = viewportCaste!.get(activeCameraEntity);
-      if (viewport != null) {
-        hasViewport = true;
-        canvas.save();
-        canvas.scale(viewport.zoom, viewport.zoom);
-        snappedVx = (viewport.x * scale).roundToDouble() / scale;
-        snappedVy = (viewport.y * scale).roundToDouble() / scale;
-        canvas.translate(-snappedVx, -snappedVy);
-      }
-    }
+    final hasViewport =
+        Viewport.applyCamera(canvas, activeCameraEntity, viewportCaste, scale);
 
     void processMesh(HexEdgeMesh mesh, double startX, double startY) {
       final int edgeCount = mesh.edgeCount;
@@ -59,6 +62,7 @@ class HexEdgeRenderSystem {
 
       final bool isFlatTopped = mesh.isFlatTopped == 1;
       final double hexSize = mesh.hexSize;
+      final uint32View = mesh.uint32View;
 
       int currentBatchColor = 0;
       double currentBatchWidth = 0.0;
@@ -77,7 +81,7 @@ class HexEdgeRenderSystem {
       }
 
       for (int i = 0; i < edgeCount; i++) {
-        final (q1, r1, q2, r2, color, width) = mesh.getEdge(i);
+        final (q1, r1, q2, r2, color, width) = mesh.getEdge(i, uint32View);
 
         // If paint attributes change or batch is full, flush
         if (pointsInBatch > 0 &&
@@ -119,20 +123,19 @@ class HexEdgeRenderSystem {
       flushBatch();
     }
 
-    // Track processed entities to avoid double rendering
-    final processedEntities = <int>{};
+    _processedEntities.clear();
 
     // Process positional meshes
     queryPositional.forEach((entity, position, mesh) {
-      final double startX = (position.x * scale).roundToDouble() / scale;
-      final double startY = (position.y * scale).roundToDouble() / scale;
+      final double startX = Viewport.snapToPixel(position.x, scale);
+      final double startY = Viewport.snapToPixel(position.y, scale);
       processMesh(mesh, startX, startY);
-      processedEntities.add(entity);
+      _processedEntities.add(entity);
     });
 
     // Process non-positional (absolute) meshes by filtering out those processed
     querySingle.forEach((entity, mesh) {
-      if (!processedEntities.contains(entity)) {
+      if (!_processedEntities.contains(entity)) {
         processMesh(mesh, 0.0, 0.0);
       }
     });

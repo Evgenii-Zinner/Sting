@@ -7,28 +7,37 @@ import '../components/tilemap.dart';
 import '../components/viewport.dart';
 import '../components/shader_material.dart';
 
+/// Renders orthogonal tilemaps ([Tilemap]) using batched drawing via [Canvas.drawRawAtlas].
+///
+/// Ensures zero per-frame heap allocations by using pre-allocated transform and rect buffers.
+/// Supports camera viewport snapping and optional custom fragment shaders.
 class TilemapRenderSystem {
+  /// The shared texture atlas containing tile textures.
   final Image atlas;
+
+  /// Query for entities having both [Position] and [Tilemap].
   final Query2<Position, Tilemap> query;
+
+  /// Optional storage for camera viewports.
   final ComponentStorage<Viewport>? viewportCaste;
+
+  /// Optional storage for per-entity shader materials.
   final ComponentStorage<ShaderMaterial>? shaderCaste;
+
+  /// Entity ID of the active camera, or -1 if no camera is active.
   int activeCameraEntity;
 
+  /// Horizontal offset into the atlas image in pixels.
   double atlasOffsetX;
+
+  /// Vertical offset into the atlas image in pixels.
   double atlasOffsetY;
 
-  // Pre-allocated arrays for drawAtlas to prevent per-frame allocations.
-  // Using maximum capacities. In a real scenario we'd bound this by a reasonable max tiles.
-  // 4 floats per transform, 4 floats per rect
-  // For tilemaps, the number of tiles can be large, so we size these arrays to handle
-  // the max tiles we expect to render at once. Let's assume a reasonable max like 10,000 tiles per render pass.
-  // Or we can pre-allocate dynamically based on the constructor.
   final Float32List _transforms;
   final Float32List _rects;
   final Paint _paint;
 
-  // No colors array, we'll draw without tinting.
-
+  /// Creates a new [TilemapRenderSystem].
   TilemapRenderSystem({
     required this.atlas,
     required ComponentStorage<Position> positionCaste,
@@ -38,7 +47,7 @@ class TilemapRenderSystem {
     this.activeCameraEntity = -1,
     this.atlasOffsetX = 0.0,
     this.atlasOffsetY = 0.0,
-    int maxTiles = 65535, // Adjust this based on max expected visible tiles
+    int maxTiles = 65535,
   })  : query = Query2<Position, Tilemap>(positionCaste, tilemapCaste),
         _transforms = Float32List(maxTiles * 4),
         _rects = Float32List(maxTiles * 4),
@@ -46,22 +55,14 @@ class TilemapRenderSystem {
           ..filterQuality = FilterQuality.none
           ..isAntiAlias = false;
 
+  /// Renders all tilemaps to the [canvas] at the specified subpixel [scale].
   void render(Canvas canvas, [double scale = 1.0]) {
     _paint.shader = null;
     int totalTilesDrawn = 0;
 
-    bool hasViewport = false;
-    if (activeCameraEntity != -1 && viewportCaste != null) {
-      final viewport = viewportCaste!.get(activeCameraEntity);
-      if (viewport != null) {
-        hasViewport = true;
-        canvas.save();
-        canvas.scale(viewport.zoom, viewport.zoom);
-        final double snappedVx = (viewport.x * scale).roundToDouble() / scale;
-        final double snappedVy = (viewport.y * scale).roundToDouble() / scale;
-        canvas.translate(-snappedVx, -snappedVy);
-      }
-    }
+    final hasViewport =
+        Viewport.applyCamera(canvas, activeCameraEntity, viewportCaste, scale);
+
     FragmentShader? currentShader;
     ShaderMaterial? currentMaterial;
 
@@ -102,8 +103,8 @@ class TilemapRenderSystem {
       final tilesPerRow = atlasWidth ~/ tilemap.tileWidth;
 
       // Snap start position to physical pixel grid
-      final double startX = (position.x * scale).roundToDouble() / scale;
-      final double startY = (position.y * scale).roundToDouble() / scale;
+      final double startX = Viewport.snapToPixel(position.x, scale);
+      final double startY = Viewport.snapToPixel(position.y, scale);
 
       outer:
       for (int row = 0; row < tilemap.rows; row++) {
@@ -127,7 +128,6 @@ class TilemapRenderSystem {
               startY + (row * tilemap.tileHeight); // ty
 
           // Calculate source rect
-          // Assuming tileId 1 is the first tile at (0,0) in atlas
           final atlasIndex = tileId - 1;
           final atlasRow = atlasIndex ~/ tilesPerRow;
           final atlasCol = atlasIndex % tilesPerRow;

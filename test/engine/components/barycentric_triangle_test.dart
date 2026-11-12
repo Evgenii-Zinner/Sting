@@ -22,8 +22,9 @@ void main() {
       expect(tri.weightB, closeTo(0.3333333, 0.0001));
       expect(tri.weightC, closeTo(0.3333333, 0.0001));
 
-      expect(tri.puckX, 0.0);
-      expect(tri.puckY, 0.0);
+      // Default puck position should be at triangle center
+      expect(tri.puckX, 100.0);
+      expect(tri.puckY, 200.0);
       expect(tri.isDragging, 0.0);
 
       expect(tri.cornerAColorHex, 4294901760.0);

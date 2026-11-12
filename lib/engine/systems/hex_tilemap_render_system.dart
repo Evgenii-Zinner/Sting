@@ -8,23 +8,40 @@ import '../components/viewport.dart';
 import '../components/shader_material.dart';
 import '../math/hex_math.dart';
 
+/// Renders hexagonal tilemaps ([HexTilemap]) using batched drawing via [Canvas.drawRawAtlas].
+///
+/// Converts axial coordinates into Cartesian coordinates using [HexMath] and batches draw calls.
+/// Ensures zero per-frame heap allocations with pre-allocated buffers.
 class HexTilemapRenderSystem {
+  /// The shared texture atlas containing hexagonal tile sprites.
   final Image atlas;
+
+  /// Query for entities having both [Position] and [HexTilemap].
   final Query2<Position, HexTilemap> query;
+
+  /// Optional storage for camera viewports.
   final ComponentStorage<Viewport>? viewportCaste;
+
+  /// Optional storage for per-entity shader materials.
   final ComponentStorage<ShaderMaterial>? shaderCaste;
+
+  /// Entity ID of the active camera, or -1 if no camera is active.
   int activeCameraEntity;
 
+  /// Horizontal offset into the atlas image in pixels.
   double atlasOffsetX;
+
+  /// Vertical offset into the atlas image in pixels.
   double atlasOffsetY;
 
+  /// The outer radius (distance from center to corner) of each hexagonal tile.
   final double hexSize;
 
-  // Pre-allocated arrays for drawAtlas to prevent per-frame allocations.
   final Float32List _transforms;
   final Float32List _rects;
   final Paint _paint;
 
+  /// Creates a new [HexTilemapRenderSystem].
   HexTilemapRenderSystem({
     required this.atlas,
     required ComponentStorage<Position> positionCaste,
@@ -43,22 +60,13 @@ class HexTilemapRenderSystem {
           ..filterQuality = FilterQuality.none
           ..isAntiAlias = false;
 
+  /// Renders all hexagonal tilemaps to the [canvas] at the specified subpixel [scale].
   void render(Canvas canvas, [double scale = 1.0]) {
     _paint.shader = null;
     int totalTilesDrawn = 0;
 
-    bool hasViewport = false;
-    if (activeCameraEntity != -1 && viewportCaste != null) {
-      final viewport = viewportCaste!.get(activeCameraEntity);
-      if (viewport != null) {
-        hasViewport = true;
-        canvas.save();
-        canvas.scale(viewport.zoom, viewport.zoom);
-        final double snappedVx = (viewport.x * scale).roundToDouble() / scale;
-        final double snappedVy = (viewport.y * scale).roundToDouble() / scale;
-        canvas.translate(-snappedVx, -snappedVy);
-      }
-    }
+    final hasViewport =
+        Viewport.applyCamera(canvas, activeCameraEntity, viewportCaste, scale);
 
     FragmentShader? currentShader;
     ShaderMaterial? currentMaterial;
@@ -97,7 +105,6 @@ class HexTilemapRenderSystem {
       }
 
       // Hex map uses an atlas. Assuming the atlas contains a grid of hexagonal tile sprites.
-      // We will assume the sprite width is the bounding box of the hexagon.
       // For pointy-topped: width = sqrt(3) * size, height = 2 * size
       // For flat-topped: width = 2 * size, height = sqrt(3) * size
 
@@ -115,8 +122,8 @@ class HexTilemapRenderSystem {
       final tilesPerRow = intTileWidth > 0 ? atlasWidth ~/ intTileWidth : 1;
 
       // Snap start position to physical pixel grid
-      final double startX = (position.x * scale).roundToDouble() / scale;
-      final double startY = (position.y * scale).roundToDouble() / scale;
+      final double startX = Viewport.snapToPixel(position.x, scale);
+      final double startY = Viewport.snapToPixel(position.y, scale);
 
       final int radius = tilemap.radius;
 

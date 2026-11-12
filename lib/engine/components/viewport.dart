@@ -1,4 +1,6 @@
 import 'dart:typed_data';
+import 'dart:ui';
+import '../ecs/component_storage.dart';
 
 /// A flat Viewport component using a Dart extension type over a Float32List.
 /// Index 0: x, Index 1: y, Index 2: zoom, Index 3: angle.
@@ -35,4 +37,38 @@ extension type Viewport(Float32List data) {
 
   /// Sets the angle of the camera in radians.
   set angle(double value) => data[3] = value;
+
+  /// Snaps a logical coordinate or scalar to the physical pixel grid at [scale]
+  /// to eliminate texture shimmering and fractional subpixel jitter.
+  static double snapToPixel(double value, [double scale = 1.0]) =>
+      (value * scale).roundToDouble() / scale;
+
+  /// Applies camera transformation (zoom scale and pixel-snapped translation) to [canvas].
+  void applyTransform(Canvas canvas, [double scale = 1.0]) {
+    canvas.scale(zoom, zoom);
+    final snappedVx = snapToPixel(x, scale);
+    final snappedVy = snapToPixel(y, scale);
+    canvas.translate(-snappedVx, -snappedVy);
+  }
+
+  /// Attempts to apply the active camera viewport transform to [canvas].
+  ///
+  /// Returns `true` if a viewport was found and `canvas.save()` was called,
+  /// requiring a matching `canvas.restore()` after rendering.
+  static bool applyCamera(
+    Canvas canvas,
+    int activeCameraEntity,
+    ComponentStorage<Viewport>? viewportCaste, [
+    double scale = 1.0,
+  ]) {
+    if (activeCameraEntity != -1 && viewportCaste != null) {
+      final viewport = viewportCaste.get(activeCameraEntity);
+      if (viewport != null) {
+        canvas.save();
+        viewport.applyTransform(canvas, scale);
+        return true;
+      }
+    }
+    return false;
+  }
 }

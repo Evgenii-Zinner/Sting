@@ -2,11 +2,21 @@ import 'dart:ui';
 
 import 'dart:math' as math;
 
+/// Low-level Flutter view renderer that manages canvas frame recording and display scaling.
+///
+/// Supports virtual resolution letterboxing / aspect ratio scaling while rendering directly
+/// to Flutter engine views without Flutter widgets.
 class Renderer {
+  /// Screen clear color applied before frame rendering.
   final Color clearColor;
+
+  /// Optional target virtual resolution width for aspect ratio scaling.
   final double? virtualWidth;
+
+  /// Optional target virtual resolution height for aspect ratio scaling.
   final double? virtualHeight;
 
+  /// Creates a new [Renderer].
   Renderer({
     this.clearColor = const Color(0xFF000000),
     this.virtualWidth,
