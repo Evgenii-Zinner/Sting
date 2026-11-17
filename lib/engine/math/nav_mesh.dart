@@ -85,43 +85,45 @@ class NavMesh {
     return -1;
   }
 
-  /// Builds connectivity graph between adjacent polygons.
+  /// Builds connectivity graph between adjacent polygons in O(P * V) time
+  /// using a quantized directed-edge lookup.
   void buildNeighbors() {
     for (int i = 0; i < _polygons.length; i++) {
       _polygons[i].neighbors.fillRange(0, _polygons[i].vertexCount, -1);
     }
 
+    final Map<(int, int, int, int), int> edgeMap = {};
+
     for (int i = 0; i < _polygons.length; i++) {
       final polyA = _polygons[i];
-      for (int a = 0; a < polyA.vertexCount; a++) {
-        if (polyA.neighbors[a] != -1) continue;
-
-        final int aNext = (a + 1) % polyA.vertexCount;
+      final int vCount = polyA.vertexCount;
+      for (int a = 0; a < vCount; a++) {
+        final int aNext = (a + 1) % vCount;
         final double ax1 = polyA.verticesX[a];
         final double ay1 = polyA.verticesY[a];
         final double ax2 = polyA.verticesX[aNext];
         final double ay2 = polyA.verticesY[aNext];
 
-        for (int j = i + 1; j < _polygons.length; j++) {
+        final int qx1 = (ax1 * 1000.0).round();
+        final int qy1 = (ay1 * 1000.0).round();
+        final int qx2 = (ax2 * 1000.0).round();
+        final int qy2 = (ay2 * 1000.0).round();
+
+        final int? match = edgeMap.remove((qx2, qy2, qx1, qy1));
+        if (match != null) {
+          final int j = match >> 16;
+          final int b = match & 0xFFFF;
           final polyB = _polygons[j];
-          for (int b = 0; b < polyB.vertexCount; b++) {
-            if (polyB.neighbors[b] != -1) continue;
-
-            final int bNext = (b + 1) % polyB.vertexCount;
-            final double bx1 = polyB.verticesX[b];
-            final double by1 = polyB.verticesY[b];
-            final double bx2 = polyB.verticesX[bNext];
-            final double by2 = polyB.verticesY[bNext];
-
-            // Edges must be identical but reversed winding
-            if (_isSamePoint(ax1, ay1, bx2, by2) &&
-                _isSamePoint(ax2, ay2, bx1, by1)) {
-              polyA.neighbors[a] = j;
-              polyB.neighbors[b] = i;
-              break;
-            }
+          final int bNext = (b + 1) % polyB.vertexCount;
+          if (_isSamePoint(ax1, ay1, polyB.verticesX[bNext], polyB.verticesY[bNext]) &&
+              _isSamePoint(ax2, ay2, polyB.verticesX[b], polyB.verticesY[b])) {
+            polyA.neighbors[a] = j;
+            polyB.neighbors[b] = i;
+            continue;
           }
         }
+
+        edgeMap[(qx1, qy1, qx2, qy2)] = (i << 16) | a;
       }
     }
   }
